@@ -338,14 +338,35 @@ class MichiApp {
       this.state.customProjects = [];
     }
     const deleted = new Set(this.state.deletedProjects || []);
+    const projects = new Set();
 
-    const projects = new Set(this.state.customProjects.filter(p => !deleted.has(p)));
-    
+    // Include explicitly added custom projects (not deleted)
+    this.state.customProjects.forEach(p => {
+      if (p && p.trim() && !deleted.has(p.trim())) {
+        projects.add(p.trim());
+      }
+    });
+
+    // Include projects that exist on active items
     (this.state.items || []).forEach(i => {
       if (i.project && i.project.trim() && i.project.trim() !== 'all' && !deleted.has(i.project.trim())) {
         projects.add(i.project.trim());
       }
     });
+
+    // Include projects that exist on contacts
+    (this.state.contacts || []).forEach(c => {
+      (c.projects || []).forEach(p => {
+        if (p && p.trim() && !deleted.has(p.trim())) {
+          projects.add(p.trim());
+        }
+      });
+    });
+
+    // Default fallback if workspace has no projects yet
+    if (projects.size === 0) {
+      projects.add('General');
+    }
 
     return Array.from(projects);
   }
@@ -756,8 +777,8 @@ class MichiApp {
       date: now
     };
 
-    if (!this.state.customProjects) {
-      this.state.customProjects = ['Spatial Canvas Architecture', 'Cloud Hosting & Infrastructure', 'Personal'];
+    if (!this.state.customProjects || !Array.isArray(this.state.customProjects)) {
+      this.state.customProjects = [];
     }
     if (!this.state.customProjects.includes(title)) {
       this.state.customProjects.push(title);

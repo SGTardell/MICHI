@@ -39,10 +39,11 @@
       </div>
 
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto;">
-        <div class="search-box">
+        <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.render) window.app.render(); return false;" class="search-box">
           <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" placeholder="Search notes..." aria-label="Search workspace">
-        </div>
+          <input type="search" id="searchInput" placeholder="Search notes..." aria-label="Search workspace" autocomplete="off" enterkeyhint="search">
+          <button type="submit" class="search-submit-btn" title="Search Workspace">Search</button>
+        </form>
 
         <!-- Seasonal Color Theme Selector Dropdown (Shiki 四季) -->
         <select id="themeSelector" style="background: rgba(255, 255, 255, 0.1); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 8px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; white-space: nowrap;" title="Select Seasonal Color Palette Theme (Shiki 四季)">
@@ -396,10 +397,10 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <div style="position: relative; width: 240px;">
-            <input type="text" id="contactsSearchInput" placeholder="Search contacts..." style="width: 100%; padding: 0.55rem 0.85rem 0.55rem 2.2rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-main); font-size: 0.85rem; outline: none;">
-            <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; pointer-events: none;">🔍</span>
-          </div>
+          <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.renderContacts) window.app.renderContacts(); return false;" style="position: relative; width: 240px; display: flex; align-items: center;">
+            <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; pointer-events: none; z-index: 2;">🔍</span>
+            <input type="search" id="contactsSearchInput" placeholder="Search contacts..." style="width: 100%; padding: 0.55rem 0.85rem 0.55rem 2.8rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: var(--text-main); font-size: 0.85rem; outline: none; -webkit-appearance: none;" enterkeyhint="search" autocomplete="off">
+          </form>
 
           <button type="button" id="btnCreateNewContact" style="background: #7CFEFE; color: #000; border: none; font-weight: 800; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(124, 254, 254, 0.3);">
             + Add Contact

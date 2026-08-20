@@ -426,19 +426,22 @@ nav.nav-tabs {
 
 .search-box {
   position: relative;
+  display: flex;
+  align-items: center;
   width: 240px;
 }
 
 .search-box input {
   width: 100%;
-  padding: 0.5rem 0.75rem 0.5rem 2.2rem;
+  padding: 0.5rem 4rem 0.5rem 2.8rem;
   background: var(--bg-main);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 20px;
   color: var(--text-main);
   font-size: 0.85rem;
   outline: none;
   transition: all 0.2s ease;
+  -webkit-appearance: none;
 }
 
 .search-box input:focus {
@@ -448,12 +451,32 @@ nav.nav-tabs {
 
 .search-box .search-icon {
   position: absolute;
-  left: 0.75rem;
+  left: 0.9rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
   font-size: 0.85rem;
   pointer-events: none;
+  z-index: 2;
+}
+
+.search-box .search-submit-btn {
+  position: absolute;
+  right: 4px;
+  background: var(--stage-spark);
+  color: #000;
+  border: none;
+  padding: 0.3rem 0.65rem;
+  border-radius: 14px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.search-box .search-submit-btn:hover {
+  transform: scale(1.05);
 }
 
 /* Tab Content View Switching */
