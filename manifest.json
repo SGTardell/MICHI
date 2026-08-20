@@ -1,0 +1,37 @@
+{
+  "name": "MICHI — For Work and Life",
+  "short_name": "MICHI",
+  "start_url": "dashboard.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "MICHI — For Work and Life Workspace",
+  "icons": [
+    {
+      "src": "Images/Michi_Appicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Images/Michi_Appicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Images/Your Way WH Logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ],
+  "share_target": {
+    "action": "dashboard.html",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

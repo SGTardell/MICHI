@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MICHI</string>
+    <string name="title_activity_main">MICHI</string>
+    <string name="package_name">com.michi.app</string>
+    <string name="custom_url_scheme">com.michi.app</string>
+</resources>
