@@ -83,13 +83,6 @@ const defaultState = {
 
 class MichiApp {
   constructor() {
-    // Auth Check: Redirect to login screen if not logged in
-    const isLoggedIn = localStorage.getItem('michi_logged_in');
-    if (!isLoggedIn || isLoggedIn !== 'true') {
-      window.location.href = 'index.html';
-      return;
-    }
-
     this.state = this.loadState();
     this.currentTab = 'all';
     this.currentFilter = 'all';
