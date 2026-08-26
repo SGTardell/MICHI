@@ -2599,7 +2599,7 @@ class MichiApp {
     if (!item) return;
 
     const stages = ['spark', 'structure', 'focus', 'product'];
-    const stageNames = { spark: 'Ideas', structure: 'Resources', focus: 'Development', product: 'Completed' };
+    const stageNames = { spark: 'Overview', structure: 'Resources', focus: 'Development', product: 'Completed' };
     const currentIndex = stages.indexOf(item.stage || 'spark');
 
     if (currentIndex < stages.length - 1) {
@@ -2628,7 +2628,7 @@ class MichiApp {
     if (!item) return;
 
     const stages = ['spark', 'structure', 'focus', 'product'];
-    const stageNames = { spark: 'Ideas', structure: 'Resources', focus: 'Development', product: 'Completed' };
+    const stageNames = { spark: 'Overview', structure: 'Resources', focus: 'Development', product: 'Completed' };
     const currentIndex = stages.indexOf(item.stage || 'spark');
 
     if (currentIndex > 0) {
@@ -2640,7 +2640,7 @@ class MichiApp {
       this.render();
       this.showToast(`Stepped back item to ${stageNames[prevStage]} board.`);
     } else {
-      this.showToast('Item is already in initial Ideas stage!');
+      this.showToast('Item is already in initial Overview stage!');
     }
   }
 
@@ -4378,7 +4378,7 @@ class MichiApp {
           <span>${totalCount} Items</span>
         </div>
         <div style="display: flex; gap: 4px; margin-top: 4px; font-size: 0.68rem; justify-content: space-between;">
-          <span style="color: var(--stage-spark); display: flex; align-items: center; gap: 3px;" title="1. Spark (Ideas)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-spark); display: inline-block;"></span> ${sparks}</span>
+          <span style="color: var(--stage-spark); display: flex; align-items: center; gap: 3px;" title="1. Spark (Overview)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-spark); display: inline-block;"></span> ${sparks}</span>
           <span style="color: var(--stage-structure); display: flex; align-items: center; gap: 3px;" title="2. Structure (Notes)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-structure); display: inline-block;"></span> ${structure}</span>
           <span style="color: var(--stage-focus); display: flex; align-items: center; gap: 3px;" title="3. Focus (Tasks)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-focus); display: inline-block;"></span> ${focus}</span>
           <span style="color: var(--stage-product); display: flex; align-items: center; gap: 3px;" title="4. Product (Vault)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-product); display: inline-block;"></span> ${product}</span>
@@ -4422,7 +4422,7 @@ class MichiApp {
     }
 
     const stages = [
-      { id: 'spark', name: '1. Ideas', color: 'var(--stage-spark)' },
+      { id: 'spark', name: '1. Overview', color: 'var(--stage-spark)' },
       { id: 'structure', name: '2. Resources', color: 'var(--stage-structure)' },
       { id: 'focus', name: '3. Development', color: 'var(--stage-focus)' },
       { id: 'product', name: '4. Completed', color: 'var(--stage-product)' }
