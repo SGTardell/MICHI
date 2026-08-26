@@ -475,10 +475,16 @@ class MichiApp {
   updateSyncBadge() {
     const badge = document.getElementById('statsCounter');
     if (badge) {
-      const projects = (this.state.customProjects || []).filter(p => p !== 'General' && p !== 'all');
-      const projCount = projects.length || 1;
+      const activeProjects = this.getWorkspaceProjects();
+      const projCount = activeProjects.length;
+      const totalItems = (this.state.items || []).length;
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      badge.innerHTML = `<span style="color: var(--text-main); font-weight: 700;">☁️ Synced (${projCount} Projects) at ${timeStr}</span>`;
+      
+      if (projCount === 0) {
+        badge.innerHTML = `<span style="color: var(--text-muted); font-weight: 700;">MICHI Workspace • ${totalItems} ${totalItems === 1 ? 'Item' : 'Items'}</span>`;
+      } else {
+        badge.innerHTML = `<span style="color: var(--text-main); font-weight: 700;">Synced (${projCount} ${projCount === 1 ? 'Project/Plan' : 'Projects & Plans'}) at ${timeStr}</span>`;
+      }
     }
   }
 
