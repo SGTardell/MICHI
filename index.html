@@ -3,170 +3,300 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>MICHI (道) — Login</title>
+  <title>MICHI — Login</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="Images/Michi_Appicon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="Images/Michi_Appicon.png">
   <style>
     :root {
-      --bg-dark: #F9FEFF;
-      --bg-main: #E3E9EA;
-      --bg-card: #D9DDDE;
-      --border: #B2B7B9;
-      --text-main: #1C2D37;
-      --text-muted: #526570;
-      --accent: #009967;
-      --accent-hover: #007A52;
+      --bg: #E3E9EA;
+      --card-bg: #D9DDDE;
+      --card-border: #B2B7B9;
+      --text-main: #333333;
+      --text-muted: #666666;
+      --input-bg: #ffffff;
+      --input-border: #CCCCCC;
+      --tab-active-bg: #E0E0E0;
+      --tab-active-border: #BBBBBB;
+      --btn-bg: #E0E0E0;
+      --btn-border: #BBBBBB;
+      --btn-text: #333333;
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      background-color: var(--bg-dark);
-      background-image: radial-gradient(circle at 50% 30%, rgba(0, 153, 103, 0.06), transparent 70%);
+      background-color: var(--bg);
       color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      margin: 0;
       padding: 1.5rem;
     }
 
-    .login-container {
+    .login-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem 2.2rem;
       max-width: 440px;
       width: 100%;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2.8rem 2.2rem;
-      box-shadow: 0 12px 32px rgba(28, 45, 55, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
       text-align: center;
-      backdrop-filter: blur(10px);
     }
 
-    .login-logo {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-      margin-bottom: 0.8rem;
-      filter: drop-shadow(0 4px 10px rgba(0, 153, 103, 0.25));
+    .kanji-header {
+      font-size: 3.5rem;
+      color: #666666;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
     }
 
-    .login-header-title {
-      font-size: 2.1rem;
-      font-weight: 900;
-      color: var(--accent);
-      margin: 0 0 0.3rem 0;
-      letter-spacing: 1.5px;
+    .brand-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #444444;
+      letter-spacing: 1px;
+      margin-bottom: 0.3rem;
     }
 
-    .login-subtitle {
-      font-size: 0.9rem;
-      font-weight: 600;
+    .brand-subtitle {
+      font-size: 0.88rem;
+      font-weight: 500;
       color: var(--text-muted);
-      margin-bottom: 2rem;
-      line-height: 1.45;
+      margin-bottom: 1.8rem;
     }
 
+    /* Segmented Tab Switcher */
+    .tab-switcher {
+      display: flex;
+      background: #ffffff;
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.65rem 0.5rem;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--tab-active-bg);
+      border: 1px solid var(--tab-active-border);
+      color: var(--text-main);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Form Fields */
     .form-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.2rem;
       text-align: left;
     }
 
     .form-label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      color: var(--text-muted);
+      color: #555555;
       margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
-    .login-input {
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-input {
       width: 100%;
-      padding: 0.85rem 1.1rem;
-      background: #F9FEFF;
+      padding: 0.8rem 1rem;
+      background: var(--input-bg);
       color: var(--text-main);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: 700;
-      text-align: center;
-      letter-spacing: 3px;
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
       outline: none;
-      transition: all 0.2s ease;
+      transition: border-color 0.15s ease;
     }
 
-    .login-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(0, 153, 103, 0.2);
+    .form-input:focus {
+      border-color: #888888;
     }
 
-    .login-submit-btn {
-      width: 100%;
-      background: var(--accent);
-      color: #ffffff;
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
       border: none;
-      padding: 0.9rem 1.2rem;
-      border-radius: 12px;
-      font-size: 1rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    /* Meta Row (Remember & Reset) */
+    .form-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .remember-check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .remember-check input {
+      accent-color: #555555;
+    }
+
+    .reset-link {
+      color: var(--text-muted);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-text);
+      border-radius: 10px;
+      font-size: 0.95rem;
       font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 6px 18px rgba(0, 153, 103, 0.35);
-      transition: all 0.2s ease;
-      margin-top: 0.5rem;
+      gap: 6px;
+      transition: background-color 0.15s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
 
-    .login-submit-btn:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 22px rgba(0, 153, 103, 0.45);
+    .submit-btn:hover {
+      background: #D5D5D5;
     }
 
-    .login-submit-btn:active {
-      transform: translateY(0);
-    }
-
-    .login-footer-hint {
-      margin-top: 1.8rem;
-      font-size: 0.78rem;
-      font-weight: 600;
+    /* Footer Text */
+    .login-footer {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      opacity: 0.85;
+    }
+
+    .login-footer a {
+      color: var(--text-main);
+      font-weight: 700;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <img src="Images/Michi_Appicon.png" alt="MICHI Logo" class="login-logo" onerror="this.style.display='none'; document.getElementById('emojiFallback').style.display='block';" />
-    <div id="emojiFallback" style="display: none; font-size: 3rem; margin-bottom: 0.5rem;">🪼</div>
-    
-    <h1 class="login-header-title">MICHI (道)</h1>
-    <p class="login-subtitle">For Work and Life Engine — Workspace Access</p>
+  <div class="login-card">
+    <div class="kanji-header">道</div>
+    <h1 class="brand-title">MICHI</h1>
+    <p class="brand-subtitle">Organize Life & Work — Digital Workspace</p>
 
-    <form id="loginForm" onsubmit="event.preventDefault(); localStorage.setItem('michi_logged_in', 'true'); window.location.href='dashboard.html';">
+    <!-- Sign In / Create Account Switcher -->
+    <div class="tab-switcher">
+      <button type="button" class="tab-btn active" id="tabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
+      <button type="button" class="tab-btn" id="tabCreateAccount" onclick="switchAuthTab('create')">Create Account</button>
+    </div>
+
+    <!-- Login Form -->
+    <form id="authForm" onsubmit="handleAuthSubmit(event)">
       <div class="form-group">
-        <label for="passInput" class="form-label">Master Passcode</label>
-        <input type="password" id="passInput" class="login-input" placeholder="••••••••" value="1234" required />
+        <label for="usernameInput" class="form-label">Username / Email</label>
+        <input type="text" id="usernameInput" class="form-input" value="stardell" placeholder="Enter username or email..." required />
       </div>
 
-      <button type="submit" class="login-submit-btn">
-        <span>🔓 Unlock Workspace</span>
-      </button>
-    </form>
+      <div class="form-group">
+        <label for="passwordInput" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="passwordInput" class="form-input" value="password123" placeholder="Enter password..." required />
+          <button type="button" class="password-toggle" onclick="togglePasswordVisibility()" title="Toggle password view">👁</button>
+        </div>
+      </div>
 
-    <div class="login-footer-hint">
-      Gentle Breeze Light Theme • Private Local Workspace
-    </div>
+      <div class="form-meta-row">
+        <label class="remember-check">
+          <input type="checkbox" id="rememberMe" checked /> Remember me
+        </label>
+        <a href="javascript:void(0);" onclick="alert('Password reset link sent to your registered email.')" class="reset-link">Reset Password</a>
+      </div>
+
+      <button type="submit" class="submit-btn" id="btnAuthSubmit">
+        <span>Sign In to MICHI ➔</span>
+      </button>
+
+      <div class="login-footer" id="footerText">
+        Don't have an account? <a href="javascript:void(0);" onclick="switchAuthTab('create')">Create One</a>
+      </div>
+    </form>
   </div>
+
+  <script>
+    let currentAuthMode = 'signin';
+
+    function switchAuthTab(mode) {
+      currentAuthMode = mode;
+      const tabSignIn = document.getElementById('tabSignIn');
+      const tabCreateAccount = document.getElementById('tabCreateAccount');
+      const btnSubmit = document.getElementById('btnAuthSubmit');
+      const footerText = document.getElementById('footerText');
+
+      if (mode === 'signin') {
+        tabSignIn.classList.add('active');
+        tabCreateAccount.classList.remove('active');
+        btnSubmit.innerHTML = '<span>Sign In to MICHI ➔</span>';
+        footerText.innerHTML = 'Don\'t have an account? <a href="javascript:void(0);" onclick="switchAuthTab(\'create\')">Create One</a>';
+      } else {
+        tabCreateAccount.classList.add('active');
+        tabSignIn.classList.remove('active');
+        btnSubmit.innerHTML = '<span>Create MICHI Account ➔</span>';
+        footerText.innerHTML = 'Already have an account? <a href="javascript:void(0);" onclick="switchAuthTab(\'signin\')">Sign In</a>';
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('passwordInput');
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+      } else {
+        passInput.type = 'password';
+      }
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      localStorage.setItem('michi_logged_in', 'true');
+      window.location.href = 'dashboard.html';
+    }
+  </script>
 </body>
 </html>
