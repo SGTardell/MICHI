@@ -914,104 +914,109 @@ class MichiApp {
   }
 
   handleCreateNewProject() {
-    const titleEl = document.getElementById('newProjectTitle');
-    const sparkEl = document.getElementById('newProjectSpark');
-    const title = (titleEl ? titleEl.value : (this.newProjectTitle ? this.newProjectTitle.value : '')).trim();
-    let sparkText = (sparkEl ? sparkEl.value : (this.newProjectSpark ? this.newProjectSpark.value : '')).trim();
-    const now = new Date().toISOString().split('T')[0];
+    try {
+      const titleEl = document.getElementById('newProjectTitle');
+      const sparkEl = document.getElementById('newProjectSpark');
+      const title = (titleEl ? titleEl.value : (this.newProjectTitle ? this.newProjectTitle.value : '')).trim();
+      let sparkText = (sparkEl ? sparkEl.value : (this.newProjectSpark ? this.newProjectSpark.value : '')).trim();
+      const now = new Date().toISOString().split('T')[0];
 
-    if (!title) {
-      alert('Please enter a Title for your Plan or Project.');
-      return;
-    }
-
-    const selectedKindRadio = document.querySelector('input[name="newProjectType"]:checked');
-    const kind = selectedKindRadio ? selectedKindRadio.value : 'project';
-
-    if (!sparkText) {
-      sparkText = `${kind === 'plan' ? 'Plan' : 'Work Project'} "${title}" initialized on MICHI Path.`;
-    }
-
-    if (!this.state.projectKinds) {
-      this.state.projectKinds = {};
-    }
-    this.state.projectKinds[title] = kind;
-
-    let leadContactName = '';
-    const selectedContactId = this.newProjectContactSelect ? this.newProjectContactSelect.value : '';
-    const manualContactName = this.newProjectManualContact ? this.newProjectManualContact.value.trim() : '';
-
-    if (selectedContactId) {
-      const contact = (this.state.contacts || []).find(c => c.id === selectedContactId);
-      if (contact) {
-        leadContactName = contact.name;
-        if (!contact.projects) contact.projects = [];
-        if (!contact.projects.includes(title)) contact.projects.push(title);
+      if (!title) {
+        alert('Please type a Title for your Plan or Project.');
+        if (titleEl) titleEl.focus();
+        return;
       }
-    } else if (manualContactName) {
-      leadContactName = manualContactName;
-      let existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === manualContactName.toLowerCase());
-      if (existing) {
-        if (!existing.projects) existing.projects = [];
-        if (!existing.projects.includes(title)) existing.projects.push(title);
-      } else {
-        if (!this.state.contacts) this.state.contacts = [];
-        this.state.contacts.push({
-          id: 'contact-' + Date.now(),
-          name: manualContactName,
-          role: `${kind === 'plan' ? 'Plan' : 'Project'} Lead`,
-          company: title,
-          email: '',
-          phone: '',
-          projects: [title],
-          notes: `Auto-created contact during creation of ${kind === 'plan' ? 'plan' : 'project'} "${title}".`,
-          color: '#7CFEFE'
-        });
+
+      const selectedKindRadio = document.querySelector('input[name="newProjectType"]:checked');
+      const kind = selectedKindRadio ? selectedKindRadio.value : 'project';
+
+      if (!sparkText) {
+        sparkText = `${kind === 'plan' ? 'Plan' : 'Work Project'} "${title}" initialized on MICHI Path.`;
       }
-    }
 
-    const isPlan = (kind === 'plan');
-    const initialSpark = {
-      id: 'item-spark-' + Date.now(),
-      type: isPlan ? 'plan' : 'idea',
-      stage: 'spark',
-      project: title,
-      title: `${title}: Vision & Objectives`,
-      content: sparkText,
-      isPlan: isPlan,
-      category: isPlan ? 'Plan' : 'Project',
-      assignedTo: leadContactName || '',
-      notes: [
-        { text: `${isPlan ? 'Plan' : 'Project'} "${title}" created and launched on MICHI Path.`, date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }
-      ],
-      tags: [title, isPlan ? 'Plan' : 'Project'],
-      color: isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)',
-      date: now
-    };
+      if (!this.state) this.state = {};
+      if (!this.state.items || !Array.isArray(this.state.items)) this.state.items = [];
+      if (!this.state.customProjects || !Array.isArray(this.state.customProjects)) this.state.customProjects = [];
+      if (!this.state.projectKinds) this.state.projectKinds = {};
 
-    if (!this.state.customProjects || !Array.isArray(this.state.customProjects)) {
-      this.state.customProjects = [];
-    }
-    if (!this.state.customProjects.includes(title)) {
-      this.state.customProjects.push(title);
-    }
+      this.state.projectKinds[title] = kind;
 
-    // Un-blacklist if project name was previously in deletedProjects
-    if (Array.isArray(this.state.deletedProjects)) {
-      const targetLower = title.trim().toLowerCase();
-      this.state.deletedProjects = this.state.deletedProjects.filter(p => (p || '').trim().toLowerCase() !== targetLower);
-    }
+      let leadContactName = '';
+      const selectedContactId = this.newProjectContactSelect ? this.newProjectContactSelect.value : '';
+      const manualContactName = this.newProjectManualContact ? this.newProjectManualContact.value.trim() : '';
 
-    this.state.items.unshift(initialSpark);
-    this.currentStageFilter = 'all';
-    this.currentFilter = 'all';
-    this.selectedProject = title;
-    this.switchTab('all');
-    this.closeNewProjectModal();
-    this.saveState();
-    this.renderProjectDropdowns();
-    this.render();
-    this.showToast(`🚀 Created ${isPlan ? 'Plan' : 'Project'} "${title}"!`);
+      if (selectedContactId) {
+        const contact = (this.state.contacts || []).find(c => c.id === selectedContactId);
+        if (contact) {
+          leadContactName = contact.name;
+          if (!contact.projects) contact.projects = [];
+          if (!contact.projects.includes(title)) contact.projects.push(title);
+        }
+      } else if (manualContactName) {
+        leadContactName = manualContactName;
+        let existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === manualContactName.toLowerCase());
+        if (existing) {
+          if (!existing.projects) existing.projects = [];
+          if (!existing.projects.includes(title)) existing.projects.push(title);
+        } else {
+          if (!this.state.contacts) this.state.contacts = [];
+          this.state.contacts.push({
+            id: 'contact-' + Date.now(),
+            name: manualContactName,
+            role: `${kind === 'plan' ? 'Plan' : 'Project'} Lead`,
+            company: title,
+            email: '',
+            phone: '',
+            projects: [title],
+            notes: `Auto-created contact during creation of ${kind === 'plan' ? 'plan' : 'project'} "${title}".`,
+            color: '#7CFEFE'
+          });
+        }
+      }
+
+      const isPlan = (kind === 'plan');
+      const initialSpark = {
+        id: 'item-spark-' + Date.now(),
+        type: isPlan ? 'plan' : 'idea',
+        stage: 'spark',
+        project: title,
+        title: `${title}: Vision & Objectives`,
+        content: sparkText,
+        isPlan: isPlan,
+        category: isPlan ? 'Plan' : 'Project',
+        assignedTo: leadContactName || '',
+        notes: [
+          { text: `${isPlan ? 'Plan' : 'Project'} "${title}" created and launched on MICHI Path.`, date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }
+        ],
+        tags: [title, isPlan ? 'Plan' : 'Project'],
+        color: isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)',
+        date: now
+      };
+
+      if (!this.state.customProjects.includes(title)) {
+        this.state.customProjects.push(title);
+      }
+
+      if (Array.isArray(this.state.deletedProjects)) {
+        const targetLower = title.trim().toLowerCase();
+        this.state.deletedProjects = this.state.deletedProjects.filter(p => (p || '').trim().toLowerCase() !== targetLower);
+      }
+
+      this.state.items.unshift(initialSpark);
+      this.currentStageFilter = 'all';
+      this.currentFilter = 'all';
+      this.selectedProject = title;
+      
+      this.closeNewProjectModal();
+      this.saveState();
+      this.switchTab('all');
+      this.renderProjectDropdowns();
+      this.render();
+      this.showToast(`🚀 Created ${isPlan ? 'Plan' : 'Project'} "${title}"!`);
+    } catch (err) {
+      console.error('Error creating project:', err);
+      alert('Error creating project: ' + err.message);
+    }
   }
 
   restoreSidebarState() {
