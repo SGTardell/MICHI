@@ -4935,8 +4935,8 @@ class MichiApp {
     // 2. Main Workspace 2-Column Grid Layout
     const workspaceGrid = document.createElement('div');
     workspaceGrid.style.display = 'grid';
-    workspaceGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(320px, 1fr))';
-    workspaceGrid.style.gap = '1.2rem';
+    workspaceGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(340px, 1fr))';
+    workspaceGrid.style.gap = '1.4rem';
     workspaceGrid.style.width = '100%';
     workspaceGrid.style.alignItems = 'start';
 
@@ -4944,12 +4944,12 @@ class MichiApp {
     const leftColumn = document.createElement('div');
     leftColumn.style.display = 'flex';
     leftColumn.style.flexDirection = 'column';
-    leftColumn.style.gap = '1.2rem';
+    leftColumn.style.gap = '1.4rem';
     leftColumn.style.width = '100%';
 
     // Development Section
     const devSection = document.createElement('div');
-    devSection.style.background = 'rgba(255,255,255,0.02)';
+    devSection.style.background = 'var(--bg-card)';
     devSection.style.border = '1px solid var(--border)';
     devSection.style.borderRadius = 'var(--radius-md)';
     devSection.style.padding = '1.2rem';
@@ -4957,14 +4957,14 @@ class MichiApp {
     devSection.style.flexDirection = 'column';
     devSection.style.gap = '1rem';
 
-    const devItems = projItems.filter(i => i.stage !== 'product' && i.type !== 'resource' && i.type !== 'web' && i.type !== 'note' && i.stage !== 'structure');
+    const devItems = projItems.filter(i => i.stage !== 'product' && i.stage !== 'structure' && i.type !== 'web' && i.type !== 'resource' && i.type !== 'note');
     this.renderDevelopmentBoardSection(devSection, devItems, projectName);
     leftColumn.appendChild(devSection);
 
-    // Resources/Tools Section (Stacked BELOW Development)
+    // Resources/Tools Section (Stacked BELOW Development in Left Column)
     const resourceItems = projItems.filter(i => i.stage !== 'product' && (i.type === 'resource' || i.type === 'web' || i.stage === 'structure'));
     const resourcesSection = document.createElement('div');
-    resourcesSection.style.background = 'rgba(255,255,255,0.02)';
+    resourcesSection.style.background = 'var(--bg-card)';
     resourcesSection.style.border = '1px solid var(--border)';
     resourcesSection.style.borderRadius = 'var(--radius-md)';
     resourcesSection.style.padding = '1.2rem';
@@ -5023,13 +5023,13 @@ class MichiApp {
     const rightColumn = document.createElement('div');
     rightColumn.style.display = 'flex';
     rightColumn.style.flexDirection = 'column';
-    rightColumn.style.gap = '1.2rem';
+    rightColumn.style.gap = '1.4rem';
     rightColumn.style.width = '100%';
 
     // Completed Section
     const completedItems = projItems.filter(i => i.stage === 'product');
     const completedSection = document.createElement('div');
-    completedSection.style.background = 'rgba(255,255,255,0.02)';
+    completedSection.style.background = 'var(--bg-card)';
     completedSection.style.border = '1px solid var(--border)';
     completedSection.style.borderRadius = 'var(--radius-md)';
     completedSection.style.padding = '1.2rem';
