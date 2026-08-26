@@ -959,7 +959,7 @@ class MichiApp {
     const kind = selectedKindRadio ? selectedKindRadio.value : 'project';
 
     if (!sparkText) {
-      sparkText = `${kind === 'plan' ? 'Life Plan' : 'Work Project'} "${title}" initialized on MICHI Path.`;
+      sparkText = `${kind === 'plan' ? 'Plan' : 'Work Project'} "${title}" initialized on MICHI Path.`;
     }
 
     if (!this.state.projectKinds) {
@@ -4182,11 +4182,15 @@ class MichiApp {
 
     if (this.globalProjectFilter) {
       const cur = this.selectedProject || 'all';
-      this.globalProjectFilter.innerHTML = `
+      let html = `
         <option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>
-        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Projects</option>
-        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Plans</option>
+        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Active Projects</option>
+        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Active Plans</option>
       `;
+      projects.forEach(p => {
+        html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
+      });
+      this.globalProjectFilter.innerHTML = html;
     }
 
     const homeSelect = document.getElementById('homeProjectFilterSelect');
@@ -4194,8 +4198,8 @@ class MichiApp {
       const cur = this.selectedProject || 'all';
       homeSelect.innerHTML = `
         <option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>
-        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Projects</option>
-        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Plans</option>
+        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Active Projects</option>
+        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Active Plans</option>
       `;
     }
 
