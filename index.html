@@ -1,22 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="Images/Michi_Appicon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="Images/Michi_Appicon.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="Images/Michi_Appicon.png">
-    <link rel="apple-touch-icon" sizes="512x512" href="Images/Michi_Appicon.png">
-    <script>
-        window.location.replace("dashboard.html");
-    </script>
-    <meta http-equiv="refresh" content="0;url=dashboard.html">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>MICHI (道) — Login</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="Images/Michi_Appicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/Michi_Appicon.png">
+  <style>
+    :root {
+      --bg-dark: #F9FEFF;
+      --bg-main: #E3E9EA;
+      --bg-card: #D9DDDE;
+      --border: #B2B7B9;
+      --text-main: #1C2D37;
+      --text-muted: #526570;
+      --accent: #009967;
+      --accent-hover: #007A52;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 30%, rgba(0, 153, 103, 0.06), transparent 70%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1.5rem;
+    }
+
+    .login-container {
+      max-width: 440px;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.8rem 2.2rem;
+      box-shadow: 0 12px 32px rgba(28, 45, 55, 0.1);
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      margin-bottom: 0.8rem;
+      filter: drop-shadow(0 4px 10px rgba(0, 153, 103, 0.25));
+    }
+
+    .login-header-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin: 0 0 0.3rem 0;
+      letter-spacing: 1.5px;
+    }
+
+    .login-subtitle {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.45;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      background: #F9FEFF;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 3px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .login-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 153, 103, 0.2);
+    }
+
+    .login-submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 0.9rem 1.2rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(0, 153, 103, 0.35);
+      transition: all 0.2s ease;
+      margin-top: 0.5rem;
+    }
+
+    .login-submit-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(0, 153, 103, 0.45);
+    }
+
+    .login-submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .login-footer-hint {
+      margin-top: 1.8rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      opacity: 0.85;
+    }
+  </style>
 </head>
-<body style="background: #F9FEFF; color: #1C2D37; font-family: -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
-    <div style="text-align: center;">
-        <h2 style="font-weight: 800; color: #009967; margin-bottom: 8px;">MICHI</h2>
-        <p style="font-size: 0.88rem; color: #526570;">Loading Gentle Breeze workspace...</p>
+<body>
+  <div class="login-container">
+    <img src="Images/Michi_Appicon.png" alt="MICHI Logo" class="login-logo" onerror="this.style.display='none'; document.getElementById('emojiFallback').style.display='block';" />
+    <div id="emojiFallback" style="display: none; font-size: 3rem; margin-bottom: 0.5rem;">🪼</div>
+    
+    <h1 class="login-header-title">MICHI (道)</h1>
+    <p class="login-subtitle">For Work and Life Engine — Workspace Access</p>
+
+    <form id="loginForm" onsubmit="event.preventDefault(); localStorage.setItem('michi_logged_in', 'true'); window.location.href='dashboard.html';">
+      <div class="form-group">
+        <label for="passInput" class="form-label">Master Passcode</label>
+        <input type="password" id="passInput" class="login-input" placeholder="••••••••" value="1234" required />
+      </div>
+
+      <button type="submit" class="login-submit-btn">
+        <span>🔓 Unlock Workspace</span>
+      </button>
+    </form>
+
+    <div class="login-footer-hint">
+      Gentle Breeze Light Theme • Private Local Workspace
     </div>
+  </div>
 </body>
 </html>
