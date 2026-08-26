@@ -3697,8 +3697,16 @@ class MichiApp {
         }
       }
 
-      const matchesStage = this.currentStageFilter === 'all' || (item.stage || 'spark') === this.currentStageFilter;
-      const matchesProject = (this.selectedProject === 'all') || (item.project || 'Personal') === this.selectedProject;
+      let matchesProject = true;
+      if (!this.selectedProject || this.selectedProject === 'all') {
+        matchesProject = true;
+      } else if (this.selectedProject === 'projects') {
+        matchesProject = (!item.isPlan && item.category !== 'Plan' && item.type !== 'plan' && item.boardType !== 'plan');
+      } else if (this.selectedProject === 'plans') {
+        matchesProject = (item.isPlan === true || item.category === 'Plan' || item.type === 'plan' || item.boardType === 'plan');
+      } else {
+        matchesProject = (item.project || 'Personal') === this.selectedProject;
+      }
 
       let matchesWebCat = true;
       if (this.currentWebCat === 'inbox') {
@@ -4172,12 +4180,24 @@ class MichiApp {
       });
     };
 
-    updateSelect(this.globalProjectFilter, '📁 All Projects/Plans', true);
-    if (this.globalProjectFilter) this.globalProjectFilter.value = this.selectedProject || 'all';
+    if (this.globalProjectFilter) {
+      const cur = this.selectedProject || 'all';
+      this.globalProjectFilter.innerHTML = `
+        <option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>
+        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Projects</option>
+        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Plans</option>
+      `;
+    }
 
     const homeSelect = document.getElementById('homeProjectFilterSelect');
-    updateSelect(homeSelect, '📁 All Active Plans & Projects', true);
-    if (homeSelect) homeSelect.value = this.selectedProject || 'all';
+    if (homeSelect) {
+      const cur = this.selectedProject || 'all';
+      homeSelect.innerHTML = `
+        <option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>
+        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Projects</option>
+        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Plans</option>
+      `;
+    }
 
     updateSelect(this.projectLineageSelect, '📁 All Projects/Plans Overview', true);
     if (this.projectLineageSelect) this.projectLineageSelect.value = this.selectedProject || 'all';
@@ -5520,8 +5540,8 @@ class MichiApp {
 
     const gridItems = (items || []).filter(i => i.type !== 'vault');
 
-    // IF SPECIFIC PROJECT OR PLAN IS OPENED: Always render the Workspace Board View!
-    if (this.selectedProject !== 'all') {
+    // IF SPECIFIC NAMED PROJECT IS OPENED: Render the Workspace Board View!
+    if (this.selectedProject !== 'all' && this.selectedProject !== 'projects' && this.selectedProject !== 'plans') {
       this.renderSpecificProjectView(this.selectedProject, gridItems);
       return;
     }
