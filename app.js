@@ -1,3 +1,10 @@
+// Unregister any active Service Worker to eliminate cache reload loops
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    for (let r of regs) r.unregister();
+  }).catch(() => {});
+}
+
 /**
  * MICHI (道) — For Work and Life Engine
  * Authentic 2-Page Digital Planner (iPad Spread Replica) & Jellyfish Cultural Color Palette
