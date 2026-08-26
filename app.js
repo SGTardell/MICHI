@@ -1050,6 +1050,7 @@ class MichiApp {
     this.currentStageFilter = 'all';
     this.currentFilter = 'all';
     this.selectedProject = title;
+    this.switchTab('all');
     this.closeNewProjectModal();
     this.saveState();
     this.renderProjectDropdowns();
@@ -4906,6 +4907,8 @@ class MichiApp {
   }
 
   renderSpecificProjectView(projectName, gridItems) {
+    if (!this.cardsGrid) return;
+    this.cardsGrid.innerHTML = '';
     const projItems = gridItems.filter(i => (i.project || 'Personal') === projectName);
 
     const kind = (this.state.projectKinds && this.state.projectKinds[projectName]) || 'project';
