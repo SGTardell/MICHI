@@ -1,22 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="soyokaze">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>MICHI — For Work and Life</title>
-  <meta name="description" content="MICHI — For Work and Life. A guided 4-stage pipeline from Idea Spark to Market Product.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>MICHI — For Life and Work</title>
+  <script>
+    (function() {
+      const CURRENT_BUILD = 'v207';
+      const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
+      if (lastBuild !== CURRENT_BUILD) {
+        localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
+        if ('caches' in window) {
+          caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+          });
+        }
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(r => r.unregister());
+          });
+        }
+      }
+    })();
+  </script>
+  <meta name="description" content="MICHI — For Life and Work. A guided 2-stage pipeline: Development and Completed.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="Images/Michi_Appicon.png">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="Images/Michi_Appicon.png">
+  <link rel="apple-touch-icon-precomposed" href="Images/Michi_Appicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="Images/Michi_Appicon.png">
   <link rel="apple-touch-icon" sizes="192x192" href="Images/Michi_Appicon.png">
   <link rel="apple-touch-icon" sizes="512x512" href="Images/Michi_Appicon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=207">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -30,40 +54,45 @@
           <img src="Images/Your Way WH Logo.png" onerror="this.src='Images/Your Way WH Transparent.png'" alt="Your Way Logo" class="dashboard-logo-left" />
           <div class="logo-text-column">
             <span class="logo-title">MICHI</span>
-            <span class="logo-subtitle">For Work and Life</span>
+            <span class="logo-subtitle">For Life and Work</span>
           </div>
           <div class="michi-tooltip-popup">
-            In Japanese culture, 道 is a profound concept encompassing a &quot;way of being,&quot; a spiritual journey, or a disciplined practice.
+            In Japanese culture, 道 (Michi) is a profound concept encompassing a &quot;way of being,&quot; a spiritual journey, or a disciplined practice.
           </div>
         </div>
       </div>
 
       <div style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto;">
         <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.render) window.app.render(); return false;" class="search-box">
-          <span class="search-icon">🔍</span>
           <input type="search" id="searchInput" placeholder="Search notes..." aria-label="Search workspace" autocomplete="off" enterkeyhint="search">
           <button type="submit" class="search-submit-btn" title="Search Workspace">Search</button>
         </form>
 
-        <!-- Seasonal Color Theme Selector Dropdown (Shiki 四季) -->
-        <select id="themeSelector" style="background: rgba(255, 255, 255, 0.1); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 8px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; white-space: nowrap;" title="Select Seasonal Color Palette Theme (Shiki 四季)">
-          <option value="summer">🌿 夏 Natsu (Summer - Lonely Beach)</option>
-          <option value="tokyo">🏮 東京 Tokyo Nights</option>
-          <option value="winter">🪼 冬 Fuyu (Winter - Jellyfish Night)</option>
-          <option value="spring">🌸 春 Haru (Spring - Sakura Blossom)</option>
-          <option value="autumn">🍁 秋 Aki (Autumn - Kyoto Maple)</option>
+        <!-- Color Theme Selector Dropdown -->
+        <select id="themeSelector" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 8px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; white-space: nowrap;" title="Select Color Palette Theme">
+          <option value="soyokaze" selected>Gentle Breeze</option>
+          <option value="winter">MICHI Signature Dark</option>
+          <option value="summer">Lonely Beach</option>
         </select>
 
-        <button type="button" id="btnOpenTutorialHeader" onclick="if(window.app && window.app.openTutorialModal) window.app.openTutorialModal()" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
-          Guide
+        <button type="button" id="btnOpenTutorialHeader" onclick="const o=document.getElementById('tutorialModalOverlay'); if(o){ o.style.display='flex'; o.style.opacity='1'; o.style.zIndex='9999999'; o.style.visibility='visible'; o.classList.add('active'); } if(window.app && window.app.openTutorialModal) window.app.openTutorialModal();" ontouchend="const o=document.getElementById('tutorialModalOverlay'); if(o){ o.style.display='flex'; o.style.opacity='1'; o.style.zIndex='9999999'; o.style.visibility='visible'; o.classList.add('active'); } if(window.app && window.app.openTutorialModal) window.app.openTutorialModal();" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
+          📖 Guide
+        </button>
+
+        <button type="button" id="btnRefreshApp" onclick="if(window.app && window.app.refreshApp) { window.app.refreshApp(); } else { window.location.reload(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Refresh MICHI App & Sync Latest Data">
+          🔄 Refresh
+        </button>
+
+        <button type="button" id="btnSignOutApp" onclick="if(window.app && window.app.signOut) { window.app.signOut(); } else { localStorage.removeItem('michi_logged_in'); window.location.href='index.html'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Lock Workspace & Sign Out">
+          🔒 Lock
         </button>
 
         <!-- High-Visibility Data Backup & Restore Action Pair -->
-        <div style="display: flex; align-items: center; gap: 5px; background: rgba(255, 255, 255, 0.05); padding: 2px 5px; border-radius: var(--radius-sm); border: 1px solid var(--border); white-space: nowrap;">
-          <button type="button" id="btnExportBackup" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.6); font-weight: 800; padding: 4px 9px; border-radius: 5px; font-size: 0.76rem; cursor: pointer; display: flex; align-items: center; gap: 3px; white-space: nowrap;" title="Download workspace JSON backup file">
+        <div style="display: flex; align-items: center; gap: 5px; background: transparent; padding: 0; border: none; white-space: nowrap;">
+          <button type="button" id="btnExportBackup" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 4px 10px; border-radius: var(--radius-sm); font-size: 0.76rem; cursor: pointer; display: flex; align-items: center; gap: 3px; white-space: nowrap;" title="Download workspace JSON backup file">
             Backup
           </button>
-          <button type="button" id="btnImportBackup" style="background: rgba(16, 185, 129, 0.25); color: #10b981; border: 1px solid #10b981; font-weight: 800; padding: 4px 9px; border-radius: 5px; font-size: 0.76rem; cursor: pointer; display: flex; align-items: center; gap: 3px; white-space: nowrap; box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);" title="Restore workspace from backup JSON file">
+          <button type="button" id="btnImportBackup" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 4px 10px; border-radius: var(--radius-sm); font-size: 0.76rem; cursor: pointer; display: flex; align-items: center; gap: 3px; white-space: nowrap;" title="Restore workspace from backup JSON file">
             Restore
           </button>
         </div>
@@ -79,23 +108,23 @@
     <div class="header-row-nav" style="padding-left: 0;">
       <nav class="nav-tabs" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap; width: 100%;">
         <!-- Live Date & Time Widget (Placed directly to the left of the Home button above the sidebar) -->
-        <div id="headerLiveClock" style="display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border); padding: 4px 10px; border-radius: var(--radius-sm); white-space: nowrap; margin-right: 4px;" title="Current Live Date & Time">
-          <span id="headerClockDate" style="font-size: 0.78rem; font-weight: 800; color: #ffffff; letter-spacing: 0.3px;">Wed, Aug 19, 2026</span>
-          <span style="color: rgba(255, 255, 255, 0.4); font-size: 0.8rem;">•</span>
-          <span id="headerClockTime" style="font-size: 0.88rem; font-weight: 800; color: #ffffff; font-family: -apple-system, monospace;">3:49 PM</span>
+        <div id="headerLiveClock" style="display: flex; align-items: center; gap: 8px; background: var(--bg-card); border: 1px solid var(--border); padding: 4px 10px; border-radius: var(--radius-sm); white-space: nowrap; margin-right: 4px;" title="Current Live Date & Time">
+          <span id="headerClockDate" style="font-size: 0.78rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.3px;">Wed, Aug 19, 2026</span>
+          <span style="color: var(--text-muted); font-size: 0.8rem;">•</span>
+          <span id="headerClockTime" style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); font-family: -apple-system, monospace;">3:49 PM</span>
         </div>
 
         <button class="nav-tab active" data-tab="all" style="font-weight: 800; font-size: 0.88rem;">Home</button>
         <button class="nav-tab" data-tab="ideas" style="font-weight: 800; font-size: 0.88rem;">Brain Dump</button>
 
-        <!-- All Projects Dropdown Selector -->
-        <select id="globalProjectFilter" style="padding: 0.4rem 0.85rem; background: rgba(255, 255, 255, 0.1); color: var(--text-main); border: 1px solid var(--border); border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;" title="Select Project Filter">
-          <option value="all">📁 All Projects</option>
+        <!-- All Plans & Projects Dropdown Selector -->
+        <select id="globalProjectFilter" style="padding: 0.4rem 0.85rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;" title="Select Plan or Project Filter">
+          <option value="all">📁 All Projects/Plans</option>
         </select>
 
-        <!-- + New Project Button (placed directly to the right of All Projects dropdown) -->
-        <button type="button" id="btnCreateNewProjectHeader" style="background: var(--stage-spark); color: #000; border: none; padding: 0.4rem 0.95rem; border-radius: 20px; font-size: 0.82rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Create a new project workspace">
-          + New Project
+        <!-- + New Plan / Project Button -->
+        <button type="button" id="btnCreateNewProjectHeader" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.4rem 0.95rem; border-radius: 20px; font-size: 0.82rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Create a new plan or project workspace">
+          + Plan / Project
         </button>
 
         <button class="nav-tab" data-tab="calendar" style="font-weight: 800; font-size: 0.88rem;">Calendar & Planner</button>
@@ -121,23 +150,23 @@
         <div class="sidebar-section-label">WORKSPACE VIEWS</div>
 
         <button class="sidebar-nav-item active" data-sidebar-tab="all" title="Home View Overview">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
           <span class="nav-label">Home</span>
         </button>
         <button class="sidebar-nav-item" data-sidebar-tab="ideas" title="Brain Dump View">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--stage-structure)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           <span class="nav-label">Brain Dump</span>
         </button>
         <button class="sidebar-nav-item" data-sidebar-tab="planner" title="Authentic 2-Page Digital Binder Planner">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--stage-planner)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="M17.5 17.5 16 16.25V14"/><circle cx="16" cy="16" r="6"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="M17.5 17.5 16 16.25V14"/><circle cx="16" cy="16" r="6"/></svg>
           <span class="nav-label">Daily Planner</span>
         </button>
         <button class="sidebar-nav-item" data-sidebar-tab="contacts" title="Contacts & Stakeholders">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7CFEFE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span class="nav-label">Contacts</span>
         </button>
         <button class="sidebar-nav-item" data-sidebar-tab="vault" title="Vault (Protected)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--stage-product)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span class="nav-label">Vault (Protected)</span>
         </button>
       </nav>
@@ -156,21 +185,16 @@
     <!-- View 1: All Space & Ideas (Cards Grid) -->
     <div class="tab-content active" id="tab-all">
       <div class="controls-bar" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <div class="filter-pills">
-            <button class="filter-pill active" data-filter="all">All Items</button>
-          </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted);">Brain Dump Category:</label>
-            <select id="brainDumpCatFilterAll" style="padding: 0.4rem 0.85rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 700; cursor: pointer;" title="Filter Brain Dump items by Topic">
-              <option value="all">All Topics</option>
-              <option value="Tech">Tech</option>
-              <option value="Sports">Sports</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Design">Design</option>
-              <option value="Finance">Business & Finance</option>
-            </select>
-          </div>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <label style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">📁 Workspace Focus:</label>
+          <select id="homeProjectFilterSelect" style="padding: 0.55rem 1rem; background-color: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 700; cursor: pointer;" title="Select Projects or Plans Board View">
+            <option value="all">📁 All Active Projects & Plans</option>
+            <option value="__PROJECTS_ONLY__">🚀 Active Projects Only (Pipeline Boards)</option>
+            <option value="__PLANS_ONLY__">📋 Active Plans Only (Daily & Action Plans)</option>
+          </select>
+          <button type="button" id="btnStartNewProjectHome" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--stage-product); color: #FFF; border: none; font-weight: 800; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            + Start New Plan / Project
+          </button>
         </div>
         <div class="stats-counter" id="statsCounter">MICHI Workspace</div>
       </div>
@@ -202,29 +226,29 @@
         </div>
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
           <label style="font-size: 0.85rem; font-weight: 800; color: var(--text-main);">Categories:</label>
-          <select id="brainDumpCatSelect" style="padding: 0.55rem 1rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer;" title="Select Brain Dump Topic Category">
-            <option value="all">All Topics</option>
-            <option value="Tech">Tech</option>
-            <option value="Sports">Sports</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Design">Design</option>
-            <option value="Finance">Business & Finance</option>
+          <select id="brainDumpCatSelect" style="padding: 0.55rem 1rem; background-color: #D9DDDE !important; color: #616363 !important; border: 1px solid #B2B7B9 !important; -webkit-appearance: none !important; appearance: none !important; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer;" title="Select Brain Dump Topic Category">
+            <option value="all" selected style="background-color: #D9DDDE !important; color: #616363 !important;">🌐 All Master Notes</option>
+            <option value="inbox" style="background-color: #D9DDDE !important; color: #616363 !important;">📥 Inbox (Unfiled)</option>
+            <option value="Travel" style="background-color: #D9DDDE !important; color: #616363 !important;">Travel ✈️</option>
+            <option value="Tech" style="background-color: #D9DDDE !important; color: #616363 !important;">Tech</option>
+            <option value="Work" style="background-color: #D9DDDE !important; color: #616363 !important;">Work 🛠️</option>
+            <option value="Personal" style="background-color: #D9DDDE !important; color: #616363 !important;">Personal 🏠</option>
+            <option value="Health" style="background-color: #D9DDDE !important; color: #616363 !important;">Health 🏃</option>
           </select>
-          <button type="button" id="btnAddWebClip" style="background: var(--stage-structure); color: #fff; border: none; font-weight: 700; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0, 153, 103, 0.3);">
+          <button type="button" id="btnAddWebClip" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px;">
             + Add Brain Dump / Clip
           </button>
         </div>
       </div>
 
-      <!-- Category Filter Pills -->
+      <!-- Category Filter Pills & View Mode Switcher -->
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap;">
         <div class="filter-pills" id="webCategoryPills">
-          <button class="filter-pill active" data-web-cat="all">All Topics</button>
-          <button class="filter-pill" data-web-cat="Tech">Tech</button>
-          <button class="filter-pill" data-web-cat="Sports">Sports</button>
-          <button class="filter-pill" data-web-cat="Fashion">Fashion</button>
-          <button class="filter-pill" data-web-cat="Design">Design</button>
-          <button class="filter-pill" data-web-cat="Finance">Business & Finance</button>
+          <!-- Rendered dynamically -->
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; background: var(--bg-card); padding: 4px; border-radius: 6px; border: 1px solid var(--border);">
+          <button type="button" id="btnViewModeCards" style="background: var(--bg-card-hover); color: var(--text-main); border: 1px solid var(--border); padding: 5px 12px; border-radius: 4px; font-weight: 800; font-size: 0.8rem; cursor: pointer;">🖼️ Cards View</button>
+          <button type="button" id="btnViewModeCompact" style="background: transparent; color: var(--text-muted); border: 1px solid transparent; padding: 5px 12px; border-radius: 4px; font-weight: 700; font-size: 0.8rem; cursor: pointer;">📋 Compact List</button>
         </div>
       </div>
 
@@ -280,7 +304,7 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 10px;">
-          <button type="button" id="btnQuickAddApptTab" style="background: var(--stage-planner); color: #ffffff; border: none; font-weight: 800; padding: 0.55rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(18, 125, 187, 0.3);">
+          <button type="button" id="btnQuickAddApptTab" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.55rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
             + Add Appointment
           </button>
         </div>
@@ -290,9 +314,9 @@
         <div class="calendar-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px;">
           <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             <button type="button" id="btnCalPrevMonth" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-weight: 700; cursor: pointer; font-size: 0.85rem;" title="Previous Month">Prev</button>
-            <span class="calendar-month" id="calendarMonthTitle" style="font-size: 1.3rem; font-weight: 800; color: var(--stage-planner);">August 2026</span>
+            <span class="calendar-month" id="calendarMonthTitle" style="font-size: 1.3rem; font-weight: 800; color: var(--text-main);">August 2026</span>
             <button type="button" id="btnCalNextMonth" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-weight: 700; cursor: pointer; font-size: 0.85rem;" title="Next Month">Next</button>
-            <button type="button" id="btnCalToday" style="background: rgba(18, 125, 187, 0.15); color: var(--stage-planner); border: 1px solid rgba(18, 125, 187, 0.4); border-radius: var(--radius-sm); padding: 4px 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Today</button>
+            <button type="button" id="btnCalToday" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Today</button>
           </div>
           <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
             Tap any cell to add/edit appointments
@@ -317,11 +341,14 @@
             <p style="font-size: 0.85rem; color: var(--text-muted);">An ongoing, editable list of your web hosting logins, API keys, and account passwords.</p>
           </div>
           <div style="display: flex; align-items: center; gap: 10px;">
+            <button type="button" id="btnChangeVaultPass" onclick="openChangeVaultPassModalGlobal()" ontouchend="openChangeVaultPassModalGlobal()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.6rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;" title="Change Vault Master Password">
+              ⚙️ Security Settings
+            </button>
             <button type="button" id="btnLockVault" style="background: rgba(244, 63, 94, 0.15); color: var(--cat-urgent); border: 1px solid rgba(244, 63, 94, 0.3); font-weight: 600; padding: 0.6rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
               Lock Vault
             </button>
             <button type="button" id="btnAddPasswordRow" style="background: var(--stage-product); color: #fff; border: none; font-weight: 700; padding: 0.65rem 1.25rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.88rem; box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);">
-              + Add New Password
+              + Add Vault Record
             </button>
           </div>
         </div>
@@ -364,18 +391,18 @@
     <div class="tab-content" id="tab-project-path">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main);">🛤️ Project Journey Lineage</h2>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">See how an initial Spark evolves through Structure and Focus into a finished Product.</p>
+          <h2 id="projectHeaderTitle" style="font-size: 1.3rem; font-weight: 800; color: var(--text-main);">📁 Plan / Project Board</h2>
+          <p id="projectHeaderDesc" style="font-size: 0.85rem; color: var(--text-muted);">Development pipeline & connected timeline for your active plan.</p>
         </div>
         
         <!-- Project Selector & Launch Button -->
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <label style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">Select Project:</label>
+          <label style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">Select Plan / Project:</label>
           <select id="projectLineageSelect" style="padding: 0.6rem 1rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600;">
             <!-- Populated via app.js -->
           </select>
-          <button type="button" id="btnStartNewProject" style="background: var(--stage-spark); color: #000; border: none; font-weight: 800; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(251, 245, 130, 0.3);">
-            + Start New Project
+          <button type="button" id="btnStartNewProject" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            + Start New Plan / Project
           </button>
         </div>
       </div>
@@ -398,8 +425,8 @@
 
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
           <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.renderContacts) window.app.renderContacts(); return false;" style="position: relative; width: 240px; display: flex; align-items: center;">
-            <span style="position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; pointer-events: none; z-index: 2;">🔍</span>
-            <input type="search" id="contactsSearchInput" placeholder="Search contacts..." style="width: 100%; padding: 0.55rem 0.85rem 0.55rem 2.8rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: var(--text-main); font-size: 0.85rem; outline: none; -webkit-appearance: none;" enterkeyhint="search" autocomplete="off">
+            <input type="search" id="contactsSearchInput" placeholder="Search contacts..." style="width: 100%; padding: 0.55rem 68px 0.55rem 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; color: var(--text-main); font-size: 0.85rem; outline: none; -webkit-appearance: none;" enterkeyhint="search" autocomplete="off">
+            <button type="submit" style="position: absolute; right: 4px; background: #7CFEFE; color: #000; border: none; padding: 0.35rem 0.7rem; border-radius: 14px; font-size: 0.75rem; font-weight: 800; cursor: pointer;">Search</button>
           </form>
 
           <button type="button" id="btnCreateNewContact" style="background: #7CFEFE; color: #000; border: none; font-weight: 800; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(124, 254, 254, 0.3);">
@@ -409,7 +436,7 @@
       </div>
 
       <!-- Contacts Cards Grid Container -->
-      <div id="contactsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+      <div id="contactsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.8rem;">
         <!-- Rendered dynamically via app.js -->
       </div>
     </div>
@@ -421,7 +448,7 @@
   <!-- MICHI Bottom Messaging Dispatch Bar -->
   <div class="michi-bar-container">
     <div class="michi-bar">
-      <select class="dispatch-type-select" id="dispatchProjectSelect" title="Select Project for this Spark" style="border-right: 1px solid var(--border); font-weight: 700; color: var(--stage-spark);">
+      <select class="dispatch-type-select" id="dispatchProjectSelect" title="Select Project for this item" style="border-right: 1px solid var(--border); font-weight: 700; color: var(--stage-focus);">
         <!-- Dynamically populated via app.js -->
       </select>
 
@@ -448,24 +475,24 @@
   <div class="modal-overlay" id="franklinModalOverlay">
     <div class="binder-modal">
       <!-- Top Navigation & Controls Bar -->
-      <div class="binder-top-bar">
+      <div class="binder-top-bar" style="background: var(--bg-glass); border: 1px solid var(--border); color: var(--text-main);">
         <div class="binder-flip-controls">
-          <button class="btn-page-flip" id="btnPrevPage">◄ Prev Day</button>
-          <button class="btn-page-flip" id="btnNextPage">Next Day ►</button>
+          <button class="btn-page-flip" id="btnPrevPage" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border);">◄ Prev Day</button>
+          <button class="btn-page-flip" id="btnNextPage" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border);">Next Day ►</button>
         </div>
         <div style="text-align: center;">
-          <span class="franklin-badge" id="plannerUserBadge">sgt's Planner</span>
+          <span class="franklin-badge" id="plannerUserBadge" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border);">sgt's Planner</span>
           <span id="franklinDateTitle" style="font-size: 0.9rem; font-weight: 700; color: var(--text-main); margin-left: 10px;">Saturday, August 8, 2026</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <select id="plannerFontSelect" style="padding: 0.35rem 0.6rem; background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 600; cursor: pointer;" title="Toggle Planner Handwriting Font Style">
+          <select id="plannerFontSelect" style="padding: 0.35rem 0.6rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 600; cursor: pointer;" title="Toggle Planner Handwriting Font Style">
             <option value="cursive">✍️ Cursive Handwriting</option>
             <option value="standard">📄 Standard Print</option>
           </select>
-          <button type="button" id="btnSaveFranklinPlanner" style="background: var(--stage-focus); color: #000; border: none; font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Save Planner & Close">
+          <button type="button" id="btnSaveFranklinPlanner" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Save Planner & Close">
             💾 Save & Close
           </button>
-          <button type="button" id="btnCloseFranklinModal" style="background: rgba(244, 63, 94, 0.2); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.4); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Close Planner Spread">
+          <button type="button" id="btnCloseFranklinModal" style="background: rgba(244, 63, 94, 0.15); color: var(--cat-urgent); border: 1px solid rgba(244, 63, 94, 0.3); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Close Planner Spread">
             ✕ Close
           </button>
         </div>
@@ -476,36 +503,36 @@
         <!-- 1. Left Page: Big Date, 3 Mini Calendars, Status Legend, Prioritized Tasks, Daily Tracker -->
         <div class="binder-page binder-page-left">
           <!-- Top Header: Left Brand Logo & Big Date, 3 Mini Calendars (Prev | Current | Next) -->
-          <div class="page-top-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f766e; padding-bottom: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 10px;">
+          <div class="page-top-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 10px;">
             
             <!-- Left: Single Top-Left MICHI AppIcon & Big Date -->
             <div style="display: flex; align-items: center; gap: 14px;">
               <img src="Images/Michi_Appicon.png" style="height: 54px; width: auto; max-height: 56px; border-radius: 8px; object-fit: contain; display: block;" alt="MICHI AppIcon" />
-              <div style="height: 50px; width: 2px; background: #0f766e; margin: 0 4px;"></div>
+              <div style="height: 50px; width: 2px; background: var(--border); margin: 0 4px;"></div>
               <div style="display: flex; flex-direction: column; justify-content: center;">
-                <span class="page-big-date" id="leftPageNum" style="font-size: 2.4rem; font-weight: 800; color: #0f766e; line-height: 1;">1</span>
-                <span class="page-day-name" id="leftPageDay" style="font-size: 0.95rem; font-weight: 700; color: #1e293b;">Saturday</span>
-                <span id="leftPageMonthYear" style="font-size: 0.82rem; font-weight: 700; color: #0f766e;">August 2026</span>
+                <span class="page-big-date" id="leftPageNum" style="font-size: 2.4rem; font-weight: 800; color: var(--text-main); line-height: 1;">1</span>
+                <span class="page-day-name" id="leftPageDay" style="font-size: 0.95rem; font-weight: 700; color: var(--text-main);">Saturday</span>
+                <span id="leftPageMonthYear" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main);">August 2026</span>
               </div>
             </div>
 
             <!-- Right: 3 Mini Calendars Side-by-Side (Prev Month | Current Month | Next Month) -->
-            <div style="display: flex; gap: 8px; align-items: flex-start;">
+            <div style="display: flex; gap: 6px; align-items: flex-start;">
               <!-- Mini Cal 1: Previous Month -->
-              <div class="page-mini-cal" style="font-size: 0.6rem; color: #475569; line-height: 1.2; width: 92px;">
-                <strong id="miniCalPrevMonthTitle" style="color: #64748b; display: block; text-align: center; font-size: 0.62rem; margin-bottom: 2px; font-weight: 700;">July 2026</strong>
+              <div class="page-mini-cal" style="font-size: 0.6rem; color: var(--text-muted); line-height: 1.2; width: 96px; background: var(--bg-card); padding: 3px 4px; border-radius: 4px; border: 1px solid var(--border);">
+                <strong id="miniCalPrevMonthTitle" style="color: var(--text-muted); display: block; text-align: center; font-size: 0.62rem; margin-bottom: 2px; font-weight: 700;">July 2026</strong>
                 <div id="miniCalPrevGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; text-align: center; font-size: 0.55rem; font-family: monospace;"></div>
               </div>
 
-              <!-- Mini Cal 2: Current Month (Highlighted) -->
-              <div class="page-mini-cal" style="font-size: 0.6rem; color: #475569; line-height: 1.2; width: 92px; background: rgba(15, 118, 110, 0.08); padding: 2px 4px; border-radius: 4px; border: 1px solid rgba(15, 118, 110, 0.3);">
-                <strong id="miniCalCurrMonthTitle" style="color: #0f766e; display: block; text-align: center; font-size: 0.62rem; margin-bottom: 2px; font-weight: 800;">August 2026</strong>
+              <!-- Mini Cal 2: Current Month (Active Highlighted) -->
+              <div class="page-mini-cal" style="font-size: 0.6rem; color: var(--text-main); line-height: 1.2; width: 96px; background: var(--bg-card-hover); padding: 3px 4px; border-radius: 4px; border: 1px solid var(--border);">
+                <strong id="miniCalCurrMonthTitle" style="color: var(--text-main); display: block; text-align: center; font-size: 0.62rem; margin-bottom: 2px; font-weight: 800;">August 2026</strong>
                 <div id="miniCalCurrGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; text-align: center; font-size: 0.55rem; font-family: monospace;"></div>
               </div>
 
               <!-- Mini Cal 3: Next Month -->
-              <div class="page-mini-cal" style="font-size: 0.6rem; color: #475569; line-height: 1.2; width: 92px;">
-                <strong id="miniCalNextMonthTitle" style="color: #64748b; display: block; text-align: center; font-size: 0.62rem; margin-bottom: 2px; font-weight: 700;">September 2026</strong>
+              <div class="page-mini-cal" style="font-size: 0.6rem; color: var(--text-muted); line-height: 1.2; width: 96px; background: var(--bg-card); padding: 3px 4px; border-radius: 4px; border: 1px solid var(--border);">
+                <strong id="miniCalNextMonthTitle" style="color: var(--text-muted); display: block; text-align: center; font-size: 0.62rem; margin-bottom: 2px; font-weight: 700;">September 2026</strong>
                 <div id="miniCalNextGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; text-align: center; font-size: 0.55rem; font-family: monospace;"></div>
               </div>
             </div>
@@ -513,7 +540,7 @@
           </div>
 
           <!-- Status Symbol Legend Key -->
-          <div style="display: flex; gap: 12px; font-size: 0.68rem; color: #0f766e; font-weight: 600; padding: 4px 0; border-bottom: 1px solid #ccfbf1; margin-bottom: 0.4rem;">
+          <div style="display: flex; gap: 12px; font-size: 0.68rem; color: var(--text-main); font-weight: 600; padding: 4px 0; border-bottom: 1px solid var(--border); margin-bottom: 0.4rem;">
             <span>✓ Completed</span>
             <span>➔ Forwarded</span>
             <span>✕ Deleted</span>
@@ -521,20 +548,20 @@
             <span>• In Process</span>
           </div>
 
-          <div class="page-sec-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f766e; padding-bottom: 2px; margin-bottom: 0.4rem;">
-            <span style="font-weight: 800; color: #0f766e; font-size: 0.82rem;">↓ ABC PRIORITIZED DAILY TASK LIST</span>
+          <div class="page-sec-header" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--border); margin-bottom: 0.6rem;">
+            <span style="font-weight: 800; color: var(--text-main); font-size: 0.82rem;">↓ ABC PRIORITIZED DAILY TASK LIST</span>
           </div>
 
           <div class="franklin-task-inputs" style="display: flex; gap: 6px; margin-bottom: 0.6rem;">
-            <select id="franklinPrioSelect" class="franklin-priority-select" style="background: #ffffff; color: #0f766e; border: 1px solid #cbd5e1; font-weight: 700; border-radius: 4px; padding: 2px 6px;">
+            <select id="franklinPrioSelect" class="franklin-priority-select" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; border-radius: 4px; padding: 2px 6px;">
               <option value="A1">A1</option>
               <option value="A2">A2</option>
               <option value="B1">B1</option>
               <option value="B2">B2</option>
               <option value="C1">C1</option>
             </select>
-            <input type="text" id="franklinTaskText" class="franklin-task-text" style="flex: 1; background: #ffffff; color: #1e293b; border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 8px; font-size: 0.82rem;" placeholder="Add priority task..." />
-            <button id="btnAddFranklinTask" style="background: #0f766e; color: #ffffff; border: none; font-weight: 700; padding: 0 12px; border-radius: 4px; cursor: pointer;">+</button>
+            <input type="text" id="franklinTaskText" class="franklin-task-text" style="flex: 1; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; font-size: 0.82rem;" placeholder="Add priority task..." />
+            <button id="btnAddFranklinTask" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0 12px; border-radius: 4px; cursor: pointer;">+</button>
           </div>
 
           <div class="franklin-task-list" id="franklinTaskList" style="display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; max-height: 220px; min-height: 140px;">
@@ -542,14 +569,14 @@
           </div>
 
           <!-- Bottom Daily Tracker Section -->
-          <div style="margin-top: auto; border: 1px solid #0f766e; border-radius: 4px; background: rgba(240, 253, 250, 0.5); padding: 6px 8px;">
-            <div style="font-size: 0.74rem; font-weight: 800; color: #0f766e; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">
+          <div style="margin-top: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); padding: 6px 8px;">
+            <div style="font-size: 0.74rem; font-weight: 800; color: var(--text-main); text-align: center; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">
               Daily Tracker
             </div>
-            <div style="font-size: 0.68rem; color: #64748b; font-style: italic; margin-bottom: 4px;">
+            <div style="font-size: 0.68rem; color: var(--text-muted); font-style: italic; margin-bottom: 4px;">
               Track expenses, email, voice mail, or other information.
             </div>
-            <textarea id="franklinDailyTrackerInput" style="width: 100%; height: 50px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 6px; font-size: 0.78rem; color: #1e293b; resize: none;" placeholder="Record daily expenses, notes, calls..."></textarea>
+            <textarea id="franklinDailyTrackerInput" style="width: 100%; height: 50px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; font-size: 0.78rem; color: var(--text-main); resize: none;" placeholder="Record daily expenses, notes, calls..."></textarea>
           </div>
         </div>
 
@@ -572,48 +599,53 @@
         <!-- Right Page: Top Center Logo, Appointment Schedule Grid -->
         <div class="binder-page binder-page-right">
           <!-- Top Header: Appointment Schedule Title & Top Center Logo -->
-          <div class="page-top-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #0f766e; padding-bottom: 4px; margin-bottom: 0.6rem;">
-            <span style="font-size: 1rem; font-weight: 800; color: #0f766e; letter-spacing: 0.5px;">Appointment Schedule</span>
+          <div class="page-top-header" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--border); margin-bottom: 0.6rem;">
+            <span style="font-size: 0.92rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.5px;">Appointment Schedule</span>
 
             <!-- Right Page Logo: Single Michi_Appicon.png -->
-            <img src="Images/Michi_Appicon.png" style="height: 36px; width: auto; max-height: 38px; border-radius: 6px; object-fit: contain; display: block;" alt="MICHI AppIcon" />
+            <img src="Images/Michi_Appicon.png" style="height: 32px; width: auto; max-height: 34px; border-radius: 6px; object-fit: contain; display: block;" alt="MICHI AppIcon" />
           </div>
 
           <!-- Add Appointment Builder Bar with Note Field -->
-          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 0.8rem; background: #ffffff; padding: 6px 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
-            <div style="display: flex; gap: 6px;">
-              <select id="apptTimeSelect" style="padding: 0.35rem 0.5rem; background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.78rem; font-weight: 700;">
-                <option value="07:00 AM">07:00 AM</option>
-                <option value="08:00 AM">08:00 AM</option>
-                <option value="08:30 AM">08:30 AM</option>
-                <option value="09:00 AM" selected>09:00 AM</option>
-                <option value="09:30 AM">09:30 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="10:30 AM">10:30 AM</option>
-                <option value="11:00 AM">11:00 AM</option>
-                <option value="11:30 AM">11:30 AM</option>
-                <option value="12:00 PM">12:00 PM</option>
-                <option value="12:30 PM">12:30 PM</option>
-                <option value="01:00 PM">01:00 PM</option>
-                <option value="01:30 PM">01:30 PM</option>
-                <option value="02:00 PM">02:00 PM</option>
-                <option value="02:30 PM">02:30 PM</option>
-                <option value="03:00 PM">03:00 PM</option>
-                <option value="03:30 PM">03:30 PM</option>
-                <option value="04:00 PM">04:00 PM</option>
-                <option value="04:30 PM">04:30 PM</option>
-                <option value="05:00 PM">05:00 PM</option>
-                <option value="05:30 PM">05:30 PM</option>
-                <option value="06:00 PM">06:00 PM</option>
-                <option value="06:30 PM">06:30 PM</option>
-                <option value="07:00 PM">07:00 PM</option>
-                <option value="07:30 PM">07:30 PM</option>
-                <option value="08:00 PM">08:00 PM</option>
-              </select>
-              <input type="text" id="apptTextInput" style="flex: 1; padding: 0.35rem 0.6rem; background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.8rem;" placeholder="Appointment Title / Client..." />
-              <button type="button" id="btnAddAppt" style="background: #0f766e; color: #fff; border: none; font-weight: 700; padding: 0.35rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.78rem;">+ Add</button>
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 0.8rem; background: var(--bg-card); padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);">
+            <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+              <!-- Dual Hour + 15-Minute Selectors -->
+              <div style="display: flex; gap: 4px; align-items: center;">
+                <select id="apptHourSelect" style="padding: 0.35rem 0.4rem; background-color: #D9DDDE !important; color: #616363 !important; border: 1px solid #B2B7B9 !important; -webkit-appearance: none !important; appearance: none !important; border-radius: 4px; font-size: 0.78rem; font-weight: 700;" title="Select Appointment Hour">
+                  <option value="06" style="background-color: #D9DDDE !important; color: #616363 !important;">06</option>
+                  <option value="07" style="background-color: #D9DDDE !important; color: #616363 !important;">07</option>
+                  <option value="08" style="background-color: #D9DDDE !important; color: #616363 !important;">08</option>
+                  <option value="09" selected style="background-color: #D9DDDE !important; color: #616363 !important;">09</option>
+                  <option value="10" style="background-color: #D9DDDE !important; color: #616363 !important;">10</option>
+                  <option value="11" style="background-color: #D9DDDE !important; color: #616363 !important;">11</option>
+                  <option value="12" style="background-color: #D9DDDE !important; color: #616363 !important;">12</option>
+                  <option value="01" style="background-color: #D9DDDE !important; color: #616363 !important;">01</option>
+                  <option value="02" style="background-color: #D9DDDE !important; color: #616363 !important;">02</option>
+                  <option value="03" style="background-color: #D9DDDE !important; color: #616363 !important;">03</option>
+                  <option value="04" style="background-color: #D9DDDE !important; color: #616363 !important;">04</option>
+                  <option value="05" style="background-color: #D9DDDE !important; color: #616363 !important;">05</option>
+                  <option value="06" style="background-color: #D9DDDE !important; color: #616363 !important;">06</option>
+                  <option value="07" style="background-color: #D9DDDE !important; color: #616363 !important;">07</option>
+                  <option value="08" style="background-color: #D9DDDE !important; color: #616363 !important;">08</option>
+                  <option value="09" style="background-color: #D9DDDE !important; color: #616363 !important;">09</option>
+                  <option value="10" style="background-color: #D9DDDE !important; color: #616363 !important;">10</option>
+                  <option value="11" style="background-color: #D9DDDE !important; color: #616363 !important;">11</option>
+                </select>
+                <select id="apptMinSelect" style="padding: 0.35rem 0.4rem; background-color: #D9DDDE !important; color: #616363 !important; border: 1px solid #B2B7B9 !important; -webkit-appearance: none !important; appearance: none !important; border-radius: 4px; font-size: 0.78rem; font-weight: 700;" title="Select 15-Minute Increment">
+                  <option value=":00" style="background-color: #D9DDDE !important; color: #616363 !important;">:00</option>
+                  <option value=":15" style="background-color: #D9DDDE !important; color: #616363 !important;">:15</option>
+                  <option value=":30" style="background-color: #D9DDDE !important; color: #616363 !important;">:30</option>
+                  <option value=":45" style="background-color: #D9DDDE !important; color: #616363 !important;">:45</option>
+                </select>
+                <select id="apptAmPmSelect" style="padding: 0.35rem 0.4rem; background-color: #D9DDDE !important; color: #616363 !important; border: 1px solid #B2B7B9 !important; -webkit-appearance: none !important; appearance: none !important; border-radius: 4px; font-size: 0.78rem; font-weight: 700;" title="AM or PM">
+                  <option value="AM" selected style="background-color: #D9DDDE !important; color: #616363 !important;">AM</option>
+                  <option value="PM" style="background-color: #D9DDDE !important; color: #616363 !important;">PM</option>
+                </select>
+              </div>
+              <input type="text" id="apptTextInput" style="flex: 1; min-width: 140px; padding: 0.35rem 0.6rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem;" placeholder="Appointment Title / Client..." />
+              <button type="button" id="btnAddAppt" style="background-color: #D9DDDE !important; color: #616363 !important; border: 1px solid #B2B7B9 !important; font-weight: 700; padding: 0.35rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.78rem;">+ Add</button>
             </div>
-            <input type="text" id="apptNoteInput" style="width: 100%; padding: 0.35rem 0.6rem; background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.76rem;" placeholder="Optional Appointment Note / Details..." />
+            <input type="text" id="apptNoteInput" style="width: 100%; padding: 0.35rem 0.6rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; font-size: 0.76rem;" placeholder="Optional Appointment Note / Details..." />
           </div>
 
           <div class="franklin-timeline" id="franklinTimeline" style="flex: 1; display: flex; flex-direction: column; gap: 6px; overflow-y: auto;">
@@ -645,7 +677,7 @@
     <div class="modal-content" style="max-width: 540px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
         <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-          ✏️ Edit Item
+          Edit Item
         </h3>
         <button type="button" id="btnCloseEditModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
       </div>
@@ -661,10 +693,8 @@
         <div>
           <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Stage on MICHI Path</label>
           <select id="editItemStage" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);">
-            <option value="spark">💡 Stage 1: Spark (Idea)</option>
-            <option value="structure">📂 Stage 2: Structure (Clips & Notes)</option>
-            <option value="focus">⚡ Stage 3: Focus (Tasks & Planner)</option>
-            <option value="product">🚀 Stage 4: Product (Vault & Assets)</option>
+            <option value="focus">⚡ Development (Tasks & Active Work)</option>
+            <option value="product">🚀 Completed (Finished Projects & Assets)</option>
           </select>
         </div>
 
@@ -676,6 +706,11 @@
         <div id="editUrlGroup">
           <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">URL Link (Web Capture)</label>
           <input type="url" id="editItemUrl" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="https://..." />
+        </div>
+
+        <div id="editImageGroup" style="margin-top: 0.8rem;">
+          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Featured Image URL (Photo / Graphic Attachment)</label>
+          <input type="url" id="editItemImageUrl" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="https://example.com/photo.jpg" />
         </div>
 
         <div id="editVaultGroup" style="display: none; flex-direction: column; gap: 0.8rem;">
@@ -714,9 +749,28 @@
           <input type="text" id="editItemTags" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Ideas, Priority, Web" />
         </div>
 
+        <!-- Assigned Contact Selection in Edit Modal -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Project Lead / Assigned Contact</label>
+          <select id="editItemContactSelect" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <!-- Populated via app.js -->
+          </select>
+          <div id="customEditItemContactWrapper" style="display: none; margin-top: 6px;">
+            <input type="text" id="customEditItemContactName" style="width: 100%; padding: 0.55rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type new contact / technician name..." />
+          </div>
+        </div>
+
+        <!-- Appended Notes List inside Edit Item Modal -->
+        <div style="margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid var(--border);">
+          <label style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px;">Appended Notes & History</label>
+          <div id="editItemNotesList" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 160px; overflow-y: auto; padding-right: 4px;">
+            <!-- Populated via app.js -->
+          </div>
+        </div>
+
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.5rem;">
           <button type="button" id="btnCancelEdit" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
-          <button type="submit" style="background: var(--stage-structure); color: #fff; border: none; font-weight: 700; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Changes</button>
+          <button type="submit" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Changes</button>
         </div>
       </form>
     </div>
@@ -734,13 +788,23 @@
         <input type="hidden" id="noteModalIndex" value="-1" />
         <div>
           <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Update / Note Text</label>
-          <textarea id="noteInputText" rows="4" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Type note details..." required></textarea>
+          <textarea id="noteInputText" rows="3" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Type note details..." required></textarea>
+        </div>
+        <!-- Contact Assignment in Add Note Modal -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Assign Contact / Technician (Optional)</label>
+          <select id="noteContactSelect" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <!-- Populated via app.js -->
+          </select>
+          <div id="customNoteContactWrapper" style="display: none; margin-top: 6px;">
+            <input type="text" id="customNoteContactName" style="width: 100%; padding: 0.55rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type new contact / technician name..." />
+          </div>
         </div>
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-          <button type="button" id="btnDeleteNote" style="background: rgba(244,63,94,0.15); color: #fb7185; border: 1px solid rgba(244,63,94,0.3); padding: 0.55rem 1rem; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; display: none;">🗑️ Delete Note</button>
+          <button type="button" id="btnDeleteNote" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.55rem 1rem; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: none;">Delete Note</button>
           <div style="display: flex; gap: 10px; margin-left: auto;">
             <button type="button" id="btnCancelNote" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.55rem 1rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
-            <button type="submit" id="btnSaveNote" style="background: var(--stage-focus); color: #000; border: none; font-weight: 700; padding: 0.55rem 1.3rem; border-radius: var(--radius-sm); cursor: pointer;">Save Note</button>
+            <button type="submit" id="btnSaveNote" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.55rem 1.3rem; border-radius: var(--radius-sm); cursor: pointer;">Save Note</button>
           </div>
         </div>
       </form>
@@ -749,11 +813,16 @@
 
   <!-- Add URL / Image / Web Clip Modal -->
   <div class="modal-overlay" id="webClipModalOverlay">
-    <div class="modal-content" style="max-width: 540px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
+    <div class="modal-content" style="max-width: 540px; max-height: 90vh; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
-        <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
-          Add URL, Image, or Brain Dump
-        </h3>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff;">
+            Tool / Resource
+          </h3>
+          <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted);">
+            Add URL, Image, or Resource Documentation
+          </span>
+        </div>
         <button type="button" id="btnCloseWebClipModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
       </div>
 
@@ -800,6 +869,17 @@
           <input type="text" id="webClipTitle" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; font-weight: 700; border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. Tactical Analysis / Reference Specs" required />
         </div>
 
+        <!-- Product Master / MFG Representative Selection in Add Tool Modal -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Technician / Specialist (Optional)</label>
+          <select id="webClipContactSelect" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <!-- Populated via app.js -->
+          </select>
+          <div id="customWebClipContactWrapper" style="display: none; margin-top: 6px;">
+            <input type="text" id="customWebClipContactName" style="width: 100%; padding: 0.55rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type new Product Master or Representative name..." />
+          </div>
+        </div>
+
         <!-- Fast Clipboard & Media Link Input -->
         <div>
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
@@ -838,12 +918,201 @@
     </div>
   </div>
 
+  <!-- Log Issue Modal Overlay -->
+  <div class="modal-overlay" id="issueModalOverlay">
+    <div class="modal-content" style="max-width: 540px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+          Log Issue or Pending Item
+        </h3>
+        <button type="button" id="btnCloseIssueModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+      </div>
+
+      <form id="issueForm" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="hidden" id="issueProjectName" value="" />
+
+        <!-- Issue Title -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Issue Title</label>
+          <input type="text" id="issueTitle" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; font-weight: 700; border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. HVAC Compressor Pressure Drop / Wiring Harness Short" required />
+        </div>
+
+        <!-- Issue Description -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Description / Details (Optional)</label>
+          <textarea id="issueContent" rows="3" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.88rem;" placeholder="Describe symptoms, steps to reproduce, or diagnostic codes..."></textarea>
+        </div>
+
+        <!-- Assigned Contact / Technician Selection -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Technician / Specialist (Optional)</label>
+          <select id="issueContactSelect" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <option value="">Unassigned</option>
+            <!-- Populated via app.js -->
+          </select>
+          <div id="customIssueContactWrapper" style="display: none; margin-top: 6px;">
+            <input type="text" id="customIssueContactName" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type new contact / technician name..." />
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid var(--border);">
+          <button type="button" id="btnCancelIssueModal" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+          <button type="submit" style="padding: 0.6rem 1.5rem; background: #ffffff; border: none; color: #000000; font-weight: 800; border-radius: var(--radius-sm); cursor: pointer;">Save Issue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Task Modal Overlay -->
+  <div class="modal-overlay" id="taskModalOverlay">
+    <div class="modal-content" style="max-width: 540px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+          Add Task / Action Item
+        </h3>
+        <button type="button" id="btnCloseTaskModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+      </div>
+
+      <form id="taskForm" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="hidden" id="taskProjectName" value="" />
+
+        <!-- Task Title -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Task Title</label>
+          <input type="text" id="taskTitle" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; font-weight: 700; border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. Order Replacement Gasket / Calibrate Torque Sensors" required />
+        </div>
+
+        <!-- Task Details -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Description / Details (Optional)</label>
+          <textarea id="taskContent" rows="3" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.88rem;" placeholder="Task requirements, part numbers, or execution steps..."></textarea>
+        </div>
+
+        <!-- Assigned Contact / Technician Selection -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Technician / Specialist (Optional)</label>
+          <select id="taskContactSelect" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <!-- Populated via app.js -->
+          </select>
+          <div id="customTaskContactWrapper" style="display: none; margin-top: 6px;">
+            <input type="text" id="customTaskContactName" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type new contact / technician name..." />
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid var(--border);">
+          <button type="button" id="btnCancelTaskModal" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+          <button type="submit" style="padding: 0.6rem 1.5rem; background: #ffffff; border: none; color: #000000; font-weight: 800; border-radius: var(--radius-sm); cursor: pointer;">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Issue Step Modal Overlay -->
+  <div class="modal-overlay" id="issueStepModalOverlay">
+    <div class="modal-content" style="max-width: 540px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;" id="issueStepModalHeaderTitle">
+          Add Step / Resolution Update
+        </h3>
+        <button type="button" id="btnCloseIssueStepModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+      </div>
+
+      <form id="issueStepForm" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="hidden" id="issueStepIssueId" value="" />
+
+        <!-- Step Description -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Progress Step / Action Taken</label>
+          <textarea id="issueStepText" rows="3" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.88rem; font-weight: 600;" placeholder="e.g. Replaced pressure sensor, verified harness continuity..." required></textarea>
+        </div>
+
+        <!-- Assigned Contact / Technician Selection -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Assigned Technician / Contact</label>
+          <select id="issueStepContactSelect" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <option value="">Keep Current Technician</option>
+            <!-- Populated via app.js -->
+          </select>
+          <div id="customIssueStepContactWrapper" style="display: none; margin-top: 6px;">
+            <input type="text" id="customIssueStepContactName" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type new contact / technician name..." />
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid var(--border);">
+          <button type="button" id="btnCancelIssueStepModal" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+          <button type="submit" style="padding: 0.6rem 1.5rem; background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.5); font-weight: 800; border-radius: var(--radius-sm); cursor: pointer;">Save Step</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Issue Options Modal Overlay (Centered Dark Modal) -->
+  <div class="modal-overlay" id="editIssueModalOverlay" style="display: none;">
+    <div class="modal-content" style="max-width: 500px; width: 90%; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;" id="editIssueModalTitle">
+          Manage Issue Options
+        </h3>
+        <button type="button" id="btnCloseEditIssueOptionsModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+      </div>
+
+      <input type="hidden" id="editIssueModalIssueId" value="" />
+
+      <!-- Option Buttons Container -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <button type="button" id="btnEditIssueOptionAddStep" style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; background: rgba(56, 189, 248, 0.12); color: #ffffff; border: 1px solid rgba(56, 189, 248, 0.4); border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; text-align: left;">
+          <div>
+            <div style="font-weight: 800; color: #38bdf8;">💬 Add Step / Resolution Update</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted); font-weight: 500; margin-top: 2px;">Log progress step towards resolving this issue</div>
+          </div>
+          <span style="font-weight: 800; color: #38bdf8;">➔</span>
+        </button>
+
+        <button type="button" id="btnEditIssueOptionAssign" style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; background: rgba(124, 254, 254, 0.08); color: #ffffff; border: 1px solid rgba(124, 254, 254, 0.3); border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; text-align: left;">
+          <div>
+            <div style="font-weight: 800; color: #7CFEFE;">👤 Change Assigned Technician / Contact</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted); font-weight: 500; margin-top: 2px;" id="editIssueModalCurrentTech">Reassign to team lead or technician</div>
+          </div>
+          <span style="font-weight: 800; color: #7CFEFE;">➔</span>
+        </button>
+
+        <button type="button" id="btnEditIssueOptionEditDetails" style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; background: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; text-align: left;">
+          <div>
+            <div style="font-weight: 800; color: #ffffff;">Edit Issue Title & Description</div>
+            <div style="font-size: 0.76rem; color: var(--text-muted); font-weight: 500; margin-top: 2px;">Modify title, description details, or status</div>
+          </div>
+          <span style="font-weight: 800; color: #ffffff;">➔</span>
+        </button>
+      </div>
+
+      <!-- Quick Edit Title/Description Fields -->
+      <div id="wrapperEditIssueFields" style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); flex-direction: column; gap: 0.75rem;">
+        <div>
+          <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Edit Issue Title</label>
+          <input type="text" id="inputEditIssueTitle" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; font-weight: 700; border: 1px solid var(--border); border-radius: var(--radius-sm);" />
+        </div>
+        <div>
+          <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Edit Issue Description / Details</label>
+          <textarea id="inputEditIssueContent" rows="3" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.85rem;"></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="button" id="btnSaveIssueDetails" style="padding: 0.55rem 1.2rem; background: #ffffff; color: #000; font-weight: 800; border: none; border-radius: var(--radius-sm); cursor: pointer;">Save Changes</button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.2rem; padding-top: 0.8rem; border-top: 1px solid var(--border);">
+        <button type="button" id="btnDeleteIssueFromModal" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.8rem; cursor: pointer;">🗑️ Delete Issue</button>
+        <button type="button" id="btnCancelEditIssueModal" style="padding: 0.5rem 1.2rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">Close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Full Reader & Print Modal -->
   <div class="modal-overlay" id="printModalOverlay">
     <div class="modal" style="max-width: 680px; width: 90%; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lg); max-height: 85vh; overflow-y: auto;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
         <div>
-          <span class="stage-path-badge spark" id="printModalStageBadge">💡 Spark</span>
+          <span class="stage-path-badge focus" id="printModalStageBadge">⚡ Development</span>
           <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-top: 4px;" id="printModalTitle">Card Title</h2>
         </div>
         <button type="button" id="btnClosePrintModal" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer;">✕</button>
@@ -923,29 +1192,42 @@
     </div>
   </div>
 
-  <!-- Start New Project Modal Popup -->
+  <!-- Start New Plan / Project Modal Popup -->
   <div class="modal-overlay" id="newProjectModalOverlay">
-    <div class="modal" style="max-width: 500px; width: 90%; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lg);">
+    <div class="modal" style="max-width: 520px; width: 90%; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lg);">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
         <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-          🚀 Start a New Project
+          🚀 Start a New Plan / Project
         </h3>
         <button type="button" id="btnCloseNewProjectModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
       </div>
 
       <form id="newProjectForm" style="display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Option Button: Select Category (Project vs Plan) -->
         <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Project Name</label>
-          <input type="text" id="newProjectTitle" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;" placeholder="e.g. Japanese Teahouse Redesign, Mobile App, Real Estate" required />
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">Workspace Category</label>
+          <div style="display: flex; gap: 10px;">
+            <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0.65rem 0.5rem; background: var(--bg-main); border: 2px solid var(--border); border-radius: var(--radius-sm); font-weight: 800; font-size: 0.84rem; color: var(--text-main); cursor: pointer;">
+              <input type="radio" name="newProjectType" value="project" checked style="accent-color: var(--stage-spark); width: 16px; height: 16px;"> 🛠️ Work Project
+            </label>
+            <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0.65rem 0.5rem; background: var(--bg-main); border: 2px solid var(--border); border-radius: var(--radius-sm); font-weight: 800; font-size: 0.84rem; color: var(--text-main); cursor: pointer;">
+              <input type="radio" name="newProjectType" value="plan" style="accent-color: var(--stage-focus); width: 16px; height: 16px;"> ✈️ Life Plan (Travel, Event)
+            </label>
+          </div>
         </div>
 
         <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Initial Idea / Project Spark (Stage 1)</label>
-          <textarea id="newProjectSpark" rows="3" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="What is the main goal or vision for this project?" required></textarea>
+          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Title</label>
+          <input type="text" id="newProjectTitle" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;" placeholder="e.g. Kyoto Vacation 2026, Home Renovation, Mobile App" required />
         </div>
 
         <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Assign Project Contacts</label>
+          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Description & Overview (Optional)</label>
+          <textarea id="newProjectSpark" rows="3" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="What is the main goal or vision for this plan/project?"></textarea>
+        </div>
+
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Assign Contacts</label>
           <div style="display: flex; flex-direction: column; gap: 6px;">
             <select id="newProjectContactSelect" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem;">
               <option value="">-- Select Existing Contact (Optional) --</option>
@@ -956,7 +1238,7 @@
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.5rem;">
           <button type="button" id="btnCancelNewProject" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
-          <button type="submit" style="background: var(--stage-spark); color: #000; border: none; font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Create</button>
+          <button type="submit" id="btnSubmitNewProject" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">🚀 Create Plan / Project</button>
         </div>
       </form>
     </div>
@@ -975,48 +1257,54 @@
       <form id="contactForm" style="display: flex; flex-direction: column; gap: 1rem;">
         <input type="hidden" id="contactFormId" value="" />
 
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <div style="flex: 1; min-width: 200px;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Full Name *</label>
-            <input type="text" id="contactFormName" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;" placeholder="e.g. Sarah Jenkins" required />
-          </div>
-          <div style="flex: 1; min-width: 200px;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Role / Title</label>
-            <input type="text" id="contactFormRole" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. UX Architect, Client" />
-          </div>
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Full Name *</label>
+          <input type="text" id="contactFormName" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: #ffffff; font-weight: 700; border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. Sarah Jenkins" required />
+        </div>
+
+        <!-- Personal Contact Checkbox -->
+        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+          <input type="checkbox" id="contactFormIsPersonal" style="width: 17px; height: 17px; cursor: pointer;" />
+          <label for="contactFormIsPersonal" style="font-size: 0.84rem; font-weight: 700; color: #ffffff; cursor: pointer;">
+            Personal Contact (Not associated with a work project)
+          </label>
+        </div>
+
+        <!-- Project Dropdown -->
+        <div id="wrapperContactProjectSelect">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Associated Project</label>
+          <select id="contactFormProjectSelect" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <!-- Populated dynamically via app.js -->
+          </select>
         </div>
 
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <div style="flex: 1; min-width: 200px;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Email Address</label>
+          <div style="flex: 1; min-width: 180px;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Email Address</label>
             <input type="email" id="contactFormEmail" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. sarah@example.com" />
           </div>
-          <div style="flex: 1; min-width: 200px;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Phone Number</label>
+          <div style="flex: 1; min-width: 180px;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Phone Number</label>
             <input type="tel" id="contactFormPhone" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. (555) 234-5678" />
           </div>
         </div>
 
         <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Company / Organization</label>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Company / Organization (Optional)</label>
           <input type="text" id="contactFormCompany" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. Nexus Design Studio" />
         </div>
 
         <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Assign Projects</label>
-          <div id="contactFormProjectsList" style="max-height: 120px; overflow-y: auto; background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.6rem; display: flex; flex-direction: column; gap: 6px;">
-            <!-- Rendered checkboxes via app.js -->
-          </div>
-        </div>
-
-        <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Notes & Details</label>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Notes & Details (Optional)</label>
           <textarea id="contactFormNotes" rows="2" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Key details, meeting notes, or contact preferences..."></textarea>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.5rem;">
-          <button type="button" id="btnCancelContactModal" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
-          <button type="submit" style="background: #7CFEFE; color: #000; border: none; font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Contact</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+          <button type="button" id="btnDeleteContactInModal" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; font-weight: 700; display: none;">🗑️ Delete Contact</button>
+          <div style="display: flex; gap: 10px; margin-left: auto;">
+            <button type="button" id="btnCancelContactModal" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+            <button type="submit" style="background: #7CFEFE; color: #000; border: none; font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Contact</button>
+          </div>
         </div>
       </form>
     </div>
@@ -1068,7 +1356,7 @@
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
         <div>
           <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="apptModalDateTitle">Schedule Appointment</h3>
-          <span style="font-size: 0.8rem; color: var(--stage-planner);" id="apptModalSubTitle">Add or edit appointments for this date</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);" id="apptModalSubTitle">Add or edit appointments for this date</span>
         </div>
         <button type="button" id="btnCloseApptModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
       </div>
@@ -1123,137 +1411,152 @@
         </div>
 
         <div style="margin-top: 0.2rem;">
-          <label style="font-size: 0.8rem; font-weight: 700; color: var(--stage-planner); display: block; margin-bottom: 6px;">Appointments for this Date:</label>
-          <div id="apptModalExistingList" style="display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; background: rgba(15,23,42,0.6); padding: 6px; border-radius: 6px; border: 1px solid var(--border);">
+          <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 6px;">Appointments for this Date:</label>
+          <div id="apptModalExistingList" style="display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; background: var(--bg-main); padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
             <!-- Rendered in app.js -->
           </div>
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.8rem;">
-          <button type="button" id="btnCancelApptForm" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
-          <button type="submit" style="background: var(--stage-planner); color: #fff; border: none; font-weight: 700; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Appointment</button>
+          <button type="button" id="btnCancelApptForm" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+          <button type="submit" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Appointment</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Interactive Tutorial & User Guide Modal -->
-  <div class="modal-overlay" id="tutorialModalOverlay">
-    <div class="modal-content" style="max-width: 680px; width: 92%; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lg); position: relative;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 1.4rem;">📖</span>
-          <div>
-            <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main);">Welcome to MICHI (道)</h3>
-            <span style="font-size: 0.8rem; color: var(--stage-focus);">User Guide & Feature Walkthrough</span>
-          </div>
-        </div>
-        <button type="button" id="btnCloseTutorialModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+  <!-- Launch Destination Choice Modal -->
+  <div class="modal-overlay" id="launchChoiceModalOverlay" style="background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); padding: 1.5rem; z-index: 2500;">
+    <div class="modal-card" style="max-width: 480px; width: 100%; text-align: center; display: flex; flex-direction: column; gap: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem;">
+      <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">🚀 Launch Destination</h3>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0;" id="launchChoiceItemTitle">Choose how to launch this Brain Dump clip:</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 6px;">
+        <button type="button" id="btnLaunchAsProject" style="background: linear-gradient(135deg, #009967 0%, #007A52 100%); color: #FFFFFF; border: 1px solid #7CFEFE; padding: 12px 16px; border-radius: var(--radius-md); font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          📁 Launch as New Project Board
+        </button>
+        <button type="button" id="btnLaunchAsExistingProject" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md); font-weight: 800; font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          📂 Assign to Existing Project / Plan...
+        </button>
+        <button type="button" id="btnLaunchAsPlanTask" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md); font-weight: 800; font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          📋 Launch into Daily Planner Task
+        </button>
       </div>
 
-      <!-- Tutorial Carousel Slides -->
-      <div id="tutorialSlidesContainer" style="min-height: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+      <button type="button" id="btnCancelLaunchModal" style="background: transparent; color: var(--text-muted); border: none; font-weight: 700; font-size: 0.85rem; cursor: pointer; margin-top: 4px;">Cancel</button>
+    </div>
+  </div>
 
-        <!-- Slide 1: The MICHI Philosophy -->
-        <div class="tutorial-slide active" data-slide="1" style="display: flex; flex-direction: column; gap: 12px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="badge" style="background: rgba(251, 245, 130, 0.2); color: var(--stage-spark); font-weight: 800; font-size: 0.85rem;">Step 1 of 5</span>
-            <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">The 4-Stage Creation Pipeline (道)</h4>
+  <!-- Change Vault Master Password Modal -->
+  <div class="modal-overlay" id="changeVaultPassModalOverlay" style="background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); padding: 1.5rem; z-index: 2500;">
+    <div class="modal-card" style="max-width: 440px; width: 100%; display: flex; flex-direction: column; gap: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem;">
+      <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">⚙️ Change Vault Master Password</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Update your Vault Master Password if your password was compromised or forgotten.</p>
+      
+      <form id="changeVaultPassForm" style="display: flex; flex-direction: column; gap: 12px; margin-top: 6px;">
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 4px;">Current Master Password</label>
+          <input type="password" id="currentMasterPassInput" style="width: 100%; padding: 0.65rem 0.9rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Enter current master password..." required />
+        </div>
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 4px;">New Master Password</label>
+          <input type="password" id="newMasterPassInput" style="width: 100%; padding: 0.65rem 0.9rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Enter new master password..." required />
+        </div>
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 4px;">Confirm New Master Password</label>
+          <input type="password" id="confirmNewMasterPassInput" style="width: 100%; padding: 0.65rem 0.9rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Confirm new master password..." required />
+        </div>
+        <div id="changeVaultPassError" style="font-size: 0.82rem; color: #EF4444; font-weight: 700; display: none;"></div>
+
+        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 8px;">
+          <button type="button" id="btnCancelChangeVaultPass" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+          <button type="submit" style="background: var(--stage-product); color: #FFF; border: none; font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save New Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2-Page Digital Binder User Guide Modal -->
+  <div class="modal-overlay" id="tutorialModalOverlay" style="background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); padding: 1rem; z-index: 999999; overflow-y: auto;">
+    <div class="binder-modal-container" style="max-width: 1040px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; gap: 12px; overflow-y: auto;">
+
+      <!-- Guide Top Bar -->
+      <div class="binder-top-bar" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-glass); border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-md); flex-wrap: wrap; gap: 8px;">
+        <!-- Left: Page Flipping Navigation Controls -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" id="btnPrevTutorialStep" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">◄ Prev Page</button>
+          <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-main);" id="tutorialStepIndicator">Page 1 of 5</span>
+          <button type="button" id="btnNextTutorialStep" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">Next Page ►</button>
+        </div>
+
+        <!-- Center: Guide Title -->
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 1.1rem;">📖</span>
+          <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.5px;">MICHI (道) User Guide & Manual</span>
+        </div>
+
+        <!-- Right Action Controls -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" onclick="if(window.app && window.app.closeTutorialModal && window.app.openFranklinModal) { window.app.closeTutorialModal(); window.app.openFranklinModal(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Switch directly to Daily Planner Modal">
+            📅 Open Daily Planner
+          </button>
+          <button type="button" id="btnCloseTutorialModal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">✕ Close</button>
+        </div>
+      </div>
+
+      <!-- 2-Page Digital Book Spread -->
+      <div class="binder-book-spread" style="display: grid; grid-template-columns: 1fr 14px 1fr 36px; min-height: 620px; background: var(--bg-main); border-radius: 14px; border: 2px solid var(--border); box-shadow: var(--shadow-lg); overflow: hidden; position: relative;">
+
+        <!-- Left Page: Chapter Title & Core Principles -->
+        <div class="binder-page binder-page-left" style="background: var(--bg-main); color: var(--text-main); padding: 1.4rem; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border); padding-bottom: 6px;">
+            <span id="guideLeftChapterBadge" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem;">Chapter 1</span>
+            <span id="guideLeftTopicTitle" style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">The MICHI (道) Philosophy</span>
           </div>
-          <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">
-            In Japanese culture, <strong>道 (Michi)</strong> represents a disciplined journey or path. MICHI organizes your ideas into a guided 4-stage pipeline:
-          </p>
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 6px;">
-            <div style="background: rgba(251, 245, 130, 0.08); border: 1px solid rgba(251, 245, 130, 0.3); padding: 10px; border-radius: 6px;">
-              <strong style="color: var(--stage-spark); font-size: 0.88rem;">1. Spark (Yellow)</strong>
-              <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Initial ideas, raw visions, and project launch points.</p>
-            </div>
-            <div style="background: rgba(0, 153, 103, 0.08); border: 1px solid rgba(0, 153, 103, 0.3); padding: 10px; border-radius: 6px;">
-              <strong style="color: var(--stage-structure); font-size: 0.88rem;">2. Structure (Green)</strong>
-              <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Web clips, notes, links, and resource bookmarks.</p>
-            </div>
-            <div style="background: rgba(124, 254, 254, 0.08); border: 1px solid rgba(124, 254, 254, 0.3); padding: 10px; border-radius: 6px;">
-              <strong style="color: var(--stage-focus); font-size: 0.88rem;">3. Focus (Cyan)</strong>
-              <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Active tasks, Kanban boards, and daily planner appointments.</p>
-            </div>
-            <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.3); padding: 10px; border-radius: 6px;">
-              <strong style="color: var(--stage-product); font-size: 0.88rem;">4. Product (Purple)</strong>
-              <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Finished deliverables, credentials, and vault passwords.</p>
-            </div>
+
+          <div id="guideLeftContent" style="flex: 1; display: flex; flex-direction: column; gap: 12px; line-height: 1.5; font-size: 0.86rem; color: var(--text-main);">
+            <!-- Rendered dynamically by app.js -->
           </div>
         </div>
 
-        <!-- Slide 2: Projects & Workspace Filtering -->
-        <div class="tutorial-slide" data-slide="2" style="display: none; flex-direction: column; gap: 12px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="badge" style="background: rgba(0, 153, 103, 0.2); color: var(--stage-structure); font-weight: 800; font-size: 0.85rem;">Step 2 of 5</span>
-            <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Projects & Global Filtering</h4>
-          </div>
-          <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">
-            Group all related ideas, tasks, notes, and credentials under a <strong>Project Container</strong>:
-          </p>
-          <ul style="font-size: 0.86rem; color: var(--text-main); line-height: 1.6; padding-left: 1.2rem;">
-            <li>Click <strong><code>+ New Project</code></strong> in the top header anytime to launch a new project.</li>
-            <li>Use the <strong><code>📁 All Projects</code></strong> dropdown on the controls bar to filter your entire workspace grid to a specific project.</li>
-            <li>Visit the <strong><code>🛤️ Project Lineage</code></strong> view to watch your project evolve across the 4-stage pipeline.</li>
-          </ul>
+        <!-- Center Metal Spiral Spine Rings -->
+        <div class="binder-spine" style="background: var(--bg-card); border-left: 1px solid var(--border); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 12px 0;">
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
+          <div class="binder-ring" style="width: 12px; height: 6px; background: var(--text-main); border-radius: 3px; border: 1px solid var(--border);"></div>
         </div>
 
-        <!-- Slide 3: Interactive Calendar & Agenda -->
-        <div class="tutorial-slide" data-slide="3" style="display: none; flex-direction: column; gap: 12px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="badge" style="background: rgba(124, 254, 254, 0.2); color: var(--stage-focus); font-weight: 800; font-size: 0.85rem;">Step 3 of 5</span>
-            <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Calendar & Appointment Scheduling</h4>
+        <!-- Right Page: Detailed Walkthrough & Visual Breakdown -->
+        <div class="binder-page binder-page-right" style="background: var(--bg-main); color: var(--text-main); padding: 1.4rem; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--border); padding-bottom: 6px;">
+            <span id="guideRightSubTitle" style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">Feature Walkthrough & Tips</span>
+            <img src="Images/Michi_Appicon.png" style="height: 30px; width: auto; border-radius: 4px;" alt="MICHI Logo" />
           </div>
-          <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">
-            Manage your daily agenda and client schedule effortlessly:
-          </p>
-          <ul style="font-size: 0.86rem; color: var(--text-main); line-height: 1.6; padding-left: 1.2rem;">
-            <li>Click <strong><code>Calendar</code></strong> in the top navbar to instantly jump to your Monthly Agenda.</li>
-            <li>Tap <strong>any date cell</strong> on the calendar grid to schedule, edit, or delete appointments.</li>
-            <li>Click <strong><code>+ Add Appointment</code></strong> to quickly add a new client appointment or meeting note.</li>
-          </ul>
+
+          <div id="guideRightContent" style="flex: 1; display: flex; flex-direction: column; gap: 12px; line-height: 1.5; font-size: 0.86rem; color: var(--text-main);">
+            <!-- Rendered dynamically by app.js -->
+          </div>
         </div>
 
-        <!-- Slide 4: Password & Account Vault -->
-        <div class="tutorial-slide" data-slide="4" style="display: none; flex-direction: column; gap: 12px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="badge" style="background: rgba(168, 85, 247, 0.2); color: var(--stage-product); font-weight: 800; font-size: 0.85rem;">Step 4 of 5</span>
-            <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Secure Password & Account Vault</h4>
-          </div>
-          <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">
-            Store web hosting logins, server API keys, and account secrets in your private vault:
-          </p>
-          <ul style="font-size: 0.86rem; color: var(--text-main); line-height: 1.6; padding-left: 1.2rem;">
-            <li>Click <strong><code>Password Vault</code></strong> in the header to unlock your encrypted records.</li>
-            <li>Set a custom <strong>Master Vault Password</strong> for maximum protection.</li>
-            <li>Generate strong random passwords with 1 tap using the <strong><code>🎲 Generate</code></strong> tool.</li>
-          </ul>
-        </div>
-
-        <!-- Slide 5: Disaster Recovery & Backup -->
-        <div class="tutorial-slide" data-slide="5" style="display: none; flex-direction: column; gap: 12px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: var(--stage-focus); font-weight: 800; font-size: 0.85rem;">Step 5 of 5</span>
-            <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Disaster Recovery & Data Backup</h4>
-          </div>
-          <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">
-            Never worry about losing your phone or clearing browser data:
-          </p>
-          <ul style="font-size: 0.86rem; color: var(--text-main); line-height: 1.6; padding-left: 1.2rem;">
-            <li>Click <strong><code>📥 Backup</code></strong> in the top navbar to download a full JSON backup file of your entire workspace to iCloud Drive or Files.</li>
-            <li>Click <strong><code>📤 Restore</code></strong> anytime to restore 100% of your projects, appointments, and vault credentials on a new device.</li>
-          </ul>
+        <!-- Right Side Chapter Index Tabs -->
+        <div class="binder-month-tabs" style="display: flex; flex-direction: column; background: var(--bg-glass); padding: 8px 0; gap: 4px; justify-content: space-around;">
+          <div class="guide-tab-item active" data-chapter="1" style="writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 3px; font-size: 0.68rem; font-weight: 800; color: var(--text-main); background: var(--bg-card); border: 1px solid var(--border); border-radius: 0 4px 4px 0; cursor: pointer; text-align: center;">01 Intro</div>
+          <div class="guide-tab-item" data-chapter="2" style="writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 3px; font-size: 0.68rem; font-weight: 800; color: var(--text-main); background: var(--bg-card); border: 1px solid var(--border); border-radius: 0 4px 4px 0; cursor: pointer; text-align: center;">02 Planner</div>
+          <div class="guide-tab-item" data-chapter="3" style="writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 3px; font-size: 0.68rem; font-weight: 800; color: var(--text-main); background: var(--bg-card); border: 1px solid var(--border); border-radius: 0 4px 4px 0; cursor: pointer; text-align: center;">03 Dump</div>
+          <div class="guide-tab-item" data-chapter="4" style="writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 3px; font-size: 0.68rem; font-weight: 800; color: var(--text-main); background: var(--bg-card); border: 1px solid var(--border); border-radius: 0 4px 4px 0; cursor: pointer; text-align: center;">04 Boards</div>
+          <div class="guide-tab-item" data-chapter="5" style="writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 3px; font-size: 0.68rem; font-weight: 800; color: var(--text-main); background: var(--bg-card); border: 1px solid var(--border); border-radius: 0 4px 4px 0; cursor: pointer; text-align: center;">05 Sync</div>
         </div>
 
       </div>
-
-      <!-- Footer Navigation Controls -->
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-        <button type="button" id="btnPrevTutorialStep" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.5rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; display: none;">◄ Previous</button>
-        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;" id="tutorialStepIndicator">Step 1 of 5</span>
-        <button type="button" id="btnNextTutorialStep" style="background: var(--stage-focus); color: #000; border: none; font-weight: 800; padding: 0.55rem 1.4rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer;">Next Step ➔</button>
-      </div>
+    </div>
+  </div>
 
     </div>
   </div>
@@ -1261,7 +1564,7 @@
   <!-- Notification Toast -->
   <div class="toast" id="toast">Copied to clipboard!</div>
 
-  <script src="app.js?v=18"></script>
+  <script src="app.js?v=207"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

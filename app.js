@@ -10,239 +10,79 @@
  * 1-Click Project Launch, Dispatcher Project Selection, and Connected 4-Stage Timeline
  */
 
-const STORAGE_KEY = 'MICHI_APP_DATA_V3';
-const VAULT_PASS_KEY = 'MICHI_VAULT_MASTER_PASS_V1';
-
-// Default state with Project associations, Notes arrays, and Calendar Appts
-const defaultState = {
-  theme: 'dark',
-  customWebCategories: ['Travel', 'Real Estate', 'Recipes'],
-  contacts: [
-    {
-      id: 'contact-1',
-      name: 'Sarah Jenkins',
-      role: 'UX Architect & Lead Designer',
-      company: 'Nexus Studio',
-      email: 'sarah.j@nexus.design',
-      phone: '(555) 234-5678',
-      projects: ['Spatial Canvas Architecture', 'Cloud Hosting & Infrastructure'],
-      notes: 'Primary UX contact and design sign-off lead.',
-      color: '#7CFEFE'
-    },
-    {
-      id: 'contact-2',
-      name: 'Marcus Vance',
-      role: 'Senior iOS & Native Engineer',
-      company: 'Michi Labs',
-      email: 'marcus.vance@michi.io',
-      phone: '(555) 876-5432',
-      projects: ['Personal'],
-      notes: 'Handles Capacitor native iOS plugins and App Store deployments.',
-      color: '#FBF582'
-    },
-    {
-      id: 'contact-3',
-      name: 'Elena Rostova',
-      role: 'Design Director',
-      company: 'Studio Kaze',
-      email: 'elena@kaze.design',
-      phone: '(555) 345-6789',
-      projects: ['Spatial Canvas Architecture'],
-      notes: 'Consultant on Japanese cultural color palettes and minimal layout.',
-      color: '#009967'
-    }
-  ],
-  items: [
-    {
-      id: 'item-1',
-      type: 'idea',
-      stage: 'spark',
-      project: 'General',
-      title: 'Spatial Canvas Architecture for Brainstorming',
-      content: 'Combine infinite non-linear visual nodes with structured document cards. Support macro views for big picture connections and micro views for rich text notes.',
-      notes: [
-        { text: 'Initial idea sparked during UX review session.', date: 'Aug 08, 2026' },
-        { text: 'Added support for line-by-line note editing.', date: 'Aug 11, 2026' }
-      ],
-      tags: ['Ideas', 'Architecture'],
-      color: '#FBF582',
-      date: '2026-08-08',
-      url: ''
-    },
-    {
-      id: 'item-2',
-      type: 'web',
-      stage: 'structure',
-      webCategory: 'Tech',
-      project: 'General',
-      title: 'AI & Web Assembly Runtime Architecture',
-      content: 'Clipped clean documentation on rich snippet extraction, HTML DOM cleaner, and high-performance Wasm modules.',
-      notes: [
-        { text: 'Evaluated readability parser algorithm for clean Markdown output.', date: 'Aug 09, 2026' }
-      ],
-      tags: ['Tech', 'Wasm', 'Architecture'],
-      color: '#009967',
-      date: '2026-08-06',
-      url: 'https://techcrunch.com'
-    },
-    {
-      id: 'item-web-sports',
-      type: 'web',
-      stage: 'structure',
-      webCategory: 'Sports',
-      project: 'General',
-      title: 'Premier League Tactical Analytics & Athlete Metrics',
-      content: '',
-      notes: [
-        { text: 'Great reference for spatial tracking layout concepts.', date: 'Aug 10, 2026' }
-      ],
-      tags: ['Sports', 'Analytics', 'Performance'],
-      color: '#009967',
-      date: '2026-08-10',
-      url: 'https://espn.com'
-    },
-    {
-      id: 'item-web-fashion',
-      type: 'web',
-      stage: 'structure',
-      webCategory: 'Fashion',
-      project: 'General',
-      title: 'Sustainable Minimalism & Japanese Textile Innovation 2026',
-      content: '',
-      notes: [],
-      tags: ['Fashion', 'Minimalism', 'Craftsmanship'],
-      color: '#009967',
-      date: '2026-08-11',
-      url: 'https://vogue.com'
-    },
-    {
-      id: 'item-web-design',
-      type: 'web',
-      stage: 'structure',
-      webCategory: 'Design',
-      project: 'General',
-      title: 'Spatial Canvas UI Guidelines & Micro-Interactions',
-      content: '',
-      notes: [
-        { text: 'Incorporated custom Japanese color palette.', date: 'Aug 11, 2026' }
-      ],
-      tags: ['Design', 'UI/UX', 'Palette'],
-      color: '#009967',
-      date: '2026-08-11',
-      url: 'https://dribbble.com'
-    },
-    {
-      id: 'item-web-finance',
-      type: 'web',
-      stage: 'structure',
-      webCategory: 'Finance',
-      project: 'General',
-      title: 'Fintech API Architecture & Global Payment Systems',
-      content: '',
-      notes: [],
-      tags: ['Finance', 'API', 'Security'],
-      color: '#009967',
-      date: '2026-08-11',
-      url: 'https://bloomberg.com'
-    },
-    {
-      id: 'item-3',
-      type: 'task',
-      stage: 'focus',
-      project: 'General',
-      title: 'Build Mobile Responsive Touch Drag-and-Drop',
-      content: 'Add TouchEvent listeners (touchstart, touchmove, touchend) so Kanban cards drag smoothly on mobile devices.',
-      status: 'in-progress',
-      notes: [],
-      tags: ['Tasks', 'Mobile'],
-      color: '#7CFEFE',
-      date: '2026-08-09'
-    },
-    {
-      id: 'item-4',
-      type: 'task',
-      stage: 'focus',
-      project: 'Spatial Canvas Architecture',
-      title: 'Implement 1-Click Clipboard Copy Buttons in MICHI',
-      content: 'Add direct copy listeners for code blocks, URLs, and vault credentials using navigator.clipboard.',
-      status: 'done',
-      priority: 'normal',
-      progress: 100,
-      notes: [],
-      tags: ['Tasks', 'Feature'],
-      color: '#009967',
-      date: '2026-08-07'
-    },
-    {
-      id: 'item-5',
-      type: 'vault',
-      stage: 'product',
-      project: 'Cloud Hosting & Infrastructure',
-      title: 'Cloud Web Hosting Control Panel',
-      category: 'Web Hosting',
-      username: 'stardell@michi.app',
-      secret: 'Hw#9938472910482910!',
-      notes: [
-        { text: 'Production server access key created.', date: 'Aug 05, 2026' }
-      ],
-      tags: ['Hosting', 'Web'],
-      color: '#3B82F6',
-      date: '2026-08-05'
-    },
-    {
-      id: 'item-6',
-      type: 'vault',
-      stage: 'product',
-      project: 'Spatial Canvas Architecture',
-      title: 'GitHub Developer API Key',
-      category: 'API Keys',
-      username: 'stardell-dev',
-      secret: 'ghp_xK9mQ2pL7vW4zA8bC1dE3fG5hI7jK9',
-      notes: [],
-      tags: ['API Key', 'Developer'],
-      color: '#3B82F6',
-      date: '2026-08-07'
-    }
-  ],
-  franklinData: {
-    '2026-08-08': {
-      tasks: [
-        { id: 'fp-1', priority: 'A1', text: 'Finalize MICHI Pipeline & 2-Page Digital Planner', done: false },
-        { id: 'fp-2', priority: 'A2', text: 'Review Light & Dark Mode paper textures', done: true },
-        { id: 'fp-3', priority: 'B1', text: 'Prepare Product Release Notes', done: false }
-      ],
-      appts: [
-        { id: 'ap-1', time: '09:00 AM', text: 'Product Roadmap Sync with Team', note: 'Discuss Q3 deliverables & UX architecture', done: false },
-        { id: 'ap-2', time: '11:30 AM', text: 'Digital Planner & Calendar Review', note: 'Review iPad 2-Page spread layout', done: true },
-        { id: 'ap-3', time: '02:00 PM', text: 'MICHI AI Pipeline Architecture Review', note: 'Prepare staging build notes', done: false }
-      ],
-      trackerText: 'Expense: $45 office supplies. Voice mail: QA sync confirmed.'
-    },
-    '2026-08-10': {
-      tasks: [
-        { id: 'fp-10-1', priority: 'A1', text: 'Review Password Vault Master Lock', done: true },
-        { id: 'fp-10-2', priority: 'A2', text: 'Audit 4-Stage Project Lineage Timeline', done: false }
-      ],
-      appts: [
-        { id: 'ap-10-1', time: '10:00 AM', text: 'Executive Architecture Review', note: 'Review collapsible sidebar & fluid layout', done: true },
-        { id: 'ap-10-2', time: '03:30 PM', text: 'Security Audit & Vault Encryption Sync', note: 'Confirm Master PIN lock logic', done: false }
-      ],
-      trackerText: 'Email: Security report sent. Expenses: $12 coffee.'
-    },
-    '2026-08-12': {
-      tasks: [
-        { id: 'fp-12-1', priority: 'A1', text: 'Deploy Staging Candidate Build', done: false }
-      ],
-      appts: [
-        { id: 'ap-12-1', time: '01:00 PM', text: 'Cloud Web Hosting Configuration', note: 'Verify SSL certificates & domain DNS', done: false }
-      ],
-      trackerText: 'Domain DNS records updated.'
+window.openTutorialModalGlobal = function() {
+  if (window.app && window.app.openTutorialModal) {
+    window.app.openTutorialModal();
+  } else {
+    const overlay = document.getElementById('tutorialModalOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '1';
+      overlay.style.visibility = 'visible';
+      overlay.style.zIndex = '999999';
+      overlay.classList.add('active');
     }
   }
 };
 
+window.openLaunchChoiceModalGlobal = function(id) {
+  if (window.app && window.app.openLaunchChoiceModalById) {
+    window.app.openLaunchChoiceModalById(id);
+  } else if (window.app && window.app.openLaunchChoiceModal) {
+    const item = (window.app.state.items || []).find(i => i.id === id);
+    if (item) window.app.openLaunchChoiceModal(item);
+  } else {
+    const overlay = document.getElementById('launchChoiceModalOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '1';
+      overlay.style.visibility = 'visible';
+      overlay.style.zIndex = '999999';
+      overlay.classList.add('active');
+    }
+  }
+};
+
+window.openChangeVaultPassModalGlobal = function() {
+  if (window.app && window.app.openChangeVaultPassModal) {
+    window.app.openChangeVaultPassModal();
+  } else {
+    const overlay = document.getElementById('changeVaultPassModalOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '1';
+      overlay.style.visibility = 'visible';
+      overlay.style.zIndex = '999999';
+      overlay.classList.add('active');
+    }
+  }
+};
+
+const STORAGE_KEY = 'MICHI_APP_DATA_V3';
+const VAULT_PASS_KEY = 'MICHI_VAULT_MASTER_PASS_V1';
+
+const defaultState = {
+  theme: 'soyokaze',
+  customProjects: [],
+  customWebCategories: ['Tech', 'Sports', 'Fashion', 'Design', 'Finance'],
+  contacts: [],
+  items: [],
+  appts: [],
+  dailyLogs: {},
+  franklinData: {},
+  vaultItems: [],
+  quickNotes: []
+};
+
 class MichiApp {
   constructor() {
+    // Auth Check: Redirect to login screen if not logged in
+    const isLoggedIn = localStorage.getItem('michi_logged_in');
+    if (!isLoggedIn || isLoggedIn !== 'true') {
+      window.location.href = 'index.html';
+      return;
+    }
+
     this.state = this.loadState();
     this.currentTab = 'all';
     this.currentFilter = 'all';
@@ -262,7 +102,16 @@ class MichiApp {
     this.bindEvents();
     this.restoreSidebarState();
     this.checkIncomingShareTarget();
+    this.initCloudSync();
     this.render();
+  }
+
+  signOut() {
+    localStorage.removeItem('michi_logged_in');
+    this.showToast('🔒 Signed Out. Returning to Sign In screen...');
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 350);
   }
 
   startHeaderClock() {
@@ -287,7 +136,8 @@ class MichiApp {
 
   initSeasonalTheme() {
     this.themeSelector = document.getElementById('themeSelector');
-    const savedTheme = localStorage.getItem('MICHI_COLOR_THEME') || 'winter';
+    let savedTheme = localStorage.getItem('MICHI_COLOR_THEME') || 'soyokaze';
+    if (savedTheme === 'tokyo') savedTheme = 'winter';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
     if (this.themeSelector) {
@@ -298,11 +148,9 @@ class MichiApp {
         localStorage.setItem('MICHI_COLOR_THEME', selected);
         
         const names = {
-          summer: '🌿 夏 Natsu (Summer - Lonely Beach)',
-          tokyo: '🏮 東京 Tokyo Nights',
-          winter: '🪼 冬 Fuyu (Winter - Jellyfish Night)',
-          spring: '🌸 春 Haru (Spring - Sakura Blossom)',
-          autumn: '🍁 秋 Aki (Autumn - Kyoto Maple)'
+          winter: 'MICHI Signature Dark',
+          soyokaze: 'Gentle Breeze',
+          summer: 'Lonely Beach'
         };
         this.showToast(`Switched to ${names[selected] || selected}`);
       });
@@ -325,6 +173,28 @@ class MichiApp {
         if (!parsed.contacts || !Array.isArray(parsed.contacts)) {
           parsed.contacts = JSON.parse(JSON.stringify(defaultState.contacts || []));
         }
+
+        // Clean demo/phantom default names if present from old builds
+        const legacyDemoNames = new Set(['spatial canvas architecture', 'personal', 'test', 'teswt']);
+        parsed.customProjects = parsed.customProjects.filter(p => p && p.trim() && !legacyDemoNames.has(p.toLowerCase().trim()));
+        parsed.items = parsed.items.filter(item => {
+          const pLower = (item.project || '').toLowerCase().trim();
+          return !legacyDemoNames.has(pLower);
+        });
+
+        // Strip generic laptop stock photos and legacy 'Password' tag
+        parsed.items.forEach(item => {
+          if (item.type !== 'vault' && Array.isArray(item.tags)) {
+            item.tags = item.tags.filter(t => t && t.toLowerCase().trim() !== 'password');
+          }
+          if (item.imageUrl) {
+            const lower = item.imageUrl.toLowerCase();
+            if (lower.includes('photo-1498050108023') || lower.includes('photo-1486312338219') || lower.includes('photo-1517694712202') || (lower.includes('laptop') && lower.includes('unsplash'))) {
+              delete item.imageUrl;
+            }
+          }
+        });
+
         return parsed;
       } catch (e) {
         console.error('Failed to parse state:', e);
@@ -333,46 +203,283 @@ class MichiApp {
     return JSON.parse(JSON.stringify(defaultState));
   }
 
+  cleanStaleProjects() {
+    const activeProjectItems = new Set((this.state.items || []).map(i => (i.project || '').trim().toLowerCase()));
+    
+    // Custom projects that have 0 items and are not General
+    const staleProjects = (this.state.customProjects || []).filter(p => {
+      const pLower = (p || '').trim().toLowerCase();
+      return pLower !== 'general' && !activeProjectItems.has(pLower);
+    });
+
+    if (staleProjects.length === 0) {
+      this.showToast('Project list is clean — no stale projects found!');
+      return;
+    }
+
+    this.confirmDialog(
+      `Found ${staleProjects.length} stale/empty project(s): "${staleProjects.join(', ')}". Purge them from project list?`,
+      'Purge Stale Projects',
+      () => {
+        const staleSet = new Set(staleProjects.map(p => p.toLowerCase().trim()));
+        this.state.customProjects = (this.state.customProjects || []).filter(p => !staleSet.has((p || '').toLowerCase().trim()));
+        this.selectedProject = 'all';
+        if (this.globalProjectFilter) this.globalProjectFilter.value = 'all';
+
+        this.saveState();
+        this.renderProjectDropdowns();
+        this.render();
+        this.showToast(`Purged ${staleProjects.length} stale project(s).`);
+      }
+    );
+  }
+
   getWorkspaceProjects() {
     if (!this.state.customProjects || !Array.isArray(this.state.customProjects)) {
       this.state.customProjects = [];
     }
-    const deleted = new Set(this.state.deletedProjects || []);
+
+    // Active project titles explicitly created in customProjects should NEVER be suppressed
+    const activeCustomSet = new Set(this.state.customProjects.map(p => (p || '').trim().toLowerCase()));
+
+    // Clean deletedProjects so active custom projects are never marked as deleted
+    if (Array.isArray(this.state.deletedProjects)) {
+      this.state.deletedProjects = this.state.deletedProjects.filter(p => !activeCustomSet.has((p || '').trim().toLowerCase()));
+    }
+
+    const deletedSet = new Set((this.state.deletedProjects || []).map(p => (p || '').trim().toLowerCase()));
+    deletedSet.add('general');
+    deletedSet.add('personal');
+    deletedSet.add('spatial canvas architecture');
+
+    // Auto-clean customProjects
+    this.state.customProjects = this.state.customProjects.filter(p => p && p.trim() && !deletedSet.has(p.trim().toLowerCase()));
+
     const projects = new Set();
 
-    // Include explicitly added custom projects (not deleted)
+    // Include custom projects (excluding blacklisted/deleted ones)
     this.state.customProjects.forEach(p => {
-      if (p && p.trim() && !deleted.has(p.trim())) {
+      if (p && p.trim() && !deletedSet.has(p.trim().toLowerCase())) {
         projects.add(p.trim());
       }
     });
 
-    // Include projects that exist on active items
+    // Also include project names from active items (excluding deleted ones)
     (this.state.items || []).forEach(i => {
-      if (i.project && i.project.trim() && i.project.trim() !== 'all' && !deleted.has(i.project.trim())) {
-        projects.add(i.project.trim());
+      if (i.project && i.project.trim() && !deletedSet.has(i.project.trim().toLowerCase())) {
+        const trimmed = i.project.trim();
+        projects.add(trimmed);
       }
     });
-
-    // Include projects that exist on contacts
-    (this.state.contacts || []).forEach(c => {
-      (c.projects || []).forEach(p => {
-        if (p && p.trim() && !deleted.has(p.trim())) {
-          projects.add(p.trim());
-        }
-      });
-    });
-
-    // Default fallback if workspace has no projects yet
-    if (projects.size === 0) {
-      projects.add('General');
-    }
 
     return Array.from(projects);
   }
 
+  initCloudSync() {
+    this.isFirstCloudCheck = true;
+
+    // Immediate pull on startup
+    this.pullFromCloud();
+
+    // Auto-pull every 4 seconds for real-time background sync
+    if (this.cloudSyncInterval) clearInterval(this.cloudSyncInterval);
+    this.cloudSyncInterval = setInterval(() => this.pullFromCloud(), 4000);
+
+    // Sync on tab/app visibility focus
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.pullFromCloud();
+      }
+    });
+  }
+
+  async pushToCloud() {
+    try {
+      const syncData = {
+        lastUpdated: Date.now(),
+        state: this.state
+      };
+      const payloadStr = JSON.stringify(syncData);
+
+      // 1. Broadcast to Vercel sync endpoints (supports multi-MB payloads & CORS natively)
+      const syncEndpoints = [
+        'https://public-five-red.vercel.app/api/sync',
+        '/api/sync'
+      ];
+
+      for (const endpoint of syncEndpoints) {
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payloadStr
+          });
+          if (res.ok) break;
+        } catch (e) {}
+      }
+
+      // 2. Broadcast state to ntfy cloud channel as raw text
+      try {
+        await fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: payloadStr
+        });
+      } catch (e) {}
+
+      this.updateSyncBadge();
+    } catch (err) {
+      console.warn('Background cloud push skipped:', err);
+    }
+  }
+
+  async pullFromCloud(force = false) {
+    try {
+      let remoteData = null;
+      const cb = 't=' + Date.now();
+
+      // 1. Primary check: Vercel Cloud Sync API (supports 10MB payloads & full persistence)
+      const syncEndpoints = [
+        `https://public-five-red.vercel.app/api/sync?${cb}`,
+        `/api/sync?${cb}`
+      ];
+
+      for (const endpoint of syncEndpoints) {
+        try {
+          const resp = await fetch(endpoint);
+          if (resp.ok) {
+            const result = await resp.json();
+            const dataCandidate = (result && result.data && result.data.state) ? result.data : (result && result.state ? result : null);
+            if (dataCandidate && dataCandidate.state) {
+              remoteData = dataCandidate;
+              break;
+            }
+          }
+        } catch (e) {}
+      }
+
+      // 2. Fallback check: Real-time ntfy channel
+      if (!remoteData || !remoteData.state) {
+        try {
+          const resp = await fetch(`https://ntfy.sh/michi_app_sync_channel_2026/json?poll=1&since=all&${cb}`);
+          if (resp.ok) {
+            const text = await resp.text();
+            const lines = text.trim().split('\n');
+            for (let i = lines.length - 1; i >= 0; i--) {
+              try {
+                const parsedLine = JSON.parse(lines[i]);
+                if (parsedLine.event === 'attachment' && parsedLine.attachment && parsedLine.attachment.url) {
+                  const attResp = await fetch(parsedLine.attachment.url);
+                  if (attResp.ok) {
+                    const payload = await attResp.json();
+                    if (payload && payload.state) {
+                      remoteData = payload;
+                      break;
+                    }
+                  }
+                } else if (parsedLine.event === 'message' && parsedLine.message) {
+                  const payload = typeof parsedLine.message === 'string' ? JSON.parse(parsedLine.message) : parsedLine.message;
+                  if (payload && payload.state) {
+                    remoteData = payload;
+                    break;
+                  }
+                }
+              } catch (e) {}
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (!remoteData || !remoteData.state) return;
+
+      const remoteUpdated = remoteData.lastUpdated || 0;
+      const localUpdated = this.state.lastUpdated || 0;
+
+      const remoteProjects = remoteData.state.customProjects || [];
+      const remoteItems = remoteData.state.items || [];
+
+      // MERGE remote custom projects into local state if not present
+      if (!this.state.customProjects || !Array.isArray(this.state.customProjects)) {
+        this.state.customProjects = [];
+      }
+      let mergedProjects = false;
+      remoteProjects.forEach(p => {
+        if (p && p.trim() && !this.state.customProjects.map(x => x.toLowerCase().trim()).includes(p.toLowerCase().trim())) {
+          this.state.customProjects.push(p.trim());
+          mergedProjects = true;
+        }
+      });
+
+      // MERGE remote items into local state if missing
+      if (!this.state.items || !Array.isArray(this.state.items)) {
+        this.state.items = [];
+      }
+      const localItemIds = new Set(this.state.items.map(i => i.id));
+      let mergedItems = false;
+      remoteItems.forEach(item => {
+        if (item && item.id && !localItemIds.has(item.id)) {
+          this.state.items.unshift(item);
+          mergedItems = true;
+        }
+      });
+
+      // MERGE projectKinds map (Project vs Plan selections)
+      if (remoteData.state.projectKinds) {
+        if (!this.state.projectKinds) this.state.projectKinds = {};
+        Object.assign(this.state.projectKinds, remoteData.state.projectKinds);
+      }
+
+      if (force || this.isFirstCloudCheck || remoteUpdated > localUpdated || mergedProjects || mergedItems) {
+        this.isFirstCloudCheck = false;
+        if (remoteUpdated >= localUpdated) {
+          this.state = remoteData.state;
+        } else {
+          // If local state is newer, merge remote customProjects & items cleanly
+          const remoteSet = new Set((remoteData.state.customProjects || []).map(p => p.trim().toLowerCase()));
+          (this.state.customProjects || []).forEach(p => {
+            if (p && p.trim() && !remoteSet.has(p.trim().toLowerCase())) {
+              remoteData.state.customProjects = remoteData.state.customProjects || [];
+              remoteData.state.customProjects.push(p.trim());
+            }
+          });
+          this.state.customProjects = remoteData.state.customProjects;
+        }
+
+        // Clean out deleted projects so user deletions are strictly honored
+        const deletedSet = new Set((this.state.deletedProjects || []).map(p => (p || '').trim().toLowerCase()));
+        if (deletedSet.size > 0) {
+          this.state.customProjects = (this.state.customProjects || []).filter(p => !deletedSet.has((p || '').trim().toLowerCase()));
+          this.state.items = (this.state.items || []).filter(i => !deletedSet.has((i.project || '').trim().toLowerCase()));
+        }
+
+        this.state.lastUpdated = Math.max(remoteUpdated, localUpdated, Date.now());
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+        this.populateProjectDropdowns();
+        this.render();
+        this.updateSyncBadge();
+      } else {
+        this.isFirstCloudCheck = false;
+        this.updateSyncBadge();
+      }
+    } catch (err) {
+      console.warn('Background cloud pull skipped:', err);
+    }
+  }
+
+  updateSyncBadge() {
+    const badge = document.getElementById('statsCounter');
+    if (badge) {
+      const projects = (this.state.customProjects || []).filter(p => p !== 'General' && p !== 'all');
+      const projCount = projects.length || 1;
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      badge.innerHTML = `<span style="color: var(--text-main); font-weight: 700;">☁️ Synced (${projCount} Projects) at ${timeStr}</span>`;
+    }
+  }
+
   saveState() {
+    this.state.lastUpdated = Date.now();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+    this.pushToCloud();
     this.render();
   }
 
@@ -424,6 +531,9 @@ class MichiApp {
 
     // Start New Project Modal Elements
     this.btnStartNewProject = document.getElementById('btnStartNewProject');
+    this.btnHeaderAddResource = document.getElementById('btnHeaderAddResource');
+    this.btnHeaderAddIssue = document.getElementById('btnHeaderAddIssue');
+    this.btnHeaderAddTask = document.getElementById('btnHeaderAddTask');
     this.newProjectModalOverlay = document.getElementById('newProjectModalOverlay');
     this.btnCloseNewProjectModal = document.getElementById('btnCloseNewProjectModal');
     this.btnCancelNewProject = document.getElementById('btnCancelNewProject');
@@ -447,6 +557,7 @@ class MichiApp {
     this.contactFormCompany = document.getElementById('contactFormCompany');
     this.contactFormProjectsList = document.getElementById('contactFormProjectsList');
     this.contactFormNotes = document.getElementById('contactFormNotes');
+    this.btnDeleteContactInModal = document.getElementById('btnDeleteContactInModal');
 
     // Quick Assign Contact to Project Elements
     this.assignContactModalOverlay = document.getElementById('assignContactModalOverlay');
@@ -493,9 +604,63 @@ class MichiApp {
     this.customWebCategoryWrapper = document.getElementById('customWebCategoryWrapper');
     this.webClipCustomCategory = document.getElementById('webClipCustomCategory');
     this.webClipContent = document.getElementById('webClipContent');
+    this.webClipContactSelect = document.getElementById('webClipContactSelect');
+    this.customWebClipContactWrapper = document.getElementById('customWebClipContactWrapper');
+    this.customWebClipContactName = document.getElementById('customWebClipContactName');
     this.webCategoryPillsContainer = document.getElementById('webCategoryPills');
 
-    // Project Lineage Elements
+    // Issue Modal Elements
+    this.issueModalOverlay = document.getElementById('issueModalOverlay');
+    this.btnCloseIssueModal = document.getElementById('btnCloseIssueModal');
+    this.btnCancelIssueModal = document.getElementById('btnCancelIssueModal');
+    this.issueForm = document.getElementById('issueForm');
+    this.issueProjectName = document.getElementById('issueProjectName');
+    this.issueTitle = document.getElementById('issueTitle');
+    this.issueContent = document.getElementById('issueContent');
+    this.issueContactSelect = document.getElementById('issueContactSelect');
+    this.customIssueContactWrapper = document.getElementById('customIssueContactWrapper');
+    this.customIssueContactName = document.getElementById('customIssueContactName');
+
+    // Task Modal Elements
+    this.taskModalOverlay = document.getElementById('taskModalOverlay');
+    this.btnCloseTaskModal = document.getElementById('btnCloseTaskModal');
+    this.btnCancelTaskModal = document.getElementById('btnCancelTaskModal');
+    this.taskForm = document.getElementById('taskForm');
+    this.taskProjectName = document.getElementById('taskProjectName');
+    this.taskTitle = document.getElementById('taskTitle');
+    this.taskContent = document.getElementById('taskContent');
+    this.taskContactSelect = document.getElementById('taskContactSelect');
+    this.customTaskContactWrapper = document.getElementById('customTaskContactWrapper');
+    this.customTaskContactName = document.getElementById('customTaskContactName');
+
+    // Issue Step Modal Elements
+    this.issueStepModalOverlay = document.getElementById('issueStepModalOverlay');
+    this.btnCloseIssueStepModal = document.getElementById('btnCloseIssueStepModal');
+    this.btnCancelIssueStepModal = document.getElementById('btnCancelIssueStepModal');
+    this.issueStepForm = document.getElementById('issueStepForm');
+    this.issueStepIssueId = document.getElementById('issueStepIssueId');
+    this.issueStepModalHeaderTitle = document.getElementById('issueStepModalHeaderTitle');
+    this.issueStepText = document.getElementById('issueStepText');
+    this.issueStepContactSelect = document.getElementById('issueStepContactSelect');
+    this.customIssueStepContactWrapper = document.getElementById('customIssueStepContactWrapper');
+    this.customIssueStepContactName = document.getElementById('customIssueStepContactName');
+
+    // Edit Issue Options Modal Elements
+    this.editIssueModalOverlay = document.getElementById('editIssueModalOverlay');
+    this.btnCloseEditIssueOptionsModal = document.getElementById('btnCloseEditIssueOptionsModal');
+    this.btnCancelEditIssueModal = document.getElementById('btnCancelEditIssueModal');
+    this.editIssueModalTitle = document.getElementById('editIssueModalTitle');
+    this.editIssueModalIssueId = document.getElementById('editIssueModalIssueId');
+    this.editIssueModalCurrentTech = document.getElementById('editIssueModalCurrentTech');
+    this.btnEditIssueOptionAddStep = document.getElementById('btnEditIssueOptionAddStep');
+    this.btnEditIssueOptionAssign = document.getElementById('btnEditIssueOptionAssign');
+    this.btnEditIssueOptionEditDetails = document.getElementById('btnEditIssueOptionEditDetails');
+    this.wrapperEditIssueFields = document.getElementById('wrapperEditIssueFields');
+    this.inputEditIssueTitle = document.getElementById('inputEditIssueTitle');
+    this.inputEditIssueContent = document.getElementById('inputEditIssueContent');
+    this.btnSaveIssueDetails = document.getElementById('btnSaveIssueDetails');
+    this.btnDeleteIssueFromModal = document.getElementById('btnDeleteIssueFromModal');
+
     this.projectLineageSelect = document.getElementById('projectLineageSelect');
     this.projectLineageContainer = document.getElementById('projectLineageContainer');
 
@@ -700,6 +865,7 @@ class MichiApp {
     this.editItemStage = document.getElementById('editItemStage');
     this.editItemContent = document.getElementById('editItemContent');
     this.editItemUrl = document.getElementById('editItemUrl');
+    this.editItemImageUrl = document.getElementById('editItemImageUrl');
     this.editItemCategory = document.getElementById('editItemCategory');
     this.customCategoryWrapper = document.getElementById('customCategoryWrapper');
     this.editItemCustomCategory = document.getElementById('editItemCustomCategory');
@@ -708,6 +874,14 @@ class MichiApp {
     this.btnGeneratePassword = document.getElementById('btnGeneratePassword');
     this.editItemTags = document.getElementById('editItemTags');
     this.editVaultGroup = document.getElementById('editVaultGroup');
+    this.editItemContactSelect = document.getElementById('editItemContactSelect');
+    this.customEditItemContactWrapper = document.getElementById('customEditItemContactWrapper');
+    this.customEditItemContactName = document.getElementById('customEditItemContactName');
+
+    // Note Modal Contact Elements
+    this.noteContactSelect = document.getElementById('noteContactSelect');
+    this.customNoteContactWrapper = document.getElementById('customNoteContactWrapper');
+    this.customNoteContactName = document.getElementById('customNoteContactName');
   }
 
   confirmDialog(message, title = 'Delete Confirmation', actionCallback) {
@@ -715,6 +889,8 @@ class MichiApp {
     if (this.michiConfirmMessage) this.michiConfirmMessage.textContent = message;
 
     if (this.michiConfirmModalOverlay) {
+      this.michiConfirmModalOverlay.style.display = 'flex';
+      this.michiConfirmModalOverlay.style.zIndex = '999999';
       this.michiConfirmModalOverlay.classList.add('active');
     }
 
@@ -728,7 +904,10 @@ class MichiApp {
     };
 
     const cleanup = () => {
-      if (this.michiConfirmModalOverlay) this.michiConfirmModalOverlay.classList.remove('active');
+      if (this.michiConfirmModalOverlay) {
+        this.michiConfirmModalOverlay.style.display = 'none';
+        this.michiConfirmModalOverlay.classList.remove('active');
+      }
       if (this.btnMichiConfirmAction) this.btnMichiConfirmAction.removeEventListener('click', handleAction);
       if (this.btnMichiConfirmCancel) this.btnMichiConfirmCancel.removeEventListener('click', handleCancel);
     };
@@ -740,7 +919,10 @@ class MichiApp {
   openNewProjectModal() {
     if (this.newProjectTitle) this.newProjectTitle.value = '';
     if (this.newProjectSpark) this.newProjectSpark.value = '';
+    if (this.newProjectManualContact) this.newProjectManualContact.value = '';
+    if (this.newProjectContactSelect) this.newProjectContactSelect.value = '';
     if (this.newProjectModalOverlay) {
+      this.newProjectModalOverlay.style.display = 'flex';
       this.newProjectModalOverlay.classList.add('active');
       if (this.newProjectTitle) this.newProjectTitle.focus();
     }
@@ -749,31 +931,82 @@ class MichiApp {
   closeNewProjectModal() {
     if (this.newProjectModalOverlay) {
       this.newProjectModalOverlay.classList.remove('active');
+      this.newProjectModalOverlay.style.display = 'none';
     }
+    if (this.newProjectTitle) this.newProjectTitle.value = '';
+    if (this.newProjectSpark) this.newProjectSpark.value = '';
+    if (this.newProjectManualContact) this.newProjectManualContact.value = '';
+    if (this.newProjectContactSelect) this.newProjectContactSelect.value = '';
   }
 
   handleCreateNewProject() {
-    const title = this.newProjectTitle.value.trim();
-    const sparkText = this.newProjectSpark.value.trim();
-
-    if (!title || !sparkText) return;
-
-    if (!this.state.items) this.state.items = [];
-
+    const title = this.newProjectTitle ? this.newProjectTitle.value.trim() : '';
+    let sparkText = this.newProjectSpark ? this.newProjectSpark.value.trim() : '';
     const now = new Date().toISOString().split('T')[0];
+
+    if (!title) {
+      alert('Please enter a Title for your Plan or Project.');
+      return;
+    }
+
+    const selectedKindRadio = document.querySelector('input[name="newProjectType"]:checked');
+    const kind = selectedKindRadio ? selectedKindRadio.value : 'project';
+
+    if (!sparkText) {
+      sparkText = `${kind === 'plan' ? 'Life Plan' : 'Work Project'} "${title}" initialized on MICHI Path.`;
+    }
+
+    if (!this.state.projectKinds) {
+      this.state.projectKinds = {};
+    }
+    this.state.projectKinds[title] = kind;
+
+    let leadContactName = '';
+    const selectedContactId = this.newProjectContactSelect ? this.newProjectContactSelect.value : '';
+    const manualContactName = this.newProjectManualContact ? this.newProjectManualContact.value.trim() : '';
+
+    if (selectedContactId) {
+      const contact = (this.state.contacts || []).find(c => c.id === selectedContactId);
+      if (contact) {
+        leadContactName = contact.name;
+        if (!contact.projects) contact.projects = [];
+        if (!contact.projects.includes(title)) contact.projects.push(title);
+      }
+    } else if (manualContactName) {
+      leadContactName = manualContactName;
+      let existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === manualContactName.toLowerCase());
+      if (existing) {
+        if (!existing.projects) existing.projects = [];
+        if (!existing.projects.includes(title)) existing.projects.push(title);
+      } else {
+        if (!this.state.contacts) this.state.contacts = [];
+        this.state.contacts.push({
+          id: 'contact-' + Date.now(),
+          name: manualContactName,
+          role: `${kind === 'plan' ? 'Plan' : 'Project'} Lead`,
+          company: title,
+          email: '',
+          phone: '',
+          projects: [title],
+          notes: `Auto-created contact during creation of ${kind === 'plan' ? 'plan' : 'project'} "${title}".`,
+          color: '#7CFEFE'
+        });
+      }
+    }
 
     const initialSpark = {
       id: 'item-spark-' + Date.now(),
       type: 'idea',
-      stage: 'spark',
+      stage: 'focus',
       project: title,
-      title: `${title}: Initial Vision & Objectives`,
+      title: `${title}: Vision & Objectives`,
       content: sparkText,
+      assignedTo: leadContactName || '',
       notes: [
-        { text: `Project "${title}" created and launched on Michi Path.`, date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }
+        { text: `${kind === 'plan' ? 'Plan' : 'Project'} "${title}" created and launched in Development.`, date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }
       ],
-      tags: [title, 'Project Launch', 'Spark'],
-      color: '#FBF582',
+      tags: [],
+      color: 'var(--stage-focus)',
       date: now
     };
 
@@ -784,44 +1017,21 @@ class MichiApp {
       this.state.customProjects.push(title);
     }
 
-    // Handle attached contact during project launch
-    const selectedContactId = this.newProjectContactSelect ? this.newProjectContactSelect.value : '';
-    const manualContactName = this.newProjectManualContact ? this.newProjectManualContact.value.trim() : '';
-
-    if (selectedContactId) {
-      const contact = (this.state.contacts || []).find(c => c.id === selectedContactId);
-      if (contact) {
-        if (!contact.projects) contact.projects = [];
-        if (!contact.projects.includes(title)) contact.projects.push(title);
-      }
-    } else if (manualContactName) {
-      let existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === manualContactName.toLowerCase());
-      if (existing) {
-        if (!existing.projects) existing.projects = [];
-        if (!existing.projects.includes(title)) existing.projects.push(title);
-      } else {
-        if (!this.state.contacts) this.state.contacts = [];
-        this.state.contacts.push({
-          id: 'contact-' + Date.now(),
-          name: manualContactName,
-          role: 'Project Collaborator',
-          company: '',
-          email: '',
-          phone: '',
-          projects: [title],
-          notes: `Added during project launch for "${title}".`,
-          color: '#7CFEFE'
-        });
-      }
+    // Un-blacklist if project name was previously in deletedProjects
+    if (Array.isArray(this.state.deletedProjects)) {
+      const targetLower = title.trim().toLowerCase();
+      this.state.deletedProjects = this.state.deletedProjects.filter(p => (p || '').trim().toLowerCase() !== targetLower);
     }
 
     this.state.items.unshift(initialSpark);
+    this.currentStageFilter = 'all';
+    this.currentFilter = 'all';
     this.selectedProject = title;
-    this.saveState();
     this.closeNewProjectModal();
-
-    this.switchTab('project-path');
-    this.showToast(`🚀 Launched Project "${title}" with Stage 1 Spark!`);
+    this.saveState();
+    this.populateProjectDropdowns();
+    this.render();
+    this.showToast(`🚀 Launched Project "${title}"!`);
   }
 
   restoreSidebarState() {
@@ -863,6 +1073,13 @@ class MichiApp {
     }
     if (this.newProjectForm) {
       this.newProjectForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.handleCreateNewProject();
+      });
+    }
+    const btnSubmitNewProject = document.getElementById('btnSubmitNewProject');
+    if (btnSubmitNewProject) {
+      btnSubmitNewProject.addEventListener('click', (e) => {
         e.preventDefault();
         this.handleCreateNewProject();
       });
@@ -916,6 +1133,25 @@ class MichiApp {
       this.btnCreateNewProjectControls.addEventListener('click', () => this.openNewProjectModal());
     }
 
+    if (this.btnHeaderAddResource) {
+      this.btnHeaderAddResource.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        this.openWebClipModal();
+      });
+    }
+    if (this.btnHeaderAddIssue) {
+      this.btnHeaderAddIssue.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        this.openLogIssueModal();
+      });
+    }
+    if (this.btnHeaderAddTask) {
+      this.btnHeaderAddTask.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        this.openAddTaskModal();
+      });
+    }
+
     // Sidebar Toggle
     if (this.btnToggleSidebar && this.appSidebar) {
       this.btnToggleSidebar.addEventListener('click', () => {
@@ -958,18 +1194,44 @@ class MichiApp {
 
     // Web Repository Add Bookmark Triggers
     if (this.btnAddWebClip) {
-      this.btnAddWebClip.addEventListener('click', () => this.openWebClipModal());
+      this.btnAddWebClip.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        this.openWebClipModal();
+      });
     }
     if (this.btnCloseWebClipModal) {
-      this.btnCloseWebClipModal.addEventListener('click', () => this.closeWebClipModal());
+      this.btnCloseWebClipModal.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        this.closeWebClipModal();
+      });
     }
     if (this.btnCancelWebClip) {
-      this.btnCancelWebClip.addEventListener('click', () => this.closeWebClipModal());
+      this.btnCancelWebClip.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        this.closeWebClipModal();
+      });
     }
     if (this.webClipForm) {
       this.webClipForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         this.saveWebClip();
+      });
+    }
+
+    // View Mode Switcher Handlers (Cards vs Compact List)
+    const btnCards = document.getElementById('btnViewModeCards');
+    const btnCompact = document.getElementById('btnViewModeCompact');
+    if (btnCards) {
+      btnCards.addEventListener('click', () => {
+        this.brainDumpViewMode = 'cards';
+        this.renderIdeasGrid();
+      });
+    }
+    if (btnCompact) {
+      btnCompact.addEventListener('click', () => {
+        this.brainDumpViewMode = 'compact';
+        this.renderIdeasGrid();
       });
     }
 
@@ -981,6 +1243,17 @@ class MichiApp {
           if (this.webClipCustomCategory) this.webClipCustomCategory.focus();
         } else {
           if (this.customWebCategoryWrapper) this.customWebCategoryWrapper.style.display = 'none';
+        }
+      });
+    }
+
+    if (this.webClipContactSelect) {
+      this.webClipContactSelect.addEventListener('change', (e) => {
+        if (e.target.value === '__NEW__') {
+          if (this.customWebClipContactWrapper) this.customWebClipContactWrapper.style.display = 'block';
+          if (this.customWebClipContactName) this.customWebClipContactName.focus();
+        } else {
+          if (this.customWebClipContactWrapper) this.customWebClipContactWrapper.style.display = 'none';
         }
       });
     }
@@ -1022,16 +1295,35 @@ class MichiApp {
     this.navTabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
-        this.switchTab(target);
+        if (target === 'all') {
+          this.switchTab('all', 'all');
+        } else {
+          this.switchTab(target);
+        }
       });
     });
 
-    // Vault Lock Modal Controls
+    // Vault Lock & Security Controls
     if (this.btnCloseVaultLockModal) {
       this.btnCloseVaultLockModal.addEventListener('click', () => this.closeVaultLockModal());
     }
     if (this.btnCancelVaultUnlock) {
       this.btnCancelVaultUnlock.addEventListener('click', () => this.closeVaultLockModal());
+    }
+
+    const btnChangeVaultPass = document.getElementById('btnChangeVaultPass');
+    if (btnChangeVaultPass) {
+      btnChangeVaultPass.addEventListener('click', () => this.openChangeVaultPassModal());
+    }
+
+    const btnCancelChangeVaultPass = document.getElementById('btnCancelChangeVaultPass');
+    if (btnCancelChangeVaultPass) {
+      btnCancelChangeVaultPass.addEventListener('click', () => this.closeChangeVaultPassModal());
+    }
+
+    const changeVaultPassForm = document.getElementById('changeVaultPassForm');
+    if (changeVaultPassForm) {
+      changeVaultPassForm.addEventListener('submit', (e) => this.handleChangeVaultPassSubmit(e));
     }
 
     // Project Selectors
@@ -1041,21 +1333,46 @@ class MichiApp {
 
     if (this.projectLineageSelect) {
       this.projectLineageSelect.addEventListener('change', (e) => {
-        this.selectedProject = e.target.value;
+        const chosen = e.target.value;
+        this.selectedProject = chosen;
         this.render();
-        this.showToast(this.selectedProject === 'all' ? 'Showing all projects' : `Filtered to: ${this.selectedProject}`);
+        this.showToast(chosen === 'all' ? 'Showing all projects' : `Filtered to: ${chosen}`);
+        e.target.value = 'all';
+      });
+    }
+
+    const homeProjectFilterSelect = document.getElementById('homeProjectFilterSelect');
+    if (homeProjectFilterSelect) {
+      homeProjectFilterSelect.addEventListener('change', (e) => {
+        const chosen = e.target.value;
+        if (chosen === '__PROJECTS_ONLY__') {
+          this.switchTab('project-path', 'all');
+          this.showToast('🚀 Opened Active Project Boards Timeline');
+        } else if (chosen === '__PLANS_ONLY__') {
+          this.openFranklinModal();
+          this.showToast('📋 Opened Daily & Operational Action Planner');
+        } else if (chosen === 'all') {
+          this.selectedProject = 'all';
+          this.switchTab('all', 'all');
+          this.showToast('Showing all active projects & plans overview');
+        } else {
+          this.switchTab('project-path', chosen);
+          this.showToast(`Opened Plan / Project Board: "${chosen}"`);
+        }
       });
     }
 
     if (this.globalProjectFilter) {
       this.globalProjectFilter.addEventListener('change', (e) => {
-        this.selectedProject = e.target.value;
-        if (this.currentTab !== 'all') {
-          this.switchTab('all');
+        const chosen = e.target.value;
+        this.currentStageFilter = 'all';
+        if (chosen === 'all') {
+          this.switchTab('all', 'all');
+          this.showToast('Showing all plans & projects');
         } else {
-          this.render();
+          this.switchTab('project-path', chosen);
+          this.showToast(`Opened Plan / Project Board: "${chosen}"`);
         }
-        this.showToast(this.selectedProject === 'all' ? 'Showing all projects' : `Filtered to: ${this.selectedProject}`);
       });
     }
 
@@ -1074,20 +1391,36 @@ class MichiApp {
       });
     }
     if (this.btnDeleteNote) {
-      this.btnDeleteNote.addEventListener('click', () => {
+      this.btnDeleteNote.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
         const itemId = this.noteModalItemId.value;
         const index = parseInt(this.noteModalIndex.value, 10);
         if (!itemId || index < 0) return;
 
-        this.confirmDialog('Are you sure you want to delete this note line?', 'Delete Note Line', () => {
-          const item = this.state.items.find(i => i.id === itemId);
-          if (item && item.notes) {
-            item.notes.splice(index, 1);
-            this.saveState();
-            this.closeNoteModal();
-            this.showToast('Note deleted!');
-          }
-        });
+        const item = this.state.items.find(i => i.id === itemId);
+        if (item && item.notes) {
+          item.notes.splice(index, 1);
+          this.saveState();
+          this.closeNoteModal();
+          this.render();
+          this.showToast('Note line deleted!');
+        }
+      });
+    }
+
+    if (this.editItemContactSelect) {
+      this.editItemContactSelect.addEventListener('change', () => {
+        if (this.customEditItemContactWrapper) {
+          this.customEditItemContactWrapper.style.display = this.editItemContactSelect.value === '__NEW__' ? 'block' : 'none';
+        }
+      });
+    }
+
+    if (this.noteContactSelect) {
+      this.noteContactSelect.addEventListener('change', () => {
+        if (this.customNoteContactWrapper) {
+          this.customNoteContactWrapper.style.display = this.noteContactSelect.value === '__NEW__' ? 'block' : 'none';
+        }
       });
     }
 
@@ -1230,7 +1563,19 @@ class MichiApp {
         if (this.noteModalOverlay && this.noteModalOverlay.classList.contains('active')) {
           this.closeNoteModal();
         }
-        if (this.webClipModalOverlay && this.webClipModalOverlay.classList.contains('active')) {
+        if (this.issueModalOverlay && (this.issueModalOverlay.classList.contains('active') || this.issueModalOverlay.style.display !== 'none')) {
+          this.closeIssueModal();
+        }
+        if (this.editIssueModalOverlay && (this.editIssueModalOverlay.classList.contains('active') || this.editIssueModalOverlay.style.display !== 'none')) {
+          this.closeEditIssueModal();
+        }
+        if (this.issueStepModalOverlay && (this.issueStepModalOverlay.classList.contains('active') || this.issueStepModalOverlay.style.display !== 'none')) {
+          this.closeAddIssueStepModal();
+        }
+        if (this.taskModalOverlay && (this.taskModalOverlay.classList.contains('active') || this.taskModalOverlay.style.display !== 'none')) {
+          this.closeTaskModal();
+        }
+        if (this.webClipModalOverlay && (this.webClipModalOverlay.classList.contains('active') || this.webClipModalOverlay.style.display !== 'none')) {
           this.closeWebClipModal();
         }
         if (this.printModalOverlay && this.printModalOverlay.classList.contains('active')) {
@@ -1261,16 +1606,180 @@ class MichiApp {
         this.saveEditItem();
       });
     }
+
+    // Log Issue Modal
+    if (this.btnCloseIssueModal) this.btnCloseIssueModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeIssueModal(); });
+    if (this.btnCancelIssueModal) this.btnCancelIssueModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeIssueModal(); });
+    if (this.issueContactSelect) {
+      this.issueContactSelect.addEventListener('change', () => {
+        if (this.customIssueContactWrapper) {
+          this.customIssueContactWrapper.style.display = this.issueContactSelect.value === '__NEW__' ? 'block' : 'none';
+        }
+      });
+    }
+    if (this.issueForm) {
+      this.issueForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.saveIssueModal();
+      });
+    }
+
+    // Edit Issue Options Modal Listeners
+    if (this.btnCloseEditIssueOptionsModal) this.btnCloseEditIssueOptionsModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeEditIssueModal(); });
+    if (this.btnCancelEditIssueModal) this.btnCancelEditIssueModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeEditIssueModal(); });
+    
+    if (this.btnEditIssueOptionAddStep) {
+      this.btnEditIssueOptionAddStep.addEventListener('click', () => {
+        const iss = this.activeEditIssue;
+        this.closeEditIssueModal();
+        if (iss) this.openAddIssueStepModal(iss);
+      });
+    }
+
+    if (this.btnEditIssueOptionAssign) {
+      this.btnEditIssueOptionAssign.addEventListener('click', () => {
+        const iss = this.activeEditIssue;
+        this.closeEditIssueModal();
+        if (iss) this.openAddIssueStepModal(iss);
+      });
+    }
+
+    if (this.btnEditIssueOptionEditDetails) {
+      this.btnEditIssueOptionEditDetails.addEventListener('click', () => {
+        if (this.wrapperEditIssueFields) {
+          const isHidden = this.wrapperEditIssueFields.style.display === 'none' || !this.wrapperEditIssueFields.style.display;
+          this.wrapperEditIssueFields.style.display = isHidden ? 'flex' : 'none';
+        }
+      });
+    }
+
+    if (this.btnSaveIssueDetails) {
+      this.btnSaveIssueDetails.addEventListener('click', () => {
+        if (!this.activeEditIssue) return;
+        const newTitle = this.inputEditIssueTitle ? this.inputEditIssueTitle.value.trim() : '';
+        const newContent = this.inputEditIssueContent ? this.inputEditIssueContent.value.trim() : '';
+
+        if (newTitle) this.activeEditIssue.title = newTitle;
+        if (newContent !== undefined) this.activeEditIssue.content = newContent;
+
+        this.saveState();
+        this.closeEditIssueModal();
+        this.render();
+        this.showToast('Issue details updated!');
+      });
+    }
+
+    if (this.btnDeleteIssueFromModal) {
+      this.btnDeleteIssueFromModal.addEventListener('click', () => {
+        if (!this.activeEditIssue) return;
+        const iss = this.activeEditIssue;
+        this.confirmDialog(`Are you sure you want to delete issue "${iss.title}"?`, 'Delete Issue', () => {
+          this.state.items = (this.state.items || []).filter(i => i.id !== iss.id);
+          this.saveState();
+          this.closeEditIssueModal();
+          this.render();
+          this.showToast(`🗑️ Deleted issue "${iss.title}"`);
+        });
+      });
+    }
+
+    // Modal Backdrop Click Handlers to Close Modals
+    if (this.editIssueModalOverlay) {
+      this.editIssueModalOverlay.addEventListener('click', (e) => {
+        if (e.target === this.editIssueModalOverlay) this.closeEditIssueModal();
+      });
+    }
+
+    // Add Issue Step Modal
+    if (this.btnCloseIssueStepModal) this.btnCloseIssueStepModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeAddIssueStepModal(); });
+    if (this.btnCancelIssueStepModal) this.btnCancelIssueStepModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeAddIssueStepModal(); });
+    if (this.issueStepContactSelect) {
+      this.issueStepContactSelect.addEventListener('change', () => {
+        if (this.customIssueStepContactWrapper) {
+          this.customIssueStepContactWrapper.style.display = this.issueStepContactSelect.value === '__NEW__' ? 'block' : 'none';
+        }
+      });
+    }
+    if (this.issueStepForm) {
+      this.issueStepForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.saveIssueStepModal();
+      });
+    }
+
+    // Add Task Modal
+    if (this.btnCloseTaskModal) this.btnCloseTaskModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeTaskModal(); });
+    if (this.btnCancelTaskModal) this.btnCancelTaskModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeTaskModal(); });
+    if (this.taskContactSelect) {
+      this.taskContactSelect.addEventListener('change', () => {
+        if (this.customTaskContactWrapper) {
+          this.customTaskContactWrapper.style.display = this.taskContactSelect.value === '__NEW__' ? 'block' : 'none';
+        }
+      });
+    }
+    if (this.taskForm) {
+      this.taskForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.saveTaskModal();
+      });
+    }
+
+    // Modal Backdrop Click Handlers to Close Modals
+    if (this.webClipModalOverlay) {
+      this.webClipModalOverlay.addEventListener('click', (e) => {
+        if (e.target === this.webClipModalOverlay) this.closeWebClipModal();
+      });
+    }
+    if (this.issueModalOverlay) {
+      this.issueModalOverlay.addEventListener('click', (e) => {
+        if (e.target === this.issueModalOverlay) this.closeIssueModal();
+      });
+    }
+    if (this.taskModalOverlay) {
+      this.taskModalOverlay.addEventListener('click', (e) => {
+        if (e.target === this.taskModalOverlay) this.closeTaskModal();
+      });
+    }
+    if (this.issueStepModalOverlay) {
+      this.issueStepModalOverlay.addEventListener('click', (e) => {
+        if (e.target === this.issueStepModalOverlay) this.closeAddIssueStepModal();
+      });
+    }
   }
 
-  openWebClipModal() {
+  openWebClipModal(targetProjectName) {
     this.currentUploadedImageDataUrl = '';
     if (this.webClipTitle) this.webClipTitle.value = '';
     if (this.webClipUrl) this.webClipUrl.value = '';
-    if (this.webClipCategory) this.webClipCategory.value = 'Tech';
     if (this.customWebCategoryWrapper) this.customWebCategoryWrapper.style.display = 'none';
     if (this.webClipCustomCategory) this.webClipCustomCategory.value = '';
     if (this.webClipContent) this.webClipContent.value = '';
+
+    // Populate Brain Dump Category Dropdown dynamically
+    if (this.webClipCategory) {
+      this.webClipCategory.innerHTML = '';
+      const existingCats = new Set(['Tech', 'Sports', 'Fashion', 'Design', 'Finance', 'General']);
+      (this.state.items || []).forEach(i => {
+        if (i.category && i.category.trim()) existingCats.add(i.category.trim());
+      });
+      existingCats.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat === 'Finance' ? 'Business & Finance' : cat;
+        this.webClipCategory.appendChild(opt);
+      });
+      const newOpt = document.createElement('option');
+      newOpt.value = '__NEW__';
+      newOpt.textContent = '+ Create Custom Category...';
+      this.webClipCategory.appendChild(newOpt);
+
+      if (targetProjectName && existingCats.has(targetProjectName)) {
+        this.webClipCategory.value = targetProjectName;
+      }
+    }
 
     const imgFile = document.getElementById('webClipImageFile');
     const imgPreviewContainer = document.getElementById('imagePreviewContainer');
@@ -1285,6 +1794,8 @@ class MichiApp {
     const wrapperProj = document.getElementById('wrapperTargetProject');
     const projSelect = document.getElementById('webClipProjectSelect');
 
+    const activeProj = targetProjectName || this.selectedProject;
+
     if (projSelect) {
       projSelect.innerHTML = '';
       const projects = this.getWorkspaceProjects();
@@ -1292,12 +1803,17 @@ class MichiApp {
         const opt = document.createElement('option');
         opt.value = p;
         opt.textContent = p;
-        if (p === this.selectedProject) opt.selected = true;
+        if (p === activeProj) opt.selected = true;
         projSelect.appendChild(opt);
       });
     }
 
     if (targetTypeSelect) {
+      if (activeProj && activeProj !== 'all' && activeProj !== 'General') {
+        targetTypeSelect.value = 'project';
+        if (wrapperCat) wrapperCat.style.display = 'none';
+        if (wrapperProj) wrapperProj.style.display = 'block';
+      }
       targetTypeSelect.onchange = () => {
         if (targetTypeSelect.value === 'project') {
           if (wrapperCat) wrapperCat.style.display = 'none';
@@ -1371,6 +1887,29 @@ class MichiApp {
       });
     }
 
+    if (this.customWebClipContactName) this.customWebClipContactName.value = '';
+    if (this.customWebClipContactWrapper) this.customWebClipContactWrapper.style.display = 'none';
+
+    if (this.webClipContactSelect) {
+      this.webClipContactSelect.innerHTML = '';
+      const optUnassigned = document.createElement('option');
+      optUnassigned.value = '';
+      optUnassigned.textContent = 'Select Representative / Product Master (Optional)';
+      this.webClipContactSelect.appendChild(optUnassigned);
+
+      (this.state.contacts || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = `👤 ${c.name} (${c.role || 'Representative / Contact'})`;
+        this.webClipContactSelect.appendChild(opt);
+      });
+
+      const optNew = document.createElement('option');
+      optNew.value = '__NEW__';
+      optNew.textContent = '+ Assign New Representative / Contact...';
+      this.webClipContactSelect.appendChild(optNew);
+    }
+
     const btnRemoveImg = document.getElementById('btnRemoveImagePreview');
     if (btnRemoveImg) {
       btnRemoveImg.onclick = () => {
@@ -1382,6 +1921,8 @@ class MichiApp {
     }
 
     if (this.webClipModalOverlay) {
+      this.webClipModalOverlay.style.display = 'flex';
+      this.webClipModalOverlay.style.zIndex = '99999';
       this.webClipModalOverlay.classList.add('active');
       if (this.webClipTitle) this.webClipTitle.focus();
     }
@@ -1389,6 +1930,7 @@ class MichiApp {
 
   closeWebClipModal() {
     if (this.webClipModalOverlay) {
+      this.webClipModalOverlay.style.display = 'none';
       this.webClipModalOverlay.classList.remove('active');
     }
   }
@@ -1402,6 +1944,29 @@ class MichiApp {
     const url = this.webClipUrl ? this.webClipUrl.value.trim() : '';
     const imageUrl = this.currentUploadedImageDataUrl || '';
     let category = this.webClipCategory ? this.webClipCategory.value : 'General';
+    let content = this.webClipContent ? this.webClipContent.value.trim() : '';
+
+    // Zero-Cost Hashtag Auto-Categorization (#Tech, #Travel, etc.)
+    const fullTextToScan = `${title} ${content}`;
+    const hashtagMatch = fullTextToScan.match(/#(\w+)/);
+    if (hashtagMatch) {
+      const tagText = hashtagMatch[1];
+      const allKnownCats = [...(this.state.customWebCategories || []), 'Tech', 'Travel', 'Work', 'Personal', 'Health', 'General'];
+      const matchedCat = allKnownCats.find(c => c.toLowerCase() === tagText.toLowerCase());
+
+      if (matchedCat) {
+        category = matchedCat;
+      } else {
+        const autoCat = tagText.charAt(0).toUpperCase() + tagText.slice(1);
+        category = autoCat;
+        if (!this.state.customWebCategories) this.state.customWebCategories = [];
+        if (!this.state.customWebCategories.includes(autoCat)) {
+          this.state.customWebCategories.push(autoCat);
+        }
+      }
+      title = title.replace(new RegExp(`#${tagText}`, 'gi'), '').trim();
+      content = content.replace(new RegExp(`#${tagText}`, 'gi'), '').trim();
+    }
     
     if (category === '__NEW__') {
       const customVal = this.webClipCustomCategory ? this.webClipCustomCategory.value.trim() : '';
@@ -1412,8 +1977,6 @@ class MichiApp {
       }
     }
 
-    const content = this.webClipContent ? this.webClipContent.value.trim() : '';
-
     if (!title) {
       if (url) title = url;
       else if (imageUrl) title = 'Image Upload ' + new Date().toLocaleDateString();
@@ -1421,30 +1984,91 @@ class MichiApp {
     }
 
     const targetProject = isProjectTarget ? (projSelect ? projSelect.value : 'General') : (this.selectedProject !== 'all' ? this.selectedProject : 'General');
-    const targetStage = isProjectTarget ? 'spark' : 'structure';
-    const targetType = isProjectTarget ? 'idea' : 'web';
+    const targetStage = 'focus';
+    const targetType = isProjectTarget ? 'resource' : 'web';
+
+    let assignedName = this.webClipContactSelect ? this.webClipContactSelect.value : '';
+    if (assignedName === '__NEW__') {
+      const customName = this.customWebClipContactName ? this.customWebClipContactName.value.trim() : '';
+      if (customName) {
+        assignedName = customName;
+        const existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === assignedName.toLowerCase());
+        if (!existing) {
+          const newContact = {
+            id: 'contact-' + Date.now(),
+            name: assignedName,
+            role: 'Product Master / MFG Rep',
+            company: targetProject || 'General',
+            email: '',
+            phone: '',
+            projects: [targetProject || 'General'],
+            notes: `Auto-created contact during Tool/Resource addition.`,
+            color: '#7CFEFE'
+          };
+          if (!this.state.contacts) this.state.contacts = [];
+          this.state.contacts.push(newContact);
+          this.showToast(`👤 Created new contact: "${assignedName}"!`);
+        }
+      }
+    }
 
     const newClip = {
       id: 'item-web-' + Date.now(),
       type: targetType,
       stage: targetStage,
-      webCategory: category,
       project: targetProject,
       title: title,
       content: content,
       url: url,
       imageUrl: imageUrl,
-      notes: [],
-      tags: [isProjectTarget ? targetProject : category, 'Upload'],
-      color: isProjectTarget ? 'var(--stage-spark)' : 'var(--stage-structure)',
-      date: new Date().toISOString().split('T')[0]
+      category: category,
+      assignedTo: assignedName || '',
+      tags: [category, isProjectTarget ? 'Project Resource' : 'Brain Dump'],
+      color: isProjectTarget ? '#009967' : '#009967',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
     };
 
     if (!this.state.items) this.state.items = [];
     this.state.items.unshift(newClip);
-    this.saveState();
-    this.updateCategoryDropdowns();
     this.closeWebClipModal();
+    this.saveState();
+
+    if (url && !imageUrl) {
+      fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.status === 'success' && data.data) {
+            if (data.data.image && data.data.image.url) {
+              const fetchedImg = data.data.image.url;
+              const lower = fetchedImg.toLowerCase();
+              const isGenericLaptopStock = lower.includes('photo-1522199755839') || lower.includes('photo-1498050108023') || lower.includes('photo-1486312338219') || lower.includes('photo-1517694712202') || (lower.includes('laptop') && lower.includes('unsplash'));
+              if (!isGenericLaptopStock) {
+                newClip.imageUrl = fetchedImg;
+              }
+            }
+            if (!newClip.imageUrl) {
+              try {
+                const domain = new URL(url).hostname;
+                newClip.imageUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+              } catch (e) {}
+            }
+            if (data.data.title && (!newClip.title || newClip.title === url)) {
+              newClip.title = data.data.title;
+            }
+            this.saveState();
+            this.render();
+          }
+        })
+        .catch(e => {
+          try {
+            const domain = new URL(url).hostname;
+            newClip.imageUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+            this.saveState();
+            this.render();
+          } catch (err) {}
+        });
+    }
+    this.updateCategoryDropdowns();
     
     if (isProjectTarget) {
       this.showToast(`Saved Entry to Project "${targetProject}"!`);
@@ -1453,10 +2077,14 @@ class MichiApp {
     }
   }
 
-  switchTab(targetTab) {
+  switchTab(targetTab, overrideProject = undefined) {
     if (!targetTab) return;
     const targetEl = document.getElementById(`tab-${targetTab}`);
     if (!targetEl) return;
+
+    if (overrideProject !== undefined) {
+      this.selectedProject = overrideProject;
+    }
 
     if (targetTab === 'vault' && !this.vaultUnlocked) {
       this.openVaultLockModal();
@@ -1484,9 +2112,8 @@ class MichiApp {
     
     this.currentTab = targetTab;
     this.currentStageFilter = 'all'; // Clear stage filter when switching tabs so pristine tab view is shown!
-    if (targetTab === 'all') {
-      this.selectedProject = 'all';
-      if (this.globalProjectFilter) this.globalProjectFilter.value = 'all';
+    if (this.globalProjectFilter) {
+      this.globalProjectFilter.value = this.selectedProject || 'all';
     }
     this.currentFilter = targetTab === 'ideas' ? 'ideas' : (targetTab === 'tasks' ? 'task' : (targetTab === 'vault' ? 'vault' : 'all'));
     
@@ -1523,8 +2150,11 @@ class MichiApp {
   }
 
   addAppointment() {
-    const time = this.apptTimeSelect.value;
-    const text = this.apptTextInput.value.trim();
+    const hour = document.getElementById('apptHourSelect') ? document.getElementById('apptHourSelect').value : '09';
+    const min = document.getElementById('apptMinSelect') ? document.getElementById('apptMinSelect').value : ':00';
+    const ampm = document.getElementById('apptAmPmSelect') ? document.getElementById('apptAmPmSelect').value : 'AM';
+    const time = `${hour}${min} ${ampm}`;
+    const text = this.apptTextInput ? this.apptTextInput.value.trim() : '';
     const note = this.apptNoteInput ? this.apptNoteInput.value.trim() : '';
     if (!text) return;
 
@@ -1543,9 +2173,11 @@ class MichiApp {
       done: false
     });
 
-    this.apptTextInput.value = '';
+    if (this.apptTextInput) this.apptTextInput.value = '';
     if (this.apptNoteInput) this.apptNoteInput.value = '';
+    this.saveState();
     this.renderFranklinModalContent();
+    this.renderCalendar();
     this.showToast(`Added appointment at ${time}`);
   }
 
@@ -1556,9 +2188,33 @@ class MichiApp {
     this.noteModalItemId.value = itemId;
     this.noteModalIndex.value = noteIndex;
 
+    if (this.customNoteContactName) this.customNoteContactName.value = '';
+    if (this.customNoteContactWrapper) this.customNoteContactWrapper.style.display = 'none';
+
+    if (this.noteContactSelect) {
+      this.noteContactSelect.innerHTML = '';
+      const optKeep = document.createElement('option');
+      optKeep.value = '__KEEP__';
+      optKeep.textContent = item.assignedTo ? `Current (${item.assignedTo})` : 'Unassigned (No Contact)';
+      this.noteContactSelect.appendChild(optKeep);
+
+      (this.state.contacts || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = `👤 ${c.name} (${c.role || 'Contact'})`;
+        if (c.name === item.assignedTo) opt.selected = true;
+        this.noteContactSelect.appendChild(opt);
+      });
+
+      const optNew = document.createElement('option');
+      optNew.value = '__NEW__';
+      optNew.textContent = '+ Assign New Contact / Technician...';
+      this.noteContactSelect.appendChild(optNew);
+    }
+
     if (noteIndex >= 0 && item.notes && item.notes[noteIndex]) {
       const n = item.notes[noteIndex];
-      if (this.noteModalTitle) this.noteModalTitle.textContent = `✏️ Edit Note Line (${n.date})`;
+      if (this.noteModalTitle) this.noteModalTitle.textContent = `Edit Note Line (${n.date})`;
       this.noteInputText.value = n.text;
       if (this.btnDeleteNote) this.btnDeleteNote.style.display = 'block';
     } else {
@@ -1567,22 +2223,61 @@ class MichiApp {
       if (this.btnDeleteNote) this.btnDeleteNote.style.display = 'none';
     }
 
-    if (this.noteModalOverlay) this.noteModalOverlay.classList.add('active');
+    if (this.noteModalOverlay) {
+      this.noteModalOverlay.style.display = 'flex';
+      this.noteModalOverlay.classList.add('active');
+    }
     if (this.noteInputText) this.noteInputText.focus();
   }
 
   closeNoteModal() {
-    if (this.noteModalOverlay) this.noteModalOverlay.classList.remove('active');
+    if (this.noteModalOverlay) {
+      this.noteModalOverlay.classList.remove('active');
+      this.noteModalOverlay.style.display = 'none';
+    }
+    if (this.noteInputText) this.noteInputText.value = '';
+    if (this.noteModalItemId) this.noteModalItemId.value = '';
+    if (this.noteModalIndex) this.noteModalIndex.value = '-1';
+    if (this.customNoteContactName) this.customNoteContactName.value = '';
   }
 
   saveQuickNote() {
     const id = this.noteModalItemId.value;
     const index = parseInt(this.noteModalIndex.value, 10);
     const text = this.noteInputText.value.trim();
+
     if (!id || !text) return;
 
     const item = this.state.items.find(i => i.id === id);
     if (!item) return;
+
+    let assignedName = this.noteContactSelect ? this.noteContactSelect.value : '__KEEP__';
+    if (assignedName === '__NEW__') {
+      const customName = this.customNoteContactName ? this.customNoteContactName.value.trim() : '';
+      if (customName) {
+        assignedName = customName;
+        const existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === assignedName.toLowerCase());
+        if (!existing) {
+          const newContact = {
+            id: 'contact-' + Date.now(),
+            name: assignedName,
+            role: 'Project Collaborator',
+            company: item.project || 'General',
+            email: '',
+            phone: '',
+            projects: [item.project || 'General'],
+            notes: `Auto-created contact during note entry.`,
+            color: '#7CFEFE'
+          };
+          if (!this.state.contacts) this.state.contacts = [];
+          this.state.contacts.push(newContact);
+          this.showToast(`👤 Created new contact: "${assignedName}"!`);
+        }
+        item.assignedTo = assignedName;
+      }
+    } else if (assignedName !== '__KEEP__' && assignedName) {
+      item.assignedTo = assignedName;
+    }
 
     if (!item.notes) item.notes = [];
 
@@ -1595,8 +2290,8 @@ class MichiApp {
       this.showToast('New note line added!');
     }
 
-    this.saveState();
     this.closeNoteModal();
+    this.saveState();
   }
 
   openPrintModal(itemId) {
@@ -1695,6 +2390,69 @@ class MichiApp {
     this.showToast('Vault locked & closed');
   }
 
+  openChangeVaultPassModal() {
+    const overlay = document.getElementById('changeVaultPassModalOverlay');
+    const errDiv = document.getElementById('changeVaultPassError');
+    if (errDiv) errDiv.style.display = 'none';
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+      overlay.style.visibility = 'visible';
+      overlay.style.zIndex = '99999';
+      overlay.classList.add('active');
+    }
+  }
+
+  closeChangeVaultPassModal() {
+    const overlay = document.getElementById('changeVaultPassModalOverlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+      overlay.style.visibility = 'hidden';
+      overlay.classList.remove('active');
+    }
+  }
+
+  handleChangeVaultPassSubmit(e) {
+    if (e) e.preventDefault();
+    const currentPass = document.getElementById('currentMasterPassInput')?.value.trim();
+    const newPass = document.getElementById('newMasterPassInput')?.value.trim();
+    const confirmPass = document.getElementById('confirmNewMasterPassInput')?.value.trim();
+    const errDiv = document.getElementById('changeVaultPassError');
+
+    const savedPass = localStorage.getItem(VAULT_PASS_KEY);
+
+    if (savedPass && currentPass !== savedPass) {
+      if (errDiv) {
+        errDiv.textContent = 'Incorrect current master password. Please try again.';
+        errDiv.style.display = 'block';
+      }
+      return;
+    }
+
+    if (!newPass || newPass.length < 3) {
+      if (errDiv) {
+        errDiv.textContent = 'New master password must be at least 3 characters.';
+        errDiv.style.display = 'block';
+      }
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      if (errDiv) {
+        errDiv.textContent = 'New master passwords do not match. Please try again.';
+        errDiv.style.display = 'block';
+      }
+      return;
+    }
+
+    localStorage.setItem(VAULT_PASS_KEY, newPass);
+    this.closeChangeVaultPassModal();
+    this.showToast('🔒 Master Password updated successfully!');
+  }
+
   generateStrongPassword(length = 16) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
     let res = '';
@@ -1736,7 +2494,7 @@ class MichiApp {
     this.editItemId.value = '';
     this.editItemTitle.value = '';
     this.editItemStage.value = 'product';
-    this.editItemContent.value = 'Account password entry';
+    this.editItemContent.value = '';
     this.editItemUrl.value = '';
     
     if (this.currentVaultCat !== 'all') {
@@ -1745,11 +2503,14 @@ class MichiApp {
       this.editItemCategory.value = 'API Keys';
     }
 
+    const stageWrapper = document.getElementById('wrapperEditItemStage');
+    if (stageWrapper) stageWrapper.style.display = 'none';
+
     this.customCategoryWrapper.style.display = 'none';
     this.editItemCustomCategory.value = '';
     this.editItemUsername.value = '';
     this.editItemSecret.value = '';
-    this.editItemTags.value = 'Password, Account';
+    this.editItemTags.value = 'Vault, Account';
 
     this.editVaultGroup.style.display = 'flex';
     if (this.editModalOverlay) {
@@ -1919,18 +2680,103 @@ class MichiApp {
     this.customCategoryWrapper.style.display = 'none';
     this.editItemCustomCategory.value = '';
 
+    if (this.editItemImageUrl) {
+      this.editItemImageUrl.value = item.imageUrl || '';
+    }
+
     this.editItemUsername.value = item.username || '';
     this.editItemSecret.value = item.secret || '';
     this.editItemTags.value = (item.tags || []).join(', ');
 
+    const stageWrapper = document.getElementById('wrapperEditItemStage');
     if (item.type === 'vault') {
       this.editVaultGroup.style.display = 'flex';
+      if (stageWrapper) stageWrapper.style.display = 'none';
     } else {
       this.editVaultGroup.style.display = 'none';
+      if (stageWrapper) stageWrapper.style.display = 'block';
     }
+
+    // Populate Contact Dropdown in Edit Modal
+    if (this.customEditItemContactName) this.customEditItemContactName.value = '';
+    if (this.customEditItemContactWrapper) this.customEditItemContactWrapper.style.display = 'none';
+
+    if (this.editItemContactSelect) {
+      this.editItemContactSelect.innerHTML = '';
+      const optUnassigned = document.createElement('option');
+      optUnassigned.value = '';
+      optUnassigned.textContent = 'Unassigned (No Contact)';
+      this.editItemContactSelect.appendChild(optUnassigned);
+
+      (this.state.contacts || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = `👤 ${c.name} (${c.role || 'Contact'})`;
+        if (c.name === item.assignedTo) opt.selected = true;
+        this.editItemContactSelect.appendChild(opt);
+      });
+
+      const optNew = document.createElement('option');
+      optNew.value = '__NEW__';
+      optNew.textContent = '+ Assign New Contact / Technician...';
+      this.editItemContactSelect.appendChild(optNew);
+    }
+
+    // Populate Appended Notes List in Edit Modal
+    this.populateEditNotesList(item);
 
     if (this.editModalOverlay) {
       this.editModalOverlay.classList.add('active');
+    }
+  }
+
+  populateEditNotesList(item) {
+    const notesContainer = document.getElementById('editItemNotesList');
+    if (!notesContainer) return;
+    notesContainer.innerHTML = '';
+
+    if (item.notes && item.notes.length > 0) {
+      item.notes.forEach((n, idx) => {
+        const noteRow = document.createElement('div');
+        noteRow.style.display = 'flex';
+        noteRow.style.alignItems = 'center';
+        noteRow.style.justifyContent = 'space-between';
+        noteRow.style.background = 'rgba(255,255,255,0.03)';
+        noteRow.style.border = '1px solid var(--border)';
+        noteRow.style.borderRadius = 'var(--radius-sm)';
+        noteRow.style.padding = '0.4rem 0.6rem';
+        noteRow.style.fontSize = '0.85rem';
+        noteRow.style.gap = '8px';
+
+        noteRow.innerHTML = `
+          <input type="checkbox" class="btn-toggle-edit-note" data-index="${idx}" ${n.completed ? 'checked' : ''} style="accent-color: var(--stage-structure); cursor: pointer;" title="Toggle Complete" />
+          <div style="flex: 1; min-width: 0;">
+            <span style="font-size: 0.74rem; color: ${n.completed ? 'var(--text-dim)' : 'var(--text-main)'}; font-weight: 700;">${this.escapeHtml(n.date)}</span>
+            <div style="color: ${n.completed ? 'var(--text-dim)' : 'var(--text-main)'}; font-size: 0.85rem; font-weight: 600; line-height: 1.35; text-decoration: ${n.completed ? 'line-through' : 'none'}; opacity: ${n.completed ? '0.7' : '1'}; overflow-wrap: break-word;">${this.escapeHtml(n.text)}</div>
+          </div>
+          <button type="button" class="btn-delete-item-note" data-index="${idx}" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.74rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; cursor: pointer;">Delete Note</button>
+        `;
+
+        noteRow.querySelector('.btn-toggle-edit-note').addEventListener('change', (e) => {
+          n.completed = e.target.checked;
+          this.saveState();
+          this.populateEditNotesList(item);
+          this.render();
+        });
+
+        noteRow.querySelector('.btn-delete-item-note').addEventListener('click', (e) => {
+          if (e) { e.stopPropagation(); e.preventDefault(); }
+          item.notes.splice(idx, 1);
+          this.saveState();
+          this.populateEditNotesList(item);
+          this.render();
+          this.showToast('Note line deleted!');
+        });
+
+        notesContainer.appendChild(noteRow);
+      });
+    } else {
+      notesContainer.innerHTML = `<div style="font-size: 0.78rem; color: var(--text-dim); font-style: italic;">No appended notes on this item.</div>`;
     }
   }
 
@@ -1955,25 +2801,63 @@ class MichiApp {
       this.state.items.unshift(item);
     }
 
-    item.title = this.editItemTitle.value.trim() || 'Password Account';
-    item.stage = this.editItemStage.value || 'product';
-    item.content = this.editItemContent.value.trim() || 'Password entry';
+    item.title = this.editItemTitle.value.trim() || 'Untitled Record';
+    item.stage = this.editItemStage.value || 'focus';
+    item.content = this.editItemContent.value.trim();
     item.url = this.editItemUrl.value.trim();
-    
-    if (item.type === 'vault') {
-      if (this.editItemCategory.value === '__NEW__') {
-        const customCat = this.editItemCustomCategory.value.trim();
-        item.category = customCat || 'Custom';
-      } else {
-        item.category = this.editItemCategory.value || 'General';
-      }
+    item.imageUrl = this.editItemImageUrl ? this.editItemImageUrl.value.trim() : (item.imageUrl || '');
 
+    let assignedName = this.editItemContactSelect ? this.editItemContactSelect.value : '';
+    if (assignedName === '__NEW__') {
+      const customName = this.customEditItemContactName ? this.customEditItemContactName.value.trim() : '';
+      if (customName) {
+        assignedName = customName;
+        const existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === assignedName.toLowerCase());
+        if (!existing) {
+          const newContact = {
+            id: 'contact-' + Date.now(),
+            name: assignedName,
+            role: 'Project Collaborator',
+            company: item.project || 'General',
+            email: '',
+            phone: '',
+            projects: [item.project || 'General'],
+            notes: `Auto-created contact during item edit.`,
+            color: '#7CFEFE'
+          };
+          if (!this.state.contacts) this.state.contacts = [];
+          this.state.contacts.push(newContact);
+          this.showToast(`👤 Created new contact: "${assignedName}"!`);
+        }
+      }
+    }
+    item.assignedTo = assignedName || '';
+    
+    // Update category for ALL item types (web clips, vault items, ideas)
+    let selectedCat = 'General';
+    if (this.editItemCategory && this.editItemCategory.value === '__NEW__') {
+      const customCat = this.editItemCustomCategory ? this.editItemCustomCategory.value.trim() : '';
+      selectedCat = customCat || 'General';
+      if (!this.state.customWebCategories) this.state.customWebCategories = [];
+      if (!this.state.customWebCategories.includes(selectedCat)) {
+        this.state.customWebCategories.push(selectedCat);
+      }
+    } else if (this.editItemCategory) {
+      selectedCat = this.editItemCategory.value || 'General';
+    }
+
+    item.category = selectedCat;
+    item.webCategory = selectedCat;
+
+    const tagsRaw = this.editItemTags.value.trim();
+    item.tags = tagsRaw 
+      ? tagsRaw.split(',').map(t => t.trim()).filter(t => t && t.toLowerCase() !== 'password') 
+      : [selectedCat, 'Brain Dump'];
+
+    if (item.type === 'vault') {
       item.username = this.editItemUsername.value.trim() || 'user@michi';
       item.secret = this.editItemSecret.value.trim() || 'secret';
     }
-
-    const tagsRaw = this.editItemTags.value.trim();
-    item.tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : ['Password'];
 
     const colors = { spark: '#FBF582', structure: '#009967', focus: '#7CFEFE', product: '#3B82F6' };
     item.color = colors[item.stage] || '#3B82F6';
@@ -2074,7 +2958,7 @@ class MichiApp {
     daysHeader.forEach(dh => {
       const dHead = document.createElement('div');
       dHead.style.fontWeight = '800';
-      dHead.style.color = '#0f766e';
+      dHead.style.color = 'var(--text-main)';
       dHead.textContent = dh;
       gridEl.appendChild(dHead);
     });
@@ -2096,11 +2980,12 @@ class MichiApp {
       dayCell.style.padding = '1px 0';
       
       if (highlightDay && d === highlightDay) {
-        dayCell.style.background = '#0f766e';
-        dayCell.style.color = '#ffffff';
+        dayCell.style.background = 'var(--bg-card)';
+        dayCell.style.color = 'var(--text-main)';
+        dayCell.style.border = '1px solid var(--border)';
         dayCell.style.fontWeight = '800';
       } else {
-        dayCell.style.color = '#475569';
+        dayCell.style.color = 'var(--text-muted)';
       }
 
       const mStr = month.toString().padStart(2, '0');
@@ -2125,13 +3010,8 @@ class MichiApp {
 
     if (!this.state.franklinData[this.selectedFranklinDate]) {
       this.state.franklinData[this.selectedFranklinDate] = {
-        tasks: [
-          { id: 'fp-auto-1', priority: 'A1', text: 'Review Daily MICHI Path Objectives', done: false }
-        ],
-        appts: [
-          { id: 'ap-auto-1', time: '09:00 AM', text: 'Morning Focus & Planning Session', note: 'Scheduled via MICHI Digital Planner', done: false },
-          { id: 'ap-auto-2', time: '02:00 PM', text: 'Project Progress Sync', note: 'Review active cards & pipeline deliverables', done: false }
-        ],
+        tasks: [],
+        appts: [],
         trackerText: ''
       };
     }
@@ -2146,10 +3026,7 @@ class MichiApp {
         done: false
       }));
     } else if (!dayData.appts) {
-      dayData.appts = [
-        { id: 'ap-def-1', time: '09:00 AM', text: 'Morning Focus & Planning Session', note: 'Scheduled via MICHI Digital Planner', done: false },
-        { id: 'ap-def-2', time: '02:00 PM', text: 'Project Progress Sync', note: 'Review active cards & pipeline deliverables', done: false }
-      ];
+      dayData.appts = [];
     }
 
     const parts = this.selectedFranklinDate.split('-').map(Number);
@@ -2231,20 +3108,20 @@ class MichiApp {
       dayData.tasks.forEach(t => {
         const itemEl = document.createElement('div');
         itemEl.className = 'franklin-task-item';
-        itemEl.style.background = '#ffffff';
-        itemEl.style.border = '1px solid #cbd5e1';
-        itemEl.style.color = '#1e293b';
+        itemEl.style.background = 'var(--bg-card)';
+        itemEl.style.border = '1px solid var(--border)';
+        itemEl.style.color = 'var(--text-main)';
 
         const prioHtml = prioOptions.map(p => `<option value="${p}" ${p === t.priority ? 'selected' : ''}>${p}</option>`).join('');
 
         itemEl.innerHTML = `
-          <select class="task-prio-dropdown" title="Select Priority Tag" style="color: #3B82F6; font-weight: 800; font-size: 0.76rem; background: #e0f2fe; padding: 2px 4px; border-radius: 4px; border: 1px solid #bae6fd; cursor: pointer; outline: none;">
+          <select class="task-prio-dropdown" title="Select Priority Tag" style="color: var(--text-main); font-weight: 800; font-size: 0.76rem; background: var(--bg-main); padding: 2px 4px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; outline: none;">
             ${prioHtml}
           </select>
-          <input type="checkbox" ${t.done ? 'checked' : ''} style="-webkit-appearance: checkbox; appearance: checkbox; accent-color: #127DBB; width: 16px; height: 16px;">
+          <input type="checkbox" ${t.done ? 'checked' : ''} style="-webkit-appearance: checkbox; appearance: checkbox; accent-color: var(--text-main); width: 16px; height: 16px;">
           <span class="edit-tasktext-btn" style="flex:1; font-size: 0.85rem; font-weight: 500; cursor: pointer; ${t.done ? 'text-decoration: line-through; opacity: 0.5;' : ''}" title="Click to Edit Description">${this.escapeHtml(t.text)}</span>
-          <button class="edit-tasktext-btn" style="background: transparent; border: none; color: #127DBB; font-weight: 700; cursor: pointer; font-size: 0.76rem; padding: 2px 6px;" title="Edit Task Text">Edit</button>
-          <button class="delete-task-btn" style="background: transparent; border: none; color: #94a3b8; cursor: pointer;" title="Delete Task">✕</button>
+          <button class="edit-tasktext-btn" style="background: transparent; border: none; color: var(--text-main); font-weight: 700; cursor: pointer; font-size: 0.76rem; padding: 2px 6px;" title="Edit Task Text">Edit</button>
+          <button class="delete-task-btn" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer;" title="Delete Task">✕</button>
         `;
 
         itemEl.querySelector('input').addEventListener('change', (e) => {
@@ -2287,21 +3164,23 @@ class MichiApp {
     if (!dayData.appts || dayData.appts.length === 0) {
       this.franklinTimeline.innerHTML = `<div style="font-size: 0.8rem; color: #64748b; font-style: italic; text-align: center; padding: 1.5rem 0;">No appointments scheduled. Use the builder above to add custom time slots & notes!</div>`;
     } else {
-      const timeOptions = [
-        '07:00 AM', '07:30 AM', '08:00 AM', '08:30 AM', '09:00 AM', '09:30 AM',
-        '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM',
-        '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM',
-        '04:00 PM', '04:30 PM', '05:00 PM', '05:30 PM', '06:00 PM', '06:30 PM',
-        '07:00 PM', '07:30 PM', '08:00 PM'
-      ];
+      const timeOptions = [];
+      const hrsAM = ['06','07','08','09','10','11'];
+      const hrsPM = ['12','01','02','03','04','05','06','07','08','09','10','11'];
+      hrsAM.forEach(h => {
+        [':00', ':15', ':30', ':45'].forEach(m => timeOptions.push(`${h}${m} AM`));
+      });
+      hrsPM.forEach(h => {
+        [':00', ':15', ':30', ':45'].forEach(m => timeOptions.push(`${h}${m} PM`));
+      });
 
       dayData.appts.forEach(ap => {
         const apptRow = document.createElement('div');
         apptRow.style.display = 'flex';
         apptRow.style.flexDirection = 'column';
         apptRow.style.gap = '4px';
-        apptRow.style.background = '#ffffff';
-        apptRow.style.border = '1px solid #cbd5e1';
+        apptRow.style.background = 'var(--bg-card)';
+        apptRow.style.border = '1px solid var(--border)';
         apptRow.style.borderRadius = '6px';
         apptRow.style.padding = '8px 10px';
 
@@ -2315,21 +3194,20 @@ class MichiApp {
         apptRow.innerHTML = `
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
             <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
-              <input type="checkbox" class="appt-done-checkbox" ${ap.done ? 'checked' : ''} style="-webkit-appearance: checkbox; appearance: checkbox; accent-color: #127DBB; width: 16px; height: 16px; cursor: pointer;" title="Mark Appointment Completed / Closed">
-              <select class="appt-time-dropdown" title="Select different appointment time" style="background: #e0f2fe; color: #3B82F6; font-weight: 800; font-size: 0.78rem; padding: 3px 6px; border-radius: 4px; font-family: monospace; border: 1px solid #bae6fd; cursor: pointer; outline: none;">
+              <input type="checkbox" class="appt-done-checkbox" ${ap.done ? 'checked' : ''} style="-webkit-appearance: checkbox; appearance: checkbox; accent-color: var(--text-main); width: 16px; height: 16px; cursor: pointer;" title="Mark Appointment Completed / Closed">
+              <select class="appt-time-dropdown" title="Select different appointment time" style="background-color: #D9DDDE !important; color: #616363 !important; -webkit-appearance: none !important; appearance: none !important; font-weight: 800; font-size: 0.78rem; padding: 3px 6px; border-radius: 4px; font-family: monospace; border: 1px solid #B2B7B9 !important; cursor: pointer; outline: none;">
                 ${timeOptsHtml}
               </select>
-              <span class="edit-title-only-btn" title="Click to Edit Title" style="font-size: 0.85rem; color: #0f172a; font-weight: 700; cursor: pointer; flex: 1; ${ap.done ? 'text-decoration: line-through; opacity: 0.5;' : ''}">
+              <span class="edit-title-only-btn" title="Click to Edit Title" style="font-size: 0.85rem; color: var(--text-main); font-weight: 700; cursor: pointer; flex: 1; ${ap.done ? 'text-decoration: line-through; opacity: 0.5;' : ''}">
                 ${this.escapeHtml(ap.text)}
               </span>
             </div>
             <div style="display: flex; align-items: center; gap: 4px;">
-              <button class="edit-title-only-btn" style="background: transparent; border: none; color: #127DBB; font-weight: 700; cursor: pointer; font-size: 0.76rem; padding: 2px 6px;" title="Edit Title Only">Title</button>
-              <button class="edit-note-only-btn" style="background: transparent; border: none; color: #127DBB; font-weight: 700; cursor: pointer; font-size: 0.76rem; padding: 2px 6px;" title="Edit Sub-Note Only">Note</button>
-              <button class="delete-appt-btn" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 0.85rem;" title="Delete Appointment">✕</button>
+              <button class="edit-full-appt-btn" style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); font-weight: 700; cursor: pointer; font-size: 0.76rem; padding: 2px 7px; border-radius: 4px;" title="Edit Appointment Title & Details">Edit</button>
+              <button class="delete-appt-btn" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; padding: 2px 4px;" title="Delete Appointment">✕</button>
             </div>
           </div>
-          ${ap.note ? `<div class="edit-note-only-btn" style="font-size: 0.76rem; color: #475569; padding-left: 24px; font-style: italic; cursor: pointer; ${ap.done ? 'text-decoration: line-through; opacity: 0.5;' : ''}" title="Click to Edit Note Only">Note: ${this.escapeHtml(ap.note)}</div>` : ''}
+          ${ap.note ? `<div class="edit-note-only-btn" style="font-size: 0.76rem; color: var(--text-muted); padding-left: 24px; font-style: italic; cursor: pointer; ${ap.done ? 'text-decoration: line-through; opacity: 0.5;' : ''}" title="Click to Edit Note Only">Note: ${this.escapeHtml(ap.note)}</div>` : ''}
         `;
 
         apptRow.querySelector('.appt-done-checkbox').addEventListener('change', (e) => {
@@ -2345,6 +3223,19 @@ class MichiApp {
           this.saveState();
           this.renderFranklinModalContent();
           this.showToast(`Appointment time changed to ${selectedTime}`);
+        });
+
+        apptRow.querySelectorAll('.edit-full-appt-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const newText = prompt('Update Appointment Title / Client:', ap.text);
+            if (newText === null || !newText.trim()) return;
+            const newNote = prompt('Update Appointment Note / Details (optional):', ap.note || '');
+            ap.text = newText.trim();
+            if (newNote !== null) ap.note = newNote.trim();
+            this.saveState();
+            this.renderFranklinModalContent();
+            this.showToast('Appointment updated!');
+          });
         });
 
         apptRow.querySelectorAll('.edit-title-only-btn').forEach(btn => {
@@ -2482,14 +3373,65 @@ class MichiApp {
     reader.readAsText(file);
   }
 
-  openTutorialModal(slideNum = 1) {
-    this.currentTutorialSlide = slideNum;
-    this.updateTutorialSlideView();
-    if (this.tutorialModalOverlay) this.tutorialModalOverlay.classList.add('active');
+  async refreshApp() {
+    this.showToast('🔄 Hard Refreshing Cache & Unregistering SW...');
+    try {
+      await this.pullFromCloud(true);
+    } catch (e) {}
+    if ('caches' in window) {
+      try {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+      } catch (e) {}
+    }
+    if ('serviceWorker' in navigator) {
+      try {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (let r of regs) await r.unregister();
+      } catch (e) {}
+    }
+    setTimeout(() => {
+      window.location.reload(true);
+    }, 300);
+  }
+
+  openTutorialModal() {
+    this.currentTutorialSlide = 1;
+    const overlay = document.getElementById('tutorialModalOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+      overlay.style.visibility = 'visible';
+      overlay.style.zIndex = '999999';
+      overlay.classList.add('active');
+    }
+    try {
+      this.updateTutorialSlideView();
+    } catch(e) {}
+
+    // Bind Guide side chapter tabs
+    const tabs = document.querySelectorAll('.guide-tab-item');
+    tabs.forEach(t => {
+      t.addEventListener('click', (e) => {
+        const chap = parseInt(e.target.dataset.chapter, 10);
+        if (chap && chap >= 1 && chap <= 5) {
+          this.currentTutorialSlide = chap;
+          this.updateTutorialSlideView();
+        }
+      });
+    });
   }
 
   closeTutorialModal() {
-    if (this.tutorialModalOverlay) this.tutorialModalOverlay.classList.remove('active');
+    const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
+    if (overlay) {
+      overlay.style.display = 'none';
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+      overlay.style.visibility = 'hidden';
+      overlay.classList.remove('active');
+    }
   }
 
   prevTutorialSlide() {
@@ -2500,42 +3442,164 @@ class MichiApp {
   }
 
   nextTutorialSlide() {
-    const totalSlides = this.tutorialSlides ? this.tutorialSlides.length : 5;
+    const totalSlides = 5;
     if (this.currentTutorialSlide < totalSlides) {
       this.currentTutorialSlide++;
       this.updateTutorialSlideView();
     } else {
       this.closeTutorialModal();
-      this.showToast('Tutorial complete! Enjoy using MICHI.');
+      this.showToast('Guide walkthrough complete!');
     }
   }
 
   updateTutorialSlideView() {
-    const totalSlides = this.tutorialSlides ? this.tutorialSlides.length : 5;
-    if (this.tutorialSlides) {
-      this.tutorialSlides.forEach((slide, idx) => {
-        const isCurrent = (idx + 1) === this.currentTutorialSlide;
-        slide.style.display = isCurrent ? 'flex' : 'none';
-      });
-    }
+    const totalSlides = 5;
+    const chap = this.currentTutorialSlide;
 
-    if (this.tutorialStepIndicator) {
-      this.tutorialStepIndicator.textContent = `Step ${this.currentTutorialSlide} of ${totalSlides}`;
-    }
+    const leftBadge = document.getElementById('guideLeftChapterBadge');
+    const leftTitle = document.getElementById('guideLeftTopicTitle');
+    const leftContent = document.getElementById('guideLeftContent');
+    const rightSubTitle = document.getElementById('guideRightSubTitle');
+    const rightContent = document.getElementById('guideRightContent');
+    const indicator = document.getElementById('tutorialStepIndicator');
+
+    if (indicator) indicator.textContent = `Page ${chap} of ${totalSlides}`;
+
+    // Highlight active side tab
+    document.querySelectorAll('.guide-tab-item').forEach(t => {
+      const active = parseInt(t.dataset.chapter, 10) === chap;
+      t.style.background = active ? 'var(--bg-card-hover)' : 'var(--bg-card)';
+      t.style.fontWeight = active ? '900' : '700';
+    });
+
+    const guideChapters = [
+      {
+        badge: 'Chapter 1',
+        title: 'The MICHI (道) Philosophy & 2-Stage Pipeline',
+        leftHtml: `
+          <p>In Japanese culture, <strong>道 (Michi)</strong> represents a disciplined journey or path. MICHI organizes your life and work into a streamlined 2-stage creation pipeline:</p>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+            <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+              <strong style="color: var(--text-main); font-size: 0.88rem;">1. Development Board</strong>
+              <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Active project work, pending tasks, resource bookmarks, and in-process goals.</p>
+            </div>
+            <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+              <strong style="color: var(--text-main); font-size: 0.88rem;">2. Completed Board</strong>
+              <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Finished deliverables, closed projects, archived benchmarks, and milestone records.</p>
+            </div>
+          </div>
+        `,
+        rightSubTitle: 'Global Header Controls & Color Schemes',
+        rightHtml: `
+          <p>Navigate and personalize your workspace effortlessly using top controls:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>Theme Selector:</strong> Switch between <strong>🍃 そよ風 Soyokaze (Gentle Breeze)</strong>, 冬 Fuyu (Dark), 夏 Natsu (Summer), and Tokyo Nights.</li>
+            <li><strong>📁 All Projects Filter:</strong> Filter your entire dashboard to focus strictly on 1 active project container.</li>
+            <li><strong>🔍 Workspace Search:</strong> Query all tasks, brain dump notes, and project cards instantly.</li>
+          </ul>
+        `
+      },
+      {
+        badge: 'Chapter 2',
+        title: 'Daily Planner & 2-Page Binder Spread',
+        leftHtml: `
+          <p>The <strong>Daily Planner</strong> provides an authentic 2-page digital binder spread layout:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>3 Mini-Calendars:</strong> Side-by-side view showing Previous Month, Active Month (Highlighted), and Next Month.</li>
+            <li><strong>Prioritized ABC Task List:</strong> Assign A1, A2, B1, C1 tags to urgent daily objectives.</li>
+            <li><strong>Daily Tracker Box:</strong> Log expenses, calls, mileage, or quick thoughts at the bottom left.</li>
+          </ul>
+        `,
+        rightSubTitle: 'Appointment Schedule & 15-Min Selectors',
+        rightHtml: `
+          <p>Manage your client appointments with 15-minute precision:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>Dual Time Selectors:</strong> Pick exact hour (<code>06 AM</code>–<code>11 PM</code>) and minute increments (<code>:00</code>, <code>:15</code>, <code>:30</code>, <code>:45</code>).</li>
+            <li><strong>✏️ Edit Button:</strong> Tap <strong>Edit</strong> on any appointment banner to quickly adjust the title, time, or sub-note.</li>
+            <li><strong>Completed Checkbox:</strong> Check off finished appointments with a clean strikethrough.</li>
+          </ul>
+          <div style="margin-top: 8px;">
+            <button type="button" onclick="if(window.app && window.app.closeTutorialModal && window.app.openFranklinModal) { window.app.closeTutorialModal(); window.app.openFranklinModal(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">📅 Try Daily Planner Now ➔</button>
+          </div>
+        `
+      },
+      {
+        badge: 'Chapter 3',
+        title: 'Brain Dump Repository, #Hashtags & Web Clipping',
+        leftHtml: `
+          <p>Never lose a fleeting thought, link, or inspiration with the <strong>Brain Dump Repository</strong>:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>🏷️ Zero-Cost #Hashtag Auto-Categorization:</strong> Include hashtags like <code>#Tech</code>, <code>#Travel</code>, <code>#Work</code>, or <code>#Personal</code> anywhere in your note or link. MICHI automatically cleans the title and routes the item directly to that topic category tab!</li>
+            <li><strong>📲 iOS & Android Share Sheet:</strong> Share web articles, posts, or notes directly into MICHI from any browser or app.</li>
+          </ul>
+        `,
+        rightSubTitle: 'Topic Filtering & Conversion Pipeline',
+        rightHtml: `
+          <p>Organize your topic notes with high-visibility controls:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>All Topics Dropdown:</strong> Filter your notes instantly by category (Tech, Travel, Work, etc.).</li>
+            <li><strong>➕ Add Brain Dump / Clip:</strong> Attach URL web links, hashtags, and reference clips.</li>
+            <li><strong>🚀 Convert to Project:</strong> Promote any brain dump idea directly into the Development Pipeline with 1 tap.</li>
+          </ul>
+        `
+      },
+      {
+        badge: 'Chapter 4',
+        title: 'Kanban Boards & Pipeline Advancement',
+        leftHtml: `
+          <p>Organize complex projects visual board style:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>Development Board:</strong> Active projects, progress bars, and item checklists.</li>
+            <li><strong>Advance ➔ Button:</strong> Move finished projects seamlessly to the Completed Board with matching silver mist buttons.</li>
+          </ul>
+        `,
+        rightSubTitle: 'Completed Board Archive & Lineage',
+        rightHtml: `
+          <p>Review past victories and project history:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>Completed Archive:</strong> Keep a permanent record of finished projects and deliverables.</li>
+            <li><strong>Project Lineage:</strong> Track how ideas evolve from initial Spark to final Product.</li>
+          </ul>
+        `
+      },
+      {
+        badge: 'Chapter 5',
+        title: 'Cloud Sync, Password Vault & Backups',
+        leftHtml: `
+          <p>Keep your data secure and accessible across all devices:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>RESTful Cloud Sync:</strong> Real-time background sync keeps your iPhone, iPad, and desktop updated.</li>
+            <li><strong>Password Vault:</strong> Secure master-password protected vault for server API keys and login credentials.</li>
+          </ul>
+        `,
+        rightSubTitle: 'Disaster Recovery & PWA Offline Use',
+        rightHtml: `
+          <p>Total data ownership and offline resilience:</p>
+          <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+            <li><strong>📥 Backup:</strong> Download full JSON workspace files to iCloud Drive or local disk.</li>
+            <li><strong>📤 Restore:</strong> Restore 100% of your workspace instantly on any browser or mobile app.</li>
+          </ul>
+        `
+      }
+    ];
+
+    const curData = guideChapters[chap - 1] || guideChapters[0];
+
+    if (leftBadge) leftBadge.textContent = curData.badge;
+    if (leftTitle) leftTitle.textContent = curData.title;
+    if (leftContent) leftContent.innerHTML = curData.leftHtml;
+    if (rightSubTitle) rightSubTitle.textContent = curData.rightSubTitle;
+    if (rightContent) rightContent.innerHTML = curData.rightHtml;
 
     if (this.btnPrevTutorialStep) {
-      this.btnPrevTutorialStep.style.display = this.currentTutorialSlide > 1 ? 'inline-block' : 'none';
+      this.btnPrevTutorialStep.style.display = chap > 1 ? 'inline-block' : 'none';
     }
 
     if (this.btnNextTutorialStep) {
-      if (this.currentTutorialSlide === totalSlides) {
+      if (chap === totalSlides) {
         this.btnNextTutorialStep.textContent = 'Finish Guide ✓';
-        this.btnNextTutorialStep.style.background = 'var(--stage-structure)';
-        this.btnNextTutorialStep.style.color = '#ffffff';
       } else {
-        this.btnNextTutorialStep.textContent = 'Next Step ➔';
-        this.btnNextTutorialStep.style.background = 'var(--stage-focus)';
-        this.btnNextTutorialStep.style.color = '#000000';
+        this.btnNextTutorialStep.textContent = 'Next Page ►';
       }
     }
   }
@@ -2590,6 +3654,7 @@ class MichiApp {
     this.confirmDialog(`Are you sure you want to delete "${itemTitle}"?`, 'Delete Record', () => {
       this.state.items = this.state.items.filter(i => i.id !== id);
       this.saveState();
+      this.render();
       this.showToast('Item deleted');
     });
   }
@@ -2629,30 +3694,45 @@ class MichiApp {
       const matchesStage = this.currentStageFilter === 'all' || (item.stage || 'spark') === this.currentStageFilter;
       const matchesProject = (this.selectedProject === 'all') || (item.project || 'Personal') === this.selectedProject;
 
-      return matchesSearch && matchesFilter && matchesStage && matchesProject;
+      let matchesWebCat = true;
+      if (this.currentWebCat === 'inbox') {
+        const itemCat = (item.category || item.webCategory || (item.tags && item.tags[0]) || 'General').toLowerCase();
+        matchesWebCat = itemCat === 'general' || itemCat === 'unfiled' || itemCat === 'inbox';
+      } else if (this.currentWebCat && this.currentWebCat !== 'all') {
+        const itemCat = item.category || item.webCategory || (item.tags && item.tags[0]) || 'General';
+        matchesWebCat = itemCat.toLowerCase() === this.currentWebCat.toLowerCase();
+      }
+
+      return matchesSearch && matchesFilter && matchesStage && matchesProject && matchesWebCat;
     });
   }
 
   renderWebCategoryPills() {
     if (!this.webCategoryPillsContainer) return;
 
-    const categories = new Set(['all', 'Tech', 'Sports', 'Fashion', 'Design', 'Finance']);
-    this.state.items.filter(i => i.type === 'web').forEach(i => {
-      if (i.webCategory) categories.add(i.webCategory);
+    const categories = new Set(['inbox', 'all', 'Tech', 'Travel', 'Work', 'Personal', 'Health', 'Sports', 'Fashion', 'Design', 'Finance']);
+    (this.state.items || []).forEach(i => {
+      const cat = i.category || i.webCategory || (i.tags && i.tags[0]);
+      if (cat && cat.trim()) categories.add(cat.trim());
     });
     if (this.state.customWebCategories) {
-      this.state.customWebCategories.forEach(c => categories.add(c));
+      this.state.customWebCategories.forEach(c => c && c.trim() && categories.add(c.trim()));
     }
 
     this.webCategoryPillsContainer.innerHTML = '';
     categories.forEach(cat => {
       const btn = document.createElement('button');
-      btn.className = `filter-pill ${this.currentWebCat === cat ? 'active' : ''}`;
+      btn.className = `filter-pill ${this.currentWebCat.toLowerCase() === cat.toLowerCase() ? 'active' : ''}`;
       btn.dataset.webCat = cat;
 
       const labels = {
-        all: 'All Topics',
+        inbox: '📥 Inbox (Unfiled)',
+        all: '🌐 All Master Notes',
         Tech: 'Tech',
+        Travel: 'Travel ✈️',
+        Work: 'Work 🛠️',
+        Personal: 'Personal 🏠',
+        Health: 'Health 🏃',
         Sports: 'Sports',
         Fashion: 'Fashion',
         Design: 'Design',
@@ -2696,29 +3776,62 @@ class MichiApp {
     this.webCategoryPillsContainer.appendChild(addCatBtn);
   }
 
+  updateViewModeButtons() {
+    const btnCards = document.getElementById('btnViewModeCards');
+    const btnCompact = document.getElementById('btnViewModeCompact');
+    const isCards = (this.brainDumpViewMode || 'cards') === 'cards';
+
+    if (btnCards) {
+      btnCards.style.background = isCards ? 'var(--bg-card-hover)' : 'transparent';
+      btnCards.style.color = isCards ? 'var(--text-main)' : 'var(--text-muted)';
+      btnCards.style.borderColor = isCards ? 'var(--border)' : 'transparent';
+    }
+    if (btnCompact) {
+      btnCompact.style.background = !isCards ? 'var(--bg-card-hover)' : 'transparent';
+      btnCompact.style.color = !isCards ? 'var(--text-main)' : 'var(--text-muted)';
+      btnCompact.style.borderColor = !isCards ? 'var(--border)' : 'transparent';
+    }
+  }
+
   renderIdeasGrid() {
     if (!this.ideasGrid) return;
     this.renderWebCategoryPills();
+    this.updateViewModeButtons();
     this.ideasGrid.innerHTML = '';
 
-    let webItems = this.state.items.filter(i => i.type === 'web' || i.type === 'idea');
+    const isCompact = this.brainDumpViewMode === 'compact';
+    if (isCompact) {
+      this.ideasGrid.style.display = 'flex';
+      this.ideasGrid.style.flexDirection = 'column';
+      this.ideasGrid.style.gap = '6px';
+    } else {
+      this.ideasGrid.style.display = 'grid';
+      this.ideasGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+      this.ideasGrid.style.gap = '1.25rem';
+    }
 
-    if (this.currentWebCat !== 'all') {
+    let webItems = this.state.items.filter(i => (i.type === 'web' || (i.type === 'idea' && (!i.project || i.project === 'General'))));
+
+    if (this.currentWebCat === 'inbox') {
       webItems = webItems.filter(i => {
-        const itemCat = i.webCategory || (i.tags && i.tags[0]) || 'General';
+        const itemCat = (i.category || i.webCategory || (i.tags && i.tags[0]) || 'General').toLowerCase();
+        return itemCat === 'general' || itemCat === 'unfiled' || itemCat === 'inbox';
+      });
+    } else if (this.currentWebCat !== 'all') {
+      webItems = webItems.filter(i => {
+        const itemCat = i.category || i.webCategory || (i.tags && i.tags[0]) || 'General';
         return itemCat.toLowerCase() === this.currentWebCat.toLowerCase();
       });
     }
 
     if (this.selectedProject !== 'all') {
-      webItems = webItems.filter(i => (i.project || 'Personal') === this.selectedProject);
+      webItems = webItems.filter(i => (i.project || 'General') === this.selectedProject);
     }
-
     if (webItems.length === 0) {
       this.ideasGrid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
           <p style="margin-bottom: 1rem;">No web clips or interest bookmarks found for this category or project.</p>
-          <button type="button" onclick="document.getElementById('btnAddWebClip').click()" style="background: var(--stage-structure); color: #ffffff; border: none; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;">➕ Add Web Bookmark</button>
+          <button type="button" onclick="document.getElementById('btnAddWebClip').click()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;">➕ Add Web Bookmark</button>
         </div>
       `;
       return;
@@ -2728,84 +3841,181 @@ class MichiApp {
       const card = document.createElement('div');
       card.className = 'card';
       const notes = item.notes || [];
-      const catBadge = item.webCategory || (item.tags && item.tags[0]) || 'Web Clip';
+      const catBadge = item.category || item.webCategory || (item.tags && item.tags[0]) || 'Web Clip';
 
-      card.innerHTML = `
-        <div class="card-color-stripe" style="background: var(--stage-structure);"></div>
-        <div class="card-header">
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <span class="badge" style="background: rgba(0, 153, 103, 0.15); color: var(--stage-structure); border: 1px solid rgba(0, 153, 103, 0.3); font-weight: 800;">${this.escapeHtml(catBadge)}</span>
-            <h4 class="card-title" style="color: #ffffff; font-weight: 700;">${this.escapeHtml(item.title)}</h4>
-          </div>
-          <div class="card-actions">
-            <button class="btn-advance-pipeline" title="Advance clip on Michi Path">Advance</button>
-            <button class="icon-btn edit-btn" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-weight: 700;" title="Edit Clip">✏️ Edit</button>
-            <button class="icon-btn copy-btn" title="Copy URL Link">Copy Link</button>
-            <button class="icon-btn delete-btn" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); font-weight: 700;" title="Delete Clip">Delete</button>
-          </div>
-        </div>
-        ${(item.content && item.content.trim() && item.content.trim() !== item.url && !item.content.toLowerCase().includes('web reference clip saved under')) ? `
-          <div class="card-body" style="line-height: 1.45; color: var(--text-main); font-size: 0.88rem; margin: 4px 0;">
-            ${this.escapeHtml(item.content)}
-          </div>
-        ` : ''}
-        ${item.imageUrl ? `
-          <div style="margin-top: 6px; text-align: center;">
-            <img src="${item.imageUrl}" style="max-height: 180px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border); object-fit: contain;" alt="Clip Image" />
-          </div>
-        ` : ''}
-        ${item.url ? `
-          <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; margin-top: 6px; color: #ffffff; text-decoration: underline; font-size: 0.82rem; word-break: break-all;">
-            ${this.escapeHtml(item.url)}
-          </a>
-        ` : ''}
-        
-        <!-- Interactive Line-by-Line Notes -->
-        <div style="margin-top: 0.75rem; border-top: 1px dashed var(--border); padding-top: 0.6rem;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-            <span style="font-size: 0.72rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">
-              Appended Notes (${notes.length})
-            </span>
-            <button class="add-note-line-btn" style="background: rgba(124, 254, 254, 0.12); color: var(--stage-focus); border: 1px solid rgba(124, 254, 254, 0.3); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; cursor: pointer;" title="Add new note line">+ Add Note</button>
-          </div>
-          ${notes.length > 0 ? `
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              ${notes.map((n, idx) => `
-                <div class="note-line-row" data-note-idx="${idx}" style="display: flex; align-items: flex-start; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.82rem; cursor: pointer;" title="Click to Edit Note Line">
-                  <span style="font-size: 0.7rem; color: var(--stage-structure); font-weight: 700; background: rgba(0,153,103,0.15); padding: 2px 6px; border-radius: 3px; white-space: nowrap; font-family: monospace;">
-                    ${this.escapeHtml(n.date)}
-                  </span>
-                  <span style="flex: 1; color: var(--text-main); line-height: 1.35; word-break: break-word;">
-                    ${this.escapeHtml(n.text)}
-                  </span>
-                  <span style="font-size: 0.72rem; color: var(--text-muted);" title="Edit Note Line">✏️</span>
-                </div>
-              `).join('')}
+      // Only display image if item has an authentic image attached
+      const displayImageUrl = (item.imageUrl || '').trim();
+
+      if (isCompact) {
+        card.style.margin = '0';
+        card.style.padding = '8px 12px';
+        card.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 220px; overflow: hidden;">
+              <select class="card-category-quick-select" style="background: rgba(0, 153, 103, 0.15); color: var(--stage-structure); border: 1px solid rgba(0, 153, 103, 0.3); font-weight: 800; border-radius: 4px; padding: 2px 6px; font-size: 0.74rem; cursor: pointer;" title="Move item to Category">
+                <option value="General" ${catBadge === 'General' || catBadge === 'Inbox' ? 'selected' : ''}>📥 Inbox (Unfiled)</option>
+                <option value="Travel" ${catBadge.toLowerCase() === 'travel' ? 'selected' : ''}>✈️ Travel</option>
+                <option value="Tech" ${catBadge.toLowerCase() === 'tech' ? 'selected' : ''}>💻 Tech</option>
+                <option value="Work" ${catBadge.toLowerCase() === 'work' ? 'selected' : ''}>🛠️ Work</option>
+                <option value="Personal" ${catBadge.toLowerCase() === 'personal' ? 'selected' : ''}>🏠 Personal</option>
+                <option value="Health" ${catBadge.toLowerCase() === 'health' ? 'selected' : ''}>🏃 Health</option>
+                ${(this.state.customWebCategories || []).map(c => `<option value="${c}" ${catBadge.toLowerCase() === c.toLowerCase() ? 'selected' : ''}>🏷️ ${c}</option>`).join('')}
+                <option value="__NEW__">➕ New Category...</option>
+              </select>
+              <h4 style="color: var(--text-main); font-weight: 700; font-size: 0.88rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${this.escapeHtml(item.title)}</h4>
+              ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" style="color: var(--stage-focus); font-size: 0.78rem; text-decoration: underline; white-space: nowrap;">🔗 Open Link</a>` : ''}
             </div>
-          ` : `
-            <div style="font-size: 0.76rem; color: var(--text-dim); font-style: italic;">No notes appended yet. Click "+ Add Note" to add one!</div>
-          `}
-        </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button type="button" class="btn-launch-project" onclick="openLaunchChoiceModalGlobal('${item.id}')" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.74rem; padding: 3px 8px; border-radius: 4px; cursor: pointer;" title="Launch as Project or Daily Plan Task">🚀 Launch</button>
+              <button class="icon-btn edit-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.74rem; padding: 3px 8px;" title="Edit">Edit</button>
+              <button class="icon-btn delete-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.74rem; padding: 3px 8px;" title="Delete">Delete</button>
+            </div>
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="card-color-stripe" style="background: var(--stage-structure);"></div>
+          <div class="card-header">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <select class="card-category-quick-select" style="background: rgba(0, 153, 103, 0.15); color: var(--stage-structure); border: 1px solid rgba(0, 153, 103, 0.3); font-weight: 800; border-radius: 4px; padding: 2px 6px; font-size: 0.76rem; cursor: pointer;" title="Move item to Category">
+                <option value="General" ${catBadge === 'General' || catBadge === 'Inbox' ? 'selected' : ''}>📥 Inbox (Unfiled)</option>
+                <option value="Travel" ${catBadge.toLowerCase() === 'travel' ? 'selected' : ''}>✈️ Travel</option>
+                <option value="Tech" ${catBadge.toLowerCase() === 'tech' ? 'selected' : ''}>💻 Tech</option>
+                <option value="Work" ${catBadge.toLowerCase() === 'work' ? 'selected' : ''}>🛠️ Work</option>
+                <option value="Personal" ${catBadge.toLowerCase() === 'personal' ? 'selected' : ''}>🏠 Personal</option>
+                <option value="Health" ${catBadge.toLowerCase() === 'health' ? 'selected' : ''}>🏃 Health</option>
+                ${(this.state.customWebCategories || []).map(c => `<option value="${c}" ${catBadge.toLowerCase() === c.toLowerCase() ? 'selected' : ''}>🏷️ ${c}</option>`).join('')}
+                <option value="__NEW__">➕ New Category...</option>
+              </select>
+              <h4 class="card-title" style="color: var(--text-main); font-weight: 700;">${this.escapeHtml(item.title)}</h4>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="btn-launch-project" onclick="openLaunchChoiceModalGlobal('${item.id}')" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.76rem; padding: 4px 10px; border-radius: 4px; cursor: pointer;" title="Launch as Project or Daily Plan Task">🚀 Launch</button>
+              <button class="icon-btn edit-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700;" title="Edit Clip">Edit</button>
+              <button class="icon-btn copy-btn" title="Copy URL Link">Copy Link</button>
+              <button class="icon-btn delete-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700;" title="Delete Clip">Delete</button>
+            </div>
+          </div>
+          ${(item.content && item.content.trim() && item.content.trim() !== item.url) ? `
+            <div class="card-body" style="line-height: 1.45; color: var(--text-main); font-size: 0.88rem; margin: 4px 0;">
+              ${this.escapeHtml(item.content)}
+            </div>
+          ` : ''}
+          ${displayImageUrl ? `
+            <div style="margin-top: 6px; text-align: center;">
+              <img src="${displayImageUrl}" onerror="this.parentElement.style.display='none'" style="max-height: 180px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border); object-fit: cover;" alt="Attached Image" />
+            </div>
+          ` : ''}
+          ${item.url ? `
+            <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; margin-top: 6px; color: var(--text-main); text-decoration: underline; font-size: 0.82rem; word-break: break-all;">
+              ${this.escapeHtml(item.url)}
+            </a>
+          ` : ''}
+          
+          <!-- Interactive Line-by-Line Notes -->
+          <div style="margin-top: 0.75rem; border-top: 1px dashed var(--border); padding-top: 0.6rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">
+                Appended Notes (${notes.length})
+              </span>
+              <button class="add-note-line-btn" style="background: rgba(124, 254, 254, 0.12); color: var(--stage-focus); border: 1px solid rgba(124, 254, 254, 0.3); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; cursor: pointer;" title="Add new note line">+ Add Note</button>
+            </div>
+            ${notes.length > 0 ? `
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                ${notes.map((n, idx) => `
+                  <div class="note-line-row" data-note-idx="${idx}" style="display: flex; align-items: flex-start; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.82rem; cursor: pointer;" title="Click to Edit Note Line">
+                    <span style="font-size: 0.7rem; color: var(--stage-structure); font-weight: 700; background: rgba(0,153,103,0.15); padding: 2px 6px; border-radius: 3px; white-space: nowrap; font-family: monospace;">
+                      ${this.escapeHtml(n.date)}
+                    </span>
+                    <span style="flex: 1; color: var(--text-main); line-height: 1.35; word-break: break-word;">
+                      ${this.escapeHtml(n.text)}
+                    </span>
+                    <span style="font-size: 0.72rem; color: var(--text-muted);" title="Edit Note Line">Edit</span>
+                  </div>
+                `).join('')}
+              </div>
+            ` : `
+              <div style="font-size: 0.76rem; color: var(--text-dim); font-style: italic;">No notes appended yet. Click "+ Add Note" to add one!</div>
+            `}
+          </div>
 
-        <div class="card-footer">
-          <div class="card-tags">${(item.tags || []).map(t => `<span class="badge badge-idea">${t}</span>`).join(' ')}</div>
-          <span class="card-date">${item.date || ''}</span>
-        </div>
-      `;
+          <div class="card-footer">
+            <div class="card-tags">${(item.tags || []).map(t => `<span class="badge badge-idea">${t}</span>`).join(' ')}</div>
+            <span class="card-date">${item.date || ''}</span>
+          </div>
+        `;
+      }
 
-      card.querySelector('.btn-advance-pipeline').addEventListener('click', () => this.advanceItemStage(item.id));
-      card.querySelector('.edit-btn').addEventListener('click', () => this.openEditModal(item.id));
-      card.querySelector('.copy-btn').addEventListener('click', () => this.copyToClipboard(item.url || item.content, 'Web link'));
-      card.querySelector('.delete-btn').addEventListener('click', () => this.deleteItem(item.id));
+      const catQuickSelect = card.querySelector('.card-category-quick-select');
+      if (catQuickSelect) {
+        catQuickSelect.addEventListener('change', (e) => {
+          e.stopPropagation();
+          let val = e.target.value;
+          if (val === '__NEW__') {
+            const custom = prompt('Enter new category name:');
+            if (custom && custom.trim()) {
+              val = custom.trim();
+              if (!this.state.customWebCategories) this.state.customWebCategories = [];
+              if (!this.state.customWebCategories.includes(val)) {
+                this.state.customWebCategories.push(val);
+              }
+            } else {
+              e.target.value = item.category || 'General';
+              return;
+            }
+          }
+          item.category = val;
+          item.webCategory = val;
+          this.saveState();
+          this.render();
+          this.showToast(`Moved "${item.title}" to category "${val}"!`);
+        });
+      }
 
-      card.querySelector('.add-note-line-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.openNoteModal(item.id, -1);
+      card.querySelectorAll('.btn-launch-project').forEach(launchBtn => {
+        const triggerLaunch = (e) => {
+          if (e) { e.stopPropagation(); e.preventDefault(); }
+          this.openLaunchChoiceModal(item);
+        };
+        launchBtn.onclick = triggerLaunch;
+        launchBtn.ontouchend = triggerLaunch;
       });
+
+      const editBtn = card.querySelector('.edit-btn');
+      if (editBtn) {
+        editBtn.addEventListener('click', (e) => {
+          if (e) { e.stopPropagation(); e.preventDefault(); }
+          this.openEditModal(item.id);
+        });
+      }
+
+      const copyBtn = card.querySelector('.copy-btn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', (e) => {
+          if (e) { e.stopPropagation(); e.preventDefault(); }
+          this.copyToClipboard(item.url || item.content, 'Web link');
+        });
+      }
+
+      const deleteBtn = card.querySelector('.delete-btn');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', (e) => {
+          if (e) { e.stopPropagation(); e.preventDefault(); }
+          this.deleteItem(item.id);
+        });
+      }
+
+      const addNoteBtn = card.querySelector('.add-note-line-btn');
+      if (addNoteBtn) {
+        addNoteBtn.addEventListener('click', (e) => {
+          if (e) { e.stopPropagation(); e.preventDefault(); }
+          this.openNoteModal(item.id, -1);
+        });
+      }
 
       card.querySelectorAll('.note-line-row').forEach(row => {
         row.addEventListener('click', (e) => {
-          e.stopPropagation();
+          if (e) { e.stopPropagation(); e.preventDefault(); }
           const noteIdx = parseInt(row.dataset.noteIdx, 10);
           this.openNoteModal(item.id, noteIdx);
         });
@@ -2815,59 +4025,167 @@ class MichiApp {
     });
   }
 
+  openLaunchChoiceModalById(id) {
+    const item = (this.state.items || []).find(i => i.id === id);
+    if (item) {
+      this.openLaunchChoiceModal(item);
+    }
+  }
+
+  openLaunchChoiceModal(item) {
+    if (!item) return;
+    const overlay = document.getElementById('launchChoiceModalOverlay');
+    const titleEl = document.getElementById('launchChoiceItemTitle');
+    const btnProject = document.getElementById('btnLaunchAsProject');
+    const btnExistingProject = document.getElementById('btnLaunchAsExistingProject');
+    const btnPlanTask = document.getElementById('btnLaunchAsPlanTask');
+    const btnCancel = document.getElementById('btnCancelLaunchModal');
+
+    if (titleEl) {
+      titleEl.textContent = `Launch "${item.title}" into:`;
+    }
+
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+      overlay.style.visibility = 'visible';
+      overlay.style.zIndex = '999999';
+      overlay.classList.add('active');
+    }
+
+    const close = () => {
+      if (overlay) {
+        overlay.style.display = 'none';
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        overlay.style.visibility = 'hidden';
+        overlay.classList.remove('active');
+      }
+    };
+
+    if (overlay) {
+      overlay.onclick = (e) => {
+        if (e.target === overlay) close();
+      };
+    }
+
+    if (btnCancel) btnCancel.onclick = close;
+
+    if (btnProject) {
+      btnProject.onclick = () => {
+        close();
+        item.project = item.title;
+        item.type = 'idea';
+        item.stage = 'focus';
+        if (!this.state.customProjects) this.state.customProjects = [];
+        if (!this.state.customProjects.includes(item.title)) {
+          this.state.customProjects.push(item.title);
+        }
+        this.saveState();
+        this.currentStageFilter = 'all';
+        this.switchTab('project-path', item.title);
+        this.showToast(`🚀 Launched Project Board "${item.title}"!`);
+      };
+    }
+
+    if (btnExistingProject) {
+      btnExistingProject.onclick = () => {
+        close();
+        const projects = this.getWorkspaceProjects();
+        if (projects.length === 0) {
+          alert('No existing projects found. Create a new project first!');
+          return;
+        }
+        const chosen = prompt(`Select Existing Project for "${item.title}":\n\nAvailable Projects:\n- ${projects.join('\n- ')}`, projects[0]);
+        if (chosen && chosen.trim()) {
+          const targetProj = chosen.trim();
+          item.project = targetProj;
+          item.type = 'idea';
+          item.stage = 'focus';
+          if (!this.state.customProjects) this.state.customProjects = [];
+          if (!this.state.customProjects.includes(targetProj)) {
+            this.state.customProjects.push(targetProj);
+          }
+          this.saveState();
+          this.switchTab('project-path', targetProj);
+          this.showToast(`🚀 Assigned "${item.title}" to Project Board "${targetProj}"!`);
+        }
+      };
+    }
+
+    if (btnPlanTask) {
+      btnPlanTask.onclick = () => {
+        close();
+        const prioInput = prompt(`Enter Priority for Daily Planner Task (e.g. A1, A2, B1, B2, C1):`, 'A1');
+        if (prioInput !== null) {
+          const prio = prioInput.trim().toUpperCase() || 'A1';
+          const newTask = {
+            id: 'task-' + Date.now(),
+            prio: prio,
+            text: item.title,
+            completed: false,
+            date: new Date().toISOString().split('T')[0]
+          };
+          if (!this.state.franklinTasks) this.state.franklinTasks = [];
+          this.state.franklinTasks.unshift(newTask);
+          this.saveState();
+          this.openFranklinModal();
+          this.showToast(`📋 Launched "${item.title}" as Daily Plan Task (${prio})!`);
+        }
+      };
+    }
+  }
+
+  populateProjectDropdowns() {
+    this.renderProjectDropdowns();
+  }
+
   renderProjectDropdowns() {
     const projects = this.getWorkspaceProjects();
 
-    if (this.globalProjectFilter) {
-      this.globalProjectFilter.innerHTML = '';
-      const allOpt = document.createElement('option');
-      allOpt.value = 'all';
-      allOpt.textContent = 'All Projects';
-      if (this.selectedProject === 'all') allOpt.selected = true;
-      this.globalProjectFilter.appendChild(allOpt);
+    const updateSelect = (selectEl, defaultOptionText, hasAllOption = true) => {
+      if (!selectEl) return;
+      const currentVal = selectEl.value;
+      selectEl.innerHTML = '';
+
+      if (hasAllOption) {
+        const allOpt = document.createElement('option');
+        allOpt.value = 'all';
+        allOpt.textContent = defaultOptionText || 'All Projects';
+        if (this.selectedProject === 'all') allOpt.selected = true;
+        selectEl.appendChild(allOpt);
+      }
 
       projects.forEach(p => {
         const opt = document.createElement('option');
         opt.value = p;
         opt.textContent = `${p}`;
-        if (p === this.selectedProject) opt.selected = true;
-        this.globalProjectFilter.appendChild(opt);
+        if (p === this.selectedProject || p === currentVal) opt.selected = true;
+        selectEl.appendChild(opt);
       });
-    }
+    };
 
-    if (this.projectLineageSelect) {
-      this.projectLineageSelect.innerHTML = '';
-      const allOpt = document.createElement('option');
-      allOpt.value = 'all';
-      allOpt.textContent = 'All Projects Overview';
-      if (this.selectedProject === 'all') allOpt.selected = true;
-      this.projectLineageSelect.appendChild(allOpt);
+    updateSelect(this.globalProjectFilter, '📁 All Projects/Plans', true);
+    if (this.globalProjectFilter) this.globalProjectFilter.value = this.selectedProject || 'all';
 
-      projects.forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p;
-        opt.textContent = `${p}`;
-        if (p === this.selectedProject) opt.selected = true;
-        this.projectLineageSelect.appendChild(opt);
-      });
-    }
+    const homeSelect = document.getElementById('homeProjectFilterSelect');
+    updateSelect(homeSelect, '📁 All Active Plans & Projects', true);
+    if (homeSelect) homeSelect.value = this.selectedProject || 'all';
 
+    updateSelect(this.projectLineageSelect, '📁 All Projects/Plans Overview', true);
+    if (this.projectLineageSelect) this.projectLineageSelect.value = this.selectedProject || 'all';
+    
     if (this.dispatchProjectSelect) {
-      this.dispatchProjectSelect.innerHTML = '';
-
-      projects.forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p;
-        opt.textContent = `${p}`;
-        if (p === this.selectedProject) opt.selected = true;
-        this.dispatchProjectSelect.appendChild(opt);
-      });
-
+      updateSelect(this.dispatchProjectSelect, 'General', false);
       const newOpt = document.createElement('option');
       newOpt.value = '__NEW__';
       newOpt.textContent = '+ Start New Project...';
       this.dispatchProjectSelect.appendChild(newOpt);
     }
+
+    updateSelect(document.getElementById('webClipProjectSelect'), 'General', false);
+    updateSelect(document.getElementById('contactFormProjectSelect'), 'General', false);
   }
 
   updateCategoryDropdowns() {
@@ -3074,9 +4392,26 @@ class MichiApp {
   renderProjectLineage() {
     if (!this.projectLineageContainer || !this.projectLineageSelect) return;
 
+    if (this.projectLineageSelect) {
+      this.projectLineageSelect.value = this.selectedProject;
+    }
+
+    const titleEl = document.getElementById('projectHeaderTitle');
+    const descEl = document.getElementById('projectHeaderDesc');
+
+    if (titleEl) {
+      titleEl.textContent = this.selectedProject !== 'all' ? `📌 Plan / Project: ${this.selectedProject}` : '📁 All Active Plans & Projects';
+    }
+    if (descEl) {
+      descEl.textContent = this.selectedProject !== 'all' 
+        ? `Development pipeline timeline, resources, and tasks for "${this.selectedProject}".`
+        : 'Overview of all active plans and projects evolving from Ideas into Completed Projects.';
+    }
+
+    this.projectLineageContainer.style.display = 'grid';
     let lineageItems = this.state.items;
     if (this.selectedProject !== 'all') {
-      lineageItems = lineageItems.filter(i => (i.project || 'General') === this.selectedProject);
+      lineageItems = lineageItems.filter(i => (i.project || 'General') === this.selectedProject || i.title === this.selectedProject);
     }
 
     const stages = [
@@ -3122,22 +4457,8 @@ class MichiApp {
         stageCol.appendChild(emptyDiv);
       } else {
         stageItems.forEach(item => {
-          const itemCard = document.createElement('div');
-          itemCard.style.background = 'var(--bg-main)';
-          itemCard.style.border = '1px solid var(--border)';
-          itemCard.style.borderRadius = 'var(--radius-sm)';
-          itemCard.style.padding = '0.75rem';
-          itemCard.style.fontSize = '0.85rem';
-
-          const notesCount = (item.notes || []).length;
-
-          itemCard.innerHTML = `
-            <div style="font-weight: 700; color: var(--text-main); margin-bottom: 4px;">${this.escapeHtml(item.title)}</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 6px;">${this.escapeHtml(item.content)}</div>
-            ${notesCount > 0 ? `<div style="font-size: 0.72rem; color: var(--stage-structure); font-weight: 600;">${notesCount} Appended Note(s)</div>` : ''}
-          `;
-
-          stageCol.appendChild(itemCard);
+          const fullCard = this.createCardElement(item);
+          stageCol.appendChild(fullCard);
         });
       }
 
@@ -3150,43 +4471,54 @@ class MichiApp {
     card.className = 'card';
     card.setAttribute('draggable', 'true');
 
-    const stage = item.stage || 'spark';
-    const stageBadgeNames = { spark: 'IDEAS', structure: 'RESOURCES', focus: 'DEVELOPMENT', product: 'PRODUCT' };
-    const stageColors = { spark: 'var(--stage-spark)', structure: 'var(--stage-structure)', focus: 'var(--stage-focus)', product: 'var(--stage-product)' };
+    const stage = item.stage || 'focus';
+    const isResourceCard = item.type === 'resource' || item.type === 'web' || item.stage === 'structure';
 
-    const tagHtml = (item.tags || []).map(t => `<span class="badge badge-idea">${t}</span>`).join(' ');
+    const badgeLabel = isResourceCard ? 'RESOURCE / TOOL' : (stage === 'product' ? 'COMPLETED' : 'DEVELOPMENT');
+    const badgeColor = isResourceCard ? 'var(--stage-structure)' : (stage === 'product' ? 'var(--text-main)' : 'var(--stage-focus)');
+
+    const tagHtml = (item.tags || [])
+      .filter(t => t !== 'Spark' && t !== 'Project Launch' && t !== 'Par Pilot' && t !== item.project)
+      .map(t => `<span class="badge badge-idea">${t}</span>`).join(' ');
     const notes = item.notes || [];
 
-    card.innerHTML = `
-      <div class="card-color-stripe" style="background: ${item.color || 'var(--stage-spark)'};"></div>
-      <div class="card-header">
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <span class="stage-path-badge ${stage}" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; letter-spacing: 0.5px; color: ${stageColors[stage]};">
-            ${stageBadgeNames[stage]}
-          </span>
-          <h4 class="card-title">${this.escapeHtml(item.title)}</h4>
+    const isParentCard = item.type !== 'issue' && item.type !== 'web' && item.type !== 'resource' && item.type !== 'task';
+    const rolePrefix = isParentCard ? 'Lead' : 'Tech';
+
+      // Only display image if item has an authentic image attached
+      const displayImageUrl = (item.imageUrl || '').trim();
+
+      card.innerHTML = `
+        <div class="card-color-stripe" style="background: ${item.color || (isResourceCard ? 'var(--stage-structure)' : 'var(--stage-spark)')};"></div>
+        <div class="card-header">
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="stage-path-badge ${stage}" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; letter-spacing: 0.5px; color: ${badgeColor};">
+              ${badgeLabel}
+            </span>
+            <h4 class="card-title" style="color: var(--text-main); font-weight: 700;">${this.escapeHtml(item.title)}</h4>
+            ${item.assignedTo ? `<span class="badge" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap;">👤 ${rolePrefix}: ${this.escapeHtml(item.assignedTo)}</span>` : ''}
+          </div>
+          <div class="card-actions" style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+            ${(!isResourceCard && stage !== 'spark') ? `<button class="icon-btn btn-regress-pipeline" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.72rem; padding: 2px 7px;" title="Step Back item to previous stage">⬅ Back</button>` : ''}
+            ${(!isResourceCard && stage !== 'product') ? `<button class="btn-advance-pipeline" style="background: var(--bg-card); color: var(--text-main); font-weight: 800; border: 1px solid var(--border); font-size: 0.72rem; padding: 3px 8px; border-radius: 4px;" title="Advance & Create workable board in next stage">Advance ➔</button>` : ''}
+            <button class="icon-btn print-btn" title="Full Reader & Print Mode">View / Print</button>
+            <button class="icon-btn edit-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700;" title="Edit Item">Edit</button>
+            <button class="icon-btn copy-btn" title="Copy Content">Copy</button>
+            <button class="icon-btn delete-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700;" title="Delete Item">Delete</button>
+          </div>
         </div>
-        <div class="card-actions" style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-          ${(stage !== 'spark') ? `<button class="icon-btn btn-regress-pipeline" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.72rem; padding: 2px 7px;" title="Step Back item to previous stage">⬅ Back</button>` : ''}
-          ${(stage !== 'product') ? `<button class="btn-advance-pipeline" style="background: var(--stage-spark); color: #000; font-weight: 800; border: none; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px;" title="Advance & Create workable board in next stage">Advance ➔</button>` : ''}
-          <button class="icon-btn print-btn" title="Full Reader & Print Mode">View / Print</button>
-          <button class="icon-btn edit-btn" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-weight: 700;" title="Edit Item">✏️ Edit</button>
-          <button class="icon-btn copy-btn" title="Copy Content">Copy</button>
-          <button class="icon-btn delete-btn" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); font-weight: 700;" title="Delete Item">🗑️ Delete</button>
-        </div>
-      </div>
-      ${(item.content && item.content.trim() && item.content.trim() !== item.url) ? `
-        <div class="card-body" style="line-height: 1.5; color: var(--text-main); font-size: 0.9rem;">
-          ${this.escapeHtml(item.content)}
-        </div>
-      ` : ''}
-      ${item.imageUrl ? `
-        <div style="margin-top: 6px; text-align: center;">
-          <img src="${item.imageUrl}" style="max-height: 180px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border); object-fit: contain;" alt="Attached Image" />
-        </div>
-      ` : ''}
+        ${(item.content && item.content.trim() && item.content.trim() !== item.url) ? `
+          <div class="card-body" style="line-height: 1.5; color: var(--text-main); font-size: 0.9rem;">
+            ${this.escapeHtml(item.content)}
+          </div>
+        ` : ''}
+        ${displayImageUrl ? `
+          <div style="margin-top: 6px; text-align: center;">
+            <img src="${displayImageUrl}" onerror="this.parentElement.style.display='none'" style="max-height: 180px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border); object-fit: cover;" alt="Attached Image" />
+          </div>
+        ` : ''}
       ${item.url ? `
-        <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="color: #ffffff;">
+        <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="color: var(--text-main);">
           ${this.escapeHtml(item.url)}
         </a>
       ` : ''}
@@ -3194,22 +4526,23 @@ class MichiApp {
       <!-- Interactive Line-by-Line Notes -->
       <div style="margin-top: 0.75rem; border-top: 1px dashed var(--border); padding-top: 0.6rem;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <span style="font-size: 0.72rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;">
+          <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.8px;">
             Appended Notes (${notes.length})
           </span>
-          <button class="add-note-line-btn" style="background: rgba(124, 254, 254, 0.12); color: var(--stage-focus); border: 1px solid rgba(124, 254, 254, 0.3); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; cursor: pointer;" title="Add new note line">+ Add Note</button>
+          <button class="add-note-line-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; cursor: pointer;" title="Add new note line">+ Add Note</button>
         </div>
         ${notes.length > 0 ? `
-          <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div class="appended-notes-scrollable" style="display: flex; flex-direction: column; gap: 6px; max-height: 160px; overflow-y: auto; padding-right: 4px;">
             ${notes.map((n, idx) => `
-              <div class="note-line-row" data-note-idx="${idx}" style="display: flex; align-items: flex-start; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.82rem; cursor: pointer;" title="Click to Edit Note Line">
-                <span style="font-size: 0.7rem; color: var(--stage-structure); font-weight: 700; background: rgba(0,153,103,0.15); padding: 2px 6px; border-radius: 3px; white-space: nowrap; font-family: monospace;">
+              <div class="note-line-row" data-note-idx="${idx}" style="display: flex; align-items: flex-start; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;" title="Click to Edit Note Line">
+                <input type="checkbox" class="note-item-checkbox" data-note-idx="${idx}" ${n.completed ? 'checked' : ''} style="margin-top: 2px; accent-color: var(--stage-structure); cursor: pointer;" title="Mark Note Complete" />
+                <span style="font-size: 0.74rem; color: ${n.completed ? 'var(--text-dim)' : 'var(--text-main)'}; font-weight: 700; background: rgba(255,255,255,0.08); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; white-space: nowrap; font-family: monospace;">
                   ${this.escapeHtml(n.date)}
                 </span>
-                <span style="flex: 1; color: var(--text-main); line-height: 1.35; word-break: break-word;">
+                <span style="flex: 1; color: ${n.completed ? 'var(--text-dim)' : 'var(--text-main)'}; font-size: 0.85rem; font-weight: 600; line-height: 1.35; word-break: break-word; text-decoration: ${n.completed ? 'line-through' : 'none'}; opacity: ${n.completed ? '0.7' : '1'};">
                   ${this.escapeHtml(n.text)}
                 </span>
-                <span style="font-size: 0.72rem; color: var(--text-muted);" title="Edit Note Line">✏️</span>
+                <span style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 1px;" title="Edit Note Line">Edit</span>
               </div>
             `).join('')}
           </div>
@@ -3276,9 +4609,22 @@ class MichiApp {
 
     card.querySelectorAll('.note-line-row').forEach(row => {
       row.addEventListener('click', (e) => {
+        if (e.target && e.target.classList.contains('note-item-checkbox')) return;
         e.stopPropagation();
         const noteIdx = parseInt(row.dataset.noteIdx, 10);
         this.openNoteModal(item.id, noteIdx);
+      });
+    });
+
+    card.querySelectorAll('.note-item-checkbox').forEach(chk => {
+      chk.addEventListener('change', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(chk.getAttribute('data-note-idx'), 10);
+        if (item.notes && item.notes[idx]) {
+          item.notes[idx].completed = chk.checked;
+          this.saveState();
+          this.render();
+        }
       });
     });
 
@@ -3350,110 +4696,168 @@ class MichiApp {
   deleteProject(projectName) {
     if (!projectName || projectName === 'all') return;
 
+    const targetName = projectName.trim();
+
     this.confirmDialog(
-      `Are you sure you want to delete project "${projectName}"? This will remove all items and cards belonging to this project.`,
-      `Delete Project: ${projectName}`,
+      `Are you sure you want to delete project "${targetName}"? This will remove all items belonging to this project.`,
+      `Delete Project: ${targetName}`,
       () => {
+        const targetLower = targetName.toLowerCase();
+
+        // 1. Remove ONLY items explicitly assigned to this exact project
         if (Array.isArray(this.state.items)) {
-          this.state.items = this.state.items.filter(i => (i.project || 'General') !== projectName && i.project !== projectName);
+          this.state.items = this.state.items.filter(i => {
+            if (!i.project) return true; // Keep items without explicit project
+            return i.project.trim().toLowerCase() !== targetLower;
+          });
         }
 
+        // 2. Remove from customProjects list
         if (Array.isArray(this.state.customProjects)) {
-          this.state.customProjects = this.state.customProjects.filter(p => p !== projectName);
+          this.state.customProjects = this.state.customProjects.filter(p => (p || '').trim().toLowerCase() !== targetLower);
         }
 
+        // 3. Remove from contact assignments
+        if (Array.isArray(this.state.contacts)) {
+          this.state.contacts.forEach(c => {
+            if (Array.isArray(c.projects)) {
+              c.projects = c.projects.filter(p => (p || '').trim().toLowerCase() !== targetLower);
+            }
+          });
+        }
+
+        // 4. Blacklist in deletedProjects
         if (!this.state.deletedProjects || !Array.isArray(this.state.deletedProjects)) {
           this.state.deletedProjects = [];
         }
-        if (!this.state.deletedProjects.includes(projectName)) {
-          this.state.deletedProjects.push(projectName);
+        if (!this.state.deletedProjects.map(p => p.toLowerCase().trim()).includes(targetLower)) {
+          this.state.deletedProjects.push(targetName);
         }
 
         this.selectedProject = 'all';
         if (this.globalProjectFilter) this.globalProjectFilter.value = 'all';
+        if (this.projectLineageSelect) this.projectLineageSelect.value = 'all';
 
         this.saveState();
+        this.populateProjectDropdowns();
         this.render();
-        this.showToast(`Deleted project "${projectName}" & its items.`);
+        this.showToast(`Deleted project "${targetName}" & its boards.`);
       }
     );
   }
 
-  createProjectBoardCard(projectName, stageObj, projectItems) {
+  createProjectBoardCard(projectName) {
     const card = document.createElement('div');
     card.className = 'card compact-project-board-card';
-    card.style.minWidth = '295px';
-    card.style.maxWidth = '340px';
-    card.style.minHeight = '155px';
-    card.style.flexShrink = '0';
-    card.style.scrollSnapAlign = 'start';
     card.style.display = 'flex';
     card.style.flexDirection = 'column';
     card.style.justifyContent = 'space-between';
-    card.style.padding = '0.9rem 1.1rem';
+    card.style.padding = '0.75rem 0.95rem';
     card.style.background = 'var(--bg-card)';
     card.style.border = `1px solid var(--border)`;
     card.style.borderRadius = 'var(--radius-md)';
     card.style.boxShadow = 'var(--shadow-sm)';
-    card.style.cursor = 'pointer';
+    card.style.minHeight = 'auto';
+    card.style.height = 'auto';
 
-    const stageNames = { spark: 'Ideas', structure: 'Resources', focus: 'Development', product: 'Completed' };
-    const stageName = stageNames[stageObj.id] || 'Ideas';
+    // Calculate current progress stage for this project
+    const allProjItems = (this.state.items || []).filter(i => (i.project || 'General') === projectName);
+    
+    // Determine overall project progress (highest stage reached or spark default)
+    let currentStage = 'spark';
+    const stageOrder = { spark: 1, structure: 2, focus: 3, product: 4 };
+    let maxRank = 0;
+    allProjItems.forEach(item => {
+      const rank = stageOrder[item.stage] || 1;
+      if (rank > maxRank) {
+        maxRank = rank;
+        currentStage = item.stage || 'spark';
+      }
+    });
 
-    const snippetHtml = projectItems.length > 0
-      ? projectItems.slice(0, 2).map(i => `
-          <div style="font-size: 0.8rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px;">
-            <span style="color: ${stageObj.color}; font-weight: 900;">•</span> ${this.escapeHtml(i.title)}
-          </div>
-        `).join('')
-      : `<div style="font-size: 0.76rem; color: var(--text-dim); font-style: italic;">No ${stageName.toLowerCase()} cards added yet.</div>`;
+    const stageNames = { spark: 'Development', structure: 'Development', focus: 'Development', product: 'Completed' };
+    const stageColors = { spark: 'var(--stage-focus)', structure: 'var(--stage-focus)', focus: 'var(--stage-focus)', product: '#ffffff' };
+    const stageName = stageNames[currentStage] || 'Development';
+    const stageColor = stageColors[currentStage] || 'var(--stage-focus)';
+
+    // Find primary project item (parent card)
+    let primaryItem = allProjItems.find(i => i.type !== 'issue' && i.type !== 'web' && i.type !== 'resource' && i.type !== 'task' && i.content && i.content.trim() && !i.content.includes('Password entry'));
+    if (!primaryItem) {
+      primaryItem = allProjItems.find(i => i.content && i.content.trim() && !i.content.includes('Password entry') && !i.content.toLowerCase().includes('web reference clip'));
+    }
+
+    let briefDesc = primaryItem && primaryItem.content ? primaryItem.content.trim() : '';
+
+    if (!briefDesc || briefDesc === 'Password entry' || briefDesc.toLowerCase().includes('project workspace for')) {
+      if (projectName.toLowerCase() === 'michi') {
+        briefDesc = 'MICHI Vision and Direction — Organize Life and Work';
+      } else {
+        const itemCount = allProjItems.length;
+        briefDesc = itemCount > 0 
+          ? `Active workspace with ${itemCount} project ${itemCount === 1 ? 'record' : 'records'}.`
+          : 'Project workspace and assets.';
+      }
+    }
+
+    const leadContact = (primaryItem && primaryItem.assignedTo) || (allProjItems.find(i => i.assignedTo) ? allProjItems.find(i => i.assignedTo).assignedTo : '');
+    const kind = (this.state.projectKinds && this.state.projectKinds[projectName]) || 'project';
+    const isPlan = kind === 'plan';
+    const kindBadge = isPlan ? '✈️ PLAN' : '🛠️ PROJECT';
 
     card.innerHTML = `
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 5px;">
-        <div style="display: flex; align-items: center; gap: 6px; overflow: hidden;">
-          <h4 style="font-size: 0.92rem; font-weight: 800; color: #ffffff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 6px; overflow: hidden; flex: 1; min-width: 0;">
+          <span style="background: ${isPlan ? 'rgba(56, 189, 248, 0.15)' : 'rgba(251, 146, 60, 0.15)'}; color: ${isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)'}; border: 1px solid ${isPlan ? 'rgba(56, 189, 248, 0.35)' : 'rgba(251, 146, 60, 0.35)'}; font-size: 0.68rem; font-weight: 800; padding: 1px 6px; border-radius: 8px; white-space: nowrap;">
+            ${kindBadge}
+          </span>
+          <h4 style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0;">
             ${this.escapeHtml(projectName)}
           </h4>
         </div>
+        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap; border: 1px solid var(--border);">
+          ${stageName}
+        </span>
+      </div>
+
+      ${leadContact ? `<div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">👤 Lead: <span style="color: var(--text-main); font-weight: 700;">${this.escapeHtml(leadContact)}</span></div>` : ''}
+
+      <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 6px 0; word-break: break-word;">
+        ${this.escapeHtml(briefDesc)}
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 0.74rem; color: var(--text-dim);">
+        <span>${allProjItems.length} records</span>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="background: rgba(255,255,255,0.1); color: #ffffff; font-size: 0.75rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap;">
-            ${projectItems.length} ${projectItems.length === 1 ? 'Item' : 'Items'}
-          </span>
-          <button type="button" class="btn-delete-project-card" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); font-size: 0.72rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; cursor: pointer;" title="Delete this project & its cards">Delete</button>
+          <button type="button" class="btn-delete-project-action" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.76rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; cursor: pointer;" title="Delete ${isPlan ? 'Plan' : 'Project'}">
+            Delete
+          </button>
+          <button type="button" class="btn-view-project-action" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.76rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;" title="View Board">
+            View Board ➔
+          </button>
         </div>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 4px; margin: 4px 0; flex: 1;">
-        ${snippetHtml}
-      </div>
-
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08);">
-        <button class="btn-add-item-board" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); font-size: 0.74rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; cursor: pointer;">
-          + Add ${stageName}
-        </button>
-        <span style="font-size: 0.74rem; font-weight: 800; color: #ffffff;">View Board</span>
       </div>
     `;
 
-    card.addEventListener('click', () => {
+    const openProj = (e) => {
+      if (e) e.stopPropagation();
       this.selectedProject = projectName;
       if (this.globalProjectFilter) this.globalProjectFilter.value = projectName;
       this.render();
-      this.showToast(`Showing ${projectName} — ${stageName} Board`);
-    });
+      this.showToast(`Opened ${projectName} ${isPlan ? 'Plan' : 'Project'}`);
+    };
 
-    const delCardBtn = card.querySelector('.btn-delete-project-card');
-    if (delCardBtn) {
-      delCardBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+    const btnViewProj = card.querySelector('.btn-view-project-action');
+    if (btnViewProj) {
+      btnViewProj.addEventListener('click', openProj);
+    }
+
+    const btnDeleteProj = card.querySelector('.btn-delete-project-action');
+    if (btnDeleteProj) {
+      btnDeleteProj.addEventListener('click', (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
         this.deleteProject(projectName);
       });
     }
-
-    card.querySelector('.btn-add-item-board').addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.openNoteModal(null, -1);
-    });
 
     return card;
   }
@@ -3461,37 +4865,48 @@ class MichiApp {
   renderSpecificProjectView(projectName, gridItems) {
     const projItems = gridItems.filter(i => (i.project || 'Personal') === projectName);
 
-    // 1. Project Title Header Banner (placed at the top above the boards)
+    const kind = (this.state.projectKinds && this.state.projectKinds[projectName]) || 'project';
+    const isPlan = kind === 'plan';
+    const kindLabel = isPlan ? 'Plan' : 'Project';
+    const kindEmoji = isPlan ? '✈️' : '🛠️';
+    const kindBadge = isPlan ? 'LIFE PLAN' : 'WORK PROJECT';
+    const kindBadgeBg = isPlan ? 'rgba(56, 189, 248, 0.15)' : 'rgba(251, 146, 60, 0.15)';
+    const kindBadgeColor = isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)';
+    const kindBadgeBorder = isPlan ? 'rgba(56, 189, 248, 0.35)' : 'rgba(251, 146, 60, 0.35)';
+
+    // 1. Plan / Project Title Header Banner
     const banner = document.createElement('div');
     banner.style.background = 'var(--bg-card)';
     banner.style.border = '1px solid var(--border)';
     banner.style.borderRadius = 'var(--radius-md)';
     banner.style.padding = '1rem 1.4rem';
-    banner.style.marginBottom = '1.2rem';
+    banner.style.marginBottom = '1.4rem';
     banner.style.display = 'flex';
     banner.style.alignItems = 'center';
     banner.style.justifyContent = 'space-between';
     banner.style.gap = '1rem';
     banner.style.flexWrap = 'wrap';
-    banner.style.boxShadow = 'var(--shadow-sm)';
 
     banner.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div>
-          <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--stage-spark); margin-bottom: 2px;">
-            Project: ${this.escapeHtml(projectName)}
-          </h2>
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span style="background: ${kindBadgeBg}; color: ${kindBadgeColor}; border: 1px solid ${kindBadgeBorder}; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px;">
+            ${kindEmoji} ${kindBadge}
+          </span>
           <span style="font-size: 0.8rem; color: var(--text-muted);">
-            4 Stage Progress — ${projItems.length} Total ${projItems.length === 1 ? 'Item' : 'Items'}
+            Workspace Pipeline — ${projItems.length} Total ${projItems.length === 1 ? 'Item' : 'Items'}
           </span>
         </div>
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0;">
+          ${kindLabel}: ${this.escapeHtml(projectName)}
+        </h2>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <button type="button" class="btn-delete-current-proj" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-          🗑️ Delete Project
+        <button type="button" class="btn-delete-current-proj" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
+          Delete ${kindLabel}
         </button>
-        <button type="button" class="btn-clear-proj-filter" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-          ✖ Back to All Projects Overview
+        <button type="button" class="btn-clear-proj-filter" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
+          Back to All Plans & Projects
         </button>
       </div>
     `;
@@ -3508,97 +4923,607 @@ class MichiApp {
 
     this.cardsGrid.appendChild(banner);
 
-    // 2. 4 Horizontal Side-by-Side Columns/Boards Container
-    const boardContainer = document.createElement('div');
-    boardContainer.style.display = 'grid';
-    boardContainer.style.gridTemplateColumns = 'repeat(4, minmax(270px, 1fr))';
-    boardContainer.style.gap = '1.2rem';
-    boardContainer.style.width = '100%';
-    boardContainer.style.overflowX = 'auto';
-    boardContainer.style.paddingBottom = '1rem';
+    // 2. Main Workspace 2-Column Grid Layout
+    const workspaceGrid = document.createElement('div');
+    workspaceGrid.style.display = 'grid';
+    workspaceGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(320px, 1fr))';
+    workspaceGrid.style.gap = '1.2rem';
+    workspaceGrid.style.width = '100%';
+    workspaceGrid.style.alignItems = 'start';
 
-    const stages = [
-      { id: 'spark', name: '💡 1. Ideas', color: 'var(--stage-spark)' },
-      { id: 'structure', name: '📂 2. Resources', color: 'var(--stage-structure)' },
-      { id: 'focus', name: '⚡ 3. Development', color: 'var(--stage-focus)' },
-      { id: 'product', name: '🚀 4. Completed', color: 'var(--stage-product)' }
-    ];
+    // LEFT COLUMN: Development (top) + Resources/Tools (below)
+    const leftColumn = document.createElement('div');
+    leftColumn.style.display = 'flex';
+    leftColumn.style.flexDirection = 'column';
+    leftColumn.style.gap = '1.2rem';
+    leftColumn.style.width = '100%';
 
-    stages.forEach(st => {
-      const colItems = projItems.filter(i => (i.stage || 'spark') === st.id);
+    // Development Section
+    const devSection = document.createElement('div');
+    devSection.style.background = 'rgba(255,255,255,0.02)';
+    devSection.style.border = '1px solid var(--border)';
+    devSection.style.borderRadius = 'var(--radius-md)';
+    devSection.style.padding = '1.2rem';
+    devSection.style.display = 'flex';
+    devSection.style.flexDirection = 'column';
+    devSection.style.gap = '1rem';
 
-      const col = document.createElement('div');
-      col.style.background = 'rgba(255,255,255,0.02)';
-      col.style.border = '1px solid var(--border)';
-      col.style.borderRadius = 'var(--radius-md)';
-      col.style.padding = '1rem';
-      col.style.display = 'flex';
-      col.style.flexDirection = 'column';
-      col.style.gap = '1rem';
-      col.style.minHeight = '420px';
+    const devItems = projItems.filter(i => i.stage !== 'product' && i.type !== 'resource' && i.type !== 'web' && i.type !== 'note' && i.stage !== 'structure');
+    this.renderDevelopmentBoardSection(devSection, devItems, projectName);
+    leftColumn.appendChild(devSection);
 
-      // Column Header
-      const colHeader = document.createElement('div');
-      colHeader.style.display = 'flex';
-      colHeader.style.alignItems = 'center';
-      colHeader.style.justifyContent = 'space-between';
-      colHeader.style.borderBottom = '1px solid var(--border)';
-      colHeader.style.paddingBottom = '0.5rem';
+    // Resources/Tools Section (Stacked BELOW Development)
+    const resourceItems = projItems.filter(i => i.stage !== 'product' && (i.type === 'resource' || i.type === 'web' || i.stage === 'structure'));
+    const resourcesSection = document.createElement('div');
+    resourcesSection.style.background = 'rgba(255,255,255,0.02)';
+    resourcesSection.style.border = '1px solid var(--border)';
+    resourcesSection.style.borderRadius = 'var(--radius-md)';
+    resourcesSection.style.padding = '1.2rem';
+    resourcesSection.style.display = 'flex';
+    resourcesSection.style.flexDirection = 'column';
+    resourcesSection.style.gap = '1rem';
 
-      colHeader.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="font-weight: 800; font-size: 0.95rem; color: ${st.color};">${st.name}</span>
-          <span style="background: rgba(255,255,255,0.1); color: var(--text-main); font-size: 0.76rem; font-weight: 800; padding: 2px 7px; border-radius: 10px;">${colItems.length}</span>
-        </div>
-        <button class="btn-add-col-item" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; cursor: pointer;">
-          + Add
-        </button>
-      `;
+    const resHeader = document.createElement('div');
+    resHeader.style.display = 'flex';
+    resHeader.style.alignItems = 'center';
+    resHeader.style.justifyContent = 'space-between';
+    resHeader.style.borderBottom = '2px solid var(--border)';
+    resHeader.style.paddingBottom = '0.6rem';
+    resHeader.style.flexWrap = 'wrap';
+    resHeader.style.gap = '8px';
 
-      colHeader.querySelector('.btn-add-col-item').addEventListener('click', () => {
-        this.openNoteModal(null, -1);
-      });
+    resHeader.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Resources/Tools</span>
+        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${resourceItems.length}</span>
+      </div>
+      <button class="btn-add-res-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
+        + Add Resource/Tool
+      </button>
+    `;
 
-      col.appendChild(colHeader);
-
-      // Column Items List
-      const itemsList = document.createElement('div');
-      itemsList.style.display = 'flex';
-      itemsList.style.flexDirection = 'column';
-      itemsList.style.gap = '0.85rem';
-      itemsList.style.flex = '1';
-
-      if (colItems.length === 0) {
-        itemsList.innerHTML = `
-          <div style="font-size: 0.78rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 2rem 0;">
-            No ${st.name.replace(/^[^\s]+\s*/, '')} items yet.
-          </div>
-        `;
-      } else {
-        colItems.forEach(item => {
-          const card = this.createCardElement(item);
-          itemsList.appendChild(card);
-        });
-      }
-
-      col.appendChild(itemsList);
-      boardContainer.appendChild(col);
+    resHeader.querySelector('.btn-add-res-item').addEventListener('click', () => {
+      this.openWebClipModal(projectName);
     });
 
-    this.cardsGrid.appendChild(boardContainer);
+    resourcesSection.appendChild(resHeader);
+
+    const resList = document.createElement('div');
+    resList.style.display = 'flex';
+    resList.style.flexDirection = 'column';
+    resList.style.gap = '1rem';
+    resList.style.width = '100%';
+
+    if (resourceItems.length === 0) {
+      resList.innerHTML = `
+        <div style="font-size: 0.82rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 2rem 0; background: rgba(255,255,255,0.01); border: 1px dashed var(--border); border-radius: var(--radius-sm);">
+          No resources or tools added yet. Click "+ Add Resource/Tool" to attach web clips or documentation.
+        </div>
+      `;
+    } else {
+      resourceItems.forEach(item => {
+        resList.appendChild(this.createCardElement(item));
+      });
+    }
+
+    resourcesSection.appendChild(resList);
+    leftColumn.appendChild(resourcesSection);
+    workspaceGrid.appendChild(leftColumn);
+
+    // RIGHT COLUMN: Completed (top) + Notes (below!)
+    const rightColumn = document.createElement('div');
+    rightColumn.style.display = 'flex';
+    rightColumn.style.flexDirection = 'column';
+    rightColumn.style.gap = '1.2rem';
+    rightColumn.style.width = '100%';
+
+    // Completed Section
+    const completedItems = projItems.filter(i => i.stage === 'product');
+    const completedSection = document.createElement('div');
+    completedSection.style.background = 'rgba(255,255,255,0.02)';
+    completedSection.style.border = '1px solid var(--border)';
+    completedSection.style.borderRadius = 'var(--radius-md)';
+    completedSection.style.padding = '1.2rem';
+    completedSection.style.display = 'flex';
+    completedSection.style.flexDirection = 'column';
+    completedSection.style.gap = '1rem';
+
+    const compHeader = document.createElement('div');
+    compHeader.style.display = 'flex';
+    compHeader.style.alignItems = 'center';
+    compHeader.style.justifyContent = 'space-between';
+    compHeader.style.borderBottom = '2px solid var(--border)';
+    compHeader.style.paddingBottom = '0.6rem';
+    compHeader.style.flexWrap = 'wrap';
+    compHeader.style.gap = '8px';
+
+    compHeader.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Completed</span>
+        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${completedItems.length}</span>
+      </div>
+      <button class="btn-add-comp-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
+        + Add Completed Item
+      </button>
+    `;
+
+    compHeader.querySelector('.btn-add-comp-item').addEventListener('click', () => {
+      this.openWebClipModal(projectName);
+    });
+
+    completedSection.appendChild(compHeader);
+
+    const compList = document.createElement('div');
+    compList.style.display = 'flex';
+    compList.style.flexDirection = 'column';
+    compList.style.gap = '1rem';
+    compList.style.width = '100%';
+
+    if (completedItems.length === 0) {
+      compList.innerHTML = `
+        <div style="font-size: 0.82rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 2rem 0; background: rgba(255,255,255,0.01); border: 1px dashed var(--border); border-radius: var(--radius-sm);">
+          No items currently in Completed.
+        </div>
+      `;
+    } else {
+      completedItems.forEach(item => {
+        compList.appendChild(this.createCardElement(item));
+      });
+    }
+
+    completedSection.appendChild(compList);
+    rightColumn.appendChild(completedSection);
+
+    // Notes Section (Stacked BELOW Completed)
+    const noteItems = projItems.filter(i => i.type === 'note' || (i.tags && i.tags.includes('Note')));
+
+    const notesSection = document.createElement('div');
+    notesSection.style.background = 'rgba(255,255,255,0.02)';
+    notesSection.style.border = '1px solid var(--border)';
+    notesSection.style.borderRadius = 'var(--radius-md)';
+    notesSection.style.padding = '1.2rem';
+    notesSection.style.display = 'flex';
+    notesSection.style.flexDirection = 'column';
+    notesSection.style.gap = '1rem';
+
+    const notesHeader = document.createElement('div');
+    notesHeader.style.display = 'flex';
+    notesHeader.style.alignItems = 'center';
+    notesHeader.style.justifyContent = 'space-between';
+    notesHeader.style.borderBottom = '2px solid var(--border)';
+    notesHeader.style.paddingBottom = '0.6rem';
+    notesHeader.style.flexWrap = 'wrap';
+    notesHeader.style.gap = '8px';
+
+    notesHeader.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Notes</span>
+        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${noteItems.length}</span>
+      </div>
+      <button class="btn-add-note-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
+        + Add Note
+      </button>
+    `;
+
+    notesHeader.querySelector('.btn-add-note-item').addEventListener('click', () => {
+      this.openWebClipModal(projectName);
+    });
+
+    notesSection.appendChild(notesHeader);
+
+    const notesList = document.createElement('div');
+    notesList.style.display = 'flex';
+    notesList.style.flexDirection = 'column';
+    notesList.style.gap = '1rem';
+    notesList.style.width = '100%';
+
+    if (noteItems.length === 0) {
+      notesList.innerHTML = `
+        <div style="font-size: 0.82rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 2rem 0; background: rgba(255,255,255,0.01); border: 1px dashed var(--border); border-radius: var(--radius-sm);">
+          No notes recorded yet. Click "+ Add Note" to record a project note.
+        </div>
+      `;
+    } else {
+      noteItems.forEach(item => {
+        notesList.appendChild(this.createCardElement(item));
+      });
+    }
+
+    notesSection.appendChild(notesList);
+    rightColumn.appendChild(notesSection);
+    workspaceGrid.appendChild(rightColumn);
+
+    this.cardsGrid.appendChild(workspaceGrid);
+  }
+
+  openAddTaskModal(targetProjectName) {
+    if (this.taskTitle) this.taskTitle.value = '';
+    if (this.taskContent) this.taskContent.value = '';
+    if (this.customTaskContactName) this.customTaskContactName.value = '';
+    if (this.customTaskContactWrapper) this.customTaskContactWrapper.style.display = 'none';
+
+    const proj = (targetProjectName && targetProjectName !== 'all') ? targetProjectName : (this.selectedProject !== 'all' ? this.selectedProject : 'General');
+    if (this.taskProjectName) this.taskProjectName.value = proj;
+
+    if (this.taskContactSelect) {
+      this.taskContactSelect.innerHTML = '';
+      const optUnassigned = document.createElement('option');
+      optUnassigned.value = '';
+      optUnassigned.textContent = 'Unassigned (No contact)';
+      this.taskContactSelect.appendChild(optUnassigned);
+
+      const contacts = this.state.contacts || [];
+      contacts.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = `👤 ${c.name} (${c.role || 'Contact'})`;
+        this.taskContactSelect.appendChild(opt);
+      });
+
+      const optNew = document.createElement('option');
+      optNew.value = '__NEW__';
+      optNew.textContent = '+ Create New Contact / Technician...';
+      this.taskContactSelect.appendChild(optNew);
+      this.taskContactSelect.value = '';
+    }
+
+    if (this.taskModalOverlay) {
+      this.taskModalOverlay.style.display = 'flex';
+      this.taskModalOverlay.style.zIndex = '99999';
+      this.taskModalOverlay.classList.add('active');
+      if (this.taskTitle) this.taskTitle.focus();
+    }
+  }
+
+  closeTaskModal() {
+    if (this.taskModalOverlay) {
+      this.taskModalOverlay.style.display = 'none';
+      this.taskModalOverlay.classList.remove('active');
+    }
+  }
+
+  saveTaskModal() {
+    const projectName = (this.taskProjectName && this.taskProjectName.value) || this.selectedProject || 'General';
+    const title = this.taskTitle ? this.taskTitle.value.trim() : '';
+    if (!title) return;
+
+    const content = this.taskContent ? this.taskContent.value.trim() : '';
+
+    let assignedName = this.taskContactSelect ? this.taskContactSelect.value : '';
+    if (assignedName === '__NEW__') {
+      const customName = this.customTaskContactName ? this.customTaskContactName.value.trim() : '';
+      if (customName) {
+        assignedName = customName;
+        const existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === assignedName.toLowerCase());
+        if (!existing) {
+          const newContact = {
+            id: 'contact-' + Date.now(),
+            name: assignedName,
+            role: 'Technician / Contact',
+            company: projectName || 'General',
+            email: '',
+            phone: '',
+            projects: [projectName || 'General'],
+            notes: `Auto-created contact during Task creation.`,
+            color: '#7CFEFE'
+          };
+          if (!this.state.contacts) this.state.contacts = [];
+          this.state.contacts.push(newContact);
+        }
+      }
+    }
+
+    const newTask = {
+      id: 'item-task-' + Date.now(),
+      type: 'task',
+      stage: 'focus',
+      project: projectName,
+      title: title,
+      content: content,
+      assignedTo: assignedName || '',
+      notes: [],
+      status: 'in-progress',
+      tags: ['Task'],
+      color: '#7CFEFE',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+    };
+
+    if (!this.state.items) this.state.items = [];
+    this.state.items.unshift(newTask);
+    this.saveState();
+    this.closeTaskModal();
+    this.render();
+    this.showToast(`📌 Added Task: "${title}"`);
+  }
+
+  openLogIssueModal(targetProjectName) {
+    if (this.issueTitle) this.issueTitle.value = '';
+    if (this.issueContent) this.issueContent.value = '';
+    if (this.customIssueContactName) this.customIssueContactName.value = '';
+    if (this.customIssueContactWrapper) this.customIssueContactWrapper.style.display = 'none';
+    const proj = (targetProjectName && targetProjectName !== 'all') ? targetProjectName : (this.selectedProject !== 'all' ? this.selectedProject : 'General');
+    if (this.issueProjectName) this.issueProjectName.value = proj;
+
+    if (this.issueContactSelect) {
+      this.issueContactSelect.innerHTML = '';
+      const optUnassigned = document.createElement('option');
+      optUnassigned.value = '';
+      optUnassigned.textContent = 'Unassigned (No contact)';
+      this.issueContactSelect.appendChild(optUnassigned);
+
+      const contacts = this.state.contacts || [];
+      contacts.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = `👤 ${c.name} (${c.role || 'Contact'})`;
+        this.issueContactSelect.appendChild(opt);
+      });
+
+      const optNew = document.createElement('option');
+      optNew.value = '__NEW__';
+      optNew.textContent = '+ Create New Contact / Technician...';
+      this.issueContactSelect.appendChild(optNew);
+      this.issueContactSelect.value = '';
+    }
+
+    if (this.issueModalOverlay) {
+      this.issueModalOverlay.style.display = 'flex';
+      this.issueModalOverlay.style.zIndex = '99999';
+      this.issueModalOverlay.classList.add('active');
+      if (this.issueTitle) this.issueTitle.focus();
+    }
+  }
+
+  closeIssueModal() {
+    if (this.issueModalOverlay) {
+      this.issueModalOverlay.style.display = 'none';
+      this.issueModalOverlay.classList.remove('active');
+    }
+  }
+
+  saveIssueModal() {
+    const projectName = (this.issueProjectName && this.issueProjectName.value) || this.selectedProject || 'General';
+    const title = this.issueTitle ? this.issueTitle.value.trim() : '';
+    if (!title) return;
+
+    const content = this.issueContent ? this.issueContent.value.trim() : '';
+    let assignedName = this.issueContactSelect ? this.issueContactSelect.value : '';
+
+    if (assignedName === '__NEW__') {
+      const customName = this.customIssueContactName ? this.customIssueContactName.value.trim() : '';
+      if (customName) {
+        assignedName = customName;
+        const existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === assignedName.toLowerCase());
+        if (!existing) {
+          const newContact = {
+            id: 'contact-' + Date.now(),
+            name: assignedName,
+            role: 'Assigned Technician / Lead',
+            company: projectName,
+            email: '',
+            phone: '',
+            projects: [projectName],
+            notes: `Auto-created contact during issue log for ${projectName}.`,
+            color: '#7CFEFE'
+          };
+          if (!this.state.contacts) this.state.contacts = [];
+          this.state.contacts.push(newContact);
+          this.showToast(`👤 Created new contact: "${assignedName}"!`);
+        }
+      } else {
+        assignedName = '';
+      }
+    }
+
+    const newIssue = {
+      id: 'item-issue-' + Date.now(),
+      type: 'issue',
+      stage: 'focus',
+      project: projectName,
+      title: title,
+      content: content,
+      assignedTo: assignedName || '',
+      resolved: false,
+      tags: ['Issue'],
+      color: '#f43f5e',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+    };
+
+    if (!this.state.items) this.state.items = [];
+    this.state.items.unshift(newIssue);
+    this.saveState();
+    this.closeIssueModal();
+    this.render();
+    this.showToast(`⚠️ Logged issue: "${title}"`);
+  }
+
+  openAddIssueStepModal(iss) {
+    if (!iss) return;
+    if (this.issueStepIssueId) this.issueStepIssueId.value = iss.id;
+    if (this.issueStepText) this.issueStepText.value = '';
+    if (this.customIssueStepContactName) this.customIssueStepContactName.value = '';
+    if (this.customIssueStepContactWrapper) this.customIssueStepContactWrapper.style.display = 'none';
+
+    if (this.issueStepModalHeaderTitle) {
+      this.issueStepModalHeaderTitle.textContent = `💬 Add Step: "${iss.title}"`;
+    }
+
+    if (this.issueStepContactSelect) {
+      this.issueStepContactSelect.innerHTML = '';
+      const currentAssigned = iss.assignedTo ? `Current (${iss.assignedTo})` : 'Unassigned';
+      const optKeep = document.createElement('option');
+      optKeep.value = '__KEEP__';
+      optKeep.textContent = `Keep ${currentAssigned}`;
+      this.issueStepContactSelect.appendChild(optKeep);
+
+      const contacts = this.state.contacts || [];
+      contacts.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = `${c.name} (${c.role || 'Technician'})`;
+        if (c.name === iss.assignedTo) opt.selected = true;
+        this.issueStepContactSelect.appendChild(opt);
+      });
+
+      const optNew = document.createElement('option');
+      optNew.value = '__NEW__';
+      optNew.textContent = '+ Assign New Contact / Technician...';
+      this.issueStepContactSelect.appendChild(optNew);
+      if (!iss.assignedTo) this.issueStepContactSelect.value = '__KEEP__';
+    }
+
+    if (this.issueStepModalOverlay) {
+      this.issueStepModalOverlay.style.display = 'flex';
+      this.issueStepModalOverlay.classList.add('active');
+      if (this.issueStepText) this.issueStepText.focus();
+    }
+  }
+
+  closeAddIssueStepModal() {
+    if (this.issueStepModalOverlay) {
+      this.issueStepModalOverlay.style.display = 'none';
+      this.issueStepModalOverlay.classList.remove('active');
+    }
+  }
+
+  saveIssueStepModal() {
+    const issueId = this.issueStepIssueId ? this.issueStepIssueId.value : '';
+    if (!issueId) return;
+
+    const iss = (this.state.items || []).find(i => i.id === issueId);
+    if (!iss) return;
+
+    const stepText = this.issueStepText ? this.issueStepText.value.trim() : '';
+    if (!stepText) return;
+
+    let assignedName = this.issueStepContactSelect ? this.issueStepContactSelect.value : '__KEEP__';
+    if (assignedName === '__NEW__') {
+      const customName = this.customIssueStepContactName ? this.customIssueStepContactName.value.trim() : '';
+      if (customName) {
+        assignedName = customName;
+        const existing = (this.state.contacts || []).find(c => c.name.toLowerCase() === assignedName.toLowerCase());
+        if (!existing) {
+          const newContact = {
+            id: 'contact-' + Date.now(),
+            name: assignedName,
+            role: 'Assigned Technician / Lead',
+            company: iss.project || 'General',
+            email: '',
+            phone: '',
+            projects: [iss.project || 'General'],
+            notes: `Auto-created contact during issue step log.`,
+            color: '#7CFEFE'
+          };
+          if (!this.state.contacts) this.state.contacts = [];
+          this.state.contacts.push(newContact);
+          this.showToast(`👤 Created new contact: "${assignedName}"!`);
+        }
+        iss.assignedTo = assignedName;
+      }
+    } else if (assignedName !== '__KEEP__' && assignedName) {
+      iss.assignedTo = assignedName;
+    }
+
+    if (!iss.notes) iss.notes = [];
+    const stepNum = iss.notes.length + 1;
+    const now = new Date();
+    const timestamp = now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    iss.notes.push({
+      text: `Step ${stepNum}: ${stepText}`,
+      date: timestamp
+    });
+
+    this.saveState();
+    this.closeAddIssueStepModal();
+    this.render();
+    this.showToast(`💬 Added Step ${stepNum} to issue "${iss.title}"!`);
+  }
+
+  openEditIssueModal(iss) {
+    if (!iss) return;
+    this.activeEditIssue = iss;
+
+    if (this.editIssueModalIssueId) this.editIssueModalIssueId.value = iss.id;
+    if (this.editIssueModalTitle) this.editIssueModalTitle.textContent = `⚙️ Manage Issue: "${iss.title}"`;
+    if (this.editIssueModalCurrentTech) {
+      this.editIssueModalCurrentTech.textContent = iss.assignedTo ? `Current Tech: ${iss.assignedTo}` : 'Reassign to team lead or technician';
+    }
+
+    if (this.wrapperEditIssueFields) this.wrapperEditIssueFields.style.display = 'none';
+    if (this.inputEditIssueTitle) this.inputEditIssueTitle.value = iss.title || '';
+    if (this.inputEditIssueContent) this.inputEditIssueContent.value = iss.content || '';
+
+    if (this.editIssueModalOverlay) {
+      this.editIssueModalOverlay.style.display = 'flex';
+      this.editIssueModalOverlay.classList.add('active');
+    }
+  }
+
+  closeEditIssueModal() {
+    if (this.editIssueModalOverlay) {
+      this.editIssueModalOverlay.style.display = 'none';
+      this.editIssueModalOverlay.classList.remove('active');
+    }
+  }
+
+  renderDevelopmentBoardSection(section, colItems, projectName) {
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.justifyContent = 'space-between';
+    header.style.borderBottom = '2px solid var(--border)';
+    header.style.paddingBottom = '0.6rem';
+    header.style.flexWrap = 'wrap';
+    header.style.gap = '8px';
+
+    header.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Development</span>
+        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${colItems.length}</span>
+      </div>
+    `;
+
+    section.appendChild(header);
+
+    const itemsList = document.createElement('div');
+    itemsList.style.display = 'flex';
+    itemsList.style.flexDirection = 'column';
+    itemsList.style.gap = '1rem';
+    itemsList.style.width = '100%';
+
+    if (colItems.length === 0) {
+      itemsList.innerHTML = `
+        <div style="font-size: 0.82rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 2rem 0; background: rgba(255,255,255,0.01); border: 1px dashed var(--border); border-radius: var(--radius-sm);">
+          No items currently in Development. Click "+ Add Item" to create a new board card.
+        </div>
+      `;
+    } else {
+      colItems.forEach(item => {
+        const card = this.createCardElement(item);
+        itemsList.appendChild(card);
+      });
+    }
+
+    section.appendChild(itemsList);
   }
 
   renderCardsGrid(items) {
     if (!this.cardsGrid) return;
     this.cardsGrid.innerHTML = '';
 
-    const gridItems = items.filter(i => i.type !== 'vault');
+    const gridItems = (items || []).filter(i => i.type !== 'vault');
 
-    if (gridItems.length === 0) {
+    // IF SPECIFIC PROJECT OR PLAN IS OPENED: Always render the Workspace Board View!
+    if (this.selectedProject !== 'all') {
+      this.renderSpecificProjectView(this.selectedProject, gridItems);
+      return;
+    }
+
+    if (gridItems.length === 0 && (!this.state.customProjects || this.state.customProjects.length === 0)) {
       this.cardsGrid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
-          <p style="margin-bottom: 1rem;">No items found in this stage or view on the MICHI Path.</p>
-          <button type="button" onclick="window.app.restoreDefaultItems()" style="background: var(--stage-structure); color: #ffffff; border: none; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;">↻ Restore All Sample Cards & Data</button>
+          <p style="margin-bottom: 1rem;">No items found in this workspace view on the MICHI Path.</p>
         </div>
       `;
       return;
@@ -3619,60 +5544,39 @@ class MichiApp {
       return;
     }
 
-    // IF SPECIFIC PROJECT IS OPENED: Render Project Title Header & 4 Horizontal Side-by-Side Boards!
-    if (this.selectedProject !== 'all') {
-      this.renderSpecificProjectView(this.selectedProject, gridItems);
-      return;
-    }
-
-    // IF ALL PROJECTS OVERVIEW IS ACTIVE: Gather all unique projects created in workspace
+    // IF ALL PROJECTS/PLANS OVERVIEW IS ACTIVE: Gather all unique projects/plans created in workspace
     const projectList = this.getWorkspaceProjects();
 
-    const stages = [
-      { id: 'spark', name: 'Ideas', color: 'var(--stage-spark)' },
-      { id: 'structure', name: 'Resources', color: 'var(--stage-structure)' },
-      { id: 'focus', name: 'Development', color: 'var(--stage-focus)' },
-      { id: 'product', name: 'Completed', color: 'var(--stage-product)' }
-    ];
+    const section = document.createElement('div');
+    section.style.width = '100%';
 
-    stages.forEach(st => {
-      const section = document.createElement('div');
-      section.style.marginBottom = '1.6rem';
-      section.style.width = '100%';
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.justifyContent = 'space-between';
+    header.style.marginBottom = '1rem';
+    header.style.paddingBottom = '0.4rem';
+    header.style.borderBottom = `1px solid var(--border)`;
 
-      const header = document.createElement('div');
-      header.style.display = 'flex';
-      header.style.alignItems = 'center';
-      header.style.justifyContent = 'space-between';
-      header.style.marginBottom = '0.6rem';
-      header.style.paddingBottom = '0.35rem';
-      header.style.borderBottom = `1px solid var(--border)`;
+    header.innerHTML = `
+      <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Plans & Projects (${projectList.length})</span>
+      <button type="button" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 14px; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">+ Plan / Project</button>
+    `;
+    section.appendChild(header);
 
-      header.innerHTML = `
-        <span style="font-weight: 800; font-size: 0.98rem; color: #ffffff;">${st.name} (${projectList.length} ${projectList.length === 1 ? 'Project' : 'Projects'})</span>
-        <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">Scroll ➔</span>
-      `;
-      section.appendChild(header);
+    const grid = document.createElement('div');
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+    grid.style.gap = '1rem';
+    grid.style.width = '100%';
 
-      const scrollRow = document.createElement('div');
-      scrollRow.className = 'scrollable-stage-row';
-      scrollRow.style.display = 'flex';
-      scrollRow.style.gap = '1.1rem';
-      scrollRow.style.overflowX = 'auto';
-      scrollRow.style.webkitOverflowScrolling = 'touch';
-      scrollRow.style.paddingBottom = '0.6rem';
-      scrollRow.style.scrollSnapType = 'x mandatory';
-      scrollRow.style.width = '100%';
-
-      projectList.forEach(projectName => {
-        const projStageItems = gridItems.filter(i => (i.project || 'Personal') === projectName && (i.stage || 'spark') === st.id);
-        const boardCard = this.createProjectBoardCard(projectName, st, projStageItems);
-        scrollRow.appendChild(boardCard);
-      });
-
-      section.appendChild(scrollRow);
-      this.cardsGrid.appendChild(section);
+    projectList.forEach(projectName => {
+      const boardCard = this.createProjectBoardCard(projectName);
+      grid.appendChild(boardCard);
     });
+
+    section.appendChild(grid);
+    this.cardsGrid.appendChild(section);
   }
 
   clearProjectFilter() {
@@ -3965,20 +5869,21 @@ class MichiApp {
       item.style.display = 'flex';
       item.style.alignItems = 'center';
       item.style.justifyContent = 'space-between';
-      item.style.background = 'rgba(255,255,255,0.04)';
-      item.style.padding = '6px 8px';
-      item.style.borderRadius = '4px';
-      item.style.fontSize = '0.82rem';
+      item.style.background = 'var(--bg-card)';
+      item.style.border = '1px solid var(--border)';
+      item.style.padding = '6px 10px';
+      item.style.borderRadius = '6px';
+      item.style.fontSize = '0.84rem';
 
       item.innerHTML = `
         <div style="flex: 1;">
-          <span style="font-weight: 800; color: var(--stage-planner); margin-right: 8px;">${this.escapeHtml(a.time)}</span>
+          <span style="font-weight: 800; color: var(--text-main); margin-right: 8px;">${this.escapeHtml(a.time)}</span>
           <span style="font-weight: 600; color: var(--text-main);">${this.escapeHtml(a.text)}</span>
           ${a.note ? `<div style="font-size: 0.75rem; color: var(--text-muted); font-style: italic;">${this.escapeHtml(a.note)}</div>` : ''}
         </div>
         <div style="display: flex; gap: 6px; margin-left: 8px;">
-          <button type="button" class="icon-btn edit-appt-btn" title="Edit Appointment" style="font-size: 0.72rem; padding: 2px 6px;">Edit</button>
-          <button type="button" class="icon-btn delete-appt-btn" title="Delete Appointment" style="font-size: 0.72rem; padding: 2px 6px; color: #fb7185;">Delete</button>
+          <button type="button" class="edit-appt-btn" title="Edit Appointment" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; cursor: pointer;">Edit</button>
+          <button type="button" class="delete-appt-btn" title="Delete Appointment" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; cursor: pointer;">Delete</button>
         </div>
       `;
 
@@ -4071,9 +5976,9 @@ class MichiApp {
     for (let i = 0; i < firstDayIndex; i++) {
       const emptyCell = document.createElement('div');
       emptyCell.className = 'calendar-cell empty-cell';
-      emptyCell.style.opacity = '0.25';
-      emptyCell.style.background = 'transparent';
-      emptyCell.style.border = '1px dashed rgba(255,255,255,0.05)';
+      emptyCell.style.opacity = '0.35';
+      emptyCell.style.background = 'var(--bg-main)';
+      emptyCell.style.border = '1px dashed var(--border)';
       this.calendarGrid.appendChild(emptyCell);
     }
 
@@ -4091,8 +5996,8 @@ class MichiApp {
 
       cell.innerHTML = `
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 4px;">
-          <span class="day-number" style="font-weight: 800; font-size: 0.9rem;">${day}</span>
-          <span style="font-size: 0.65rem; color: var(--stage-planner); font-weight: 700;">+ Appt</span>
+          <span class="day-number" style="font-weight: 800; font-size: 0.9rem; color: var(--text-main);">${day}</span>
+          <span style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700;">+ Appt</span>
         </div>
       `;
 
@@ -4102,8 +6007,9 @@ class MichiApp {
         franklinDay.appts.forEach(ap => {
           const schedPill = document.createElement('div');
           schedPill.className = 'event-dot';
-          schedPill.style.background = '#127DBB';
-          schedPill.style.color = '#ffffff';
+          schedPill.style.background = 'var(--bg-main)';
+          schedPill.style.color = 'var(--text-main)';
+          schedPill.style.border = '1px solid var(--border)';
           schedPill.style.fontWeight = '700';
           schedPill.textContent = `⏰ ${ap.time} ${ap.text}`;
           cell.appendChild(schedPill);
@@ -4129,20 +6035,19 @@ class MichiApp {
       if (!query) return true;
       return (
         (c.name && c.name.toLowerCase().includes(query)) ||
-        (c.role && c.role.toLowerCase().includes(query)) ||
         (c.company && c.company.toLowerCase().includes(query)) ||
         (c.email && c.email.toLowerCase().includes(query)) ||
         (c.phone && c.phone.toLowerCase().includes(query)) ||
         (c.projects && c.projects.some(p => p.toLowerCase().includes(query)))
       );
     });
+    filtered.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }));
 
     if (filtered.length === 0) {
       this.contactsGrid.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted); background: var(--bg-card); border: 1px dashed var(--border); border-radius: var(--radius-md);">
-          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📇</div>
-          <p style="font-weight: 600; font-size: 1rem; color: var(--text-main);">No contacts found matching "${this.escapeHtml(query)}"</p>
-          <p style="font-size: 0.85rem; margin-top: 4px;">Click "+ Add Contact" above to add team members or collaborators.</p>
+        <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted); background: var(--bg-card); border: 1px dashed var(--border); border-radius: var(--radius-md);">
+          <p style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">No contacts found</p>
+          <p style="font-size: 0.8rem; margin-top: 4px;">Click "+ Add Contact" above to add team members or collaborators.</p>
         </div>
       `;
       return;
@@ -4152,48 +6057,50 @@ class MichiApp {
       const initials = (contact.name || 'C').split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
       const card = document.createElement('div');
       card.className = 'card';
-      card.style.borderLeft = `4px solid ${contact.color || '#7CFEFE'}`;
+      card.style.background = 'var(--bg-card)';
+      card.style.color = 'var(--text-main)';
+      card.style.border = '1px solid var(--border)';
 
-      const projectPills = (contact.projects || []).map(p => 
-        `<span class="badge" style="background: rgba(124, 254, 254, 0.15); color: #7CFEFE; border: 1px solid rgba(124, 254, 254, 0.3); font-size: 0.72rem; margin-right: 4px; display: inline-block;">📁 ${this.escapeHtml(p)}</span>`
-      ).join('');
+      const isPersonal = contact.isPersonal || (contact.projects && contact.projects.includes('Personal'));
+      
+      const projectPills = isPersonal ?
+        `<span class="badge" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 800; display: inline-block;">Personal</span>` :
+        (contact.projects || []).map(p => 
+          `<span class="badge" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 800; display: inline-block;">${this.escapeHtml(p)}</span>`
+        ).join('');
 
       card.innerHTML = `
-        <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
-          <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, ${contact.color || '#7CFEFE'}, #3b82f6); color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; box-shadow: 0 2px 8px rgba(124, 254, 254, 0.3);">
+        <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 4px;">
+          <div style="display: flex; align-items: center; gap: 0.6rem; overflow: hidden;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 0.88rem; flex-shrink: 0;">
               ${initials}
             </div>
-            <div>
-              <h4 class="card-title" style="font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px;">
+            <div style="overflow: hidden;">
+              <h4 class="card-title" style="font-size: 0.92rem; font-weight: 800; color: var(--text-main); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 ${this.escapeHtml(contact.name)}
               </h4>
-              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
-                ${this.escapeHtml(contact.role || 'Collaborator')}${contact.company ? ' • ' + this.escapeHtml(contact.company) : ''}
-              </div>
+              ${contact.company ? `<div style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">${this.escapeHtml(contact.company)}</div>` : ''}
             </div>
           </div>
-          <div class="card-actions" style="display: flex; gap: 4px;">
-            <button class="icon-btn copy-btn" title="Copy Contact Details">📋</button>
-            <button class="icon-btn edit-btn" title="Edit Contact">✏️</button>
-            <button class="icon-btn delete delete-btn" title="Delete Contact">🗑️</button>
+          <div class="card-actions" style="display: flex; gap: 4px; flex-shrink: 0;">
+            <button class="icon-btn edit-btn" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.72rem; padding: 2px 6px;" title="Edit Contact">Edit</button>
+            <button class="icon-btn delete delete-btn" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.72rem; padding: 2px 6px;" title="Delete Contact">Delete</button>
           </div>
         </div>
 
-        <div class="card-body" style="font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 0.6rem;">
-          ${contact.email ? `<div style="display: flex; align-items: center; gap: 6px;"><span style="color: #7CFEFE;">✉️</span> <a href="mailto:${contact.email}" style="color: var(--text-main); text-decoration: none;">${this.escapeHtml(contact.email)}</a></div>` : ''}
-          ${contact.phone ? `<div style="display: flex; align-items: center; gap: 6px;"><span style="color: #7CFEFE;">📞</span> <a href="tel:${contact.phone}" style="color: var(--text-main); text-decoration: none;">${this.escapeHtml(contact.phone)}</a></div>` : ''}
-          ${contact.notes ? `<div style="font-size: 0.8rem; background: var(--bg-main); padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); font-style: italic; margin-top: 4px;">"${this.escapeHtml(contact.notes)}"</div>` : ''}
+        <div class="card-body" style="font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; margin-top: 4px;">
+          ${contact.email ? `<div style="display: flex; align-items: center; gap: 6px;"><a href="mailto:${contact.email}" style="color: var(--text-main); text-decoration: underline; word-break: break-all;">${this.escapeHtml(contact.email)}</a></div>` : ''}
+          ${contact.phone ? `<div style="display: flex; align-items: center; gap: 6px;"><a href="tel:${contact.phone}" style="color: var(--text-main); text-decoration: none;">${this.escapeHtml(contact.phone)}</a></div>` : ''}
         </div>
 
-        <div class="card-footer" style="margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px solid var(--border);">
-          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">Assigned Projects:</div>
-          <div>${projectPills || '<span style="font-size: 0.75rem; color: var(--text-dim);">No assigned projects</span>'}</div>
+        <div class="card-footer" style="margin-top: 6px; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; gap: 4px; flex-wrap: wrap;">${projectPills}</div>
+          <button class="icon-btn copy-btn" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px;" title="Copy Contact Details">Copy Details</button>
         </div>
       `;
 
       card.querySelector('.copy-btn').addEventListener('click', () => {
-        const text = `${contact.name}\n${contact.role || ''} ${contact.company ? '(' + contact.company + ')' : ''}\nEmail: ${contact.email || 'N/A'}\nPhone: ${contact.phone || 'N/A'}\nProjects: ${(contact.projects || []).join(', ')}`;
+        const text = `${contact.name}\n${contact.company ? '(' + contact.company + ')' : ''}\nEmail: ${contact.email || 'N/A'}\nPhone: ${contact.phone || 'N/A'}`;
         this.copyToClipboard(text, `Contact details for ${contact.name}`);
       });
 
@@ -4213,58 +6120,79 @@ class MichiApp {
     if (!this.contactModalOverlay) return;
     const allProjects = this.getWorkspaceProjects();
 
+    const projSelect = document.getElementById('contactFormProjectSelect');
+    const isPersonalCheck = document.getElementById('contactFormIsPersonal');
+    const wrapperProj = document.getElementById('wrapperContactProjectSelect');
+
+    if (projSelect) {
+      projSelect.innerHTML = '';
+      allProjects.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p;
+        opt.textContent = p;
+        projSelect.appendChild(opt);
+      });
+    }
+
+    if (isPersonalCheck) {
+      isPersonalCheck.onchange = () => {
+        if (wrapperProj) {
+          wrapperProj.style.display = isPersonalCheck.checked ? 'none' : 'block';
+        }
+      };
+    }
+
     if (contactId) {
       const contact = (this.state.contacts || []).find(c => c.id === contactId);
       if (!contact) return;
-      if (this.contactModalTitle) this.contactModalTitle.textContent = '✏️ Edit Contact';
+      if (this.contactModalTitle) this.contactModalTitle.textContent = 'Edit Contact';
       if (this.contactFormId) this.contactFormId.value = contact.id;
       if (this.contactFormName) this.contactFormName.value = contact.name || '';
-      if (this.contactFormRole) this.contactFormRole.value = contact.role || '';
       if (this.contactFormEmail) this.contactFormEmail.value = contact.email || '';
       if (this.contactFormPhone) this.contactFormPhone.value = contact.phone || '';
       if (this.contactFormCompany) this.contactFormCompany.value = contact.company || '';
       if (this.contactFormNotes) this.contactFormNotes.value = contact.notes || '';
 
-      if (this.contactFormProjectsList) {
-        this.contactFormProjectsList.innerHTML = '';
-        allProjects.forEach(p => {
-          const isChecked = (contact.projects || []).includes(p);
-          const lbl = document.createElement('label');
-          lbl.style.fontSize = '0.82rem';
-          lbl.style.display = 'flex';
-          lbl.style.alignItems = 'center';
-          lbl.style.gap = '8px';
-          lbl.style.color = 'var(--text-main)';
-          lbl.innerHTML = `<input type="checkbox" name="contactProjects" value="${this.escapeHtml(p)}" ${isChecked ? 'checked' : ''} /> 📁 ${this.escapeHtml(p)}`;
-          this.contactFormProjectsList.appendChild(lbl);
-        });
+      const isPers = contact.isPersonal || (contact.projects && contact.projects.includes('Personal'));
+      if (isPersonalCheck) {
+        isPersonalCheck.checked = isPers;
+        isPersonalCheck.onchange();
+      }
+      if (projSelect && contact.projects && contact.projects[0] && !isPers) {
+        projSelect.value = contact.projects[0];
       }
     } else {
-      if (this.contactModalTitle) this.contactModalTitle.textContent = '📇 Add New Contact';
+      if (this.contactModalTitle) this.contactModalTitle.textContent = 'Add New Contact';
       if (this.contactFormId) this.contactFormId.value = '';
       if (this.contactFormName) this.contactFormName.value = '';
-      if (this.contactFormRole) this.contactFormRole.value = '';
       if (this.contactFormEmail) this.contactFormEmail.value = '';
       if (this.contactFormPhone) this.contactFormPhone.value = '';
       if (this.contactFormCompany) this.contactFormCompany.value = '';
       if (this.contactFormNotes) this.contactFormNotes.value = '';
+      if (isPersonalCheck) {
+        isPersonalCheck.checked = false;
+        isPersonalCheck.onchange();
+      }
+      if (projSelect && this.selectedProject !== 'all') {
+        projSelect.value = this.selectedProject;
+      }
+    }
 
-      if (this.contactFormProjectsList) {
-        this.contactFormProjectsList.innerHTML = '';
-        allProjects.forEach(p => {
-          const lbl = document.createElement('label');
-          lbl.style.fontSize = '0.82rem';
-          lbl.style.display = 'flex';
-          lbl.style.alignItems = 'center';
-          lbl.style.gap = '8px';
-          lbl.style.color = 'var(--text-main)';
-          lbl.innerHTML = `<input type="checkbox" name="contactProjects" value="${this.escapeHtml(p)}" /> 📁 ${this.escapeHtml(p)}`;
-          this.contactFormProjectsList.appendChild(lbl);
-        });
+    if (this.btnDeleteContactInModal) {
+      if (contactId) {
+        this.btnDeleteContactInModal.style.display = 'block';
+        this.btnDeleteContactInModal.onclick = (e) => {
+          if (e) { e.preventDefault(); e.stopPropagation(); }
+          this.deleteContact(contactId);
+        };
+      } else {
+        this.btnDeleteContactInModal.style.display = 'none';
+        this.btnDeleteContactInModal.onclick = null;
       }
     }
 
     this.contactModalOverlay.classList.add('active');
+    if (this.contactFormName) this.contactFormName.focus();
   }
 
   closeContactModal() {
@@ -4278,17 +6206,16 @@ class MichiApp {
     const name = this.contactFormName ? this.contactFormName.value.trim() : '';
     if (!name) return;
 
-    const role = this.contactFormRole ? this.contactFormRole.value.trim() : '';
     const email = this.contactFormEmail ? this.contactFormEmail.value.trim() : '';
     const phone = this.contactFormPhone ? this.contactFormPhone.value.trim() : '';
     const company = this.contactFormCompany ? this.contactFormCompany.value.trim() : '';
     const notes = this.contactFormNotes ? this.contactFormNotes.value.trim() : '';
 
-    const selectedProjects = [];
-    if (this.contactFormProjectsList) {
-      const boxes = this.contactFormProjectsList.querySelectorAll('input[name="contactProjects"]:checked');
-      boxes.forEach(b => selectedProjects.push(b.value));
-    }
+    const isPersonalCheck = document.getElementById('contactFormIsPersonal');
+    const projSelect = document.getElementById('contactFormProjectSelect');
+
+    const isPersonal = isPersonalCheck ? isPersonalCheck.checked : false;
+    const assignedProject = (isPersonal || !projSelect) ? 'Personal' : (projSelect.value || 'Personal');
 
     if (!this.state.contacts) this.state.contacts = [];
 
@@ -4296,11 +6223,11 @@ class MichiApp {
       const existing = this.state.contacts.find(c => c.id === id);
       if (existing) {
         existing.name = name;
-        existing.role = role;
         existing.email = email;
         existing.phone = phone;
         existing.company = company;
-        existing.projects = selectedProjects;
+        existing.isPersonal = isPersonal;
+        existing.projects = [assignedProject];
         existing.notes = notes;
       }
     } else {
@@ -4309,11 +6236,11 @@ class MichiApp {
       this.state.contacts.push({
         id: 'contact-' + Date.now(),
         name,
-        role,
         company,
         email,
         phone,
-        projects: selectedProjects,
+        isPersonal,
+        projects: [assignedProject],
         notes,
         color
       });
@@ -4321,6 +6248,7 @@ class MichiApp {
 
     this.saveState();
     this.closeContactModal();
+    this.render();
     this.showToast(`Saved contact "${name}"`);
   }
 
@@ -4335,6 +6263,8 @@ class MichiApp {
       () => {
         this.state.contacts = (this.state.contacts || []).filter(c => c.id !== contactId);
         this.saveState();
+        this.closeContactModal();
+        this.render();
         this.showToast(`Deleted contact "${name}"`);
       }
     );
@@ -4392,6 +6322,7 @@ class MichiApp {
         if (!contact.projects.includes(project)) contact.projects.push(project);
         this.saveState();
         this.closeAssignContactModal();
+        this.render();
         this.showToast(`Attached ${contact.name} to "${project}"`);
       }
     } else if (manualName) {
@@ -4419,6 +6350,7 @@ class MichiApp {
 
       this.saveState();
       this.closeAssignContactModal();
+      this.render();
       this.showToast(`Added and attached ${manualName} to "${project}"`);
     }
   }
@@ -4452,6 +6384,14 @@ class MichiApp {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.app = new MichiApp();
-});
+function initMichiApp() {
+  if (!window.app) {
+    window.app = new MichiApp();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMichiApp);
+} else {
+  initMichiApp();
+}
