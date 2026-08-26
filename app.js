@@ -3676,6 +3676,8 @@ class MichiApp {
         }
       }
 
+      const matchesStage = this.currentStageFilter === 'all' || (item.stage || 'spark') === this.currentStageFilter;
+
       let matchesProject = true;
       if (!this.selectedProject || this.selectedProject === 'all') {
         matchesProject = true;
