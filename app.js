@@ -960,8 +960,10 @@ class MichiApp {
   }
 
   handleCreateNewProject() {
-    const title = this.newProjectTitle ? this.newProjectTitle.value.trim() : '';
-    let sparkText = this.newProjectSpark ? this.newProjectSpark.value.trim() : '';
+    const titleEl = document.getElementById('newProjectTitle');
+    const sparkEl = document.getElementById('newProjectSpark');
+    const title = (titleEl ? titleEl.value : (this.newProjectTitle ? this.newProjectTitle.value : '')).trim();
+    let sparkText = (sparkEl ? sparkEl.value : (this.newProjectSpark ? this.newProjectSpark.value : '')).trim();
     const now = new Date().toISOString().split('T')[0];
 
     if (!title) {
