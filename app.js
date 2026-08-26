@@ -4199,11 +4199,7 @@ class MichiApp {
 
     if (this.globalProjectFilter) {
       const cur = this.selectedProject || 'all';
-      let html = `
-        <option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>
-        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Active Projects</option>
-        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Active Plans</option>
-      `;
+      let html = `<option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>`;
       projects.forEach(p => {
         html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
       });
