@@ -282,61 +282,15 @@ class MichiApp {
   }
 
   initCloudSync() {
-    this.isFirstCloudCheck = true;
-
-    // Immediate pull on startup
-    this.pullFromCloud();
-
-    // Auto-pull every 4 seconds for real-time background sync
-    if (this.cloudSyncInterval) clearInterval(this.cloudSyncInterval);
-    this.cloudSyncInterval = setInterval(() => this.pullFromCloud(), 4000);
-
-    // Sync on tab/app visibility focus
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        this.pullFromCloud();
-      }
-    });
+    this.updateSyncBadge();
   }
 
   async pushToCloud() {
-    try {
-      const syncData = {
-        lastUpdated: Date.now(),
-        state: this.state
-      };
-      const payloadStr = JSON.stringify(syncData);
+    this.updateSyncBadge();
+  }
 
-      // 1. Broadcast to Vercel sync endpoints (supports multi-MB payloads & CORS natively)
-      const syncEndpoints = [
-        'https://public-five-red.vercel.app/api/sync',
-        '/api/sync'
-      ];
-
-      for (const endpoint of syncEndpoints) {
-        try {
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: payloadStr
-          });
-          if (res.ok) break;
-        } catch (e) {}
-      }
-
-      // 2. Broadcast state to ntfy cloud channel as raw text
-      try {
-        await fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: payloadStr
-        });
-      } catch (e) {}
-
-      this.updateSyncBadge();
-    } catch (err) {
-      console.warn('Background cloud push skipped:', err);
-    }
+  async pullFromCloud(force = false) {
+    this.updateSyncBadge();
   }
 
   async pullFromCloud(force = false) {
