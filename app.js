@@ -926,7 +926,15 @@ class MichiApp {
     if (this.newProjectTitle) this.newProjectTitle.value = '';
     if (this.newProjectSpark) this.newProjectSpark.value = '';
     if (this.newProjectManualContact) this.newProjectManualContact.value = '';
-    if (this.newProjectContactSelect) this.newProjectContactSelect.value = '';
+    if (this.newProjectContactSelect) {
+      this.newProjectContactSelect.innerHTML = '<option value="">-- Select Existing Contact (Optional) --</option>';
+      (this.state.contacts || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `👤 ${c.name} (${c.role || 'Collaborator'})`;
+        this.newProjectContactSelect.appendChild(opt);
+      });
+    }
     if (this.newProjectModalOverlay) {
       this.newProjectModalOverlay.style.display = 'flex';
       this.newProjectModalOverlay.classList.add('active');
@@ -1000,19 +1008,22 @@ class MichiApp {
       }
     }
 
+    const isPlan = (kind === 'plan');
     const initialSpark = {
       id: 'item-spark-' + Date.now(),
-      type: 'idea',
-      stage: 'focus',
+      type: isPlan ? 'plan' : 'idea',
+      stage: 'spark',
       project: title,
       title: `${title}: Vision & Objectives`,
       content: sparkText,
+      isPlan: isPlan,
+      category: isPlan ? 'Plan' : 'Project',
       assignedTo: leadContactName || '',
       notes: [
-        { text: `${kind === 'plan' ? 'Plan' : 'Project'} "${title}" created and launched in Development.`, date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }
+        { text: `${isPlan ? 'Plan' : 'Project'} "${title}" created and launched on MICHI Path.`, date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }
       ],
-      tags: [],
-      color: 'var(--stage-focus)',
+      tags: [title, isPlan ? 'Plan' : 'Project'],
+      color: isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)',
       date: now
     };
 
@@ -1035,9 +1046,9 @@ class MichiApp {
     this.selectedProject = title;
     this.closeNewProjectModal();
     this.saveState();
-    this.populateProjectDropdowns();
+    this.renderProjectDropdowns();
     this.render();
-    this.showToast(`🚀 Launched Project "${title}"!`);
+    this.showToast(`🚀 Created ${isPlan ? 'Plan' : 'Project'} "${title}"!`);
   }
 
   restoreSidebarState() {
@@ -6386,20 +6397,22 @@ class MichiApp {
   }
 
   openNewProjectModal() {
+    if (this.newProjectTitle) this.newProjectTitle.value = '';
+    if (this.newProjectSpark) this.newProjectSpark.value = '';
+    if (this.newProjectManualContact) this.newProjectManualContact.value = '';
+    if (this.newProjectContactSelect) {
+      this.newProjectContactSelect.innerHTML = '<option value="">-- Select Existing Contact (Optional) --</option>';
+      (this.state.contacts || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `👤 ${c.name} (${c.role || 'Collaborator'})`;
+        this.newProjectContactSelect.appendChild(opt);
+      });
+    }
     if (this.newProjectModalOverlay) {
-      if (this.newProjectTitle) this.newProjectTitle.value = '';
-      if (this.newProjectSpark) this.newProjectSpark.value = '';
-      if (this.newProjectManualContact) this.newProjectManualContact.value = '';
-      if (this.newProjectContactSelect) {
-        this.newProjectContactSelect.innerHTML = '<option value="">-- Select Existing Contact (Optional) --</option>';
-        (this.state.contacts || []).forEach(c => {
-          const opt = document.createElement('option');
-          opt.value = c.id;
-          opt.textContent = `👤 ${c.name} (${c.role || 'Collaborator'})`;
-          this.newProjectContactSelect.appendChild(opt);
-        });
-      }
+      this.newProjectModalOverlay.style.display = 'flex';
       this.newProjectModalOverlay.classList.add('active');
+      if (this.newProjectTitle) this.newProjectTitle.focus();
     }
   }
 
