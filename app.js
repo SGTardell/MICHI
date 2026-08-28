@@ -914,6 +914,8 @@ class MichiApp {
   }
 
   handleCreateNewProject() {
+    if (this._isCreatingProject) return;
+    this._isCreatingProject = true;
     try {
       const titleEl = document.getElementById('newProjectTitle');
       const sparkEl = document.getElementById('newProjectSpark');
@@ -1016,6 +1018,8 @@ class MichiApp {
     } catch (err) {
       console.error('Error creating project:', err);
       alert('Error creating project: ' + err.message);
+    } finally {
+      setTimeout(() => { this._isCreatingProject = false; }, 400);
     }
   }
 
@@ -1058,14 +1062,7 @@ class MichiApp {
     }
     if (this.newProjectForm) {
       this.newProjectForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        this.handleCreateNewProject();
-      });
-    }
-    const btnSubmitNewProject = document.getElementById('btnSubmitNewProject');
-    if (btnSubmitNewProject) {
-      btnSubmitNewProject.addEventListener('click', (e) => {
-        e.preventDefault();
+        if (e) { e.preventDefault(); e.stopPropagation(); }
         this.handleCreateNewProject();
       });
     }
