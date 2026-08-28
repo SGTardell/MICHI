@@ -18,17 +18,17 @@ if ('serviceWorker' in navigator) {
  */
 
 window.openTutorialModalGlobal = function() {
+  const overlay = document.getElementById('tutorialModalOverlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'auto';
+    overlay.style.visibility = 'visible';
+    overlay.style.zIndex = '9999999';
+    overlay.classList.add('active');
+  }
   if (window.app && window.app.openTutorialModal) {
     window.app.openTutorialModal();
-  } else {
-    const overlay = document.getElementById('tutorialModalOverlay');
-    if (overlay) {
-      overlay.style.display = 'flex';
-      overlay.style.opacity = '1';
-      overlay.style.visibility = 'visible';
-      overlay.style.zIndex = '999999';
-      overlay.classList.add('active');
-    }
   }
 };
 
