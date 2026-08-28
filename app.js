@@ -1352,12 +1352,12 @@ class MichiApp {
         this.currentStageFilter = 'all';
         if (chosen === 'all' || chosen === 'projects' || chosen === 'plans') {
           this.switchTab('all', chosen);
-          this.showToast('Showing all plans & projects');
+          this.showToast('Showing all projects & plans');
         } else {
           this.selectedProject = chosen;
           this.switchTab('all');
           this.render();
-          this.showToast(`Opened Plan / Project Board: "${chosen}"`);
+          this.showToast(`Opened Project / Plan Board: "${chosen}"`);
         }
       });
     }
@@ -4179,7 +4179,7 @@ class MichiApp {
     if (homeSelect) {
       const cur = this.selectedProject || 'all';
       homeSelect.innerHTML = `
-        <option value="all" ${cur === 'all' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">All Active Plans & Projects</option>
+        <option value="all" ${cur === 'all' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">All Active Projects & Plans</option>
         <option value="projects" ${cur === 'projects' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">Active Projects</option>
         <option value="plans" ${cur === 'plans' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">Active Plans</option>
       `;
@@ -4412,7 +4412,7 @@ class MichiApp {
     const descEl = document.getElementById('projectHeaderDesc');
 
     if (titleEl) {
-      titleEl.textContent = this.selectedProject !== 'all' ? `📌 Plan / Project: ${this.selectedProject}` : '📁 All Active Plans & Projects';
+      titleEl.textContent = this.selectedProject !== 'all' ? `📌 Project / Plan: ${this.selectedProject}` : '📁 All Active Projects & Plans';
     }
     if (descEl) {
       descEl.textContent = this.selectedProject !== 'all' 
@@ -4925,7 +4925,7 @@ class MichiApp {
           Delete ${kindLabel}
         </button>
         <button type="button" class="btn-clear-proj-filter" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
-          Back to All Plans & Projects
+          Back to All Projects & Plans
         </button>
       </div>
     `;
