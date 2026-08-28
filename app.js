@@ -1350,11 +1350,13 @@ class MichiApp {
       this.globalProjectFilter.addEventListener('change', (e) => {
         const chosen = e.target.value;
         this.currentStageFilter = 'all';
-        if (chosen === 'all') {
-          this.switchTab('all', 'all');
+        if (chosen === 'all' || chosen === 'projects' || chosen === 'plans') {
+          this.switchTab('all', chosen);
           this.showToast('Showing all plans & projects');
         } else {
-          this.switchTab('project-path', chosen);
+          this.selectedProject = chosen;
+          this.switchTab('all');
+          this.render();
           this.showToast(`Opened Plan / Project Board: "${chosen}"`);
         }
       });
@@ -5086,64 +5088,6 @@ class MichiApp {
 
     completedSection.appendChild(compList);
     rightColumn.appendChild(completedSection);
-
-    // Notes Section (Stacked BELOW Completed)
-    const noteItems = projItems.filter(i => i.type === 'note' || (i.tags && i.tags.includes('Note')));
-
-    const notesSection = document.createElement('div');
-    notesSection.style.background = 'rgba(255,255,255,0.02)';
-    notesSection.style.border = '1px solid var(--border)';
-    notesSection.style.borderRadius = 'var(--radius-md)';
-    notesSection.style.padding = '1.2rem';
-    notesSection.style.display = 'flex';
-    notesSection.style.flexDirection = 'column';
-    notesSection.style.gap = '1rem';
-
-    const notesHeader = document.createElement('div');
-    notesHeader.style.display = 'flex';
-    notesHeader.style.alignItems = 'center';
-    notesHeader.style.justifyContent = 'space-between';
-    notesHeader.style.borderBottom = '2px solid var(--border)';
-    notesHeader.style.paddingBottom = '0.6rem';
-    notesHeader.style.flexWrap = 'wrap';
-    notesHeader.style.gap = '8px';
-
-    notesHeader.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Notes</span>
-        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${noteItems.length}</span>
-      </div>
-      <button class="btn-add-note-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
-        + Add Note
-      </button>
-    `;
-
-    notesHeader.querySelector('.btn-add-note-item').addEventListener('click', () => {
-      this.openWebClipModal(projectName);
-    });
-
-    notesSection.appendChild(notesHeader);
-
-    const notesList = document.createElement('div');
-    notesList.style.display = 'flex';
-    notesList.style.flexDirection = 'column';
-    notesList.style.gap = '1rem';
-    notesList.style.width = '100%';
-
-    if (noteItems.length === 0) {
-      notesList.innerHTML = `
-        <div style="font-size: 0.82rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 2rem 0; background: rgba(255,255,255,0.01); border: 1px dashed var(--border); border-radius: var(--radius-sm);">
-          No notes recorded yet. Click "+ Add Note" to record a project note.
-        </div>
-      `;
-    } else {
-      noteItems.forEach(item => {
-        notesList.appendChild(this.createCardElement(item));
-      });
-    }
-
-    notesSection.appendChild(notesList);
-    rightColumn.appendChild(notesSection);
     workspaceGrid.appendChild(rightColumn);
 
     this.cardsGrid.appendChild(workspaceGrid);
