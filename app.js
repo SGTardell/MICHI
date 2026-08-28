@@ -4179,9 +4179,9 @@ class MichiApp {
     if (homeSelect) {
       const cur = this.selectedProject || 'all';
       homeSelect.innerHTML = `
-        <option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>
-        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>Active Projects</option>
-        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>Active Plans</option>
+        <option value="all" ${cur === 'all' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">All Active Plans & Projects</option>
+        <option value="projects" ${cur === 'projects' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">Active Projects</option>
+        <option value="plans" ${cur === 'plans' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">Active Plans</option>
       `;
     }
 
