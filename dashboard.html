@@ -9,21 +9,23 @@
   <title>MICHI — For Life and Work</title>
   <script>
     (function() {
-      const CURRENT_BUILD = 'v208';
-      const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
-      if (lastBuild !== CURRENT_BUILD) {
-        localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
-        if ('caches' in window) {
-          caches.keys().then(names => {
-            names.forEach(name => caches.delete(name));
-          });
+      try {
+        const CURRENT_BUILD = 'v208';
+        const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
+        if (lastBuild !== CURRENT_BUILD) {
+          localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
+          if ('caches' in window) {
+            caches.keys().then(names => {
+              names.forEach(name => caches.delete(name));
+            }).catch(function() {});
+          }
+          if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            navigator.serviceWorker.getRegistrations().then(regs => {
+              regs.forEach(r => r.unregister());
+            }).catch(function() {});
+          }
         }
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(regs => {
-            regs.forEach(r => r.unregister());
-          });
-        }
-      }
+      } catch (err) {}
     })();
 
     window.openTutorialModalGlobal = function(e) {
@@ -1580,7 +1582,7 @@
 
   <script src="app.js?v=208"></script>
   <script>
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
