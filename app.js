@@ -3394,11 +3394,7 @@ class MichiApp {
     this.currentTutorialSlide = 1;
     const overlay = document.getElementById('tutorialModalOverlay');
     if (overlay) {
-      overlay.style.display = 'flex';
-      overlay.style.opacity = '1';
-      overlay.style.pointerEvents = 'auto';
-      overlay.style.visibility = 'visible';
-      overlay.style.zIndex = '9999999';
+      overlay.setAttribute('style', 'display: flex !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.85) !important; padding: 1rem; overflow-y: auto;');
       overlay.classList.add('active');
     }
     try {
