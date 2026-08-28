@@ -18,16 +18,12 @@ if ('serviceWorker' in navigator) {
  */
 
 window.openTutorialModalGlobal = function(e) {
-  if (e) {
+  if (e && e.preventDefault) {
     try { e.preventDefault(); e.stopPropagation(); } catch(err) {}
   }
-  const overlay = document.getElementById('tutorialModalOverlay');
+  var overlay = document.getElementById('tutorialModalOverlay');
   if (overlay) {
-    overlay.style.setProperty('display', 'flex', 'important');
-    overlay.style.setProperty('opacity', '1', 'important');
-    overlay.style.setProperty('pointer-events', 'auto', 'important');
-    overlay.style.setProperty('visibility', 'visible', 'important');
-    overlay.style.setProperty('z-index', '99999999', 'important');
+    overlay.setAttribute('style', 'display: flex !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.85) !important; padding: 1rem; overflow-y: auto;');
     overlay.classList.add('active');
   }
   if (window.app && window.app.openTutorialModal) {
@@ -37,7 +33,7 @@ window.openTutorialModalGlobal = function(e) {
 };
 
 document.addEventListener('click', function(e) {
-  if (e.target && e.target.closest && e.target.closest('#btnOpenTutorialHeader')) {
+  if (e.target && e.target.closest && (e.target.closest('#btnOpenTutorialHeader') || e.target.closest('#navTabGuide'))) {
     window.openTutorialModalGlobal(e);
   }
 });
@@ -3425,10 +3421,7 @@ class MichiApp {
   closeTutorialModal() {
     const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
     if (overlay) {
-      overlay.style.display = 'none';
-      overlay.style.opacity = '0';
-      overlay.style.pointerEvents = 'none';
-      overlay.style.visibility = 'hidden';
+      overlay.setAttribute('style', 'display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important;');
       overlay.classList.remove('active');
     }
   }
