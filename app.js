@@ -90,9 +90,12 @@ const defaultState = {
 class MichiApp {
   constructor() {
     const isLoggedIn = localStorage.getItem('michi_logged_in');
-    if (!isLoggedIn || isLoggedIn !== 'true') {
+    if ((!isLoggedIn || isLoggedIn !== 'true') && location.protocol !== 'file:') {
       window.location.href = 'index.html';
       return;
+    }
+    if (location.protocol === 'file:') {
+      localStorage.setItem('michi_logged_in', 'true');
     }
 
     this.state = this.loadState();
