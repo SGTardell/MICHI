@@ -82,47 +82,7 @@
   --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
 }
 
-/* 🌿 夏 Summer Theme (Lonely Beach Palette)
-   Base: #04454B | Text: #04454B | Board base: #ABCFDA | Board frame: #DBE2EA | Inner frames: #ABCFDA */
-[data-theme="summer"] {
-  --bg-dark: #04454B;
-  --bg-main: #04454B;
-  --bg-card: #ABCFDA;
-  --bg-card-hover: #c2e2eb;
-  --bg-glass: rgba(4, 69, 75, 0.95);
-  --border: #DBE2EA;
-  --border-glow: rgba(2, 130, 136, 0.4);
-  --logo-filter: brightness(0) invert(1);
-  
-  --text-main: #04454B;
-  --text-muted: #028288;
-  --text-dim: #2b6167;
-  
-  --accent: #028288;
-  --accent-hover: #04454B;
-  --accent-glow: rgba(2, 130, 136, 0.25);
-  --kanji-seal: #04454B;
-  --kanji-gold: #028288;
 
-  --stage-spark: #028288;
-  --stage-structure: #04454B;
-  --stage-focus: #028288;
-  --stage-product: #04454B;
-  --stage-planner: #04454B;
-
-  --cat-idea: var(--stage-spark);
-  --cat-web: var(--stage-structure);
-  --cat-task: var(--stage-focus);
-  --cat-done: var(--stage-structure);
-  --cat-vault: var(--stage-product);
-  --cat-urgent: #04454B;
-  --cat-calendar: var(--stage-planner);
-
-  --shadow-sm: 0 2px 4px rgba(4, 69, 75, 0.1);
-  --shadow-md: 0 4px 12px rgba(4, 69, 75, 0.18);
-  --shadow-lg: 0 10px 25px rgba(4, 69, 75, 0.25);
-  --shadow-glow: 0 0 20px rgba(2, 130, 136, 0.2);
-}
 
 /* 🌸 春 Spring Theme (Sakura Blossom) */
 [data-theme="spring"] {
@@ -2465,11 +2425,11 @@ header {
   }
 }
 
-/* Home Workspace Matched Dark Gray Header Controls */
+/* Home Workspace Matched Theme-Aware Header Controls */
 #homeProjectFilterSelect {
-  background-color: #5D6061 !important;
-  color: #FFFFFF !important;
-  border: none !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border) !important;
   border-radius: 8px !important;
   font-weight: 800 !important;
   font-size: 0.85rem !important;
@@ -2478,20 +2438,28 @@ header {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 0.8rem center !important;
 }
 
 #btnStartNewProjectHome {
-  background-color: #5D6061 !important;
-  color: #FFFFFF !important;
-  border: none !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border) !important;
   border-radius: 8px !important;
   font-weight: 800 !important;
   font-size: 0.85rem !important;
   padding: 0.55rem 1.1rem !important;
   cursor: pointer !important;
+}
+
+#tutorialModalOverlay.active {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  z-index: 9999999 !important;
 }
 
 

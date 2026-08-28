@@ -72,10 +72,9 @@
         <select id="themeSelector" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 8px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; white-space: nowrap;" title="Select Color Palette Theme">
           <option value="soyokaze" selected>Gentle Breeze</option>
           <option value="winter">MICHI Signature Dark</option>
-          <option value="summer">Lonely Beach</option>
         </select>
 
-        <button type="button" id="btnOpenTutorialHeader" onclick="if(window.app && window.app.openTutorialModal) { window.app.openTutorialModal(); } else { const o=document.getElementById('tutorialModalOverlay'); if(o){ o.style.display='flex'; o.style.opacity='1'; o.style.visibility='visible'; o.classList.add('active'); } }" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
+        <button type="button" id="btnOpenTutorialHeader" onclick="const o=document.getElementById('tutorialModalOverlay'); if(o){ o.style.display='flex'; o.style.opacity='1'; o.style.pointerEvents='auto'; o.style.visibility='visible'; o.style.zIndex='9999999'; o.classList.add('active'); } if(window.app && window.app.openTutorialModal) window.app.openTutorialModal();" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
           📖 Guide
         </button>
 
