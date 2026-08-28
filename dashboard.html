@@ -89,7 +89,7 @@
           <option value="winter">MICHI Signature Dark</option>
         </select>
 
-        <button type="button" id="btnOpenTutorialHeader" onclick="var el=document.getElementById('tutorialModalOverlay'); if(el){ el.style.cssText='display:flex !important; opacity:1 !important; visibility:visible !important; pointer-events:auto !important; z-index:99999999 !important; position:fixed !important; top:0 !important; left:0 !important; width:100vw !important; height:100vh !important; background:rgba(0,0,0,0.85) !important; padding:1rem; overflow-y:auto;'; el.classList.add('active'); } if(window.app && window.app.openTutorialModal) window.app.openTutorialModal();" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
+        <button type="button" id="btnOpenTutorialHeader" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
           📖 Guide
         </button>
 
@@ -130,7 +130,7 @@
 
         <button class="nav-tab active" data-tab="all" style="font-weight: 800; font-size: 0.88rem;">Home</button>
         <button class="nav-tab" data-tab="ideas" style="font-weight: 800; font-size: 0.88rem;">Brain Dump</button>
-        <button type="button" id="navTabGuideBar" onclick="var el=document.getElementById('tutorialModalOverlay'); if(el){ el.style.cssText='display:flex !important; opacity:1 !important; visibility:visible !important; pointer-events:auto !important; z-index:99999999 !important; position:fixed !important; top:0 !important; left:0 !important; width:100vw !important; height:100vh !important; background:rgba(0,0,0,0.85) !important; padding:1rem; overflow-y:auto;'; el.classList.add('active'); } if(window.app && window.app.openTutorialModal) window.app.openTutorialModal();" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; font-size: 0.88rem; padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap;">📖 Guide</button>
+        <button type="button" id="navTabGuideBar" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; font-size: 0.88rem; padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap;">📖 Guide</button>
 
         <!-- Active Project / Plan Dropdown Selector with Label -->
         <div style="display: flex; align-items: center; gap: 6px;">
@@ -1494,7 +1494,7 @@
   </div>
 
   <!-- 2-Page Digital Binder User Guide Modal -->
-  <div class="modal-overlay" id="tutorialModalOverlay" style="background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); padding: 1rem; z-index: 999999; overflow-y: auto;">
+  <div class="modal-overlay" id="tutorialModalOverlay">
     <div class="binder-modal-container" style="max-width: 1040px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; gap: 12px; overflow-y: auto;">
 
       <!-- Guide Top Bar -->
@@ -1517,7 +1517,7 @@
           <button type="button" onclick="if(window.app && window.app.closeTutorialModal && window.app.openFranklinModal) { window.app.closeTutorialModal(); window.app.openFranklinModal(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Switch directly to Daily Planner Modal">
             📅 Open Daily Planner
           </button>
-          <button type="button" id="btnCloseTutorialModal" onclick="var el=document.getElementById('tutorialModalOverlay'); if(el){ el.style.cssText='display:none !important; opacity:0 !important; visibility:hidden !important; pointer-events:none !important;'; el.classList.remove('active'); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">✕ Close</button>
+          <button type="button" id="btnCloseTutorialModal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">✕ Close</button>
         </div>
       </div>
 

@@ -784,8 +784,12 @@ class MichiApp {
     this.tutorialSlides = document.querySelectorAll('.tutorial-slide');
     this.currentTutorialSlide = 1;
 
+    this.navTabGuideBar = document.getElementById('navTabGuideBar');
     if (this.btnOpenTutorialHeader) {
       this.btnOpenTutorialHeader.addEventListener('click', () => this.openTutorialModal());
+    }
+    if (this.navTabGuideBar) {
+      this.navTabGuideBar.addEventListener('click', () => this.openTutorialModal());
     }
     if (this.btnCloseTutorialModal) {
       this.btnCloseTutorialModal.addEventListener('click', () => this.closeTutorialModal());
@@ -3396,9 +3400,8 @@ class MichiApp {
     this.closeFranklinModal();
     this.closeApptModal();
     this.currentTutorialSlide = 1;
-    const overlay = document.getElementById('tutorialModalOverlay');
+    const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
     if (overlay) {
-      overlay.setAttribute('style', 'display: flex !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.85) !important; padding: 1rem; overflow-y: auto;');
       overlay.classList.add('active');
     }
     try {
@@ -3421,7 +3424,6 @@ class MichiApp {
   closeTutorialModal() {
     const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
     if (overlay) {
-      overlay.setAttribute('style', 'display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important;');
       overlay.classList.remove('active');
     }
   }
