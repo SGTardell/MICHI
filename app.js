@@ -1285,6 +1285,7 @@ class MichiApp {
     this.navTabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
+        if (!target) return;
         if (target === 'all') {
           this.switchTab('all', 'all');
         } else {
