@@ -1004,6 +1004,8 @@ class MichiApp {
         this.state.deletedProjects = this.state.deletedProjects.filter(p => (p || '').trim().toLowerCase() !== targetLower);
       }
 
+      // Prevent duplicate initial spark cards for the same project title
+      this.state.items = (this.state.items || []).filter(i => !(i.project === title && i.id && i.id.startsWith('item-spark-')));
       this.state.items.unshift(initialSpark);
       this.currentStageFilter = 'all';
       this.currentFilter = 'all';
@@ -4867,9 +4869,14 @@ class MichiApp {
   }
 
   renderSpecificProjectView(projectName, gridItems) {
-    if (!this.cardsGrid) return;
-    this.cardsGrid.innerHTML = '';
-    const projItems = gridItems.filter(i => (i.project || 'Personal') === projectName);
+    const seenIds = new Set();
+    const projItems = gridItems.filter(i => {
+      if ((i.project || 'Personal') !== projectName) return false;
+      const key = i.id || (i.title + '-' + i.type);
+      if (seenIds.has(key)) return false;
+      seenIds.add(key);
+      return true;
+    });
 
     const kind = (this.state.projectKinds && this.state.projectKinds[projectName]) || 'project';
     const isPlan = kind === 'plan';
