@@ -17,20 +17,30 @@ if ('serviceWorker' in navigator) {
  * 1-Click Project Launch, Dispatcher Project Selection, and Connected 4-Stage Timeline
  */
 
-window.openTutorialModalGlobal = function() {
+window.openTutorialModalGlobal = function(e) {
+  if (e) {
+    try { e.preventDefault(); e.stopPropagation(); } catch(err) {}
+  }
   const overlay = document.getElementById('tutorialModalOverlay');
   if (overlay) {
-    overlay.style.display = 'flex';
-    overlay.style.opacity = '1';
-    overlay.style.pointerEvents = 'auto';
-    overlay.style.visibility = 'visible';
-    overlay.style.zIndex = '9999999';
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.style.setProperty('opacity', '1', 'important');
+    overlay.style.setProperty('pointer-events', 'auto', 'important');
+    overlay.style.setProperty('visibility', 'visible', 'important');
+    overlay.style.setProperty('z-index', '99999999', 'important');
     overlay.classList.add('active');
   }
   if (window.app && window.app.openTutorialModal) {
-    window.app.openTutorialModal();
+    try { window.app.openTutorialModal(); } catch(err) {}
   }
+  return false;
 };
+
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.closest && e.target.closest('#btnOpenTutorialHeader')) {
+    window.openTutorialModalGlobal(e);
+  }
+});
 
 window.openLaunchChoiceModalGlobal = function(id) {
   if (window.app && window.app.openLaunchChoiceModalById) {

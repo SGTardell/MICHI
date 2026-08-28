@@ -74,7 +74,7 @@
           <option value="winter">MICHI Signature Dark</option>
         </select>
 
-        <button type="button" id="btnOpenTutorialHeader" onclick="if(window.openTutorialModalGlobal) { window.openTutorialModalGlobal(); } else if(window.app && window.app.openTutorialModal) { window.app.openTutorialModal(); }" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
+        <button type="button" id="btnOpenTutorialHeader" onclick="window.openTutorialModalGlobal(event)" ontouchend="window.openTutorialModalGlobal(event)" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; position: relative; z-index: 100; pointer-events: auto !important;" title="Open MICHI Interactive Tutorial & User Guide">
           📖 Guide
         </button>
 
