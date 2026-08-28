@@ -89,7 +89,7 @@
           <option value="winter">MICHI Signature Dark</option>
         </select>
 
-        <button type="button" id="btnOpenTutorialHeader" onclick="window.openTutorialModalGlobal(event)" ontouchend="window.openTutorialModalGlobal(event)" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; position: relative; z-index: 100; pointer-events: auto !important;" title="Open MICHI Interactive Tutorial & User Guide">
+        <button type="button" id="btnOpenTutorialHeader" onclick="var o=document.getElementById('tutorialModalOverlay'); if(o){ o.style.setProperty('display','flex','important'); o.style.setProperty('opacity','1','important'); o.style.setProperty('pointer-events','auto','important'); o.style.setProperty('visibility','visible','important'); o.style.setProperty('z-index','99999999','important'); o.style.setProperty('position','fixed','important'); o.style.setProperty('top','0','important'); o.style.setProperty('left','0','important'); o.style.setProperty('width','100vw','important'); o.style.setProperty('height','100vh','important'); o.classList.add('active'); } if(window.app && window.app.openTutorialModal) { window.app.openTutorialModal(); }" ontouchend="var o=document.getElementById('tutorialModalOverlay'); if(o){ o.style.setProperty('display','flex','important'); o.style.setProperty('opacity','1','important'); o.style.setProperty('pointer-events','auto','important'); o.style.setProperty('visibility','visible','important'); o.style.setProperty('z-index','99999999','important'); o.style.setProperty('position','fixed','important'); o.style.setProperty('top','0','important'); o.style.setProperty('left','0','important'); o.style.setProperty('width','100vw','important'); o.style.setProperty('height','100vh','important'); o.classList.add('active'); } if(window.app && window.app.openTutorialModal) { window.app.openTutorialModal(); }" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; position: relative; z-index: 100; pointer-events: auto !important;" title="Open MICHI Interactive Tutorial & User Guide">
           📖 Guide
         </button>
 
@@ -1531,7 +1531,17 @@
           </div>
 
           <div id="guideLeftContent" style="flex: 1; display: flex; flex-direction: column; gap: 12px; line-height: 1.5; font-size: 0.86rem; color: var(--text-main);">
-            <!-- Rendered dynamically by app.js -->
+            <p>In Japanese culture, <strong>道 (Michi)</strong> represents a disciplined journey or path. MICHI organizes your life and work into a streamlined 2-stage creation pipeline:</p>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                <strong style="color: var(--text-main); font-size: 0.88rem;">1. Development Board</strong>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Active project work, pending tasks, resource bookmarks, and in-process goals.</p>
+              </div>
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                <strong style="color: var(--text-main); font-size: 0.88rem;">2. Completed Board</strong>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Finished deliverables, closed projects, archived benchmarks, and milestone records.</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1557,7 +1567,12 @@
           </div>
 
           <div id="guideRightContent" style="flex: 1; display: flex; flex-direction: column; gap: 12px; line-height: 1.5; font-size: 0.86rem; color: var(--text-main);">
-            <!-- Rendered dynamically by app.js -->
+            <p>Navigate and personalize your workspace effortlessly using top controls:</p>
+            <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
+              <li><strong>Theme Selector:</strong> Switch between 🍃 そよ風 Soyokaze (Gentle Breeze) and 冬 Fuyu (MICHI Signature Dark).</li>
+              <li><strong>📁 All Projects Filter:</strong> Filter your entire dashboard to focus strictly on 1 active project container.</li>
+              <li><strong>🔍 Workspace Search:</strong> Query all tasks, brain dump notes, and project cards instantly.</li>
+            </ul>
           </div>
         </div>
 
