@@ -3397,28 +3397,10 @@ class MichiApp {
   }
 
   openTutorialModal() {
-    this.closeFranklinModal();
     this.closeApptModal();
-    this.currentTutorialSlide = 1;
-    const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
-    if (overlay) {
-      overlay.classList.add('active');
-    }
-    try {
-      this.updateTutorialSlideView();
-    } catch(e) {}
-
-    // Bind Guide side chapter tabs
-    const tabs = document.querySelectorAll('.guide-tab-item');
-    tabs.forEach(t => {
-      t.addEventListener('click', (e) => {
-        const chap = parseInt(e.target.dataset.chapter, 10);
-        if (chap && chap >= 1 && chap <= 5) {
-          this.currentTutorialSlide = chap;
-          this.updateTutorialSlideView();
-        }
-      });
-    });
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
+    this.openFranklinModal(this.selectedFranklinDate || todayStr);
   }
 
   closeTutorialModal() {
