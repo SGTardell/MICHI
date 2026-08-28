@@ -89,7 +89,7 @@
           <option value="winter">MICHI Signature Dark</option>
         </select>
 
-        <button type="button" id="btnOpenTutorialHeader" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
+        <button type="button" id="btnOpenTutorialHeader" onclick="var o=document.getElementById('tutorialModalOverlay'); if(o){ o.classList.add('active'); o.style.display='flex'; o.style.opacity='1'; o.style.visibility='visible'; o.style.pointerEvents='auto'; } if(window.app && window.app.openTutorialModal) window.app.openTutorialModal();" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Interactive Tutorial & User Guide">
           📖 Guide
         </button>
 
@@ -130,6 +130,7 @@
 
         <button class="nav-tab active" data-tab="all" style="font-weight: 800; font-size: 0.88rem;">Home</button>
         <button class="nav-tab" data-tab="ideas" style="font-weight: 800; font-size: 0.88rem;">Brain Dump</button>
+        <button type="button" class="nav-tab" id="navTabGuideBar" onclick="var o=document.getElementById('tutorialModalOverlay'); if(o){ o.classList.add('active'); o.style.display='flex'; o.style.opacity='1'; o.style.visibility='visible'; o.style.pointerEvents='auto'; } if(window.app && window.app.openTutorialModal) window.app.openTutorialModal();" style="font-weight: 800; font-size: 0.88rem; cursor: pointer;">📖 Guide</button>
 
         <!-- Active Project / Plan Dropdown Selector with Label -->
         <div style="display: flex; align-items: center; gap: 6px;">
@@ -1602,6 +1603,30 @@
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
+
+    // Direct fallback binding for Guide buttons
+    window.addEventListener('DOMContentLoaded', () => {
+      const b1 = document.getElementById('btnOpenTutorialHeader');
+      const b2 = document.getElementById('navTabGuideBar');
+      const overlay = document.getElementById('tutorialModalOverlay');
+
+      const triggerGuide = (e) => {
+        if (e) e.preventDefault();
+        if (overlay) {
+          overlay.classList.add('active');
+          overlay.style.display = 'flex';
+          overlay.style.opacity = '1';
+          overlay.style.visibility = 'visible';
+          overlay.style.pointerEvents = 'auto';
+        }
+        if (window.app && window.app.openTutorialModal) {
+          window.app.openTutorialModal();
+        }
+      };
+
+      if (b1) b1.onclick = triggerGuide;
+      if (b2) b2.onclick = triggerGuide;
+    });
   </script>
 </body>
 </html>
