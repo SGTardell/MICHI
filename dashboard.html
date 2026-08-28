@@ -117,12 +117,12 @@
         <button class="nav-tab active" data-tab="all" style="font-weight: 800; font-size: 0.88rem;">Home</button>
         <button class="nav-tab" data-tab="ideas" style="font-weight: 800; font-size: 0.88rem;">Brain Dump</button>
 
-        <!-- All Active Plans & Projects Dropdown Selector -->
-        <select id="globalProjectFilter" style="padding: 0.4rem 0.85rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;" title="Select Plan or Project Filter">
-          <option value="all">All Active Plans & Projects</option>
-          <option value="projects">Projects</option>
-          <option value="plans">Plans</option>
-        </select>
+        <!-- Active Project / Plan Dropdown Selector with Label -->
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); white-space: nowrap;">Project / Plan:</span>
+          <select id="globalProjectFilter" style="padding: 0.4rem 0.85rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;" title="Select Active Project or Plan Workspace">
+          </select>
+        </div>
 
         <!-- + New Plan / Project Button -->
         <button type="button" id="btnCreateNewProjectHeader" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.4rem 0.95rem; border-radius: 20px; font-size: 0.82rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Create a new plan or project workspace">

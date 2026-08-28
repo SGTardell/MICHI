@@ -4163,11 +4163,15 @@ class MichiApp {
     };
 
     if (this.globalProjectFilter) {
-      const cur = this.selectedProject || 'all';
-      let html = `<option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Plans & Projects</option>`;
-      projects.forEach(p => {
-        html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
-      });
+      const cur = this.selectedProject || '';
+      let html = '';
+      if (projects.length === 0) {
+        html = `<option value="" disabled selected>-- No Active Projects/Plans --</option>`;
+      } else {
+        projects.forEach(p => {
+          html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
+        });
+      }
       this.globalProjectFilter.innerHTML = html;
     }
 
