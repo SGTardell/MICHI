@@ -3,300 +3,286 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>MICHI — Login</title>
+  <title>MICHI — Sign In & Workspace Access</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="Images/Michi_Appicon.png">
+  <link rel="apple-touch-icon-precomposed" href="Images/Michi_Appicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/Michi_Appicon.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="Images/Michi_Appicon.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="Images/Michi_Appicon.png">
+  <link rel="icon" type="image/png" href="Images/Michi_Appicon.png">
+  <link rel="stylesheet" href="styles.css?v=158">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <style>
-    :root {
-      --bg: #E3E9EA;
-      --card-bg: #D9DDDE;
-      --card-border: #B2B7B9;
-      --text-main: #333333;
-      --text-muted: #666666;
-      --input-bg: #ffffff;
-      --input-border: #CCCCCC;
-      --tab-active-bg: #E0E0E0;
-      --tab-active-border: #BBBBBB;
-      --btn-bg: #E0E0E0;
-      --btn-border: #BBBBBB;
-      --btn-text: #333333;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-dark, #F9FEFF);
+      color: var(--text-main, #616363);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      margin: 0;
       padding: 1.5rem;
+      box-sizing: border-box;
     }
 
-    .login-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 2.5rem 2.2rem;
-      max-width: 440px;
+    .auth-card {
       width: 100%;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      max-width: 440px;
+      background: var(--bg-card, #D9DDDE);
+      border: 1px solid var(--border, #B2B7B9);
+      border-radius: var(--radius-lg, 16px);
+      padding: 2.2rem;
+      box-shadow: 0 10px 30px rgba(97, 99, 99, 0.15);
+      box-sizing: border-box;
+      color: var(--text-main, #616363);
+    }
+
+    .auth-brand {
       text-align: center;
-    }
-
-    .kanji-header {
-      font-size: 3.5rem;
-      color: #666666;
-      font-weight: 300;
-      line-height: 1;
-      margin-bottom: 1.2rem;
-      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
-    }
-
-    .brand-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #444444;
-      letter-spacing: 1px;
-      margin-bottom: 0.3rem;
-    }
-
-    .brand-subtitle {
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--text-muted);
       margin-bottom: 1.8rem;
     }
 
-    /* Segmented Tab Switcher */
-    .tab-switcher {
+    .auth-brand img {
+      height: 72px;
+      max-width: 220px;
+      width: auto;
+      object-fit: contain;
+      margin-bottom: 0.8rem;
+      border-radius: 0;
+      box-shadow: none;
+      filter: var(--logo-filter, brightness(0.38));
+    }
+
+    .auth-brand h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main, #616363);
+      margin: 0 0 0.3rem 0;
+      letter-spacing: 0.5px;
+    }
+
+    .auth-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted, #616363);
+      margin: 0;
+    }
+
+    .auth-tabs {
       display: flex;
-      background: #ffffff;
-      border: 1px solid var(--input-border);
-      border-radius: 12px;
+      background: var(--bg-main, #F9FEFF);
+      border-radius: var(--radius-sm, 8px);
       padding: 4px;
       margin-bottom: 1.5rem;
+      border: 1px solid var(--border, #B2B7B9);
     }
 
-    .tab-btn {
+    .auth-tab {
       flex: 1;
-      padding: 0.65rem 0.5rem;
+      text-align: center;
+      padding: 0.55rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-muted, #616363);
       border: none;
       background: transparent;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-muted);
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
     }
 
-    .tab-btn.active {
-      background: var(--tab-active-bg);
-      border: 1px solid var(--tab-active-border);
-      color: var(--text-main);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    .auth-tab.active {
+      background: var(--bg-card, #D9DDDE);
+      color: var(--text-main, #616363);
+      border: 1px solid var(--border, #B2B7B9);
     }
 
-    /* Form Fields */
+    .auth-form {
+      display: none;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .auth-form.active {
+      display: flex;
+    }
+
     .form-group {
-      margin-bottom: 1.2rem;
-      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
     }
 
-    .form-label {
-      display: block;
-      font-size: 0.85rem;
+    .form-group label {
+      font-size: 0.8rem;
       font-weight: 700;
-      color: #555555;
-      margin-bottom: 6px;
+      color: var(--text-main, #616363);
     }
 
     .input-wrapper {
       position: relative;
+      display: flex;
+      align-items: center;
     }
 
-    .form-input {
+    .input-wrapper input {
       width: 100%;
-      padding: 0.8rem 1rem;
-      background: var(--input-bg);
-      color: var(--text-main);
-      border: 1px solid var(--input-border);
-      border-radius: 10px;
-      font-size: 0.95rem;
+      padding: 0.75rem 2.4rem 0.75rem 0.9rem;
+      background: var(--bg-main, #F9FEFF);
+      color: var(--text-main, #616363);
+      border: 1px solid var(--border, #B2B7B9);
+      border-radius: var(--radius-sm, 8px);
+      font-size: 0.9rem;
       font-weight: 600;
+      box-sizing: border-box;
       outline: none;
-      transition: border-color 0.15s ease;
     }
 
-    .form-input:focus {
-      border-color: #888888;
+    .input-wrapper input::placeholder {
+      color: #94A3B8;
     }
 
-    .password-toggle {
+    .input-wrapper input:focus {
+      border-color: var(--border, #616363);
+    }
+
+    .toggle-password {
       position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
+      right: 0.8rem;
+      color: var(--text-main, #616363);
       cursor: pointer;
       font-size: 1.1rem;
     }
 
-    /* Meta Row (Remember & Reset) */
-    .form-meta-row {
+    .form-options {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.85rem;
-      margin-bottom: 1.5rem;
-      color: var(--text-muted);
+      font-size: 0.82rem;
+      color: var(--text-main, #616363);
     }
 
-    .remember-check {
+    .form-options label {
       display: flex;
       align-items: center;
       gap: 6px;
       cursor: pointer;
-      font-weight: 600;
+      color: var(--text-main, #616363);
     }
 
-    .remember-check input {
-      accent-color: #555555;
-    }
-
-    .reset-link {
-      color: var(--text-muted);
-      text-decoration: underline;
-      font-weight: 600;
-    }
-
-    /* Submit Button */
-    .submit-btn {
+    .btn-submit {
       width: 100%;
-      padding: 0.85rem 1rem;
-      background: var(--btn-bg);
-      border: 1px solid var(--btn-border);
-      color: var(--btn-text);
-      border-radius: 10px;
-      font-size: 0.95rem;
+      padding: 0.75rem;
+      background: var(--bg-card, #D9DDDE);
+      color: var(--text-main, #616363);
+      border: 1px solid var(--border, #B2B7B9);
+      border-radius: var(--radius-sm, 8px);
+      font-size: 0.92rem;
       font-weight: 800;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: background-color 0.15s ease;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      transition: opacity 0.2s ease;
+      margin-top: 0.4rem;
     }
 
-    .submit-btn:hover {
-      background: #D5D5D5;
+    .btn-submit:hover {
+      background: var(--bg-card-hover, #E4E8E9);
     }
 
-    /* Footer Text */
-    .login-footer {
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+    .form-footer {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-main, #616363);
+      margin-top: 0.5rem;
     }
 
-    .login-footer a {
-      color: var(--text-main);
-      font-weight: 700;
+    .form-footer a {
+      color: var(--text-main, #616363);
       text-decoration: underline;
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
-  <div class="login-card">
-    <div class="kanji-header">道</div>
-    <h1 class="brand-title">MICHI</h1>
-    <p class="brand-subtitle">Organize Life & Work — Digital Workspace</p>
 
-    <!-- Sign In / Create Account Switcher -->
-    <div class="tab-switcher">
-      <button type="button" class="tab-btn active" id="tabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
-      <button type="button" class="tab-btn" id="tabCreateAccount" onclick="switchAuthTab('create')">Create Account</button>
+  <div class="auth-card">
+    <div class="auth-brand">
+      <img src="Images/Your Way WH Logo.png" onerror="this.src='Images/Your Way WH Transparent.png'" alt="MICHI Logo" />
+      <h1>MICHI</h1>
+      <p>Organize Life & Work — Digital Workspace</p>
     </div>
 
-    <!-- Login Form -->
-    <form id="authForm" onsubmit="handleAuthSubmit(event)">
-      <div class="form-group">
-        <label for="usernameInput" class="form-label">Username / Email</label>
-        <input type="text" id="usernameInput" class="form-input" value="stardell" placeholder="Enter username or email..." required />
-      </div>
+    <!-- Auth Tabs -->
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab active" id="tabLogin">Sign In</button>
+      <button type="button" class="auth-tab" id="tabRegister">Create Account</button>
+    </div>
 
+    <!-- Sign In Form -->
+    <form id="loginForm" class="auth-form active">
       <div class="form-group">
-        <label for="passwordInput" class="form-label">Password</label>
+        <label for="loginUsername">Username / Email</label>
         <div class="input-wrapper">
-          <input type="password" id="passwordInput" class="form-input" value="password123" placeholder="Enter password..." required />
-          <button type="button" class="password-toggle" onclick="togglePasswordVisibility()" title="Toggle password view">👁</button>
+          <input type="text" id="loginUsername" placeholder="Enter username or email..." autocapitalize="none" autocorrect="off" spellcheck="false" required />
         </div>
       </div>
 
-      <div class="form-meta-row">
-        <label class="remember-check">
-          <input type="checkbox" id="rememberMe" checked /> Remember me
-        </label>
-        <a href="javascript:void(0);" onclick="alert('Password reset link sent to your registered email.')" class="reset-link">Reset Password</a>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="loginPassword" placeholder="Enter password..." autocapitalize="none" autocorrect="off" spellcheck="false" required />
+          <i class="ri-eye-off-fill toggle-password" data-target="loginPassword" title="Toggle password visibility"></i>
+        </div>
       </div>
 
-      <button type="submit" class="submit-btn" id="btnAuthSubmit">
-        <span>Sign In to MICHI ➔</span>
-      </button>
+      <div class="form-options">
+        <label>
+          <input type="checkbox" id="rememberMe" style="accent-color: var(--stage-structure, #009967);" />
+          Remember me
+        </label>
+        <a href="#" id="linkResetPass" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: underline;">Reset Password</a>
+      </div>
 
-      <div class="login-footer" id="footerText">
-        Don't have an account? <a href="javascript:void(0);" onclick="switchAuthTab('create')">Create One</a>
+      <button type="submit" class="btn-submit">Sign In to MICHI ➔</button>
+
+      <div class="form-footer">
+        Don't have an account? <a href="#" id="linkToRegister">Create One</a>
+      </div>
+    </form>
+
+    <!-- Create Account Form -->
+    <form id="registerForm" class="auth-form">
+      <div class="form-group">
+        <label for="regUsername">Full Name or Username</label>
+        <div class="input-wrapper">
+          <input type="text" id="regUsername" placeholder="Enter your name..." autocapitalize="none" autocorrect="off" spellcheck="false" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword">Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="regPassword" placeholder="Choose a password..." autocapitalize="none" autocorrect="off" spellcheck="false" required />
+          <i class="ri-eye-off-fill toggle-password" data-target="regPassword" title="Toggle password visibility"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regConfirmPassword">Confirm Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="regConfirmPassword" placeholder="Confirm password..." autocapitalize="none" autocorrect="off" spellcheck="false" required />
+          <i class="ri-eye-off-fill toggle-password" data-target="regConfirmPassword" title="Toggle password visibility"></i>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" style="background: var(--bg-card, #ffffff); color: var(--text-main, #333333); border: 1px solid var(--border, #cccccc); font-weight: 800;">Create Account & Launch ➔</button>
+
+      <div class="form-footer">
+        Already have an account? <a href="#" id="linkToLogin">Sign In</a>
       </div>
     </form>
   </div>
 
-  <script>
-    let currentAuthMode = 'signin';
-
-    function switchAuthTab(mode) {
-      currentAuthMode = mode;
-      const tabSignIn = document.getElementById('tabSignIn');
-      const tabCreateAccount = document.getElementById('tabCreateAccount');
-      const btnSubmit = document.getElementById('btnAuthSubmit');
-      const footerText = document.getElementById('footerText');
-
-      if (mode === 'signin') {
-        tabSignIn.classList.add('active');
-        tabCreateAccount.classList.remove('active');
-        btnSubmit.innerHTML = '<span>Sign In to MICHI ➔</span>';
-        footerText.innerHTML = 'Don\'t have an account? <a href="javascript:void(0);" onclick="switchAuthTab(\'create\')">Create One</a>';
-      } else {
-        tabCreateAccount.classList.add('active');
-        tabSignIn.classList.remove('active');
-        btnSubmit.innerHTML = '<span>Create MICHI Account ➔</span>';
-        footerText.innerHTML = 'Already have an account? <a href="javascript:void(0);" onclick="switchAuthTab(\'signin\')">Sign In</a>';
-      }
-    }
-
-    function togglePasswordVisibility() {
-      const passInput = document.getElementById('passwordInput');
-      if (passInput.type === 'password') {
-        passInput.type = 'text';
-      } else {
-        passInput.type = 'password';
-      }
-    }
-
-    function handleAuthSubmit(e) {
-      e.preventDefault();
-      localStorage.setItem('michi_logged_in', 'true');
-      window.location.href = 'dashboard.html';
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

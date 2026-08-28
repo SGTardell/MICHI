@@ -8,12 +8,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const rememberMeCheckbox = document.getElementById("rememberMe");
     const loginUsernameInput = document.getElementById("loginUsername");
 
-    // Load saved username from localStorage if "Remember Me" was previously enabled
+    // Load saved username & password from localStorage if "Remember Me" was enabled
     const savedUsername = localStorage.getItem("rememberedUsername");
     if (savedUsername && loginUsernameInput) {
         loginUsernameInput.value = savedUsername;
         if (rememberMeCheckbox) {
             rememberMeCheckbox.checked = true;
+        }
+        const userKey = "michi_user_pass_" + savedUsername.toLowerCase();
+        const savedPass = localStorage.getItem(userKey);
+        const loginPasswordInput = document.getElementById("loginPassword");
+        if (savedPass && loginPasswordInput) {
+            loginPasswordInput.value = savedPass;
         }
     }
 
@@ -37,6 +43,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (linkToRegister) linkToRegister.addEventListener("click", (e) => { e.preventDefault(); showTab("register"); });
     if (linkToLogin) linkToLogin.addEventListener("click", (e) => { e.preventDefault(); showTab("login"); });
 
+    const linkResetPass = document.getElementById("linkResetPass");
+    if (linkResetPass) {
+        linkResetPass.addEventListener("click", (e) => {
+            e.preventDefault();
+            const username = loginUsernameInput ? loginUsernameInput.value.trim() : "";
+            if (!username) {
+                alert("Please enter your Username / Email first to reset your password.");
+                if (loginUsernameInput) loginUsernameInput.focus();
+                return;
+            }
+            const newPass = prompt("Set a new password for account '" + username + "':");
+            if (newPass && newPass.trim()) {
+                const userKey = "michi_user_pass_" + username.toLowerCase();
+                localStorage.setItem(userKey, newPass.trim());
+                alert("Password updated successfully! Signing in to MICHI...");
+                localStorage.setItem("michi_logged_in", "true");
+                localStorage.setItem("rememberedUsername", username);
+                window.location.replace("dashboard.html");
+            }
+        });
+    }
+
     // Password Eye Icon Toggle for all password fields
     const toggleIcons = document.querySelectorAll(".toggle-password");
     toggleIcons.forEach(toggle => {
@@ -58,16 +86,44 @@ document.addEventListener("DOMContentLoaded", () => {
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const username = loginUsernameInput ? loginUsernameInput.value.trim() : "";
+            const rawPass = document.getElementById("loginPassword") ? document.getElementById("loginPassword").value : "";
+            const password = rawPass ? rawPass.trim() : "";
             
-            if (username) {
-                // Save or remove remembered username based on checkbox
-                if (rememberMeCheckbox && rememberMeCheckbox.checked) {
-                    localStorage.setItem("rememberedUsername", username);
-                } else {
-                    localStorage.removeItem("rememberedUsername");
-                }
-                window.location.href = "dashboard.html";
+            if (!username) {
+                alert("Please enter your username or email.");
+                return;
             }
+
+            if (!password) {
+                alert("Please enter your password.");
+                return;
+            }
+
+            const userKey = "michi_user_pass_" + username.toLowerCase();
+            const storedPass = localStorage.getItem(userKey);
+
+            if (!storedPass) {
+                // Initial login for username — register password and enter workspace
+                localStorage.setItem(userKey, password);
+                localStorage.setItem("michi_logged_in", "true");
+                localStorage.setItem("rememberedUsername", username);
+                window.location.replace("dashboard.html");
+                return;
+            }
+
+            if (storedPass !== password) {
+                alert("Incorrect password for account '" + username + "'. Access denied.");
+                const passInput = document.getElementById("loginPassword");
+                if (passInput) {
+                    passInput.value = "";
+                    passInput.focus();
+                }
+                return;
+            }
+
+            localStorage.setItem("michi_logged_in", "true");
+            localStorage.setItem("rememberedUsername", username);
+            window.location.replace("dashboard.html");
         });
     }
 
@@ -79,18 +135,32 @@ document.addEventListener("DOMContentLoaded", () => {
             const regPassword = document.getElementById("regPassword").value;
             const regConfirmPassword = document.getElementById("regConfirmPassword").value;
 
+            if (!regUsername) {
+                alert("Please enter your full name or username.");
+                return;
+            }
+
+            if (!regPassword) {
+                alert("Please enter a password.");
+                return;
+            }
+
+            if (regPassword.length < 3) {
+                alert("Password must be at least 3 characters long.");
+                return;
+            }
+
             if (regPassword !== regConfirmPassword) {
                 alert("Passwords do not match. Please check your password.");
                 return;
             }
 
-            // Save username if registered successfully
-            if (regUsername) {
-                localStorage.setItem("rememberedUsername", regUsername);
-            }
+            const userKey = "michi_user_pass_" + regUsername.toLowerCase();
+            localStorage.setItem(userKey, regPassword);
+            localStorage.setItem("michi_logged_in", "true");
+            localStorage.setItem("rememberedUsername", regUsername);
 
-            alert("Account created successfully! Welcome to MICHI.");
-            window.location.href = "dashboard.html";
+            window.location.replace("dashboard.html");
         });
     }
 });
