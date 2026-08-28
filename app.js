@@ -1,8 +1,10 @@
 // Unregister any active Service Worker to eliminate cache reload loops
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(regs => {
-    for (let r of regs) r.unregister();
-  }).catch(() => {});
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  try {
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      for (let r of regs) r.unregister();
+    }).catch(() => {});
+  } catch(e) {}
 }
 
 /**
@@ -21,22 +23,20 @@ window.openTutorialModalGlobal = function(e) {
   if (e && e.preventDefault) {
     try { e.preventDefault(); e.stopPropagation(); } catch(err) {}
   }
-  var overlay = document.getElementById('tutorialModalOverlay');
-  if (overlay) {
-    overlay.setAttribute('style', 'display: flex !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.85) !important; padding: 1rem; overflow-y: auto;');
-    overlay.classList.add('active');
-  }
   if (window.app && window.app.openTutorialModal) {
-    try { window.app.openTutorialModal(); } catch(err) {}
+    window.app.openTutorialModal();
+  } else {
+    var overlay = document.getElementById('tutorialModalOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '1';
+      overlay.style.visibility = 'visible';
+      overlay.style.pointerEvents = 'auto';
+      overlay.classList.add('active');
+    }
   }
   return false;
 };
-
-document.addEventListener('click', function(e) {
-  if (e.target && e.target.closest && (e.target.closest('#btnOpenTutorialHeader') || e.target.closest('#navTabGuide'))) {
-    window.openTutorialModalGlobal(e);
-  }
-});
 
 window.openLaunchChoiceModalGlobal = function(id) {
   if (window.app && window.app.openLaunchChoiceModalById) {
