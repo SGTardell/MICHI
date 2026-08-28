@@ -9,7 +9,7 @@
   <title>MICHI — For Life and Work</title>
   <script>
     (function() {
-      const CURRENT_BUILD = 'v207';
+      const CURRENT_BUILD = 'v208';
       const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
       if (lastBuild !== CURRENT_BUILD) {
         localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -25,6 +25,19 @@
         }
       }
     })();
+
+    window.openTutorialModalGlobal = function(e) {
+      if (e && e.preventDefault) { try { e.preventDefault(); e.stopPropagation(); } catch(err) {} }
+      var overlay = document.getElementById('tutorialModalOverlay');
+      if (overlay) {
+        overlay.setAttribute('style', 'display: flex !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0,0,0,0.85) !important; padding: 1rem; overflow-y: auto;');
+        overlay.classList.add('active');
+      }
+      if (window.app && window.app.openTutorialModal) {
+        try { window.app.openTutorialModal(); } catch(err) {}
+      }
+      return false;
+    };
   </script>
   <meta name="description" content="MICHI — For Life and Work. A guided 2-stage pipeline: Development and Completed.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1565,7 +1578,7 @@
   <!-- Notification Toast -->
   <div class="toast" id="toast">Copied to clipboard!</div>
 
-  <script src="app.js?v=207"></script>
+  <script src="app.js?v=208"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
