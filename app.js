@@ -2893,6 +2893,7 @@ class MichiApp {
   }
 
   openFranklinModal(dateStr) {
+    this.closeTutorialModal();
     this.selectedFranklinDate = dateStr || '2026-08-08';
     
     const savedFont = localStorage.getItem('MICHI_PLANNER_FONT') || 'cursive';
@@ -2900,7 +2901,7 @@ class MichiApp {
     this.applyPlannerFontStyle(savedFont);
 
     this.renderFranklinModalContent();
-    this.franklinModalOverlay.classList.add('active');
+    if (this.franklinModalOverlay) this.franklinModalOverlay.classList.add('active');
   }
 
   closeFranklinModal() {
@@ -3382,6 +3383,8 @@ class MichiApp {
   }
 
   openTutorialModal() {
+    this.closeFranklinModal();
+    this.closeApptModal();
     this.currentTutorialSlide = 1;
     const overlay = document.getElementById('tutorialModalOverlay');
     if (overlay) {
@@ -3389,7 +3392,7 @@ class MichiApp {
       overlay.style.opacity = '1';
       overlay.style.pointerEvents = 'auto';
       overlay.style.visibility = 'visible';
-      overlay.style.zIndex = '999999';
+      overlay.style.zIndex = '9999999';
       overlay.classList.add('active');
     }
     try {
@@ -5799,6 +5802,7 @@ class MichiApp {
   }
 
   openApptModal(dateStr, apptIdToEdit = null) {
+    this.closeTutorialModal();
     this.selectedApptDate = this.normalizeDateStr(dateStr || '2026-08-12');
     if (this.apptFormDate) this.apptFormDate.value = this.selectedApptDate;
     if (this.apptFormId) this.apptFormId.value = apptIdToEdit || '';
@@ -5955,6 +5959,7 @@ class MichiApp {
       emptyCell.style.opacity = '0.35';
       emptyCell.style.background = 'var(--bg-main)';
       emptyCell.style.border = '1px dashed var(--border)';
+      emptyCell.style.pointerEvents = 'none';
       this.calendarGrid.appendChild(emptyCell);
     }
 
