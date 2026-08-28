@@ -1371,35 +1371,35 @@
             <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Appointment Date</label>
             <input type="date" id="apptFormDate" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;" required />
           </div>
-          <div style="flex: 1; min-width: 150px;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Time</label>
-            <select id="apptFormTime" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;" required>
-            <option value="07:00 AM">07:00 AM</option>
-            <option value="08:00 AM">08:00 AM</option>
-            <option value="08:30 AM">08:30 AM</option>
-            <option value="09:00 AM" selected>09:00 AM</option>
-            <option value="09:30 AM">09:30 AM</option>
-            <option value="10:00 AM">10:00 AM</option>
-            <option value="10:30 AM">10:30 AM</option>
-            <option value="11:00 AM">11:00 AM</option>
-            <option value="11:30 AM">11:30 AM</option>
-            <option value="12:00 PM">12:00 PM</option>
-            <option value="12:30 PM">12:30 PM</option>
-            <option value="01:00 PM">01:00 PM</option>
-            <option value="01:30 PM">01:30 PM</option>
-            <option value="02:00 PM">02:00 PM</option>
-            <option value="02:30 PM">02:30 PM</option>
-            <option value="03:00 PM">03:00 PM</option>
-            <option value="03:30 PM">03:30 PM</option>
-            <option value="04:00 PM">04:00 PM</option>
-            <option value="04:30 PM">04:30 PM</option>
-            <option value="05:00 PM">05:00 PM</option>
-            <option value="05:30 PM">05:30 PM</option>
-            <option value="06:00 PM">06:00 PM</option>
-            <option value="07:00 PM">07:00 PM</option>
-            <option value="08:00 PM">08:00 PM</option>
-          </select>
-        </div>
+          <div style="flex: 1; min-width: 180px;">
+            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Time (Hour & Minute)</label>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <select id="apptFormHour" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;" title="Select Hour">
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09" selected>09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+              </select>
+              <select id="apptFormMin" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;" title="Select 15-Minute Increment">
+                <option value=":00">:00</option>
+                <option value=":15">:15</option>
+                <option value=":30">:30</option>
+                <option value=":45">:45</option>
+              </select>
+              <select id="apptFormAmPm" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;" title="AM or PM">
+                <option value="AM" selected>AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+          </div>
 
         <div>
           <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Appointment Title / Client</label>

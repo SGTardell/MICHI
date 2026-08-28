@@ -5780,6 +5780,24 @@ class MichiApp {
     return `${y}-${m}-${d}`;
   }
 
+  setApptFormTime(timeStr) {
+    const hourEl = document.getElementById('apptFormHour');
+    const minEl = document.getElementById('apptFormMin');
+    const ampmEl = document.getElementById('apptFormAmPm');
+    if (!hourEl || !minEl || !ampmEl) return;
+
+    const parts = (timeStr || '09:00 AM').split(' ');
+    const timeDigits = (parts[0] || '09:00').split(':');
+    const ampm = parts[1] || 'AM';
+
+    const hr = (timeDigits[0] || '09').padStart(2, '0');
+    const min = ':' + (timeDigits[1] || '00').padStart(2, '0');
+
+    if (hourEl) hourEl.value = hr;
+    if (minEl) minEl.value = min;
+    if (ampmEl) ampmEl.value = ampm;
+  }
+
   openApptModal(dateStr, apptIdToEdit = null) {
     this.selectedApptDate = this.normalizeDateStr(dateStr || '2026-08-12');
     if (this.apptFormDate) this.apptFormDate.value = this.selectedApptDate;
@@ -5793,7 +5811,7 @@ class MichiApp {
       if (dayData && dayData.appts) {
         const appt = dayData.appts.find(a => a.id === apptIdToEdit);
         if (appt) {
-          if (this.apptFormTime) this.apptFormTime.value = appt.time || '09:00 AM';
+          this.setApptFormTime(appt.time || '09:00 AM');
           if (this.apptFormTitle) this.apptFormTitle.value = appt.text || '';
           if (this.apptFormNotes) this.apptFormNotes.value = appt.note || '';
         }
@@ -5801,7 +5819,7 @@ class MichiApp {
     } else {
       if (this.apptFormTitle) this.apptFormTitle.value = '';
       if (this.apptFormNotes) this.apptFormNotes.value = '';
-      if (this.apptFormTime) this.apptFormTime.value = '09:00 AM';
+      this.setApptFormTime('09:00 AM');
     }
 
     this.renderApptModalExistingList();
@@ -5830,34 +5848,31 @@ class MichiApp {
       item.style.display = 'flex';
       item.style.alignItems = 'center';
       item.style.justifyContent = 'space-between';
-      item.style.background = 'var(--bg-card)';
+      item.style.background = 'var(--bg-main)';
       item.style.border = '1px solid var(--border)';
       item.style.padding = '6px 10px';
       item.style.borderRadius = '6px';
-      item.style.fontSize = '0.84rem';
+      item.style.marginBottom = '6px';
 
       item.innerHTML = `
-        <div style="flex: 1;">
-          <span style="font-weight: 800; color: var(--text-main); margin-right: 8px;">${this.escapeHtml(a.time)}</span>
-          <span style="font-weight: 600; color: var(--text-main);">${this.escapeHtml(a.text)}</span>
-          ${a.note ? `<div style="font-size: 0.75rem; color: var(--text-muted); font-style: italic;">${this.escapeHtml(a.note)}</div>` : ''}
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 0.76rem; font-weight: 800; color: var(--text-main); background: var(--bg-card); padding: 2px 6px; border-radius: 4px;">${this.escapeHtml(a.time)}</span>
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">${this.escapeHtml(a.text)}</span>
+          ${a.note ? `<span style="font-size: 0.76rem; color: var(--text-muted);">(${this.escapeHtml(a.note)})</span>` : ''}
         </div>
-        <div style="display: flex; gap: 6px; margin-left: 8px;">
-          <button type="button" class="edit-appt-btn" title="Edit Appointment" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; cursor: pointer;">Edit</button>
-          <button type="button" class="delete-appt-btn" title="Delete Appointment" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; cursor: pointer;">Delete</button>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button type="button" class="btn-edit-modal-appt" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; cursor: pointer;">Edit</button>
+          <button type="button" class="btn-del-modal-appt" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; cursor: pointer;">✕</button>
         </div>
       `;
 
-      item.querySelector('.edit-appt-btn').addEventListener('click', () => {
+      item.querySelector('.btn-edit-modal-appt').addEventListener('click', () => {
         this.openApptModal(this.selectedApptDate, a.id);
       });
 
-      item.querySelector('.delete-appt-btn').addEventListener('click', () => {
-        dayData.appts = dayData.appts.filter(x => x.id !== a.id);
-        this.saveState();
-        this.renderCalendar();
+      item.querySelector('.btn-del-modal-appt').addEventListener('click', () => {
+        this.deleteFranklinAppt(a.id, normKey);
         this.renderApptModalExistingList();
-        this.showToast('Appointment deleted');
       });
 
       this.apptModalExistingList.appendChild(item);
