@@ -509,7 +509,7 @@
           <button type="button" id="btnSaveFranklinPlanner" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Save Planner & Close">
             💾 Save & Close
           </button>
-          <button type="button" id="btnCloseFranklinModal" style="background: rgba(244, 63, 94, 0.15); color: var(--cat-urgent); border: 1px solid rgba(244, 63, 94, 0.3); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Close Planner Spread">
+          <button type="button" id="btnCloseFranklinModal" onclick="if(window.app && window.app.closeFranklinModal){ window.app.closeFranklinModal(); } var o=document.getElementById('franklinModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: rgba(244, 63, 94, 0.15); color: var(--cat-urgent); border: 1px solid rgba(244, 63, 94, 0.3); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Close Planner Spread">
             ✕ Close
           </button>
         </div>
@@ -1517,7 +1517,7 @@
           <button type="button" onclick="if(window.app && window.app.closeTutorialModal && window.app.openFranklinModal) { window.app.closeTutorialModal(); window.app.openFranklinModal(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Switch directly to Daily Planner Modal">
             📅 Open Daily Planner
           </button>
-          <button type="button" id="btnCloseTutorialModal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">✕ Close</button>
+          <button type="button" id="btnCloseTutorialModal" onclick="if(window.app && window.app.closeTutorialModal){ window.app.closeTutorialModal(); } var o=document.getElementById('tutorialModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">✕ Close</button>
         </div>
       </div>
 

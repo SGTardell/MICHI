@@ -2921,6 +2921,7 @@ class MichiApp {
   closeFranklinModal() {
     if (this.franklinModalOverlay) {
       this.franklinModalOverlay.classList.remove('active');
+      this.franklinModalOverlay.style.display = 'none';
     }
   }
 
@@ -3425,6 +3426,7 @@ class MichiApp {
     const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
     if (overlay) {
       overlay.classList.remove('active');
+      overlay.style.display = 'none';
     }
   }
 
