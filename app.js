@@ -1343,19 +1343,18 @@ class MichiApp {
     if (homeProjectFilterSelect) {
       homeProjectFilterSelect.addEventListener('change', (e) => {
         const chosen = e.target.value;
-        if (chosen === '__PROJECTS_ONLY__') {
-          this.switchTab('project-path', 'all');
-          this.showToast('🚀 Opened Active Project Boards Timeline');
-        } else if (chosen === '__PLANS_ONLY__') {
-          this.openFranklinModal();
-          this.showToast('📋 Opened Daily & Operational Action Planner');
-        } else if (chosen === 'all') {
-          this.selectedProject = 'all';
-          this.switchTab('all', 'all');
-          this.showToast('Showing all active projects & plans overview');
+        this.selectedProject = chosen;
+        this.currentStageFilter = 'all';
+        this.render();
+
+        if (chosen === 'all') {
+          this.showToast('Showing All Active Projects & Plans');
+        } else if (chosen === 'projects') {
+          this.showToast('Showing Active Work Projects');
+        } else if (chosen === 'plans') {
+          this.showToast('Showing Active Life Plans');
         } else {
-          this.switchTab('project-path', chosen);
-          this.showToast(`Opened Plan / Project Board: "${chosen}"`);
+          this.showToast(`Opened Board: "${chosen}"`);
         }
       });
     }
@@ -5533,10 +5532,26 @@ class MichiApp {
     }
 
     // IF ALL PROJECTS/PLANS OVERVIEW IS ACTIVE: Gather all unique projects/plans created in workspace
-    const projectList = this.getWorkspaceProjects();
+    let projectList = this.getWorkspaceProjects();
+
+    if (this.selectedProject === 'projects') {
+      projectList = projectList.filter(p => {
+        const kind = (this.state.projectKinds && this.state.projectKinds[p]) || 'project';
+        return kind !== 'plan';
+      });
+    } else if (this.selectedProject === 'plans') {
+      projectList = projectList.filter(p => {
+        const kind = (this.state.projectKinds && this.state.projectKinds[p]) || 'project';
+        return kind === 'plan';
+      });
+    }
 
     const section = document.createElement('div');
     section.style.width = '100%';
+
+    const titleText = this.selectedProject === 'projects' 
+      ? `Work Projects (${projectList.length})` 
+      : (this.selectedProject === 'plans' ? `Life Plans (${projectList.length})` : `Plans & Projects (${projectList.length})`);
 
     const header = document.createElement('div');
     header.style.display = 'flex';
@@ -5547,7 +5562,7 @@ class MichiApp {
     header.style.borderBottom = `1px solid var(--border)`;
 
     header.innerHTML = `
-      <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Plans & Projects (${projectList.length})</span>
+      <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">${titleText}</span>
       <button type="button" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 14px; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">+ Plan / Project</button>
     `;
     section.appendChild(header);
