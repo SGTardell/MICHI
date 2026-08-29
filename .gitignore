@@ -19,3 +19,7 @@ yarn-debug.log*
 # Local environment
 .env
 .env.local
+.vercel
+
+# Personal Backups
+MICHI Backup/
