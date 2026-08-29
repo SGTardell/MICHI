@@ -72,57 +72,30 @@ const VAULT_PASS_KEY = 'MICHI_VAULT_MASTER_PASS_V1';
 
 const defaultState = {
   theme: 'soyokaze',
-  customProjects: ['MICHI', 'Par Pilot', 'test Project', 'test Plan'],
+  customProjects: ['Sample Project', 'Sample Plan'],
   projectKinds: {
-    'MICHI': 'project',
-    'Par Pilot': 'project',
-    'test Project': 'project',
-    'test Plan': 'plan'
+    'Sample Project': 'project',
+    'Sample Plan': 'plan'
   },
   customWebCategories: ['Tech', 'Sports', 'Fashion', 'Design', 'Finance'],
-  contacts: [
-    { id: 'c-1', name: 'Alex Rivera', role: 'Lead Developer', phone: '555-0192', email: 'alex@michi.app', projects: ['MICHI', 'Par Pilot'] },
-    { id: 'c-2', name: 'Sarah Chen', role: 'UI/UX Designer', phone: '555-0144', email: 'sarah@michi.app', projects: ['MICHI'] }
-  ],
+  contacts: [],
   items: [
     {
-      id: 'item-michi-1',
-      title: 'MICHI Vision & Architecture',
-      content: 'MICHI 2-stage creation pipeline, digital binder spread, and offline-first PWA workspace architecture.',
-      project: 'MICHI',
-      stage: 'focus',
-      type: 'card',
-      category: 'Tech',
-      tags: ['#Tech', '#Architecture'],
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'item-parpilot-1',
-      title: 'Par Pilot Navigation Engine',
-      content: 'Core navigation and flight metrics pipeline for Par Pilot application.',
-      project: 'Par Pilot',
-      stage: 'spark',
-      type: 'card',
-      category: 'Tech',
-      tags: ['#Tech', '#Navigation'],
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'item-testproj-1',
-      title: 'test Project Workspace',
-      content: 'Development pipeline and tasks for test Project.',
-      project: 'test Project',
+      id: 'item-sample-project',
+      title: 'Sample Work Project Card',
+      content: 'This is a sample work project card. Add tasks, milestones, or notes here.',
+      project: 'Sample Project',
       stage: 'spark',
       type: 'card',
       category: 'General',
-      tags: ['#Work'],
+      tags: ['#WorkProject'],
       createdAt: new Date().toISOString()
     },
     {
-      id: 'item-testplan-1',
-      title: 'test Plan Workspace',
-      content: 'Life plan goals and milestones for test Plan.',
-      project: 'test Plan',
+      id: 'item-sample-plan',
+      title: 'Sample Life Plan Card',
+      content: 'This is a sample life plan card for events, travel, or personal goals.',
+      project: 'Sample Plan',
       isPlan: true,
       stage: 'spark',
       type: 'card',
