@@ -829,9 +829,7 @@ class MichiApp {
     this.currentTutorialSlide = 1;
 
     this.navTabGuideBar = document.getElementById('navTabGuideBar');
-    if (this.btnOpenTutorialHeader) {
-      this.btnOpenTutorialHeader.addEventListener('click', () => this.openTutorialModal());
-    }
+    // btnOpenTutorialHeader is a direct HTML link to guide.html
     if (this.navTabGuideBar) {
       this.navTabGuideBar.addEventListener('click', () => this.openTutorialModal());
     }

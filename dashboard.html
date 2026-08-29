@@ -1598,32 +1598,13 @@
   <!-- Notification Toast -->
   <div class="toast" id="toast">Copied to clipboard!</div>
 
-  <script src="app.js?v=209"></script>
+  <script src="app.js?v=210"></script>
   <script>
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
-
-    // Direct fallback binding for Guide button
-    window.addEventListener('DOMContentLoaded', () => {
-      const b1 = document.getElementById('btnOpenTutorialHeader');
-      const overlay = document.getElementById('tutorialModalOverlay');
-
-      const triggerGuide = (e) => {
-        if (e) e.preventDefault();
-        if (overlay) {
-          overlay.style.cssText = 'display: flex !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.88) !important; align-items: center !important; justify-content: center !important;';
-          overlay.classList.add('active');
-        }
-        if (window.app && window.app.openTutorialModal) {
-          window.app.openTutorialModal();
-        }
-      };
-
-      if (b1) b1.onclick = triggerGuide;
-    });
   </script>
 </body>
 </html>
