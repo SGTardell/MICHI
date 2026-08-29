@@ -1364,14 +1364,18 @@ class MichiApp {
       this.globalProjectFilter.addEventListener('change', (e) => {
         const chosen = e.target.value;
         this.currentStageFilter = 'all';
-        if (chosen === 'all' || chosen === 'projects' || chosen === 'plans') {
-          this.switchTab('all', chosen);
-          this.showToast('Showing all projects & plans');
+        this.selectedProject = chosen;
+        this.switchTab('all');
+        this.render();
+
+        if (chosen === 'all') {
+          this.showToast('Showing All Active Projects & Plans');
+        } else if (chosen === 'projects') {
+          this.showToast('Showing Work Projects Only');
+        } else if (chosen === 'plans') {
+          this.showToast('Showing Life Plans Only');
         } else {
-          this.selectedProject = chosen;
-          this.switchTab('all');
-          this.render();
-          this.showToast(`Opened Project / Plan Board: "${chosen}"`);
+          this.showToast(`Opened Workspace Board: "${chosen}"`);
         }
       });
     }
@@ -4179,15 +4183,16 @@ class MichiApp {
     };
 
     if (this.globalProjectFilter) {
-      const cur = this.selectedProject || '';
-      let html = '';
-      if (projects.length === 0) {
-        html = `<option value="" disabled selected>-- No Active Projects/Plans --</option>`;
-      } else {
-        projects.forEach(p => {
-          html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
-        });
-      }
+      const cur = this.selectedProject || 'all';
+      let html = `<option value="all" ${cur === 'all' ? 'selected' : ''}>📁 All Active Projects & Plans</option>`;
+      html += `<option value="projects" ${cur === 'projects' ? 'selected' : ''}>🛠️ Work Projects Only</option>`;
+      html += `<option value="plans" ${cur === 'plans' ? 'selected' : ''}>✈️ Life Plans Only</option>`;
+
+      projects.forEach(p => {
+        const kind = (this.state.projectKinds && this.state.projectKinds[p]) || 'project';
+        const prefix = kind === 'plan' ? '✈️ ' : '🛠️ ';
+        html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>${prefix}${this.escapeHtml(p)}</option>`;
+      });
       this.globalProjectFilter.innerHTML = html;
     }
 
