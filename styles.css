@@ -2465,6 +2465,23 @@ header {
   cursor: pointer !important;
 }
 
+#btnOpenTutorialHeader,
+#navTabGuideBar {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease !important;
+}
+
+#btnOpenTutorialHeader:hover,
+#navTabGuideBar:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3) !important;
+}
+
+#btnOpenTutorialHeader:active,
+#navTabGuideBar:active {
+  transform: scale(0.92) !important;
+  box-shadow: none !important;
+}
+
 #tutorialModalOverlay.active,
 #tutorialModalOverlay[style*="display: flex"] {
   display: flex !important;
