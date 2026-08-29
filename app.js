@@ -23,17 +23,13 @@ window.openTutorialModalGlobal = function(e) {
   if (e && e.preventDefault) {
     try { e.preventDefault(); e.stopPropagation(); } catch(err) {}
   }
+  var overlay = document.getElementById('tutorialModalOverlay');
+  if (overlay) {
+    overlay.style.cssText = 'display: flex !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.88) !important; padding: 1rem; overflow-y: auto; align-items: center; justify-content: center;';
+    overlay.classList.add('active');
+  }
   if (window.app && window.app.openTutorialModal) {
     window.app.openTutorialModal();
-  } else {
-    var overlay = document.getElementById('tutorialModalOverlay');
-    if (overlay) {
-      overlay.style.display = 'flex';
-      overlay.style.opacity = '1';
-      overlay.style.visibility = 'visible';
-      overlay.style.pointerEvents = 'auto';
-      overlay.classList.add('active');
-    }
   }
   return false;
 };
