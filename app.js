@@ -3601,7 +3601,7 @@ class MichiApp {
       },
       {
         badge: 'Chapter 4',
-        title: 'Kanban Boards & Pipeline Advancement',
+        title: 'Visual Project Boards & Pipeline Advancement',
         leftHtml: `
           <p>Organize complex projects visual board style:</p>
           <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
