@@ -1653,7 +1653,8 @@ select option {
 }
 
 #apptModalOverlay.active,
-#newProjectModalOverlay.active {
+#newProjectModalOverlay.active,
+#webClipModalOverlay.active {
   display: flex !important;
   opacity: 1 !important;
   pointer-events: auto !important;

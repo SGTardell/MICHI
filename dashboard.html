@@ -829,8 +829,8 @@
   </div>
 
   <!-- Add URL / Image / Web Clip Modal -->
-  <div class="modal-overlay" id="webClipModalOverlay">
-    <div class="modal-content" style="max-width: 540px; max-height: 90vh; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.8rem; box-shadow: var(--shadow-lg);">
+  <div class="modal-overlay" id="webClipModalOverlay" style="background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;">
+    <div class="modal-content" style="max-width: 480px; width: 92%; max-height: 90vh; overflow-y: auto; background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45); position: relative; margin: auto;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
         <div style="display: flex; flex-direction: column; gap: 2px;">
           <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff;">
@@ -840,7 +840,7 @@
             Add URL, Image, or Resource Documentation
           </span>
         </div>
-        <button type="button" id="btnCloseWebClipModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+        <button type="button" id="btnCloseWebClipModal" onclick="if(window.app && window.app.closeWebClipModal){ window.app.closeWebClipModal(); } var o=document.getElementById('webClipModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;" title="Close Dialogue">✕</button>
       </div>
 
       <form id="webClipForm" style="display: flex; flex-direction: column; gap: 1rem;">
@@ -928,7 +928,7 @@
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.5rem;">
-          <button type="button" id="btnCancelWebClip" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; font-weight: 700;">Cancel</button>
+          <button type="button" id="btnCancelWebClip" onclick="if(window.app && window.app.closeWebClipModal){ window.app.closeWebClipModal(); } var o=document.getElementById('webClipModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; font-weight: 700;">Cancel</button>
           <button type="submit" style="background: var(--stage-structure); color: #fff; border: none; font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer; box-shadow: 0 4px 12px rgba(0, 153, 103, 0.3);">Save Entry</button>
         </div>
       </form>
