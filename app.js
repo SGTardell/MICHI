@@ -3406,24 +3406,33 @@ class MichiApp {
     this.currentTutorialSlide = 1;
     const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
     if (overlay) {
-      overlay.style.cssText = 'display: flex !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.85) !important; padding: 1rem; overflow-y: auto;';
+      overlay.style.cssText = 'display: flex !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.85) !important; padding: 1rem; overflow-y: auto; align-items: center; justify-content: center;';
       overlay.classList.add('active');
     }
-    try {
-      this.updateTutorialSlideView();
-    } catch(e) {}
 
-    // Bind Guide side chapter tabs
+    this.updateTutorialSlideView();
+
+    // Bind Guide side chapter tabs with reliable event delegation
     const tabs = document.querySelectorAll('.guide-tab-item');
     tabs.forEach(t => {
       t.addEventListener('click', (e) => {
-        const chap = parseInt(e.target.dataset.chapter, 10);
+        const item = e.currentTarget || e.target.closest('.guide-tab-item');
+        if (!item) return;
+        const chap = parseInt(item.dataset.chapter, 10);
         if (chap && chap >= 1 && chap <= 5) {
           this.currentTutorialSlide = chap;
           this.updateTutorialSlideView();
         }
       });
     });
+  }
+
+  goToTutorialSlide(chapNum) {
+    const chap = parseInt(chapNum, 10);
+    if (chap && chap >= 1 && chap <= 5) {
+      this.currentTutorialSlide = chap;
+      this.updateTutorialSlideView();
+    }
   }
 
   closeTutorialModal() {
