@@ -5815,6 +5815,7 @@ class MichiApp {
 
   openApptModal(dateStr, apptIdToEdit = null) {
     this.closeTutorialModal();
+    this.closeFranklinModal();
     this.selectedApptDate = this.normalizeDateStr(dateStr || '2026-08-12');
     if (this.apptFormDate) this.apptFormDate.value = this.selectedApptDate;
     if (this.apptFormId) this.apptFormId.value = apptIdToEdit || '';
@@ -5839,11 +5840,17 @@ class MichiApp {
     }
 
     this.renderApptModalExistingList();
-    if (this.apptModalOverlay) this.apptModalOverlay.classList.add('active');
+    if (this.apptModalOverlay) {
+      this.apptModalOverlay.style.display = 'flex';
+      this.apptModalOverlay.classList.add('active');
+    }
   }
 
   closeApptModal() {
-    if (this.apptModalOverlay) this.apptModalOverlay.classList.remove('active');
+    if (this.apptModalOverlay) {
+      this.apptModalOverlay.classList.remove('active');
+      this.apptModalOverlay.style.display = 'none';
+    }
   }
 
   renderApptModalExistingList() {

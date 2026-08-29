@@ -1652,6 +1652,17 @@ select option {
   z-index: 999999 !important;
 }
 
+#apptModalOverlay.active {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  z-index: 99999 !important;
+  background: rgba(15, 23, 42, 0.55) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
 .btn-add-resource,
 .btn-add-issue,
 .btn-add-dev-item,

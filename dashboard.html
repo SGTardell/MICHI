@@ -1375,7 +1375,7 @@
           <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="apptModalDateTitle">Schedule Appointment</h3>
           <span style="font-size: 0.8rem; color: var(--text-muted);" id="apptModalSubTitle">Add or edit appointments for this date</span>
         </div>
-        <button type="button" id="btnCloseApptModal" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+        <button type="button" id="btnCloseApptModal" onclick="if(window.app && window.app.closeApptModal){ window.app.closeApptModal(); } var o=document.getElementById('apptModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;" title="Close Schedule Dialogue">✕</button>
       </div>
 
       <!-- Add / Edit Appointment Form -->
@@ -1435,7 +1435,7 @@
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.8rem;">
-          <button type="button" id="btnCancelApptForm" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+          <button type="button" id="btnCancelApptForm" onclick="if(window.app && window.app.closeApptModal){ window.app.closeApptModal(); } var o=document.getElementById('apptModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
           <button type="submit" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Appointment</button>
         </div>
       </form>
