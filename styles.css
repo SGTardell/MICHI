@@ -2490,13 +2490,17 @@ header {
   opacity: 1 !important;
   pointer-events: auto !important;
   visibility: visible !important;
-  z-index: 9999999 !important;
+  z-index: 99999999 !important;
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  background: rgba(0, 0, 0, 0.85) !important;
+  background: rgba(0, 0, 0, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 
