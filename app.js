@@ -3707,7 +3707,9 @@ class MichiApp {
       } else if (this.selectedProject === 'plans') {
         matchesProject = (item.isPlan === true || item.category === 'Plan' || item.type === 'plan' || item.boardType === 'plan');
       } else {
-        matchesProject = (item.project || 'Personal') === this.selectedProject;
+        const itemProj = (item.project || item.title || 'Personal').trim().toLowerCase();
+        const selProj = (this.selectedProject || '').trim().toLowerCase();
+        matchesProject = itemProj === selProj || (item.title && item.title.trim().toLowerCase() === selProj);
       }
 
       let matchesWebCat = true;
@@ -4898,7 +4900,9 @@ class MichiApp {
   renderSpecificProjectView(projectName, gridItems) {
     const seenIds = new Set();
     const projItems = gridItems.filter(i => {
-      if ((i.project || 'Personal') !== projectName) return false;
+      const itemProj = (i.project || i.title || 'Personal').trim().toLowerCase();
+      const targetProj = (projectName || '').trim().toLowerCase();
+      if (itemProj !== targetProj && (i.title || '').trim().toLowerCase() !== targetProj) return false;
       const key = i.id || (i.title + '-' + i.type);
       if (seenIds.has(key)) return false;
       seenIds.add(key);
