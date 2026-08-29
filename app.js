@@ -217,6 +217,53 @@ class MichiApp {
   }
 
   loadState() {
+    // If a new tester logged in / registered for the first time
+    if (localStorage.getItem('michi_is_new_tester') === 'true') {
+      localStorage.removeItem('michi_is_new_tester');
+      const testerState = {
+        theme: 'soyokaze',
+        customProjects: ['Sample Project', 'Sample Plan'],
+        projectKinds: {
+          'Sample Project': 'project',
+          'Sample Plan': 'plan'
+        },
+        customWebCategories: ['Tech', 'Sports', 'Fashion', 'Design', 'Finance'],
+        contacts: [],
+        items: [
+          {
+            id: 'item-sample-project',
+            title: 'Sample Work Project Card',
+            content: 'This is a sample work project card. Add tasks, milestones, or notes here.',
+            project: 'Sample Project',
+            stage: 'spark',
+            type: 'card',
+            category: 'General',
+            tags: ['#WorkProject'],
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: 'item-sample-plan',
+            title: 'Sample Life Plan Card',
+            content: 'This is a sample life plan card for events, travel, or personal goals.',
+            project: 'Sample Plan',
+            isPlan: true,
+            stage: 'spark',
+            type: 'card',
+            category: 'Plan',
+            tags: ['#LifePlan'],
+            createdAt: new Date().toISOString()
+          }
+        ],
+        appts: [],
+        dailyLogs: {},
+        franklinData: {},
+        vaultItems: [],
+        quickNotes: []
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(testerState));
+      return testerState;
+    }
+
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {

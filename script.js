@@ -103,10 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const storedPass = localStorage.getItem(userKey);
 
             if (!storedPass) {
-                // Initial login for username — register password and enter workspace
+                // Initial login for username — register password and mark as new tester
                 localStorage.setItem(userKey, password);
                 localStorage.setItem("michi_logged_in", "true");
                 localStorage.setItem("rememberedUsername", username);
+                localStorage.setItem("michi_is_new_tester", "true");
                 window.location.replace("dashboard.html");
                 return;
             }
@@ -159,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem(userKey, regPassword);
             localStorage.setItem("michi_logged_in", "true");
             localStorage.setItem("rememberedUsername", regUsername);
+            localStorage.setItem("michi_is_new_tester", "true");
 
             window.location.replace("dashboard.html");
         });
