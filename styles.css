@@ -1652,7 +1652,8 @@ select option {
   z-index: 999999 !important;
 }
 
-#apptModalOverlay.active {
+#apptModalOverlay.active,
+#newProjectModalOverlay.active {
   display: flex !important;
   opacity: 1 !important;
   pointer-events: auto !important;
