@@ -2468,18 +2468,36 @@ header {
 }
 
 #btnOpenTutorialHeader,
-#navTabGuideBar {
+#btnRefreshApp,
+#btnSignOutApp,
+#btnExportBackup,
+#btnImportBackup,
+.btn-logout-link,
+#btnStartNewProjectHome,
+#btnCreateNewProjectHeader {
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease !important;
 }
 
 #btnOpenTutorialHeader:hover,
-#navTabGuideBar:hover {
+#btnRefreshApp:hover,
+#btnSignOutApp:hover,
+#btnExportBackup:hover,
+#btnImportBackup:hover,
+.btn-logout-link:hover,
+#btnStartNewProjectHome:hover,
+#btnCreateNewProjectHeader:hover {
   transform: translateY(-1px) !important;
   box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3) !important;
 }
 
 #btnOpenTutorialHeader:active,
-#navTabGuideBar:active {
+#btnRefreshApp:active,
+#btnSignOutApp:active,
+#btnExportBackup:active,
+#btnImportBackup:active,
+.btn-logout-link:active,
+#btnStartNewProjectHome:active,
+#btnCreateNewProjectHeader:active {
   transform: scale(0.92) !important;
   box-shadow: none !important;
 }
