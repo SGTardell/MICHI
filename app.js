@@ -3403,6 +3403,7 @@ class MichiApp {
     this.currentTutorialSlide = 1;
     const overlay = document.getElementById('tutorialModalOverlay') || this.tutorialModalOverlay;
     if (overlay) {
+      overlay.style.cssText = 'display: flex !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; z-index: 99999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(0, 0, 0, 0.85) !important; padding: 1rem; overflow-y: auto;';
       overlay.classList.add('active');
     }
     try {
