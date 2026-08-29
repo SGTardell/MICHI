@@ -4185,16 +4185,18 @@ class MichiApp {
     };
 
     if (this.globalProjectFilter) {
-      const cur = this.selectedProject || 'all';
-      let html = `<option value="all" ${cur === 'all' ? 'selected' : ''}>📁 All Active Projects & Plans</option>`;
-      html += `<option value="projects" ${cur === 'projects' ? 'selected' : ''}>🛠️ Work Projects Only</option>`;
-      html += `<option value="plans" ${cur === 'plans' ? 'selected' : ''}>✈️ Life Plans Only</option>`;
-
-      projects.forEach(p => {
-        const kind = (this.state.projectKinds && this.state.projectKinds[p]) || 'project';
-        const prefix = kind === 'plan' ? '✈️ ' : '🛠️ ';
-        html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>${prefix}${this.escapeHtml(p)}</option>`;
-      });
+      const cur = this.selectedProject || '';
+      let html = '';
+      if (projects.length === 0) {
+        html = `<option value="" disabled selected>-- No Active Projects or Plans --</option>`;
+      } else {
+        projects.forEach(p => {
+          const kind = (this.state.projectKinds && this.state.projectKinds[p]) || 'project';
+          const prefix = kind === 'plan' ? '✈️ ' : '🛠️ ';
+          const isSelected = p === cur || (cur === 'all' && p === projects[0]);
+          html += `<option value="${this.escapeHtml(p)}" ${isSelected ? 'selected' : ''}>${prefix}${this.escapeHtml(p)}</option>`;
+        });
+      }
       this.globalProjectFilter.innerHTML = html;
     }
 
