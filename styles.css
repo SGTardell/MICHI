@@ -82,6 +82,47 @@
   --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
 }
 
+/* 🏔️ Glacier Range Theme */
+[data-theme="glacier"] {
+  --bg-dark: #0C3846;
+  --bg-main: #0C3846;
+  --bg-card: #2A7387;
+  --bg-card-hover: #34889E;
+  --bg-glass: rgba(42, 115, 135, 0.95);
+  --border: #4AA4BC;
+  --border-glow: rgba(159, 211, 227, 0.4);
+  --logo-filter: brightness(0) invert(1);
+  
+  --text-main: #E4F4F8;
+  --text-muted: #C1E7F2;
+  --text-dim: #9FD3E3;
+  
+  --accent: #9FD3E3;
+  --accent-hover: #B8E4F2;
+  --accent-glow: rgba(159, 211, 227, 0.3);
+  --kanji-seal: #9FD3E3;
+  --kanji-gold: #9FD3E3;
+
+  --stage-spark: #9FD3E3;
+  --stage-structure: #2A7387;
+  --stage-focus: #B8E4F2;
+  --stage-product: #9FD3E3;
+  --stage-planner: #2A7387;
+
+  --cat-idea: var(--stage-spark);
+  --cat-web: var(--stage-structure);
+  --cat-task: var(--stage-focus);
+  --cat-done: var(--stage-structure);
+  --cat-vault: var(--stage-product);
+  --cat-urgent: #E11D48;
+  --cat-calendar: var(--stage-planner);
+
+  --shadow-sm: 0 2px 4px rgba(12, 56, 70, 0.2);
+  --shadow-md: 0 4px 12px rgba(12, 56, 70, 0.35);
+  --shadow-lg: 0 10px 25px rgba(12, 56, 70, 0.5);
+  --shadow-glow: 0 0 20px rgba(159, 211, 227, 0.25);
+}
+
 
 
 /* 🌸 春 Spring Theme (Sakura Blossom) */

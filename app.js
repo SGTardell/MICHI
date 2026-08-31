@@ -209,6 +209,7 @@ class MichiApp {
         const names = {
           winter: 'MICHI Signature Dark',
           soyokaze: 'Gentle Breeze',
+          glacier: 'Glacier Range',
           summer: 'Lonely Beach'
         };
         this.showToast(`Switched to ${names[selected] || selected}`);
