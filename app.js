@@ -3921,7 +3921,7 @@ class MichiApp {
       this.ideasGrid.style.gap = '1.25rem';
     }
 
-    let webItems = (this.state.items || []).filter(i => i.type === 'web' || i.type === 'resource' || i.category || i.webCategory || i.url);
+    let webItems = (this.state.items || []).filter(i => (i.type === 'web' || i.type === 'resource' || i.type === 'idea' || (i.url && i.type !== 'card' && i.type !== 'project' && i.type !== 'plan')));
 
     if (this.currentWebCat === 'inbox') {
       webItems = webItems.filter(i => {
@@ -3940,8 +3940,8 @@ class MichiApp {
     }
     if (webItems.length === 0) {
       this.ideasGrid.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-main);">
-          <p style="margin-bottom: 1rem; color: var(--text-main); font-weight: 800; font-size: 1rem;">No web clips or interest bookmarks found for this category or project.</p>
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+          <p style="margin-bottom: 1rem; color: #112A46 !important; font-weight: 800; font-size: 1.05rem;">No web clips or interest bookmarks found for this category or project.</p>
           <button type="button" onclick="document.getElementById('btnAddWebClip').click()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer;">+ Add Brain Dump / Clip</button>
         </div>
       `;
