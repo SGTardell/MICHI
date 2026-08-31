@@ -4997,7 +4997,7 @@ class MichiApp {
             ${this.escapeHtml(projectName)}
           </h4>
         </div>
-        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap; border: 1px solid var(--border);">
+        <span class="project-board-stage-badge" style="background: #F2F6FB; color: #112A46; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap; border: 1px solid var(--border);">
           ${stageName}
         </span>
       </div>
@@ -5011,10 +5011,10 @@ class MichiApp {
       <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 0.74rem; color: var(--text-dim);">
         <span>${allProjItems.length} records</span>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <button type="button" class="btn-delete-project-action" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.76rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; cursor: pointer;" title="Delete ${isPlan ? 'Plan' : 'Project'}">
+          <button type="button" class="btn-delete-project-action" style="background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid rgba(225, 29, 72, 0.4); font-size: 0.76rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; cursor: pointer;" title="Delete ${isPlan ? 'Plan' : 'Project'}">
             Delete
           </button>
-          <button type="button" class="btn-view-project-action" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.76rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;" title="View Board">
+          <button type="button" class="btn-view-project-action" style="background: #F2F6FB; color: #112A46; border: 1px solid var(--border); font-size: 0.76rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;" title="View Board">
             View Board ➔
           </button>
         </div>

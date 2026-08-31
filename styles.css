@@ -535,62 +535,56 @@ header::before {
   filter: brightness(0) invert(0.2) !important;
 }
 
-/* ❄️ Arctic Chill Light Frame & Midnight Blue Text Rules ONLY for elements directly on light canvas */
-[data-theme="arctic"] .logo-title,
-[data-theme="arctic"] .logo-subtitle,
-[data-theme="arctic"] .stats-counter,
-[data-theme="arctic"] .controls-bar > div > h2,
-[data-theme="arctic"] .controls-bar > div > p,
-[data-theme="arctic"] .controls-bar > div > label,
-[data-theme="arctic"] .search-box input {
-  color: #112A46 !important;
-}
-
-[data-theme="arctic"] header button,
-[data-theme="arctic"] header select,
-[data-theme="arctic"] header a,
-[data-theme="arctic"] .search-box input {
-  background-color: #F2F6FB !important;
+/* ❄️ Arctic Chill Navigation Banner & Control Bar Overrides */
+[data-theme="arctic"] .app-nav-tabs,
+[data-theme="arctic"] .nav-tabs,
+[data-theme="arctic"] header .nav-tabs {
+  background-color: #34506D !important;
   border-color: #4D6E91 !important;
-  color: #112A46 !important;
+  padding: 6px 12px !important;
+  border-radius: var(--radius-md) !important;
 }
 
-[data-theme="arctic"] .search-box input::placeholder {
-  color: #34506D !important;
+[data-theme="arctic"] #headerLiveClock {
+  background-color: #1B3B5A !important;
+  border-color: #4D6E91 !important;
 }
 
-/* Ensure ALL Cards, Sidebar, Banners, Calendar, Planner & Modals render crisp Arctic Haze light text */
-[data-theme="arctic"] .card,
-[data-theme="arctic"] .compact-card,
-[data-theme="arctic"] .sidebar,
-[data-theme="arctic"] .sidebar *,
-[data-theme="arctic"] #homeDailyReminderContainer,
-[data-theme="arctic"] #homeDailyReminderContainer *,
-[data-theme="arctic"] .calendar-container,
-[data-theme="arctic"] .calendar-container *,
-[data-theme="arctic"] .franklin-modal-content,
-[data-theme="arctic"] .franklin-modal-content *,
-[data-theme="arctic"] .modal-content,
-[data-theme="arctic"] .modal-content * {
-  color: #F2F6FB;
-}
-
-[data-theme="arctic"] .card h1,
-[data-theme="arctic"] .card h2,
-[data-theme="arctic"] .card h3,
-[data-theme="arctic"] .card h4,
-[data-theme="arctic"] .card p,
-[data-theme="arctic"] .card div,
-[data-theme="arctic"] .card span,
-[data-theme="arctic"] .card button,
-[data-theme="arctic"] .card-title,
-[data-theme="arctic"] .card-body {
+[data-theme="arctic"] #headerClockDate,
+[data-theme="arctic"] #headerClockTime {
   color: #F2F6FB !important;
 }
 
-[data-theme="arctic"] .card-date,
-[data-theme="arctic"] .card-footer {
-  color: #A8C0D4 !important;
+[data-theme="arctic"] .nav-tab {
+  background-color: transparent !important;
+  color: #F2F6FB !important;
+  border: none !important;
+}
+
+[data-theme="arctic"] .nav-tab.active {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] header span {
+  color: #F2F6FB !important;
+}
+
+[data-theme="arctic"] #globalProjectFilter,
+[data-theme="arctic"] #btnCreateNewProjectHeader {
+  background-color: #1B3B5A !important;
+  color: #F2F6FB !important;
+  border-color: #4D6E91 !important;
+}
+
+/* White Pill Badges and Action Buttons inside Project & Plan Board Cards */
+[data-theme="arctic"] .project-board-stage-badge,
+[data-theme="arctic"] .btn-view-project-action {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  font-weight: 800 !important;
+  border-color: #4D6E91 !important;
 }
 
 .logo-subtitle {
