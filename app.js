@@ -5765,9 +5765,9 @@ class MichiApp {
     const section = document.createElement('div');
     section.style.width = '100%';
 
-    const titleText = this.selectedProject === 'projects' 
-      ? `Work Projects (${projectList.length})` 
-      : (this.selectedProject === 'plans' ? `Life Plans (${projectList.length})` : `Plans & Projects (${projectList.length})`);
+    const baseTitle = this.selectedProject === 'projects' 
+      ? `Work Projects` 
+      : (this.selectedProject === 'plans' ? `Life Plans` : `Plans & Projects`);
 
     const header = document.createElement('div');
     header.style.display = 'flex';
@@ -5778,7 +5778,10 @@ class MichiApp {
     header.style.borderBottom = `1px solid var(--border)`;
 
     header.innerHTML = `
-      <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">${titleText}</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">${baseTitle}</span>
+        <span style="background: var(--bg-card); color: var(--text-main); font-size: 0.82rem; font-weight: 800; padding: 2px 10px; border-radius: 12px; border: 1px solid var(--border);">${projectList.length}</span>
+      </div>
       <button type="button" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 14px; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">+ Plan / Project</button>
     `;
     section.appendChild(header);
