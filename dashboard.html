@@ -511,9 +511,7 @@
           <button type="button" id="btnSaveFranklinPlanner" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Save Planner & Close">
             💾 Save & Close
           </button>
-          <button type="button" id="btnCloseFranklinModal" onclick="if(window.app && window.app.closeFranklinModal){ window.app.closeFranklinModal(); } var o=document.getElementById('franklinModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: rgba(244, 63, 94, 0.15); color: var(--cat-urgent); border: 1px solid rgba(244, 63, 94, 0.3); font-weight: 800; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer;" title="Close Planner Spread">
-            ✕ Close
-          </button>
+          <button type="button" id="btnCloseFranklinModal" onclick="if(window.app && window.app.closeFranklinModal){ window.app.closeFranklinModal(); } var o=document.getElementById('franklinModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: #34506D !important; color: #F2F6FB !important; border: 1px solid #4D6E91 !important; font-weight: 800; padding: 0.45rem 1rem; border-radius: var(--radius-sm); font-size: 0.82rem; cursor: pointer;" title="Close Planner Spread">✕ Close</button>
         </div>
       </div>
 
@@ -572,15 +570,15 @@
           </div>
 
           <div class="franklin-task-inputs" style="display: flex; gap: 6px; margin-bottom: 0.6rem;">
-            <select id="franklinPrioSelect" class="franklin-priority-select" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; border-radius: 4px; padding: 2px 6px;">
+            <select id="franklinPrioSelect" class="franklin-priority-select" style="background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; font-weight: 800; border-radius: 4px; padding: 2px 6px;">
               <option value="A1">A1</option>
               <option value="A2">A2</option>
               <option value="B1">B1</option>
               <option value="B2">B2</option>
               <option value="C1">C1</option>
             </select>
-            <input type="text" id="franklinTaskText" class="franklin-task-text" style="flex: 1; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; font-size: 0.82rem;" placeholder="Add priority task..." />
-            <button id="btnAddFranklinTask" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0 12px; border-radius: 4px; cursor: pointer;">+</button>
+            <input type="text" id="franklinTaskText" class="franklin-task-text" style="flex: 1; background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; border-radius: 4px; padding: 4px 8px; font-size: 0.82rem; font-weight: 800;" placeholder="Add priority task..." />
+            <button id="btnAddFranklinTask" style="background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; font-weight: 800; padding: 0 12px; border-radius: 4px; cursor: pointer;">+</button>
           </div>
 
           <div class="franklin-task-list" id="franklinTaskList" style="display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; max-height: 220px; min-height: 140px;">
@@ -588,14 +586,14 @@
           </div>
 
           <!-- Bottom Daily Tracker Section -->
-          <div style="margin-top: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); padding: 6px 8px;">
-            <div style="font-size: 0.74rem; font-weight: 800; color: var(--text-main); text-align: center; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">
+          <div style="margin-top: auto; border: 1px solid #4D6E91; border-radius: 4px; background: var(--bg-card); padding: 6px 8px;">
+            <div style="font-size: 0.74rem; font-weight: 800; color: #112A46 !important; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">
               Daily Tracker
             </div>
-            <div style="font-size: 0.68rem; color: var(--text-muted); font-style: italic; margin-bottom: 4px;">
+            <div style="font-size: 0.7rem; color: #34506D !important; font-weight: 700; font-style: italic; margin-bottom: 4px;">
               Track expenses, email, voice mail, or other information.
             </div>
-            <textarea id="franklinDailyTrackerInput" style="width: 100%; height: 50px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; font-size: 0.78rem; color: var(--text-main); resize: none;" placeholder="Record daily expenses, notes, calls..."></textarea>
+            <textarea id="franklinDailyTrackerInput" style="width: 100%; height: 50px; background: #F2F6FB !important; border: 1px solid #4D6E91 !important; border-radius: 4px; padding: 4px 6px; font-size: 0.82rem; color: #112A46 !important; font-weight: 800; resize: none;" placeholder="Record daily expenses, notes, calls..."></textarea>
           </div>
         </div>
 
@@ -1397,19 +1395,14 @@
   </div>
 
   <!-- Interactive Calendar Appointment Modal -->
-  <div class="modal-overlay" id="apptModalOverlay" style="background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;">
+  <div class="modal-overlay" id="apptModalOverlay" style="background: rgba(0, 0, 0, 0.6) !important; backdrop-filter: blur(4px) !important;">
     <div class="modal-content" style="max-width: 440px; width: 92%; background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45); position: relative; margin: auto;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
         <div>
-          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="apptModalDateTitle">Schedule Appointment</h3>
-          <span style="font-size: 0.8rem; color: var(--text-muted);" id="apptModalSubTitle">Add or edit appointments for this date</span>
-    <div class="modal-content" style="max-width: 440px; width: 92%; background: #FFFFFF; border: 2px solid #4D6E91; border-radius: var(--radius-lg); padding: 1.4rem; box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45); position: relative; margin: auto;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid #4D6E91; padding-bottom: 0.8rem;">
-        <div>
-          <h3 style="font-size: 1.25rem; font-weight: 800; color: #112A46;" id="apptModalDateTitle">Schedule Appointment</h3>
-          <span style="font-size: 0.8rem; color: #4D6E91;" id="apptModalSubTitle">Add or edit appointments for this date</span>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #112A46 !important;" id="apptModalDateTitle">Schedule Appointment</h3>
+          <span style="font-size: 0.8rem; color: #34506D !important; font-weight: 700;" id="apptModalSubTitle">Add or edit appointments for this date</span>
         </div>
-        <button type="button" id="btnCloseApptModal" onclick="if(window.app && window.app.closeApptModal){ window.app.closeApptModal(); } var o=document.getElementById('apptModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;" title="Close Schedule Dialogue">✕</button>
+        <button type="button" id="btnCloseApptModal" onclick="if(window.app && window.app.closeApptModal){ window.app.closeApptModal(); } var o=document.getElementById('apptModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: transparent; border: none; font-size: 1.4rem; color: #112A46 !important; font-weight: 800; cursor: pointer;" title="Close Schedule Dialogue">✕</button>
       </div>
 
       <!-- Add / Edit Appointment Form -->
@@ -1470,7 +1463,8 @@
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.8rem;">
-          <button type="submit" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Appointment</button>
+          <button type="button" id="btnCancelApptForm" onclick="if(window.app && window.app.closeApptModal){ window.app.closeApptModal(); } var o=document.getElementById('apptModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; font-weight: 800; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
+          <button type="submit" style="background: #34506D !important; color: #F2F6FB !important; border: 1px solid #4D6E91 !important; font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Appointment</button>
         </div>
       </form>
     </div>

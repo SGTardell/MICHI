@@ -623,6 +623,10 @@ header::before {
 #apptFormHour,
 #apptFormMin,
 #apptFormAmPm,
+#franklinTaskText,
+#franklinPrioSelect,
+#btnAddFranklinTask,
+#franklinDailyTrackerInput,
 [data-theme="arctic"] #tab-calendar input,
 [data-theme="arctic"] #tab-calendar select,
 [data-theme="arctic"] #tab-calendar textarea,
@@ -636,10 +640,41 @@ header::before {
 [data-theme="arctic"] #apptFormDate,
 [data-theme="arctic"] #apptFormHour,
 [data-theme="arctic"] #apptFormMin,
-[data-theme="arctic"] #apptFormAmPm {
+[data-theme="arctic"] #apptFormAmPm,
+[data-theme="arctic"] #franklinTaskText,
+[data-theme="arctic"] #franklinPrioSelect,
+[data-theme="arctic"] #btnAddFranklinTask,
+[data-theme="arctic"] #franklinDailyTrackerInput {
   background-color: #F2F6FB !important;
   color: #112A46 !important;
   border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+#apptHourSelect,
+#apptMinSelect,
+#apptAmPmSelect,
+#apptFormHour,
+#apptFormMin,
+#apptFormAmPm,
+#franklinPrioSelect,
+[data-theme="arctic"] #apptHourSelect,
+[data-theme="arctic"] #apptMinSelect,
+[data-theme="arctic"] #apptAmPmSelect,
+[data-theme="arctic"] #apptFormHour,
+[data-theme="arctic"] #apptFormMin,
+[data-theme="arctic"] #apptFormAmPm,
+[data-theme="arctic"] #franklinPrioSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23112A46'%3E%3Cpath d='M12 16L6 10H18L12 16Z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 4px center !important;
+  padding-right: 18px !important;
+}
+
+#tab-calendar select option,
+#apptModalOverlay select option {
+  color: #112A46 !important;
+  background-color: #F2F6FB !important;
   font-weight: 800 !important;
 }
 
@@ -647,10 +682,14 @@ header::before {
 #apptNoteInput::placeholder,
 #apptFormTitle::placeholder,
 #apptFormNotes::placeholder,
+#franklinTaskText::placeholder,
+#franklinDailyTrackerInput::placeholder,
 [data-theme="arctic"] #apptTextInput::placeholder,
 [data-theme="arctic"] #apptNoteInput::placeholder,
 [data-theme="arctic"] #apptFormTitle::placeholder,
-[data-theme="arctic"] #apptFormNotes::placeholder {
+[data-theme="arctic"] #apptFormNotes::placeholder,
+[data-theme="arctic"] #franklinTaskText::placeholder,
+[data-theme="arctic"] #franklinDailyTrackerInput::placeholder {
   color: #34506D !important;
   opacity: 0.85 !important;
 }
