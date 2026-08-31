@@ -123,6 +123,51 @@
   --shadow-glow: 0 0 20px rgba(159, 211, 227, 0.25);
 }
 
+/* ❄️ Arctic Chill Theme */
+[data-theme="arctic"] {
+  --bg-dark: #E1E8F0;
+  --bg-main: #F2F6FB;
+  --bg-card: #34506D;
+  --bg-card-hover: #3D5C7D;
+  --bg-glass: #34506D;
+  --border: #4D6E91;
+  --border-glow: rgba(52, 80, 109, 0.3);
+  --logo-filter: brightness(0) invert(1);
+
+  --text-main: #F2F6FB;
+  --text-muted: #D3E0EA;
+  --text-dim: #A8C0D4;
+
+  --accent: #1B3B5A;
+  --accent-hover: #234B73;
+  --accent-glow: rgba(27, 59, 90, 0.3);
+  --kanji-seal: #F2F6FB;
+  --kanji-gold: #F2F6FB;
+
+  --stage-spark: #F2F6FB;
+  --stage-structure: #34506D;
+  --stage-focus: #F2F6FB;
+  --stage-product: #F2F6FB;
+  --stage-planner: #34506D;
+
+  --cat-idea: var(--stage-spark);
+  --cat-web: var(--stage-structure);
+  --cat-task: var(--stage-focus);
+  --cat-done: var(--stage-structure);
+  --cat-vault: var(--stage-product);
+  --cat-urgent: #E11D48;
+  --cat-calendar: var(--stage-planner);
+
+  --shadow-sm: 0 2px 4px rgba(17, 42, 70, 0.12);
+  --shadow-md: 0 4px 12px rgba(17, 42, 70, 0.2);
+  --shadow-lg: 0 10px 25px rgba(17, 42, 70, 0.3);
+  --shadow-glow: 0 0 20px rgba(52, 80, 109, 0.2);
+}
+
+[data-theme="arctic"] body {
+  background: linear-gradient(135deg, #E1E8F0 0%, #F2F6FB 100%) fixed !important;
+}
+
 
 
 /* 🌸 春 Spring Theme (Sakura Blossom) */
@@ -456,6 +501,18 @@ header::before {
 
 [data-theme="glacier"] .dashboard-logo-left {
   filter: brightness(0) invert(0.9) !important;
+}
+
+[data-theme="arctic"] .logo-title {
+  color: #112A46 !important;
+}
+
+[data-theme="arctic"] .logo-subtitle {
+  color: #34506D !important;
+}
+
+[data-theme="arctic"] .dashboard-logo-left {
+  filter: brightness(0) invert(0.2) !important;
 }
 
 .logo-subtitle {

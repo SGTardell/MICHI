@@ -210,6 +210,7 @@ class MichiApp {
           winter: 'MICHI Signature Dark',
           soyokaze: 'Gentle Breeze',
           glacier: 'Glacier Range',
+          arctic: 'Arctic Chill',
           summer: 'Lonely Beach'
         };
         this.showToast(`Switched to ${names[selected] || selected}`);
