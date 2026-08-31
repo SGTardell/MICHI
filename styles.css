@@ -132,22 +132,22 @@
   --bg-glass: #34506D;
   --border: #4D6E91;
   --border-glow: rgba(52, 80, 109, 0.3);
-  --logo-filter: brightness(0) invert(1);
+  --logo-filter: brightness(0) invert(0.2);
 
-  --text-main: #F2F6FB;
-  --text-muted: #D3E0EA;
-  --text-dim: #A8C0D4;
+  --text-main: #112A46;
+  --text-muted: #244263;
+  --text-dim: #34506D;
 
   --accent: #1B3B5A;
   --accent-hover: #234B73;
   --accent-glow: rgba(27, 59, 90, 0.3);
-  --kanji-seal: #F2F6FB;
-  --kanji-gold: #F2F6FB;
+  --kanji-seal: #112A46;
+  --kanji-gold: #112A46;
 
-  --stage-spark: #F2F6FB;
+  --stage-spark: #112A46;
   --stage-structure: #34506D;
-  --stage-focus: #F2F6FB;
-  --stage-product: #F2F6FB;
+  --stage-focus: #112A46;
+  --stage-product: #112A46;
   --stage-planner: #34506D;
 
   --cat-idea: var(--stage-spark);
@@ -533,6 +533,61 @@ header::before {
 
 [data-theme="arctic"] .dashboard-logo-left {
   filter: brightness(0) invert(0.2) !important;
+}
+
+/* ❄️ Arctic Chill Light Frame & Midnight Blue Text Rules */
+[data-theme="arctic"] .stats-counter,
+[data-theme="arctic"] .controls-bar h2,
+[data-theme="arctic"] .controls-bar p,
+[data-theme="arctic"] .controls-bar label,
+[data-theme="arctic"] .stage-column-title,
+[data-theme="arctic"] .pipeline-stage-header,
+[data-theme="arctic"] .pipeline-stage-count,
+[data-theme="arctic"] .section-title,
+[data-theme="arctic"] .page-title,
+[data-theme="arctic"] header button,
+[data-theme="arctic"] header select,
+[data-theme="arctic"] header a,
+[data-theme="arctic"] #themeSelector,
+[data-theme="arctic"] #globalProjectFilter,
+[data-theme="arctic"] #homeProjectFilterSelect,
+[data-theme="arctic"] #projectLineageSelect,
+[data-theme="arctic"] #brainDumpCatSelect,
+[data-theme="arctic"] .search-box input {
+  color: #112A46 !important;
+}
+
+[data-theme="arctic"] header button,
+[data-theme="arctic"] header select,
+[data-theme="arctic"] header a,
+[data-theme="arctic"] .search-box input,
+[data-theme="arctic"] .controls-bar select {
+  background-color: #F2F6FB !important;
+  border-color: #4D6E91 !important;
+  color: #112A46 !important;
+}
+
+[data-theme="arctic"] .search-box input::placeholder {
+  color: #34506D !important;
+}
+
+[data-theme="arctic"] .card,
+[data-theme="arctic"] .compact-card {
+  background-color: #34506D !important;
+  color: #F2F6FB !important;
+  border-color: #4D6E91 !important;
+}
+
+[data-theme="arctic"] .card h4,
+[data-theme="arctic"] .card .card-title,
+[data-theme="arctic"] .card .card-body,
+[data-theme="arctic"] .card .note-line-row span {
+  color: #F2F6FB !important;
+}
+
+[data-theme="arctic"] .card .card-date,
+[data-theme="arctic"] .card .card-footer {
+  color: #D3E0EA !important;
 }
 
 .logo-subtitle {
