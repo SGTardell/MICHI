@@ -4262,10 +4262,8 @@ class MichiApp {
         html = `<option value="" disabled selected>-- No Active Projects or Plans --</option>`;
       } else {
         projects.forEach(p => {
-          const kind = (this.state.projectKinds && this.state.projectKinds[p]) || 'project';
-          const prefix = kind === 'plan' ? '✈️ ' : '🛠️ ';
           const isSelected = p === cur || (cur === 'all' && p === projects[0]);
-          html += `<option value="${this.escapeHtml(p)}" ${isSelected ? 'selected' : ''}>${prefix}${this.escapeHtml(p)}</option>`;
+          html += `<option value="${this.escapeHtml(p)}" ${isSelected ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
         });
       }
       this.globalProjectFilter.innerHTML = html;
@@ -4281,7 +4279,7 @@ class MichiApp {
       `;
     }
 
-    updateSelect(this.projectLineageSelect, '📁 All Projects/Plans Overview', true);
+    updateSelect(this.projectLineageSelect, 'All Projects/Plans Overview', true);
     if (this.projectLineageSelect) this.projectLineageSelect.value = this.selectedProject || 'all';
     
     if (this.dispatchProjectSelect) {
@@ -4915,7 +4913,7 @@ class MichiApp {
     card.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 8px;">
         <div style="display: flex; align-items: center; gap: 6px; overflow: hidden; flex: 1; min-width: 0;">
-          <span style="background: ${isPlan ? 'rgba(56, 189, 248, 0.15)' : 'rgba(251, 146, 60, 0.15)'}; color: ${isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)'}; border: 1px solid ${isPlan ? 'rgba(56, 189, 248, 0.35)' : 'rgba(251, 146, 60, 0.35)'}; font-size: 0.68rem; font-weight: 800; padding: 1px 6px; border-radius: 8px; white-space: nowrap;">
+          <span style="background: rgba(56, 189, 248, 0.15); color: var(--stage-focus); border: 1px solid rgba(56, 189, 248, 0.35); font-size: 0.68rem; font-weight: 800; padding: 1px 6px; border-radius: 8px; white-space: nowrap;">
             ${kindBadge}
           </span>
           <h4 style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0;">
@@ -4986,9 +4984,9 @@ class MichiApp {
     const isPlan = kind === 'plan';
     const kindLabel = isPlan ? 'Plan' : 'Project';
     const kindBadge = isPlan ? 'LIFE PLAN' : 'WORK PROJECT';
-    const kindBadgeBg = isPlan ? 'rgba(56, 189, 248, 0.15)' : 'rgba(251, 146, 60, 0.15)';
-    const kindBadgeColor = isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)';
-    const kindBadgeBorder = isPlan ? 'rgba(56, 189, 248, 0.35)' : 'rgba(251, 146, 60, 0.35)';
+    const kindBadgeBg = 'rgba(56, 189, 248, 0.15)';
+    const kindBadgeColor = 'var(--stage-focus)';
+    const kindBadgeBorder = 'rgba(56, 189, 248, 0.35)';
 
     // 1. Plan / Project Title Header Banner
     const banner = document.createElement('div');
