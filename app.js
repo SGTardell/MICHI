@@ -924,6 +924,7 @@ class MichiApp {
     this.noteContactSelect = document.getElementById('noteContactSelect');
     this.customNoteContactWrapper = document.getElementById('customNoteContactWrapper');
     this.customNoteContactName = document.getElementById('customNoteContactName');
+    this.noteFormSpotlight = document.getElementById('noteFormSpotlight');
   }
 
   confirmDialog(message, title = 'Delete Confirmation', actionCallback) {
@@ -2282,10 +2283,12 @@ class MichiApp {
       const n = item.notes[noteIndex];
       if (this.noteModalTitle) this.noteModalTitle.textContent = `Edit Note Line (${n.date})`;
       this.noteInputText.value = n.text;
+      if (this.noteFormSpotlight) this.noteFormSpotlight.checked = n.spotlight === true;
       if (this.btnDeleteNote) this.btnDeleteNote.style.display = 'block';
     } else {
-      if (this.noteModalTitle) this.noteModalTitle.textContent = '➕ Add New Note Line';
+      if (this.noteModalTitle) this.noteModalTitle.textContent = 'Add New Note Line';
       this.noteInputText.value = '';
+      if (this.noteFormSpotlight) this.noteFormSpotlight.checked = false;
       if (this.btnDeleteNote) this.btnDeleteNote.style.display = 'none';
     }
 
@@ -2346,14 +2349,16 @@ class MichiApp {
     }
 
     if (!item.notes) item.notes = [];
+    const spotlight = this.noteFormSpotlight ? this.noteFormSpotlight.checked : false;
 
     if (index >= 0 && item.notes[index]) {
       item.notes[index].text = text;
-      this.showToast('Note line updated!');
+      item.notes[index].spotlight = spotlight;
+      this.showToast(spotlight ? 'Note line updated & featured in Spotlights!' : 'Note line updated!');
     } else {
       const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-      item.notes.unshift({ text, date: dateStr });
-      this.showToast('New note line added!');
+      item.notes.unshift({ text, date: dateStr, spotlight, completed: false });
+      this.showToast(spotlight ? 'New note line added & featured in Spotlights!' : 'New note line added!');
     }
 
     this.closeNoteModal();
@@ -4407,9 +4412,26 @@ class MichiApp {
     const focusText = dayData.focusText || '';
     const openAppts = appts.filter(a => !a.done);
 
+    // Collect active featured spotlight notes from all project/plan cards
+    const spotlightNotes = [];
+    (this.state.items || []).forEach(item => {
+      (item.notes || []).forEach((n, idx) => {
+        if (n.spotlight && !n.completed) {
+          spotlightNotes.push({
+            itemId: item.id,
+            itemTitle: item.title,
+            project: item.project || 'General',
+            noteIdx: idx,
+            text: n.text,
+            date: n.date
+          });
+        }
+      });
+    });
+
     let html = '';
 
-    if (openAppts.length > 0 || focusText) {
+    if (openAppts.length > 0 || focusText || spotlightNotes.length > 0) {
       html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
       if (focusText) {
         html += `
@@ -4420,12 +4442,37 @@ class MichiApp {
       }
       if (openAppts.length > 0) {
         html += `
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px;">
             ${openAppts.map(a => `
-              <span style="background: rgba(124, 254, 254, 0.12); color: var(--stage-focus); border: 1px solid rgba(124, 254, 254, 0.3); font-size: 0.82rem; font-weight: 800; padding: 4px 11px; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px;">
+              <span style="background: rgba(56, 189, 248, 0.15); color: var(--stage-focus); border: 1px solid rgba(56, 189, 248, 0.35); font-size: 0.82rem; font-weight: 800; padding: 4px 11px; border-radius: 12px; display: inline-flex; align-items: center; gap: 6px;">
                 <strong>${this.escapeHtml(a.time)}</strong> ${this.escapeHtml(a.text)}
               </span>
             `).join('')}
+          </div>
+        `;
+      }
+      if (spotlightNotes.length > 0) {
+        html += `
+          <div style="margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 6px;">
+            <div style="font-size: 0.78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;">
+              Featured Project / Plan Spotlights (${spotlightNotes.length})
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              ${spotlightNotes.map(sn => `
+                <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-main); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.84rem;">
+                  <input type="checkbox" class="banner-spotlight-checkbox" data-item-id="${sn.itemId}" data-note-idx="${sn.noteIdx}" style="width: 16px; height: 16px; cursor: pointer; accent-color: var(--stage-structure);" title="Mark Completed & Auto-Remove from Spotlights" />
+                  <span style="background: rgba(56, 189, 248, 0.15); color: var(--stage-focus); border: 1px solid rgba(56, 189, 248, 0.35); font-weight: 800; font-size: 0.72rem; padding: 1px 6px; border-radius: 4px; white-space: nowrap;">
+                    ${this.escapeHtml(sn.project)}
+                  </span>
+                  <span style="flex: 1; color: var(--text-main); font-weight: 600; line-height: 1.35; word-break: break-word;">
+                    ${this.escapeHtml(sn.text)}
+                  </span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim); font-family: monospace; white-space: nowrap;">
+                    ${this.escapeHtml(sn.date)}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
           </div>
         `;
       }
@@ -4433,12 +4480,27 @@ class MichiApp {
     } else {
       html = `
         <div style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">
-          No scheduled appointments or spotlights for today — Open Calendar & Planner to schedule your day.
+          No scheduled appointments or featured spotlights for today — Open Calendar & Planner to schedule your day or add notes to Projects & Plans.
         </div>
       `;
     }
 
     bannerContainer.innerHTML = html;
+
+    // Attach event listeners to banner spotlight checkboxes
+    bannerContainer.querySelectorAll('.banner-spotlight-checkbox').forEach(chk => {
+      chk.addEventListener('change', (e) => {
+        const itemId = chk.getAttribute('data-item-id');
+        const noteIdx = parseInt(chk.getAttribute('data-note-idx'), 10);
+        const item = (this.state.items || []).find(i => i.id === itemId);
+        if (item && item.notes && item.notes[noteIdx]) {
+          item.notes[noteIdx].completed = chk.checked;
+          this.saveState();
+          this.render();
+          this.showToast('Completed spotlight item — auto-removed from banner!');
+        }
+      });
+    });
   }
 
   render() {
@@ -4648,6 +4710,7 @@ class MichiApp {
                 <span style="flex: 1; color: ${n.completed ? 'var(--text-dim)' : 'var(--text-main)'}; font-size: 0.85rem; font-weight: 600; line-height: 1.35; word-break: break-word; text-decoration: ${n.completed ? 'line-through' : 'none'}; opacity: ${n.completed ? '0.7' : '1'};">
                   ${this.escapeHtml(n.text)}
                 </span>
+                <button type="button" class="btn-toggle-spotlight" data-note-idx="${idx}" style="background: ${n.spotlight ? 'var(--accent)' : 'var(--bg-card)'}; color: ${n.spotlight ? 'var(--bg-dark)' : 'var(--text-main)'}; border: 1px solid var(--border); font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 1px; cursor: pointer;" title="Toggle Schedule & Spotlights banner display">${n.spotlight ? 'Spotlight ON' : 'Spotlight'}</button>
                 <span style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 1px;" title="Edit Note Line">Edit</span>
               </div>
             `).join('')}
@@ -4715,10 +4778,23 @@ class MichiApp {
 
     card.querySelectorAll('.note-line-row').forEach(row => {
       row.addEventListener('click', (e) => {
-        if (e.target && e.target.classList.contains('note-item-checkbox')) return;
+        if (e.target && (e.target.classList.contains('note-item-checkbox') || e.target.classList.contains('btn-toggle-spotlight'))) return;
         e.stopPropagation();
         const noteIdx = parseInt(row.dataset.noteIdx, 10);
         this.openNoteModal(item.id, noteIdx);
+      });
+    });
+
+    card.querySelectorAll('.btn-toggle-spotlight').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.getAttribute('data-note-idx'), 10);
+        if (item.notes && item.notes[idx]) {
+          item.notes[idx].spotlight = !item.notes[idx].spotlight;
+          this.saveState();
+          this.render();
+          this.showToast(item.notes[idx].spotlight ? 'Featured note in Schedule & Spotlights!' : 'Removed note from Spotlights.');
+        }
       });
     });
 
