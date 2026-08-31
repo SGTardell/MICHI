@@ -218,53 +218,6 @@ class MichiApp {
   }
 
   loadState() {
-    // If a new tester logged in / registered for the first time
-    if (localStorage.getItem('michi_is_new_tester') === 'true') {
-      localStorage.removeItem('michi_is_new_tester');
-      const testerState = {
-        theme: 'soyokaze',
-        customProjects: ['Sample Project', 'Sample Plan'],
-        projectKinds: {
-          'Sample Project': 'project',
-          'Sample Plan': 'plan'
-        },
-        customWebCategories: ['Tech', 'Sports', 'Fashion', 'Design', 'Finance'],
-        contacts: [],
-        items: [
-          {
-            id: 'item-sample-project',
-            title: 'Sample Work Project Card',
-            content: 'This is a sample work project card. Add tasks, milestones, or notes here.',
-            project: 'Sample Project',
-            stage: 'spark',
-            type: 'card',
-            category: 'General',
-            tags: ['#WorkProject'],
-            createdAt: new Date().toISOString()
-          },
-          {
-            id: 'item-sample-plan',
-            title: 'Sample Life Plan Card',
-            content: 'This is a sample life plan card for events, travel, or personal goals.',
-            project: 'Sample Plan',
-            isPlan: true,
-            stage: 'spark',
-            type: 'card',
-            category: 'Plan',
-            tags: ['#LifePlan'],
-            createdAt: new Date().toISOString()
-          }
-        ],
-        appts: [],
-        dailyLogs: {},
-        franklinData: {},
-        vaultItems: [],
-        quickNotes: []
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(testerState));
-      return testerState;
-    }
-
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
@@ -281,12 +234,32 @@ class MichiApp {
           parsed.contacts = JSON.parse(JSON.stringify(defaultState.contacts || []));
         }
 
-        // Clean demo/phantom default names if present from old builds
-        const legacyDemoNames = new Set(['spatial canvas architecture', 'personal', 'test', 'teswt']);
+        // Clean sample/demo names from owner workspace and restore real projects
+        const legacyDemoNames = new Set(['sample project', 'sample plan', 'spatial canvas architecture', 'personal', 'test', 'teswt']);
         parsed.customProjects = parsed.customProjects.filter(p => p && p.trim() && !legacyDemoNames.has(p.toLowerCase().trim()));
         parsed.items = parsed.items.filter(item => {
           const pLower = (item.project || '').toLowerCase().trim();
           return !legacyDemoNames.has(pLower);
+        });
+
+        // Ensure owner's real default projects exist
+        const requiredProjects = ['MICHI', 'Par Pilot', 'test Project', 'test Plan'];
+        requiredProjects.forEach(p => {
+          if (!parsed.customProjects.includes(p)) {
+            parsed.customProjects.push(p);
+          }
+        });
+        if (!parsed.projectKinds) parsed.projectKinds = {};
+        parsed.projectKinds['MICHI'] = 'project';
+        parsed.projectKinds['Par Pilot'] = 'project';
+        parsed.projectKinds['test Project'] = 'project';
+        parsed.projectKinds['test Plan'] = 'plan';
+
+        // Restore owner's default cards if missing
+        defaultState.items.forEach(defItem => {
+          if (!parsed.items.some(i => i.id === defItem.id)) {
+            parsed.items.push(defItem);
+          }
         });
 
         // Strip generic laptop stock photos and legacy 'Password' tag
@@ -4631,7 +4604,7 @@ class MichiApp {
               ${badgeLabel}
             </span>
             <h4 class="card-title" style="color: var(--text-main); font-weight: 700;">${this.escapeHtml(item.title)}</h4>
-            ${item.assignedTo ? `<span class="badge" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap;">👤 ${rolePrefix}: ${this.escapeHtml(item.assignedTo)}</span>` : ''}
+            ${item.assignedTo ? `<span class="badge" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap;">${rolePrefix}: ${this.escapeHtml(item.assignedTo)}</span>` : ''}
           </div>
           <div class="card-actions" style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
             ${(!isResourceCard && stage !== 'spark') ? `<button class="icon-btn btn-regress-pipeline" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.72rem; padding: 2px 7px;" title="Step Back item to previous stage">⬅ Back</button>` : ''}
@@ -4937,7 +4910,7 @@ class MichiApp {
     const leadContact = (primaryItem && primaryItem.assignedTo) || (allProjItems.find(i => i.assignedTo) ? allProjItems.find(i => i.assignedTo).assignedTo : '');
     const kind = (this.state.projectKinds && this.state.projectKinds[projectName]) || 'project';
     const isPlan = kind === 'plan';
-    const kindBadge = isPlan ? '✈️ PLAN' : '🛠️ PROJECT';
+    const kindBadge = isPlan ? 'PLAN' : 'PROJECT';
 
     card.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 8px;">
@@ -4954,7 +4927,7 @@ class MichiApp {
         </span>
       </div>
 
-      ${leadContact ? `<div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">👤 Lead: <span style="color: var(--text-main); font-weight: 700;">${this.escapeHtml(leadContact)}</span></div>` : ''}
+      ${leadContact ? `<div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">Lead: <span style="color: var(--text-main); font-weight: 700;">${this.escapeHtml(leadContact)}</span></div>` : ''}
 
       <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 6px 0; word-break: break-word;">
         ${this.escapeHtml(briefDesc)}
@@ -5012,7 +4985,6 @@ class MichiApp {
     const kind = (this.state.projectKinds && this.state.projectKinds[projectName]) || 'project';
     const isPlan = kind === 'plan';
     const kindLabel = isPlan ? 'Plan' : 'Project';
-    const kindEmoji = isPlan ? '✈️' : '🛠️';
     const kindBadge = isPlan ? 'LIFE PLAN' : 'WORK PROJECT';
     const kindBadgeBg = isPlan ? 'rgba(56, 189, 248, 0.15)' : 'rgba(251, 146, 60, 0.15)';
     const kindBadgeColor = isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)';
@@ -5035,7 +5007,7 @@ class MichiApp {
       <div>
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
           <span style="background: ${kindBadgeBg}; color: ${kindBadgeColor}; border: 1px solid ${kindBadgeBorder}; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px;">
-            ${kindEmoji} ${kindBadge}
+            ${kindBadge}
           </span>
           <span style="font-size: 0.8rem; color: var(--text-muted);">
             Workspace Pipeline — ${projItems.length} Total ${projItems.length === 1 ? 'Item' : 'Items'}
