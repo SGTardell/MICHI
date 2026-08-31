@@ -613,6 +613,20 @@ header::before {
   border-color: #4D6E91 !important;
 }
 
+[data-theme="arctic"] .btn-delete-project-action,
+.btn-delete-project-action {
+  background-color: rgba(225, 29, 72, 0.25) !important;
+  color: #F2F6FB !important;
+  border: 1px solid rgba(225, 29, 72, 0.5) !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .btn-delete-project-action:hover,
+.btn-delete-project-action:hover {
+  background-color: #E11D48 !important;
+  color: #FFFFFF !important;
+}
+
 .logo-subtitle {
   text-align: center;
   white-space: nowrap;
