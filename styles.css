@@ -671,6 +671,46 @@ header::before {
   padding-right: 18px !important;
 }
 
+/* 📅 Daily Planner Date, Time & MICHI Logo High Contrast Rules */
+#franklinDateTitle,
+#leftPageNum,
+#leftPageDay,
+#leftPageMonthYear,
+.page-big-date,
+.page-day-name,
+.binder-modal #franklinDateTitle,
+.binder-modal #leftPageNum,
+.binder-modal #leftPageDay,
+.binder-modal #leftPageMonthYear,
+[data-theme="arctic"] #franklinDateTitle,
+[data-theme="arctic"] #leftPageNum,
+[data-theme="arctic"] #leftPageDay,
+[data-theme="arctic"] #leftPageMonthYear,
+[data-theme="dark"] #franklinDateTitle,
+[data-theme="dark"] #leftPageNum,
+[data-theme="dark"] #leftPageDay,
+[data-theme="dark"] #leftPageMonthYear,
+[data-theme="sumi"] #franklinDateTitle,
+[data-theme="sumi"] #leftPageNum,
+[data-theme="sumi"] #leftPageDay,
+[data-theme="sumi"] #leftPageMonthYear {
+  color: #F2F6FB !important;
+  font-weight: 800 !important;
+}
+
+/* MICHI Logo on Daily Planner Spread — Light White Color Scheme in Glacier Range & Signature Dark */
+.binder-page img,
+#franklinModalOverlay img,
+[data-theme="arctic"] .binder-page img,
+[data-theme="arctic"] #franklinModalOverlay img,
+[data-theme="dark"] .binder-page img,
+[data-theme="dark"] #franklinModalOverlay img,
+[data-theme="sumi"] .binder-page img,
+[data-theme="sumi"] #franklinModalOverlay img {
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.98 !important;
+}
+
 #tab-calendar select option,
 #apptModalOverlay select option,
 #newProjectModalOverlay select option {
