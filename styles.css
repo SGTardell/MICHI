@@ -688,42 +688,73 @@ header::before {
   padding-right: 18px !important;
 }
 
-/* 📅 Daily Planner Date, Time & MICHI Logo High Contrast Rules */
-#franklinDateTitle,
-#leftPageNum,
-#leftPageDay,
-#leftPageMonthYear,
-.page-big-date,
-.page-day-name,
-.binder-modal #franklinDateTitle,
-.binder-modal #leftPageNum,
-.binder-modal #leftPageDay,
-.binder-modal #leftPageMonthYear,
+/* 📅 Daily Planner Date, Time & MICHI Logo Theme Rules */
+
+/* ❄️ Arctic Chill (Glacier Range) — Dark Midnight Blue Text & Dark MICHI Logo */
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
 [data-theme="arctic"] #leftPageMonthYear,
+[data-theme="arctic"] .page-big-date,
+[data-theme="arctic"] .page-day-name,
+[data-theme="arctic"] .right-page-header-title,
+[data-theme="arctic"] .binder-modal #franklinDateTitle,
+[data-theme="arctic"] .binder-modal #leftPageNum,
+[data-theme="arctic"] .binder-modal #leftPageDay,
+[data-theme="arctic"] .binder-modal #leftPageMonthYear {
+  color: #112A46 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] #plannerUserBadge {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .binder-page img.franklin-logo-img,
+[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="arctic"] img.franklin-logo-img {
+  filter: brightness(0) !important;
+  opacity: 1 !important;
+}
+
+/* 🌙 Signature Dark (Sumi / Winter) — Light White Text & Light MICHI Logo */
 [data-theme="dark"] #franklinDateTitle,
 [data-theme="dark"] #leftPageNum,
 [data-theme="dark"] #leftPageDay,
 [data-theme="dark"] #leftPageMonthYear,
+[data-theme="dark"] .page-big-date,
+[data-theme="dark"] .page-day-name,
+[data-theme="dark"] .right-page-header-title,
+[data-theme="dark"] .binder-modal #franklinDateTitle,
+[data-theme="dark"] .binder-modal #leftPageNum,
+[data-theme="dark"] .binder-modal #leftPageDay,
+[data-theme="dark"] .binder-modal #leftPageMonthYear,
 [data-theme="sumi"] #franklinDateTitle,
 [data-theme="sumi"] #leftPageNum,
 [data-theme="sumi"] #leftPageDay,
-[data-theme="sumi"] #leftPageMonthYear {
+[data-theme="sumi"] #leftPageMonthYear,
+[data-theme="sumi"] .page-big-date,
+[data-theme="sumi"] .page-day-name,
+[data-theme="sumi"] .right-page-header-title {
   color: #F2F6FB !important;
   font-weight: 800 !important;
 }
 
-/* MICHI Logo on Daily Planner Spread — Light White Color Scheme in Glacier Range & Signature Dark */
-.binder-page img,
-#franklinModalOverlay img,
-[data-theme="arctic"] .binder-page img,
-[data-theme="arctic"] #franklinModalOverlay img,
-[data-theme="dark"] .binder-page img,
-[data-theme="dark"] #franklinModalOverlay img,
-[data-theme="sumi"] .binder-page img,
-[data-theme="sumi"] #franklinModalOverlay img {
+[data-theme="dark"] #plannerUserBadge,
+[data-theme="sumi"] #plannerUserBadge {
+  background-color: #34506D !important;
+  color: #F2F6FB !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="dark"] .binder-page img.franklin-logo-img,
+[data-theme="dark"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="sumi"] .binder-page img.franklin-logo-img,
+[data-theme="sumi"] #franklinModalOverlay img.franklin-logo-img {
   filter: brightness(0) invert(1) !important;
   opacity: 0.98 !important;
 }
