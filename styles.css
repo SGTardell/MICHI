@@ -672,10 +672,46 @@ header::before {
 }
 
 #tab-calendar select option,
-#apptModalOverlay select option {
+#apptModalOverlay select option,
+#newProjectModalOverlay select option {
   color: #112A46 !important;
   background-color: #F2F6FB !important;
   font-weight: 800 !important;
+}
+
+/* Start New Project / Plan Modal High Contrast Rules */
+#newProjectForm label,
+[data-theme="arctic"] #newProjectForm label {
+  color: #F2F6FB !important;
+  font-weight: 800 !important;
+}
+
+#newProjectTitle,
+#newProjectSpark,
+#newProjectContactSelect,
+#newProjectManualContact,
+#customProjectTypeInput,
+[data-theme="arctic"] #newProjectTitle,
+[data-theme="arctic"] #newProjectSpark,
+[data-theme="arctic"] #newProjectContactSelect,
+[data-theme="arctic"] #newProjectManualContact,
+[data-theme="arctic"] #customProjectTypeInput {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+#newProjectTitle::placeholder,
+#newProjectSpark::placeholder,
+#newProjectManualContact::placeholder,
+#customProjectTypeInput::placeholder,
+[data-theme="arctic"] #newProjectTitle::placeholder,
+[data-theme="arctic"] #newProjectSpark::placeholder,
+[data-theme="arctic"] #newProjectManualContact::placeholder,
+[data-theme="arctic"] #customProjectTypeInput::placeholder {
+  color: #34506D !important;
+  opacity: 0.85 !important;
 }
 
 #apptTextInput::placeholder,
