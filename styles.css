@@ -590,6 +590,21 @@ header::before {
   font-weight: 700 !important;
 }
 
+/* Bright Light Contacts Search Input */
+[data-theme="arctic"] #contactsSearchInput,
+#contactsSearchInput {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="arctic"] #contactsSearchInput::placeholder,
+#contactsSearchInput::placeholder {
+  color: #34506D !important;
+  opacity: 0.8 !important;
+}
+
 /* Header Action Buttons (Guide, Refresh, Lock, Backup, Restore, Log Out) */
 [data-theme="arctic"] #btnOpenTutorialHeader,
 [data-theme="arctic"] #btnRefreshApp,
