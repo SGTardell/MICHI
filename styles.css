@@ -578,6 +578,32 @@ header::before {
   border-color: #4D6E91 !important;
 }
 
+/* Header Action Buttons (Guide, Refresh, Lock, Backup, Restore, Log Out) */
+[data-theme="arctic"] #btnOpenTutorialHeader,
+[data-theme="arctic"] #btnRefreshApp,
+[data-theme="arctic"] #btnVaultLockHeader,
+[data-theme="arctic"] #btnExportBackup,
+[data-theme="arctic"] #btnImportBackup,
+[data-theme="arctic"] #btnSignOutApp,
+[data-theme="arctic"] header a,
+[data-theme="arctic"] header button:not(.nav-tab) {
+  background-color: #34506D !important;
+  color: #F2F6FB !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 4px rgba(17, 42, 70, 0.2) !important;
+}
+
+[data-theme="arctic"] #btnOpenTutorialHeader:hover,
+[data-theme="arctic"] #btnRefreshApp:hover,
+[data-theme="arctic"] #btnVaultLockHeader:hover,
+[data-theme="arctic"] #btnExportBackup:hover,
+[data-theme="arctic"] #btnImportBackup:hover,
+[data-theme="arctic"] #btnSignOutApp:hover {
+  background-color: #1B3B5A !important;
+  color: #FFFFFF !important;
+}
+
 /* White Pill Badges and Action Buttons inside Project & Plan Board Cards */
 [data-theme="arctic"] .project-board-stage-badge,
 [data-theme="arctic"] .btn-view-project-action {
@@ -1507,11 +1533,6 @@ select#apptFormTime {
 
 [data-theme="arctic"] select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F2F6FB' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
-}
-
-[data-theme="arctic"] select#themeSelector,
-[data-theme="arctic"] select.light-bg-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23112A46' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
 }
 
 select option {
