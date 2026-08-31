@@ -702,7 +702,18 @@ header::before {
   font-weight: 800;
 }
 
-/* ❄️ Arctic Chill (Glacier Range) — Dark Midnight Blue Text, Dark Logo, Bright Controls */
+/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Light White Date Text & Headings */
+#franklinDateTitle,
+#leftPageNum,
+#leftPageDay,
+#leftPageMonthYear,
+.page-big-date,
+.page-day-name,
+.right-page-header-title,
+.binder-modal #franklinDateTitle,
+.binder-modal #leftPageNum,
+.binder-modal #leftPageDay,
+.binder-modal #leftPageMonthYear,
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
@@ -714,7 +725,7 @@ header::before {
 [data-theme="arctic"] .binder-modal #leftPageNum,
 [data-theme="arctic"] .binder-modal #leftPageDay,
 [data-theme="arctic"] .binder-modal #leftPageMonthYear {
-  color: #112A46 !important;
+  color: #F2F6FB !important;
   font-weight: 800 !important;
 }
 
@@ -729,21 +740,30 @@ header::before {
   font-weight: 800 !important;
 }
 
+/* Transparent MICHI Logo Filters — Crisp Pure White Logo in Glacier Range & Signature Dark */
+.franklin-logo-img,
+.binder-page img.franklin-logo-img,
+#franklinModalOverlay img.franklin-logo-img,
 [data-theme="arctic"] .binder-page img.franklin-logo-img,
 [data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="arctic"] img.franklin-logo-img {
-  filter: brightness(0) !important;
-  opacity: 1 !important;
+[data-theme="arctic"] img.franklin-logo-img,
+[data-theme="dark"] .binder-page img.franklin-logo-img,
+[data-theme="dark"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="dark"] img.franklin-logo-img,
+[data-theme="sumi"] .binder-page img.franklin-logo-img,
+[data-theme="sumi"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="sumi"] img.franklin-logo-img {
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.98 !important;
 }
 
-/* 🌙 Signature Dark (Sumi / Winter) — Light White Text, Light Logo, Dark Glass Controls */
+/* 🌙 Signature Dark (Sumi / Winter) — Light White Text, Light White Logo, Dark Glass Controls */
 [data-theme="dark"] #franklinDateTitle,
 [data-theme="dark"] #leftPageNum,
 [data-theme="dark"] #leftPageDay,
 [data-theme="dark"] #leftPageMonthYear,
 [data-theme="dark"] .page-big-date,
 [data-theme="dark"] .page-day-name,
-[data-theme="dark"] .right-page-header-title,
 [data-theme="dark"] .binder-modal #franklinDateTitle,
 [data-theme="dark"] .binder-modal #leftPageNum,
 [data-theme="dark"] .binder-modal #leftPageDay,
@@ -753,8 +773,7 @@ header::before {
 [data-theme="sumi"] #leftPageDay,
 [data-theme="sumi"] #leftPageMonthYear,
 [data-theme="sumi"] .page-big-date,
-[data-theme="sumi"] .page-day-name,
-[data-theme="sumi"] .right-page-header-title {
+[data-theme="sumi"] .page-day-name {
   color: #F2F6FB !important;
   font-weight: 800 !important;
 }
