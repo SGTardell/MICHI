@@ -87,19 +87,19 @@
         <select id="themeSelector" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 8px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; white-space: nowrap;" title="Select Color Palette Theme">
           <option value="soyokaze" selected>Gentle Breeze</option>
           <option value="winter">MICHI Signature Dark</option>
-          <option value="glacier">🏔️ Glacier Range</option>
+          <option value="glacier">Glacier Range</option>
         </select>
 
         <a href="guide.html" id="btnOpenTutorialHeader" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; text-decoration: none;" title="Open MICHI User Guide Manual">
-          📖 Guide
+          Guide
         </a>
 
         <button type="button" id="btnRefreshApp" onclick="if(window.app && window.app.refreshApp) { window.app.refreshApp(); } else { window.location.reload(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Refresh MICHI App & Sync Latest Data">
-          🔄 Refresh
+          Refresh
         </button>
 
         <button type="button" id="btnSignOutApp" onclick="if(window.app && window.app.signOut) { window.app.signOut(); } else { localStorage.removeItem('michi_logged_in'); window.location.href='index.html'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Lock Workspace & Sign Out">
-          🔒 Lock
+          Lock
         </button>
 
         <!-- High-Visibility Data Backup & Restore Action Pair -->
@@ -1451,13 +1451,13 @@
       
       <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 6px;">
         <button type="button" id="btnLaunchAsProject" style="background: linear-gradient(135deg, #009967 0%, #007A52 100%); color: #FFFFFF; border: 1px solid #7CFEFE; padding: 12px 16px; border-radius: var(--radius-md); font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-          📁 Launch as New Project Board
+          Launch as New Project Board
         </button>
         <button type="button" id="btnLaunchAsExistingProject" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md); font-weight: 800; font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-          📂 Assign to Existing Project / Plan...
+          Assign to Existing Project / Plan...
         </button>
         <button type="button" id="btnLaunchAsPlanTask" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md); font-weight: 800; font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-          📋 Launch into Daily Planner Task
+          Launch into Daily Planner Task
         </button>
       </div>
 
@@ -1468,7 +1468,7 @@
   <!-- Change Vault Master Password Modal -->
   <div class="modal-overlay" id="changeVaultPassModalOverlay" style="background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); padding: 1.5rem; z-index: 2500;">
     <div class="modal-card" style="max-width: 440px; width: 100%; display: flex; flex-direction: column; gap: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem;">
-      <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">⚙️ Change Vault Master Password</h3>
+      <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">Change Vault Master Password</h3>
       <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Update your Vault Master Password if your password was compromised or forgotten.</p>
       
       <form id="changeVaultPassForm" style="display: flex; flex-direction: column; gap: 12px; margin-top: 6px;">
@@ -1509,14 +1509,13 @@
 
         <!-- Center: Guide Title -->
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="font-size: 1.1rem;">📖</span>
           <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.5px;">MICHI (道) User Guide & Manual</span>
         </div>
 
         <!-- Right Action Controls -->
         <div style="display: flex; align-items: center; gap: 8px;">
           <button type="button" onclick="if(window.app && window.app.closeTutorialModal && window.app.openFranklinModal) { window.app.closeTutorialModal(); window.app.openFranklinModal(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Switch directly to Daily Planner Modal">
-            📅 Open Daily Planner
+            Open Daily Planner
           </button>
           <button type="button" id="btnCloseTutorialModal" onclick="var o=document.getElementById('tutorialModalOverlay'); if(o){ o.style.display='none'; o.style.opacity='0'; o.style.visibility='hidden'; o.style.pointerEvents='none'; o.classList.remove('active'); } if(window.app && window.app.closeTutorialModal) window.app.closeTutorialModal();" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer;">✕ Close</button>
         </div>
