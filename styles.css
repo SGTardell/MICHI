@@ -165,7 +165,27 @@
 }
 
 [data-theme="arctic"] body {
-  background: linear-gradient(135deg, #E1E8F0 0%, #F2F6FB 100%) fixed !important;
+  background-color: #C4D2E1 !important;
+  position: relative;
+}
+
+[data-theme="arctic"] body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #C4D2E1;
+  background-image: 
+    radial-gradient(circle at 15% 15%, #F2F6FB 0%, transparent 60%),
+    radial-gradient(circle at 85% 85%, #F2F6FB 0%, transparent 60%),
+    radial-gradient(circle at 85% 15%, #C4D2E1 0%, transparent 50%),
+    radial-gradient(circle at 15% 85%, #E1E8F0 0%, transparent 50%);
+  filter: blur(45px);
+  transform: scale(1.15);
 }
 
 
