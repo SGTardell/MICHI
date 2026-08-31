@@ -5239,7 +5239,6 @@ class MichiApp {
     resHeader.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Resources/Tools</span>
-        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${resourceItems.length}</span>
       </div>
       <button class="btn-add-res-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
         + Add Resource/Tool
@@ -5304,7 +5303,6 @@ class MichiApp {
     compHeader.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Completed</span>
-        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${completedItems.length}</span>
       </div>
       <button class="btn-add-comp-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
         + Add Completed Item
@@ -5686,7 +5684,6 @@ class MichiApp {
     header.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Development</span>
-        <span style="background: var(--bg-main); color: var(--text-main); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border);">${colItems.length}</span>
       </div>
     `;
 
