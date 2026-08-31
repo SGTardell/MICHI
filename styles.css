@@ -690,19 +690,7 @@ header::before {
 
 /* 📅 Daily Planner Date, Time, Logo & Top Bar Controls Theme Rules */
 
-/* 🍃 Gentle Breeze (Soyokaze / Default) — Clean Natural Paper Look */
-#franklinDateTitle,
-#leftPageNum,
-#leftPageDay,
-#leftPageMonthYear,
-.page-big-date,
-.page-day-name,
-.right-page-header-title {
-  color: var(--text-main);
-  font-weight: 800;
-}
-
-/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Light White Date Text & Headings */
+/* 🍃 Gentle Breeze (Soyokaze / Default) — Dark Slate Date Text & Natural Dark Logo */
 #franklinDateTitle,
 #leftPageNum,
 #leftPageDay,
@@ -714,6 +702,36 @@ header::before {
 .binder-modal #leftPageNum,
 .binder-modal #leftPageDay,
 .binder-modal #leftPageMonthYear,
+[data-theme="soyokaze"] #franklinDateTitle,
+[data-theme="soyokaze"] #leftPageNum,
+[data-theme="soyokaze"] #leftPageDay,
+[data-theme="soyokaze"] #leftPageMonthYear,
+[data-theme="soyokaze"] .page-big-date,
+[data-theme="soyokaze"] .page-day-name,
+[data-theme="soyokaze"] .right-page-header-title,
+[data-theme="shizuka"] #franklinDateTitle,
+[data-theme="shizuka"] #leftPageNum,
+[data-theme="shizuka"] #leftPageDay,
+[data-theme="shizuka"] #leftPageMonthYear,
+[data-theme="shizuka"] .page-big-date,
+[data-theme="shizuka"] .page-day-name,
+[data-theme="shizuka"] .right-page-header-title {
+  color: var(--text-main) !important;
+  font-weight: 800 !important;
+}
+
+.franklin-logo-img,
+.binder-page img.franklin-logo-img,
+#franklinModalOverlay img.franklin-logo-img,
+[data-theme="soyokaze"] .franklin-logo-img,
+[data-theme="soyokaze"] .binder-page img.franklin-logo-img,
+[data-theme="shizuka"] .franklin-logo-img,
+[data-theme="shizuka"] .binder-page img.franklin-logo-img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Light White Date Text & White Logo */
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
@@ -724,7 +742,25 @@ header::before {
 [data-theme="arctic"] .binder-modal #franklinDateTitle,
 [data-theme="arctic"] .binder-modal #leftPageNum,
 [data-theme="arctic"] .binder-modal #leftPageDay,
-[data-theme="arctic"] .binder-modal #leftPageMonthYear {
+[data-theme="arctic"] .binder-modal #leftPageMonthYear,
+[data-theme="dark"] #franklinDateTitle,
+[data-theme="dark"] #leftPageNum,
+[data-theme="dark"] #leftPageDay,
+[data-theme="dark"] #leftPageMonthYear,
+[data-theme="dark"] .page-big-date,
+[data-theme="dark"] .page-day-name,
+[data-theme="dark"] .right-page-header-title,
+[data-theme="dark"] .binder-modal #franklinDateTitle,
+[data-theme="dark"] .binder-modal #leftPageNum,
+[data-theme="dark"] .binder-modal #leftPageDay,
+[data-theme="dark"] .binder-modal #leftPageMonthYear,
+[data-theme="sumi"] #franklinDateTitle,
+[data-theme="sumi"] #leftPageNum,
+[data-theme="sumi"] #leftPageDay,
+[data-theme="sumi"] #leftPageMonthYear,
+[data-theme="sumi"] .page-big-date,
+[data-theme="sumi"] .page-day-name,
+[data-theme="sumi"] .right-page-header-title {
   color: #F2F6FB !important;
   font-weight: 800 !important;
 }
@@ -740,10 +776,6 @@ header::before {
   font-weight: 800 !important;
 }
 
-/* Transparent MICHI Logo Filters — Crisp Pure White Logo in Glacier Range & Signature Dark */
-.franklin-logo-img,
-.binder-page img.franklin-logo-img,
-#franklinModalOverlay img.franklin-logo-img,
 [data-theme="arctic"] .binder-page img.franklin-logo-img,
 [data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="arctic"] img.franklin-logo-img,
