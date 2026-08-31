@@ -584,6 +584,23 @@ header::before {
 
 /* Home & Brain Dump Control Labels, Subtitles & High Contrast Text */
 [data-theme="arctic"] .controls-bar label,
+[data-theme="dark"] .controls-bar label,
+[data-theme="sumi"] .controls-bar label {
+  color: #F2F6FB !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] #homeProjectFilterSelect {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23112A46'%3E%3Cpath d='M12 16L6 10H18L12 16Z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  padding-right: 28px !important;
+}
+
 [data-theme="arctic"] .controls-bar p,
 [data-theme="arctic"] #tab-ideas p,
 [data-theme="arctic"] #tab-ideas .empty-state,
