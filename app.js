@@ -3837,13 +3837,13 @@ class MichiApp {
       btn.dataset.webCat = cat;
 
       const labels = {
-        inbox: '📥 Inbox (Unfiled)',
-        all: '🌐 All Master Notes',
+        inbox: 'Inbox (Unfiled)',
+        all: 'All Topics',
         Tech: 'Tech',
-        Travel: 'Travel ✈️',
-        Work: 'Work 🛠️',
-        Personal: 'Personal 🏠',
-        Health: 'Health 🏃',
+        Travel: 'Travel',
+        Work: 'Work',
+        Personal: 'Personal',
+        Health: 'Health',
         Sports: 'Sports',
         Fashion: 'Fashion',
         Design: 'Design',
@@ -3863,10 +3863,10 @@ class MichiApp {
 
     const addCatBtn = document.createElement('button');
     addCatBtn.className = 'filter-pill';
-    addCatBtn.style.background = 'rgba(0, 153, 103, 0.15)';
-    addCatBtn.style.color = 'var(--stage-structure)';
-    addCatBtn.style.borderColor = 'rgba(0, 153, 103, 0.4)';
-    addCatBtn.style.fontWeight = '700';
+    addCatBtn.style.background = 'var(--bg-card)';
+    addCatBtn.style.color = 'var(--text-main)';
+    addCatBtn.style.borderColor = 'var(--border)';
+    addCatBtn.style.fontWeight = '800';
     addCatBtn.textContent = '+ Add Category';
 
     addCatBtn.addEventListener('click', () => {
@@ -3879,7 +3879,7 @@ class MichiApp {
           this.saveState();
           this.currentWebCat = catName;
           this.renderIdeasGrid();
-          this.showToast(`Added custom category: ${catName}`);
+          this.renderWebCategoryPills();
         }
       }
     });
@@ -3921,7 +3921,7 @@ class MichiApp {
       this.ideasGrid.style.gap = '1.25rem';
     }
 
-    let webItems = this.state.items.filter(i => (i.type === 'web' || (i.type === 'idea' && (!i.project || i.project === 'General'))));
+    let webItems = (this.state.items || []).filter(i => i.type === 'web' || i.type === 'resource' || i.category || i.webCategory || i.url);
 
     if (this.currentWebCat === 'inbox') {
       webItems = webItems.filter(i => {
@@ -3940,9 +3940,9 @@ class MichiApp {
     }
     if (webItems.length === 0) {
       this.ideasGrid.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
-          <p style="margin-bottom: 1rem;">No web clips or interest bookmarks found for this category or project.</p>
-          <button type="button" onclick="document.getElementById('btnAddWebClip').click()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;">➕ Add Web Bookmark</button>
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-main);">
+          <p style="margin-bottom: 1rem; color: var(--text-main); font-weight: 800; font-size: 1rem;">No web clips or interest bookmarks found for this category or project.</p>
+          <button type="button" onclick="document.getElementById('btnAddWebClip').click()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer;">+ Add Brain Dump / Clip</button>
         </div>
       `;
       return;

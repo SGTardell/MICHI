@@ -241,18 +241,18 @@
       <div class="controls-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 1.25rem; margin-bottom: 1.5rem;">
         <div>
           <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">Brain Dump Repository</h2>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Quickly capture thoughts, inspiration, web clips, and topic notes.</p>
+          <p style="font-size: 0.88rem; font-weight: 700; color: var(--text-main);">Quickly capture thoughts, inspiration, web clips, and topic notes.</p>
         </div>
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
           <label style="font-size: 0.85rem; font-weight: 800; color: var(--text-main);">Categories:</label>
-          <select id="brainDumpCatSelect" style="padding: 0.55rem 1rem; background-color: #D9DDDE !important; color: #616363 !important; border: 1px solid #B2B7B9 !important; -webkit-appearance: none !important; appearance: none !important; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer;" title="Select Brain Dump Topic Category">
-            <option value="all" selected style="background-color: #D9DDDE !important; color: #616363 !important;">🌐 All Master Notes</option>
-            <option value="inbox" style="background-color: #D9DDDE !important; color: #616363 !important;">📥 Inbox (Unfiled)</option>
-            <option value="Travel" style="background-color: #D9DDDE !important; color: #616363 !important;">Travel ✈️</option>
-            <option value="Tech" style="background-color: #D9DDDE !important; color: #616363 !important;">Tech</option>
-            <option value="Work" style="background-color: #D9DDDE !important; color: #616363 !important;">Work 🛠️</option>
-            <option value="Personal" style="background-color: #D9DDDE !important; color: #616363 !important;">Personal 🏠</option>
-            <option value="Health" style="background-color: #D9DDDE !important; color: #616363 !important;">Health 🏃</option>
+          <select id="brainDumpCatSelect" style="padding: 0.55rem 1rem; background-color: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer;" title="Select Brain Dump Topic Category">
+            <option value="all" selected>All Topics</option>
+            <option value="inbox">Inbox (Unfiled)</option>
+            <option value="Travel">Travel</option>
+            <option value="Tech">Tech</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Health">Health</option>
           </select>
           <button type="button" id="btnAddWebClip" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px;">
             + Add Brain Dump / Clip

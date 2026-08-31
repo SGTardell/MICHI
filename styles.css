@@ -571,11 +571,23 @@ header::before {
   color: #F2F6FB !important;
 }
 
+[data-theme="arctic"] #brainDumpCatSelect,
+[data-theme="arctic"] #btnAddWebClip,
 [data-theme="arctic"] #globalProjectFilter,
 [data-theme="arctic"] #btnCreateNewProjectHeader {
   background-color: #1B3B5A !important;
   color: #F2F6FB !important;
   border-color: #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+/* Brain Dump Subtitles & Empty State High Contrast Text */
+[data-theme="arctic"] .controls-bar p,
+[data-theme="arctic"] #tab-ideas p,
+[data-theme="arctic"] #tab-ideas .empty-state,
+[data-theme="arctic"] #tab-ideas div[style*="grid-column: 1/-1"] p {
+  color: #112A46 !important;
+  font-weight: 700 !important;
 }
 
 /* Header Action Buttons (Guide, Refresh, Lock, Backup, Restore, Log Out) */
