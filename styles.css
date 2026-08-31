@@ -88,7 +88,7 @@
   --bg-main: #0C3846;
   --bg-card: #2A7387;
   --bg-card-hover: #34889E;
-  --bg-glass: rgba(42, 115, 135, 0.95);
+  --bg-glass: #0C3846;
   --border: #4AA4BC;
   --border-glow: rgba(159, 211, 227, 0.4);
   --logo-filter: brightness(0) invert(1);
@@ -422,7 +422,7 @@ header::before {
 .logo-subtitle {
   font-size: 0.56rem;
   font-weight: 700;
-  color: #616363 !important;
+  color: var(--accent) !important;
   text-transform: uppercase;
   letter-spacing: 1.2px;
   margin-right: -1.2px;
@@ -444,6 +444,18 @@ header::before {
 [data-theme="autumn"] .logo-subtitle,
 [data-theme="dark"] .logo-subtitle {
   color: #ffffff !important;
+}
+
+[data-theme="glacier"] .logo-title {
+  color: #E4F4F8 !important;
+}
+
+[data-theme="glacier"] .logo-subtitle {
+  color: #9FD3E3 !important;
+}
+
+[data-theme="glacier"] .dashboard-logo-left {
+  filter: brightness(0) invert(0.9) !important;
 }
 
 .logo-subtitle {
