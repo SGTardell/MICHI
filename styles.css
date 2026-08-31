@@ -688,9 +688,21 @@ header::before {
   padding-right: 18px !important;
 }
 
-/* 📅 Daily Planner Date, Time & MICHI Logo Theme Rules */
+/* 📅 Daily Planner Date, Time, Logo & Top Bar Controls Theme Rules */
 
-/* ❄️ Arctic Chill (Glacier Range) — Dark Midnight Blue Text & Dark MICHI Logo */
+/* 🍃 Gentle Breeze (Soyokaze / Default) — Clean Natural Paper Look */
+#franklinDateTitle,
+#leftPageNum,
+#leftPageDay,
+#leftPageMonthYear,
+.page-big-date,
+.page-day-name,
+.right-page-header-title {
+  color: var(--text-main);
+  font-weight: 800;
+}
+
+/* ❄️ Arctic Chill (Glacier Range) — Dark Midnight Blue Text, Dark Logo, Bright Controls */
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
@@ -706,7 +718,11 @@ header::before {
   font-weight: 800 !important;
 }
 
-[data-theme="arctic"] #plannerUserBadge {
+[data-theme="arctic"] #plannerUserBadge,
+[data-theme="arctic"] #plannerFontSelect,
+[data-theme="arctic"] #btnSaveFranklinPlanner,
+[data-theme="arctic"] #btnCloseFranklinModal,
+[data-theme="arctic"] .btn-page-flip {
   background-color: #F2F6FB !important;
   color: #112A46 !important;
   border: 1px solid #4D6E91 !important;
@@ -720,7 +736,7 @@ header::before {
   opacity: 1 !important;
 }
 
-/* 🌙 Signature Dark (Sumi / Winter) — Light White Text & Light MICHI Logo */
+/* 🌙 Signature Dark (Sumi / Winter) — Light White Text, Light Logo, Dark Glass Controls */
 [data-theme="dark"] #franklinDateTitle,
 [data-theme="dark"] #leftPageNum,
 [data-theme="dark"] #leftPageDay,
@@ -744,7 +760,15 @@ header::before {
 }
 
 [data-theme="dark"] #plannerUserBadge,
-[data-theme="sumi"] #plannerUserBadge {
+[data-theme="dark"] #plannerFontSelect,
+[data-theme="dark"] #btnSaveFranklinPlanner,
+[data-theme="dark"] #btnCloseFranklinModal,
+[data-theme="dark"] .btn-page-flip,
+[data-theme="sumi"] #plannerUserBadge,
+[data-theme="sumi"] #plannerFontSelect,
+[data-theme="sumi"] #btnSaveFranklinPlanner,
+[data-theme="sumi"] #btnCloseFranklinModal,
+[data-theme="sumi"] .btn-page-flip {
   background-color: #34506D !important;
   color: #F2F6FB !important;
   border: 1px solid #4D6E91 !important;
