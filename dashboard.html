@@ -661,10 +661,10 @@
                   <option value="PM" style="background: var(--bg-card); color: var(--text-main);">PM</option>
                 </select>
               </div>
-              <input type="text" id="apptTextInput" style="flex: 1; min-width: 140px; padding: 0.35rem 0.6rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem;" placeholder="Appointment Title / Client..." />
+              <input type="text" id="apptTextInput" style="flex: 1; min-width: 140px; padding: 0.35rem 0.6rem; background: #F2F6FB; color: #112A46; border: 1px solid #4D6E91; border-radius: 4px; font-size: 0.8rem; font-weight: 800;" placeholder="Appointment Title / Client..." />
               <button type="button" id="btnAddAppt" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.35rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.78rem;">+ Add</button>
             </div>
-            <input type="text" id="apptNoteInput" style="width: 100%; padding: 0.35rem 0.6rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; font-size: 0.76rem;" placeholder="Optional Appointment Note / Details..." />
+            <input type="text" id="apptNoteInput" style="width: 100%; padding: 0.35rem 0.6rem; background: #F2F6FB; color: #112A46; border: 1px solid #4D6E91; border-radius: 4px; font-size: 0.76rem; font-weight: 700;" placeholder="Optional Appointment Note / Details..." />
           </div>
 
           <div class="franklin-timeline" id="franklinTimeline" style="flex: 1; display: flex; flex-direction: column; gap: 6px; overflow-y: auto;">
@@ -1403,6 +1403,11 @@
         <div>
           <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="apptModalDateTitle">Schedule Appointment</h3>
           <span style="font-size: 0.8rem; color: var(--text-muted);" id="apptModalSubTitle">Add or edit appointments for this date</span>
+    <div class="modal-content" style="max-width: 440px; width: 92%; background: #FFFFFF; border: 2px solid #4D6E91; border-radius: var(--radius-lg); padding: 1.4rem; box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45); position: relative; margin: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid #4D6E91; padding-bottom: 0.8rem;">
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #112A46;" id="apptModalDateTitle">Schedule Appointment</h3>
+          <span style="font-size: 0.8rem; color: #4D6E91;" id="apptModalSubTitle">Add or edit appointments for this date</span>
         </div>
         <button type="button" id="btnCloseApptModal" onclick="if(window.app && window.app.closeApptModal){ window.app.closeApptModal(); } var o=document.getElementById('apptModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;" title="Close Schedule Dialogue">✕</button>
       </div>
@@ -1413,13 +1418,13 @@
 
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
           <div style="flex: 1; min-width: 150px;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Appointment Date</label>
-            <input type="date" id="apptFormDate" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;" required />
+            <label style="font-size: 0.84rem; font-weight: 800; color: #112A46 !important; display: block; margin-bottom: 4px;">Appointment Date</label>
+            <input type="date" id="apptFormDate" style="width: 100%; padding: 0.65rem 0.8rem; background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; border-radius: var(--radius-sm); font-weight: 800;" required />
           </div>
           <div style="flex: 1; min-width: 180px;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Time (Hour & Minute)</label>
+            <label style="font-size: 0.84rem; font-weight: 800; color: #112A46 !important; display: block; margin-bottom: 4px;">Time (Hour & Minute)</label>
             <div style="display: flex; gap: 6px; align-items: center;">
-              <select id="apptFormHour" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;" title="Select Hour">
+              <select id="apptFormHour" style="flex: 1; padding: 0.65rem 0.4rem; background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; border-radius: var(--radius-sm); font-weight: 800;" title="Select Hour">
                 <option value="06">06</option>
                 <option value="07">07</option>
                 <option value="08">08</option>
@@ -1433,38 +1438,38 @@
                 <option value="04">04</option>
                 <option value="05">05</option>
               </select>
-              <select id="apptFormMin" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;" title="Select 15-Minute Increment">
+              <select id="apptFormMin" style="flex: 1; padding: 0.65rem 0.4rem; background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; border-radius: var(--radius-sm); font-weight: 800;" title="Select 15-Minute Increment">
                 <option value=":00">:00</option>
                 <option value=":15">:15</option>
                 <option value=":30">:30</option>
                 <option value=":45">:45</option>
               </select>
-              <select id="apptFormAmPm" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;" title="AM or PM">
+              <select id="apptFormAmPm" style="flex: 1; padding: 0.65rem 0.4rem; background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; border-radius: var(--radius-sm); font-weight: 800;" title="AM or PM">
                 <option value="AM" selected>AM</option>
                 <option value="PM">PM</option>
               </select>
             </div>
           </div>
-
-        <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Appointment Title / Client</label>
-          <input type="text" id="apptFormTitle" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="e.g. Architecture Review, Strategy Sync" required />
         </div>
 
         <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Notes / Details (Optional)</label>
-          <textarea id="apptFormNotes" rows="2" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); resize: vertical;" placeholder="Client contact, location, agenda notes..."></textarea>
+          <label style="font-size: 0.84rem; font-weight: 800; color: #112A46 !important; display: block; margin-bottom: 4px;">Appointment Title / Client</label>
+          <input type="text" id="apptFormTitle" style="width: 100%; padding: 0.65rem 0.8rem; background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; border-radius: var(--radius-sm); font-weight: 800;" placeholder="e.g. Architecture Review, Strategy Sync" required />
+        </div>
+
+        <div>
+          <label style="font-size: 0.84rem; font-weight: 800; color: #112A46 !important; display: block; margin-bottom: 4px;">Notes / Details (Optional)</label>
+          <textarea id="apptFormNotes" rows="2" style="width: 100%; padding: 0.65rem 0.8rem; background: #F2F6FB !important; color: #112A46 !important; border: 1px solid #4D6E91 !important; border-radius: var(--radius-sm); font-weight: 700; resize: vertical;" placeholder="Client contact, location, agenda notes..."></textarea>
         </div>
 
         <div style="margin-top: 0.2rem;">
-          <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 6px;">Appointments for this Date:</label>
-          <div id="apptModalExistingList" style="display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; background: var(--bg-main); padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
+          <label style="font-size: 0.84rem; font-weight: 800; color: #112A46 !important; display: block; margin-bottom: 6px;">Appointments for this Date:</label>
+          <div id="apptModalExistingList" style="display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; background: #F2F6FB !important; color: #112A46 !important; padding: 8px; border-radius: 6px; border: 1px solid #4D6E91 !important;">
             <!-- Rendered in app.js -->
           </div>
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 0.8rem;">
-          <button type="button" id="btnCancelApptForm" onclick="if(window.app && window.app.closeApptModal){ window.app.closeApptModal(); } var o=document.getElementById('apptModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer;">Cancel</button>
           <button type="submit" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); cursor: pointer;">Save Appointment</button>
         </div>
       </form>

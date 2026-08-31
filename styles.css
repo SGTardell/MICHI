@@ -607,6 +607,54 @@ header::before {
   font-weight: 800 !important;
 }
 
+/* 📅 Daily Planner & Calendar Text Fields Dark Text Color */
+#tab-calendar input[type="text"],
+#tab-calendar input[type="search"],
+#tab-calendar select,
+#tab-calendar textarea,
+#apptTextInput,
+#apptNoteInput,
+#apptHourSelect,
+#apptMinSelect,
+#apptAmPmSelect,
+#apptFormTitle,
+#apptFormNotes,
+#apptFormDate,
+#apptFormHour,
+#apptFormMin,
+#apptFormAmPm,
+[data-theme="arctic"] #tab-calendar input,
+[data-theme="arctic"] #tab-calendar select,
+[data-theme="arctic"] #tab-calendar textarea,
+[data-theme="arctic"] #apptTextInput,
+[data-theme="arctic"] #apptNoteInput,
+[data-theme="arctic"] #apptHourSelect,
+[data-theme="arctic"] #apptMinSelect,
+[data-theme="arctic"] #apptAmPmSelect,
+[data-theme="arctic"] #apptFormTitle,
+[data-theme="arctic"] #apptFormNotes,
+[data-theme="arctic"] #apptFormDate,
+[data-theme="arctic"] #apptFormHour,
+[data-theme="arctic"] #apptFormMin,
+[data-theme="arctic"] #apptFormAmPm {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+#apptTextInput::placeholder,
+#apptNoteInput::placeholder,
+#apptFormTitle::placeholder,
+#apptFormNotes::placeholder,
+[data-theme="arctic"] #apptTextInput::placeholder,
+[data-theme="arctic"] #apptNoteInput::placeholder,
+[data-theme="arctic"] #apptFormTitle::placeholder,
+[data-theme="arctic"] #apptFormNotes::placeholder {
+  color: #34506D !important;
+  opacity: 0.85 !important;
+}
+
 /* Header Action Buttons (Guide, Refresh, Lock, Backup, Restore, Log Out) */
 [data-theme="arctic"] #btnOpenTutorialHeader,
 [data-theme="arctic"] #btnRefreshApp,
