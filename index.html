@@ -13,6 +13,13 @@
   <link rel="icon" type="image/png" href="Images/Michi_Appicon.png">
   <link rel="stylesheet" href="styles.css?v=158">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>
+    (function() {
+      let savedTheme = localStorage.getItem('MICHI_COLOR_THEME') || 'soyokaze';
+      if (savedTheme === 'tokyo') savedTheme = 'winter';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
   <style>
     body {
       background: var(--bg-dark, #F9FEFF);
@@ -34,7 +41,7 @@
       border: 1px solid var(--border, #B2B7B9);
       border-radius: var(--radius-lg, 16px);
       padding: 2.2rem;
-      box-shadow: 0 10px 30px rgba(97, 99, 99, 0.15);
+      box-shadow: var(--shadow-lg, 0 10px 30px rgba(0, 0, 0, 0.25));
       box-sizing: border-box;
       color: var(--text-main, #616363);
     }
@@ -140,7 +147,7 @@
     }
 
     .input-wrapper input::placeholder {
-      color: #94A3B8;
+      color: var(--text-muted, #94A3B8);
     }
 
     .input-wrapper input:focus {
@@ -174,19 +181,20 @@
     .btn-submit {
       width: 100%;
       padding: 0.75rem;
-      background: var(--bg-card, #D9DDDE);
-      color: var(--text-main, #616363);
+      background: var(--accent, #9FD3E3);
+      color: var(--bg-dark, #0C3846);
       border: 1px solid var(--border, #B2B7B9);
       border-radius: var(--radius-sm, 8px);
       font-size: 0.92rem;
       font-weight: 800;
       cursor: pointer;
-      transition: opacity 0.2s ease;
+      transition: all 0.2s ease;
       margin-top: 0.4rem;
     }
 
     .btn-submit:hover {
-      background: var(--bg-card-hover, #E4E8E9);
+      background: var(--accent-hover, #E4E8E9);
+      transform: scale(0.98);
     }
 
     .form-footer {
@@ -275,7 +283,7 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit" style="background: var(--bg-card, #ffffff); color: var(--text-main, #333333); border: 1px solid var(--border, #cccccc); font-weight: 800;">Create Account & Launch ➔</button>
+      <button type="submit" class="btn-submit">Create Account & Launch ➔</button>
 
       <div class="form-footer">
         Already have an account? <a href="#" id="linkToLogin">Sign In</a>
