@@ -443,9 +443,9 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.renderContacts) window.app.renderContacts(); return false;" style="position: relative; width: 240px; display: flex; align-items: center;">
-            <input type="search" id="contactsSearchInput" placeholder="Search contacts..." style="width: 100%; padding: 0.55rem 68px 0.55rem 14px; background: #F2F6FB; border: 1px solid #4D6E91; border-radius: 20px; color: #112A46; font-size: 0.85rem; font-weight: 700; outline: none; -webkit-appearance: none;" enterkeyhint="search" autocomplete="off">
-            <button type="submit" style="position: absolute; right: 4px; background: #7CFEFE; color: #000; border: none; padding: 0.35rem 0.7rem; border-radius: 14px; font-size: 0.75rem; font-weight: 800; cursor: pointer;">Search</button>
+          <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.renderContacts) window.app.renderContacts(); return false;" class="search-box">
+            <input type="search" id="contactsSearchInput" placeholder="Search contacts..." aria-label="Search contacts" autocomplete="off" enterkeyhint="search">
+            <button type="submit" class="search-submit-btn" title="Search Contacts">Search</button>
           </form>
 
           <button type="button" id="btnCreateNewContact" style="background: #7CFEFE; color: #000; border: none; font-weight: 800; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(124, 254, 254, 0.3);">
