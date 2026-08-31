@@ -989,6 +989,41 @@ class MichiApp {
         this.newProjectContactSelect.appendChild(opt);
       });
     }
+
+    const typeTagSelect = document.getElementById('newProjectTypeTagSelect');
+    const customWrapper = document.getElementById('customProjectTypeWrapper');
+    const customInput = document.getElementById('customProjectTypeInput');
+
+    if (customWrapper) customWrapper.style.display = 'none';
+    if (customInput) customInput.value = '';
+
+    if (typeTagSelect) {
+      typeTagSelect.innerHTML = '';
+      const defaultTypes = ['Tech', 'Architecture', 'Travel', 'Work', 'Personal', 'Health', 'Design', 'Finance'];
+      const allTypes = new Set([...defaultTypes, ...(this.state.customProjectTypes || [])]);
+      allTypes.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        typeTagSelect.appendChild(opt);
+      });
+      const customOpt = document.createElement('option');
+      customOpt.value = '__NEW__';
+      customOpt.textContent = '+ Create Custom Type...';
+      typeTagSelect.appendChild(customOpt);
+
+      typeTagSelect.onchange = (e) => {
+        if (customWrapper) {
+          if (e.target.value === '__NEW__') {
+            customWrapper.style.display = 'block';
+            if (customInput) customInput.focus();
+          } else {
+            customWrapper.style.display = 'none';
+          }
+        }
+      };
+    }
+
     if (this.newProjectModalOverlay) {
       this.newProjectModalOverlay.style.display = 'flex';
       this.newProjectModalOverlay.classList.add('active');
@@ -1025,6 +1060,25 @@ class MichiApp {
 
       const selectedKindRadio = document.querySelector('input[name="newProjectType"]:checked');
       const kind = selectedKindRadio ? selectedKindRadio.value : 'project';
+
+      const typeTagSelect = document.getElementById('newProjectTypeTagSelect');
+      const customTypeInput = document.getElementById('customProjectTypeInput');
+      let chosenTypeTag = 'Tech';
+
+      if (typeTagSelect) {
+        if (typeTagSelect.value === '__NEW__' && customTypeInput && customTypeInput.value.trim()) {
+          chosenTypeTag = customTypeInput.value.trim();
+          if (!this.state.customProjectTypes) this.state.customProjectTypes = [];
+          if (!this.state.customProjectTypes.includes(chosenTypeTag)) {
+            this.state.customProjectTypes.push(chosenTypeTag);
+          }
+        } else if (typeTagSelect.value && typeTagSelect.value !== '__NEW__') {
+          chosenTypeTag = typeTagSelect.value;
+        }
+      }
+
+      if (!this.state.projectTypeTags) this.state.projectTypeTags = {};
+      this.state.projectTypeTags[title] = chosenTypeTag;
 
       if (!sparkText) {
         sparkText = `${kind === 'plan' ? 'Plan' : 'Work Project'} "${title}" initialized on MICHI Path.`;
@@ -1084,7 +1138,7 @@ class MichiApp {
         notes: [
           { text: `${isPlan ? 'Plan' : 'Project'} "${title}" created and launched on MICHI Path.`, date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }
         ],
-        tags: [title, isPlan ? 'Plan' : 'Project'],
+        tags: [title, chosenTypeTag, isPlan ? 'Plan' : 'Project'],
         color: isPlan ? 'var(--stage-focus)' : 'var(--stage-spark)',
         date: now
       };

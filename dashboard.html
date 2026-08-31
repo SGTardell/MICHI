@@ -1243,6 +1243,25 @@
           </div>
         </div>
 
+        <!-- Project / Plan Domain Type / Tag Dropdown -->
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Project / Plan Type</label>
+          <select id="newProjectTypeTagSelect" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+            <option value="Tech" selected>Tech</option>
+            <option value="Architecture">Architecture</option>
+            <option value="Travel">Travel</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Health">Health</option>
+            <option value="Design">Design</option>
+            <option value="Finance">Finance</option>
+            <option value="__NEW__">+ Create Custom Type...</option>
+          </select>
+          <div id="customProjectTypeWrapper" style="display: none; margin-top: 6px;">
+            <input type="text" id="customProjectTypeInput" style="width: 100%; padding: 0.55rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type custom project/plan type (e.g. Real Estate, Marketing)..." />
+          </div>
+        </div>
+
         <div>
           <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Title</label>
           <input type="text" id="newProjectTitle" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;" placeholder="e.g. Kyoto Vacation 2026, Home Renovation, Mobile App" required />
