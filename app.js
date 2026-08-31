@@ -115,7 +115,7 @@ const defaultState = {
       stage: 'spark',
       type: 'card',
       category: 'General',
-      tags: ['#Work'],
+      tags: ['Project'],
       createdAt: new Date().toISOString()
     },
     {
@@ -127,7 +127,7 @@ const defaultState = {
       stage: 'spark',
       type: 'card',
       category: 'Plan',
-      tags: ['#LifePlan'],
+      tags: ['Plan'],
       createdAt: new Date().toISOString()
     }
   ],
@@ -243,30 +243,46 @@ class MichiApp {
           return !legacyDemoNames.has(pLower);
         });
 
-        // Ensure owner's real default projects exist
-        const requiredProjects = ['MICHI', 'Par Pilot', 'test Project', 'test Plan'];
-        requiredProjects.forEach(p => {
-          if (!parsed.customProjects.includes(p)) {
+        if (!parsed.deletedProjects || !Array.isArray(parsed.deletedProjects)) {
+          parsed.deletedProjects = [];
+        }
+        const deletedLower = parsed.deletedProjects.map(p => (p || '').toLowerCase().trim());
+
+        // Ensure owner's real core projects exist (if not deleted by user)
+        const coreProjects = ['MICHI', 'Par Pilot'];
+        coreProjects.forEach(p => {
+          if (!parsed.customProjects.includes(p) && !deletedLower.includes(p.toLowerCase().trim())) {
             parsed.customProjects.push(p);
           }
         });
+
+        // Filter out deleted projects from customProjects and items
+        parsed.customProjects = parsed.customProjects.filter(p => !deletedLower.includes((p || '').toLowerCase().trim()));
+        parsed.items = parsed.items.filter(item => !deletedLower.includes(((item && item.project) || '').toLowerCase().trim()));
+
         if (!parsed.projectKinds) parsed.projectKinds = {};
         parsed.projectKinds['MICHI'] = 'project';
         parsed.projectKinds['Par Pilot'] = 'project';
-        parsed.projectKinds['test Project'] = 'project';
-        parsed.projectKinds['test Plan'] = 'plan';
 
-        // Restore owner's default cards if missing
+        // Restore owner's default cards if missing and not deleted by user
         defaultState.items.forEach(defItem => {
-          if (!parsed.items.some(i => i.id === defItem.id)) {
+          const defProjLower = (defItem.project || '').toLowerCase().trim();
+          if (!deletedLower.includes(defProjLower) && !parsed.items.some(i => i.id === defItem.id)) {
             parsed.items.push(defItem);
           }
         });
 
-        // Strip generic laptop stock photos and legacy 'Password' tag
+        // Strip generic laptop stock photos and clean legacy tags ('#LifePlan' -> 'Plan', '#Work' -> 'Project', 'Password')
         parsed.items.forEach(item => {
           if (item.type !== 'vault' && Array.isArray(item.tags)) {
-            item.tags = item.tags.filter(t => t && t.toLowerCase().trim() !== 'password');
+            item.tags = item.tags
+              .filter(t => t && t.toLowerCase().trim() !== 'password')
+              .map(t => {
+                const lower = (t || '').toLowerCase().trim();
+                if (lower === '#lifeplan' || lower === 'lifeplan' || lower === '#plan') return 'Plan';
+                if (lower === '#work' || lower === '#project') return 'Project';
+                return t;
+              });
           }
           if (item.imageUrl) {
             const lower = item.imageUrl.toLowerCase();
@@ -4648,7 +4664,13 @@ class MichiApp {
 
     const tagHtml = (item.tags || [])
       .filter(t => t !== 'Spark' && t !== 'Project Launch' && t !== 'Par Pilot' && t !== item.project)
-      .map(t => `<span class="badge badge-idea">${t}</span>`).join(' ');
+      .map(t => {
+        let displayTag = (t || '').trim();
+        const lower = displayTag.toLowerCase();
+        if (lower === '#lifeplan' || lower === 'lifeplan' || lower === '#plan') displayTag = 'Plan';
+        if (lower === '#work' || lower === '#project') displayTag = 'Project';
+        return `<span class="badge badge-idea">${this.escapeHtml(displayTag)}</span>`;
+      }).join(' ');
     const notes = item.notes || [];
 
     const isParentCard = item.type !== 'issue' && item.type !== 'web' && item.type !== 'resource' && item.type !== 'task';
