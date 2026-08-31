@@ -574,6 +574,7 @@ header::before {
 [data-theme="arctic"] #brainDumpCatSelect,
 [data-theme="arctic"] #btnAddWebClip,
 [data-theme="arctic"] #globalProjectFilter,
+[data-theme="arctic"] #homeProjectFilterSelect,
 [data-theme="arctic"] #btnCreateNewProjectHeader {
   background-color: #1B3B5A !important;
   color: #F2F6FB !important;
@@ -581,13 +582,14 @@ header::before {
   font-weight: 800 !important;
 }
 
-/* Brain Dump Subtitles & Empty State High Contrast Text */
+/* Home & Brain Dump Control Labels, Subtitles & High Contrast Text */
+[data-theme="arctic"] .controls-bar label,
 [data-theme="arctic"] .controls-bar p,
 [data-theme="arctic"] #tab-ideas p,
 [data-theme="arctic"] #tab-ideas .empty-state,
 [data-theme="arctic"] #tab-ideas div[style*="grid-column: 1/-1"] p {
   color: #112A46 !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
 }
 
 /* Global Search Box (.search-box) Consistency for Header & Contacts */

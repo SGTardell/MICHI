@@ -205,11 +205,11 @@
     <div class="tab-content active" id="tab-all">
       <div class="controls-bar" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <label style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">📁 Workspace Focus:</label>
-          <select id="homeProjectFilterSelect" style="padding: 0.55rem 1rem; background: var(--stage-product); color: #FFF; border: none; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 800; cursor: pointer;" title="Select Projects or Plans Board View">
-            <option value="all" style="background: var(--bg-card); color: var(--text-main);">All Active Projects & Plans</option>
-            <option value="projects" style="background: var(--bg-card); color: var(--text-main);">Active Projects</option>
-            <option value="plans" style="background: var(--bg-card); color: var(--text-main);">Active Plans</option>
+          <label style="font-size: 0.95rem; font-weight: 800; color: #112A46 !important;">Workspace Focus:</label>
+          <select id="homeProjectFilterSelect" style="padding: 0.55rem 1rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 800; cursor: pointer;" title="Select Projects or Plans Board View">
+            <option value="all">All Active Projects & Plans</option>
+            <option value="projects">Active Projects</option>
+            <option value="plans">Active Plans</option>
           </select>
           <button type="button" id="btnStartNewProjectHome" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--stage-product); color: #FFF; border: none; font-weight: 800; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
             + Start New Project / Plan
