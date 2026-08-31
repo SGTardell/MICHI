@@ -125,7 +125,7 @@
 
 /* ❄️ Arctic Chill Theme */
 [data-theme="arctic"] {
-  --bg-dark: #E1E8F0;
+  --bg-dark: #C4D2E1;
   --bg-main: #F2F6FB;
   --bg-card: #34506D;
   --bg-card-hover: #3D5C7D;
@@ -134,9 +134,9 @@
   --border-glow: rgba(52, 80, 109, 0.3);
   --logo-filter: brightness(0) invert(0.2);
 
-  --text-main: #112A46;
-  --text-muted: #244263;
-  --text-dim: #34506D;
+  --text-main: #F2F6FB;
+  --text-muted: #D3E0EA;
+  --text-dim: #A8C0D4;
 
   --accent: #1B3B5A;
   --accent-hover: #234B73;
@@ -144,10 +144,10 @@
   --kanji-seal: #112A46;
   --kanji-gold: #112A46;
 
-  --stage-spark: #112A46;
+  --stage-spark: #F2F6FB;
   --stage-structure: #34506D;
-  --stage-focus: #112A46;
-  --stage-product: #112A46;
+  --stage-focus: #F2F6FB;
+  --stage-product: #F2F6FB;
   --stage-planner: #34506D;
 
   --cat-idea: var(--stage-spark);
@@ -535,24 +535,13 @@ header::before {
   filter: brightness(0) invert(0.2) !important;
 }
 
-/* ❄️ Arctic Chill Light Frame & Midnight Blue Text Rules */
+/* ❄️ Arctic Chill Light Frame & Midnight Blue Text Rules ONLY for elements directly on light canvas */
+[data-theme="arctic"] .logo-title,
+[data-theme="arctic"] .logo-subtitle,
 [data-theme="arctic"] .stats-counter,
-[data-theme="arctic"] .controls-bar h2,
-[data-theme="arctic"] .controls-bar p,
-[data-theme="arctic"] .controls-bar label,
-[data-theme="arctic"] .stage-column-title,
-[data-theme="arctic"] .pipeline-stage-header,
-[data-theme="arctic"] .pipeline-stage-count,
-[data-theme="arctic"] .section-title,
-[data-theme="arctic"] .page-title,
-[data-theme="arctic"] header button,
-[data-theme="arctic"] header select,
-[data-theme="arctic"] header a,
-[data-theme="arctic"] #themeSelector,
-[data-theme="arctic"] #globalProjectFilter,
-[data-theme="arctic"] #homeProjectFilterSelect,
-[data-theme="arctic"] #projectLineageSelect,
-[data-theme="arctic"] #brainDumpCatSelect,
+[data-theme="arctic"] .controls-bar > div > h2,
+[data-theme="arctic"] .controls-bar > div > p,
+[data-theme="arctic"] .controls-bar > div > label,
 [data-theme="arctic"] .search-box input {
   color: #112A46 !important;
 }
@@ -560,8 +549,7 @@ header::before {
 [data-theme="arctic"] header button,
 [data-theme="arctic"] header select,
 [data-theme="arctic"] header a,
-[data-theme="arctic"] .search-box input,
-[data-theme="arctic"] .controls-bar select {
+[data-theme="arctic"] .search-box input {
   background-color: #F2F6FB !important;
   border-color: #4D6E91 !important;
   color: #112A46 !important;
@@ -571,23 +559,38 @@ header::before {
   color: #34506D !important;
 }
 
+/* Ensure ALL Cards, Sidebar, Banners, Calendar, Planner & Modals render crisp Arctic Haze light text */
 [data-theme="arctic"] .card,
-[data-theme="arctic"] .compact-card {
-  background-color: #34506D !important;
-  color: #F2F6FB !important;
-  border-color: #4D6E91 !important;
+[data-theme="arctic"] .compact-card,
+[data-theme="arctic"] .sidebar,
+[data-theme="arctic"] .sidebar *,
+[data-theme="arctic"] #homeDailyReminderContainer,
+[data-theme="arctic"] #homeDailyReminderContainer *,
+[data-theme="arctic"] .calendar-container,
+[data-theme="arctic"] .calendar-container *,
+[data-theme="arctic"] .franklin-modal-content,
+[data-theme="arctic"] .franklin-modal-content *,
+[data-theme="arctic"] .modal-content,
+[data-theme="arctic"] .modal-content * {
+  color: #F2F6FB;
 }
 
+[data-theme="arctic"] .card h1,
+[data-theme="arctic"] .card h2,
+[data-theme="arctic"] .card h3,
 [data-theme="arctic"] .card h4,
-[data-theme="arctic"] .card .card-title,
-[data-theme="arctic"] .card .card-body,
-[data-theme="arctic"] .card .note-line-row span {
+[data-theme="arctic"] .card p,
+[data-theme="arctic"] .card div,
+[data-theme="arctic"] .card span,
+[data-theme="arctic"] .card button,
+[data-theme="arctic"] .card-title,
+[data-theme="arctic"] .card-body {
   color: #F2F6FB !important;
 }
 
-[data-theme="arctic"] .card .card-date,
-[data-theme="arctic"] .card .card-footer {
-  color: #D3E0EA !important;
+[data-theme="arctic"] .card-date,
+[data-theme="arctic"] .card-footer {
+  color: #A8C0D4 !important;
 }
 
 .logo-subtitle {
