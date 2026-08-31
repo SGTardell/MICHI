@@ -961,6 +961,14 @@ select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
 }
 
+[data-theme="glacier"] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23E4F4F8' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+[data-theme="arctic"] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23F2F6FB' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
 [data-theme="winter"] input[type="date"],
 [data-theme="dark"] input[type="date"] {
   color-scheme: dark !important;
@@ -1489,30 +1497,21 @@ select#apptFormTime {
 }
 
 [data-theme="winter"] select, 
-[data-theme="winter"] select#webClipCategory, 
-[data-theme="winter"] select#editItemCategory,
-[data-theme="winter"] select#editItemStage,
-[data-theme="winter"] select#dispatchType,
-[data-theme="winter"] select#dispatchProjectSelect,
-[data-theme="winter"] select#projectLineageSelect,
-[data-theme="winter"] select#globalProjectFilter,
-[data-theme="winter"] select#themeSelector,
-[data-theme="winter"] select#brainDumpCatSelect,
-[data-theme="winter"] select#brainDumpCatFilterAll,
-[data-theme="winter"] select#apptFormTime,
-[data-theme="dark"] select, 
-[data-theme="dark"] select#webClipCategory, 
-[data-theme="dark"] select#editItemCategory,
-[data-theme="dark"] select#editItemStage,
-[data-theme="dark"] select#dispatchType,
-[data-theme="dark"] select#dispatchProjectSelect,
-[data-theme="dark"] select#projectLineageSelect,
-[data-theme="dark"] select#globalProjectFilter,
-[data-theme="dark"] select#themeSelector,
-[data-theme="dark"] select#brainDumpCatSelect,
-[data-theme="dark"] select#brainDumpCatFilterAll,
-[data-theme="dark"] select#apptFormTime {
+[data-theme="dark"] select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+[data-theme="glacier"] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23E4F4F8' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+[data-theme="arctic"] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F2F6FB' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+[data-theme="arctic"] select#themeSelector,
+[data-theme="arctic"] select.light-bg-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23112A46' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
 }
 
 select option {
