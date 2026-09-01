@@ -10,7 +10,7 @@
   <script>
     (function() {
       try {
-        const CURRENT_BUILD = 'v208';
+        const CURRENT_BUILD = 'v212';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -330,15 +330,46 @@
       </div>
 
       <div class="calendar-container" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm);">
-        <div class="calendar-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px;">
+        <div class="calendar-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px;">
           <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             <button type="button" id="btnCalPrevMonth" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-weight: 700; cursor: pointer; font-size: 0.85rem;" title="Previous Month">Prev</button>
             <span class="calendar-month" id="calendarMonthTitle" style="font-size: 1.3rem; font-weight: 800; color: var(--text-main);">August 2026</span>
             <button type="button" id="btnCalNextMonth" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-weight: 700; cursor: pointer; font-size: 0.85rem;" title="Next Month">Next</button>
             <button type="button" id="btnCalToday" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;">Today</button>
           </div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
-            Tap any cell to add/edit appointments
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; position: relative;">
+            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
+              Tap any cell to add/edit appointments
+            </div>
+
+            <!-- Calendars Dropdown Selector -->
+            <div class="calendars-dropdown-wrapper" style="position: relative; inline-block;">
+              <button type="button" id="btnCalendarsDropdown" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px; font-weight: 800; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm);" title="Toggle Visible Calendars">
+                <span>Calendars</span>
+                <span style="font-size: 0.65rem;">▼</span>
+              </button>
+
+              <div id="calendarsDropdownMenu" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 6px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 999; min-width: 210px; flex-direction: column; gap: 8px;">
+                <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-bottom: 2px;">
+                  Visible Calendars
+                </div>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer; user-select: none;">
+                  <input type="checkbox" id="calSubNational" checked style="accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer;" /> US National
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer; user-select: none;">
+                  <input type="checkbox" id="calSubChristian" checked style="accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer;" /> Christian
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer; user-select: none;">
+                  <input type="checkbox" id="calSubJewish" checked style="accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer;" /> Jewish
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer; user-select: none;">
+                  <input type="checkbox" id="calSubIslamic" checked style="accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer;" /> Islamic
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer; user-select: none;">
+                  <input type="checkbox" id="calSubPersonal" checked style="accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer;" /> Birthdays / Personal
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1411,27 +1442,47 @@
       <form id="calendarApptForm" style="display: flex; flex-direction: column; gap: 1rem;">
         <input type="hidden" id="apptFormId" value="" />
 
+        <!-- All-Day Event & Calendar Category Row -->
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 0.84rem; font-weight: 800; color: var(--text-main); cursor: pointer; user-select: none; flex: 1; min-width: 160px;">
+            <input type="checkbox" id="apptFormIsAllDay" style="accent-color: var(--accent); width: 17px; height: 17px; cursor: pointer;" />
+            <span>📌 All-Day Event</span>
+          </label>
+          <div style="flex: 1; min-width: 180px;">
+            <label style="font-size: 0.76rem; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 2px;">Calendar Category</label>
+            <select id="apptFormCategory" style="width: 100%; padding: 0.45rem 0.6rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; font-weight: 800; font-size: 0.82rem; cursor: pointer;">
+              <option value="appointment">🗓️ Standard Appointment</option>
+              <option value="birthday">🎂 Birthday / Anniversary</option>
+              <option value="national_holiday">🇺🇸 National Holiday</option>
+              <option value="christian_holiday">✝️ Christian Holiday</option>
+              <option value="jewish_holiday">🕎 Jewish Holiday</option>
+              <option value="islamic_holiday">🌙 Islamic Holiday</option>
+              <option value="personal">📌 Personal All-Day Event</option>
+            </select>
+          </div>
+        </div>
+
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
           <div style="flex: 1; min-width: 150px;">
             <label style="font-size: 0.84rem; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 4px;">Appointment Date</label>
             <input type="date" id="apptFormDate" style="width: 100%; padding: 0.65rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 800;" required />
           </div>
-          <div style="flex: 1; min-width: 180px;">
+          <div style="flex: 1; min-width: 180px;" id="apptFormTimeContainer">
             <label style="font-size: 0.84rem; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 4px;">Time (Hour & Minute)</label>
             <div style="display: flex; gap: 6px; align-items: center;">
               <select id="apptFormHour" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 800;" title="Select Hour">
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09" selected>09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
                 <option value="12">12</option>
                 <option value="01">01</option>
                 <option value="02">02</option>
                 <option value="03">03</option>
                 <option value="04">04</option>
                 <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09" selected>09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
               </select>
               <select id="apptFormMin" style="flex: 1; padding: 0.65rem 0.4rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 800;" title="Select 15-Minute Increment">
                 <option value=":00">:00</option>
@@ -1627,7 +1678,7 @@
   <!-- Notification Toast -->
   <div class="toast" id="toast">Copied to clipboard!</div>
 
-  <script src="app.js?v=210"></script>
+  <script src="app.js?v=212"></script>
   <script>
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
       window.addEventListener('load', () => {

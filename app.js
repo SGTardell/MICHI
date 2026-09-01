@@ -760,6 +760,60 @@ class MichiApp {
     this.apptFormTitle = document.getElementById('apptFormTitle');
     this.apptFormNotes = document.getElementById('apptFormNotes');
     this.apptModalExistingList = document.getElementById('apptModalExistingList');
+    this.apptFormIsAllDay = document.getElementById('apptFormIsAllDay');
+    this.apptFormCategory = document.getElementById('apptFormCategory');
+    this.apptFormTimeContainer = document.getElementById('apptFormTimeContainer');
+
+    // Calendar Subscription Checkboxes
+    this.calSubNational = document.getElementById('calSubNational');
+    this.calSubChristian = document.getElementById('calSubChristian');
+    this.calSubJewish = document.getElementById('calSubJewish');
+    this.calSubIslamic = document.getElementById('calSubIslamic');
+    this.calSubPersonal = document.getElementById('calSubPersonal');
+
+    if (this.apptFormIsAllDay) {
+      this.apptFormIsAllDay.addEventListener('change', (e) => {
+        if (this.apptFormTimeContainer) {
+          this.apptFormTimeContainer.style.display = e.target.checked ? 'none' : 'block';
+        }
+      });
+    }
+
+    const bindSubChange = (el, key) => {
+      if (el) {
+        el.addEventListener('change', (e) => {
+          if (!this.state.calendarSubscriptions) {
+            this.state.calendarSubscriptions = { national: true, christian: true, jewish: true, islamic: true, personal: true };
+          }
+          this.state.calendarSubscriptions[key] = e.target.checked;
+          this.saveState();
+          this.renderCalendar();
+          if (this.franklinModalOverlay && this.franklinModalOverlay.classList.contains('active')) {
+            this.renderFranklinModalContent();
+          }
+        });
+      }
+    };
+    bindSubChange(this.calSubNational, 'national');
+    bindSubChange(this.calSubChristian, 'christian');
+    bindSubChange(this.calSubJewish, 'jewish');
+    bindSubChange(this.calSubIslamic, 'islamic');
+    bindSubChange(this.calSubPersonal, 'personal');
+
+    const btnCalendarsDropdown = document.getElementById('btnCalendarsDropdown');
+    const calendarsDropdownMenu = document.getElementById('calendarsDropdownMenu');
+    if (btnCalendarsDropdown && calendarsDropdownMenu) {
+      btnCalendarsDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = calendarsDropdownMenu.style.display === 'flex';
+        calendarsDropdownMenu.style.display = isOpen ? 'none' : 'flex';
+      });
+      document.addEventListener('click', (e) => {
+        if (calendarsDropdownMenu.style.display === 'flex' && !calendarsDropdownMenu.contains(e.target) && e.target !== btnCalendarsDropdown) {
+          calendarsDropdownMenu.style.display = 'none';
+        }
+      });
+    }
 
     this.btnQuickAddApptTab = document.getElementById('btnQuickAddApptTab');
     if (this.btnQuickAddApptTab) {
@@ -3401,11 +3455,70 @@ class MichiApp {
 
     // Render Right Page Flexible Appointments with Direct Inline Time Dropdown Selection
     this.franklinTimeline.innerHTML = '';
+
+    // Render Subscribed All-Day Events & Observances Header Card
+    const builtInForDay = this.getBuiltInHolidays(parts[0], parts[1] - 1, dayNum);
+    const plannerSubs = this.state.calendarSubscriptions || { national: true, christian: true, jewish: true, islamic: true, personal: true };
+    const activePlannerHolidays = builtInForDay.filter(h => {
+      if (h.category === 'national_holiday' && plannerSubs.national === false) return false;
+      if (h.category === 'christian_holiday' && plannerSubs.christian === false) return false;
+      if (h.category === 'jewish_holiday' && plannerSubs.jewish === false) return false;
+      if (h.category === 'islamic_holiday' && plannerSubs.islamic === false) return false;
+      return true;
+    });
+
+    const userAllDayList = (dayData.appts || []).filter(a => (a.isAllDay || a.time === 'All Day'));
+    if (activePlannerHolidays.length > 0 || userAllDayList.length > 0) {
+      const allDaySection = document.createElement('div');
+      allDaySection.style.marginBottom = '12px';
+      allDaySection.style.padding = '8px 12px';
+      allDaySection.style.background = 'rgba(255,255,255,0.03)';
+      allDaySection.style.border = '1px solid var(--border)';
+      allDaySection.style.borderRadius = '6px';
+
+      allDaySection.innerHTML = `<div style="font-size: 0.76rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">📌 All-Day Events & Observances:</div>`;
+      const badgeWrap = document.createElement('div');
+      badgeWrap.style.display = 'flex';
+      badgeWrap.style.flexWrap = 'wrap';
+      badgeWrap.style.gap = '6px';
+
+      activePlannerHolidays.forEach(h => {
+        const hBadge = document.createElement('span');
+        hBadge.style.background = 'var(--accent)';
+        hBadge.style.color = '#ffffff';
+        hBadge.style.fontWeight = '800';
+        hBadge.style.fontSize = '0.76rem';
+        hBadge.style.padding = '3px 8px';
+        hBadge.style.borderRadius = '4px';
+        hBadge.textContent = h.title;
+        badgeWrap.appendChild(hBadge);
+      });
+
+      userAllDayList.forEach(u => {
+        const uBadge = document.createElement('span');
+        uBadge.style.background = 'var(--bg-main)';
+        uBadge.style.color = 'var(--text-main)';
+        uBadge.style.border = '1px solid var(--border)';
+        uBadge.style.fontWeight = '800';
+        uBadge.style.fontSize = '0.76rem';
+        uBadge.style.padding = '3px 8px';
+        uBadge.style.borderRadius = '4px';
+
+        uBadge.textContent = u.text;
+        badgeWrap.appendChild(uBadge);
+      });
+
+      allDaySection.appendChild(badgeWrap);
+      this.franklinTimeline.appendChild(allDaySection);
+    }
+
     if (!dayData.appts || dayData.appts.length === 0) {
-      this.franklinTimeline.innerHTML = `<div style="font-size: 0.8rem; color: #64748b; font-style: italic; text-align: center; padding: 1.5rem 0;">No appointments scheduled. Use the builder above to add custom time slots & notes!</div>`;
+      if (activePlannerHolidays.length === 0) {
+        this.franklinTimeline.innerHTML = `<div style="font-size: 0.8rem; color: #64748b; font-style: italic; text-align: center; padding: 1.5rem 0;">No appointments scheduled. Use the builder above to add custom time slots & notes!</div>`;
+      }
     } else {
       const timeOptions = [];
-      const hrsAM = ['06','07','08','09','10','11'];
+      const hrsAM = ['12','01','02','03','04','05','06','07','08','09','10','11'];
       const hrsPM = ['12','01','02','03','04','05','06','07','08','09','10','11'];
       hrsAM.forEach(h => {
         [':00', ':15', ':30', ':45'].forEach(m => timeOptions.push(`${h}${m} AM`));
@@ -4094,7 +4207,7 @@ class MichiApp {
     if (webItems.length === 0) {
       this.ideasGrid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-          <p class="empty-brain-dump-msg" style="margin-bottom: 1rem; font-weight: 700; font-size: 0.85rem;">No web clips or interest bookmarks found for this category or project.</p>
+          <p class="empty-brain-dump-msg" style="margin-bottom: 1rem; font-weight: 700; font-size: 0.85rem; color: var(--text-main) !important;">No web clips or interest bookmarks found for this category or project.</p>
           <button type="button" onclick="document.getElementById('btnAddWebClip').click()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer;">+ Add Brain Dump / Clip</button>
         </div>
       `;
@@ -6158,6 +6271,139 @@ class MichiApp {
     if (ampmEl) ampmEl.value = ampm;
   }
 
+  getEasterDate(year) {
+    const a = year % 19;
+    const b = Math.floor(year / 100);
+    const c = year % 100;
+    const d = Math.floor(b / 4);
+    const e = b % 4;
+    const f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3);
+    const h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4);
+    const k = c % 4;
+    const l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+    const day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month, day);
+  }
+
+  getNthWeekdayOfMonth(year, monthIndex, weekday, n) {
+    if (n > 0) {
+      let count = 0;
+      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+      for (let day = 1; day <= daysInMonth; day++) {
+        if (new Date(year, monthIndex, day).getDay() === weekday) {
+          count++;
+          if (count === n) return day;
+        }
+      }
+    } else if (n === -1) {
+      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+      for (let day = daysInMonth; day >= 1; day--) {
+        if (new Date(year, monthIndex, day).getDay() === weekday) {
+          return day;
+        }
+      }
+    }
+    return null;
+  }
+
+  getBuiltInHolidays(year, month, day) {
+    const holidays = [];
+    const monthStr = (month + 1).toString().padStart(2, '0');
+    const dayStr = day.toString().padStart(2, '0');
+    const dateKey = `${monthStr}-${dayStr}`;
+    const fullDateKey = `${year}-${monthStr}-${dayStr}`;
+
+    // US National Holidays
+    if (dateKey === '01-01') holidays.push({ title: "New Year's Day", category: 'national_holiday' });
+    if (dateKey === '02-02') holidays.push({ title: "Groundhog Day", category: 'national_holiday' });
+    if (dateKey === '02-14') holidays.push({ title: "Valentine's Day", category: 'national_holiday' });
+    if (dateKey === '03-17') holidays.push({ title: "St. Patrick's Day", category: 'national_holiday' });
+    if (dateKey === '04-22') holidays.push({ title: "Earth Day", category: 'national_holiday' });
+    if (dateKey === '06-19') holidays.push({ title: "Juneteenth", category: 'national_holiday' });
+    if (dateKey === '07-04') holidays.push({ title: "Independence Day", category: 'national_holiday' });
+    if (dateKey === '09-11') holidays.push({ title: "Patriot Day", category: 'national_holiday' });
+    if (dateKey === '10-31') holidays.push({ title: "Halloween", category: 'national_holiday' });
+    if (dateKey === '11-11') holidays.push({ title: "Veterans Day", category: 'national_holiday' });
+    if (dateKey === '12-24') holidays.push({ title: "Christmas Eve", category: 'national_holiday' });
+    if (dateKey === '12-25') holidays.push({ title: "Christmas Day", category: 'national_holiday' });
+    if (dateKey === '12-31') holidays.push({ title: "New Year's Eve", category: 'national_holiday' });
+
+    if (month === 0 && day === this.getNthWeekdayOfMonth(year, 0, 1, 3)) holidays.push({ title: "MLK Jr. Day", category: 'national_holiday' });
+    if (month === 1 && day === this.getNthWeekdayOfMonth(year, 1, 1, 3)) holidays.push({ title: "Presidents' Day", category: 'national_holiday' });
+    if (month === 4 && day === this.getNthWeekdayOfMonth(year, 4, 0, 2)) holidays.push({ title: "Mother's Day", category: 'national_holiday' });
+    if (month === 4 && day === this.getNthWeekdayOfMonth(year, 4, 1, -1)) holidays.push({ title: "Memorial Day", category: 'national_holiday' });
+    if (month === 5 && day === this.getNthWeekdayOfMonth(year, 5, 0, 3)) holidays.push({ title: "Father's Day", category: 'national_holiday' });
+    if (month === 8 && day === this.getNthWeekdayOfMonth(year, 8, 1, 1)) holidays.push({ title: "Labor Day", category: 'national_holiday' });
+    if (month === 9 && day === this.getNthWeekdayOfMonth(year, 9, 1, 2)) holidays.push({ title: "Columbus Day", category: 'national_holiday' });
+    if (month === 10 && day === this.getNthWeekdayOfMonth(year, 10, 4, 4)) holidays.push({ title: "Thanksgiving", category: 'national_holiday' });
+
+    // Christian Holidays
+    if (dateKey === '01-06') holidays.push({ title: "Epiphany", category: 'christian_holiday' });
+    if (dateKey === '11-01') holidays.push({ title: "All Saints' Day", category: 'christian_holiday' });
+
+    const easter = this.getEasterDate(year);
+    const easterTime = easter.getTime();
+    const currTime = new Date(year, month, day).getTime();
+    const diffDays = Math.round((currTime - easterTime) / (1000 * 3600 * 24));
+
+    if (diffDays === -46) holidays.push({ title: "Ash Wednesday", category: 'christian_holiday' });
+    if (diffDays === -7) holidays.push({ title: "Palm Sunday", category: 'christian_holiday' });
+    if (diffDays === -2) holidays.push({ title: "Good Friday", category: 'christian_holiday' });
+    if (diffDays === 0) holidays.push({ title: "Easter Sunday", category: 'christian_holiday' });
+    if (diffDays === 39) holidays.push({ title: "Ascension Day", category: 'christian_holiday' });
+    if (diffDays === 49) holidays.push({ title: "Pentecost", category: 'christian_holiday' });
+
+    // Jewish Holidays Map
+    const jewishMap = {
+      '2025-03-14': "Purim",
+      '2025-04-13': "Passover (Pesach)",
+      '2025-06-02': "Shavuot",
+      '2025-09-23': "Rosh Hashanah",
+      '2025-10-02': "Yom Kippur",
+      '2025-10-07': "Sukkot",
+      '2025-12-15': "Hanukkah Day 1",
+      '2026-03-03': "Purim",
+      '2026-04-02': "Passover (Pesach)",
+      '2026-05-22': "Shavuot",
+      '2026-09-12': "Rosh Hashanah",
+      '2026-09-21': "Yom Kippur",
+      '2026-09-26': "Sukkot",
+      '2026-12-05': "Hanukkah Day 1",
+      '2027-03-23': "Purim",
+      '2027-04-22': "Passover",
+      '2027-10-02': "Rosh Hashanah",
+      '2027-10-11': "Yom Kippur",
+      '2027-12-25': "Hanukkah"
+    };
+    if (jewishMap[fullDateKey]) {
+      holidays.push({ title: jewishMap[fullDateKey], category: 'jewish_holiday' });
+    }
+
+    // Islamic Holidays Map
+    const islamicMap = {
+      '2025-03-01': "Ramadan Start",
+      '2025-03-31': "Eid al-Fitr",
+      '2025-06-07': "Eid al-Adha",
+      '2025-06-27': "Islamic New Year",
+      '2026-02-18': "Ramadan Start",
+      '2026-03-20': "Eid al-Fitr",
+      '2026-05-27': "Eid al-Adha",
+      '2026-06-16': "Islamic New Year",
+      '2027-02-08': "Ramadan Start",
+      '2027-03-10': "Eid al-Fitr",
+      '2027-05-17': "Eid al-Adha"
+    };
+    if (islamicMap[fullDateKey]) {
+      holidays.push({ title: islamicMap[fullDateKey], category: 'islamic_holiday' });
+    }
+
+    return holidays;
+  }
+
   openApptModal(dateStr, apptIdToEdit = null) {
     this.closeTutorialModal();
     this.closeFranklinModal();
@@ -6173,12 +6419,19 @@ class MichiApp {
       if (dayData && dayData.appts) {
         const appt = dayData.appts.find(a => a.id === apptIdToEdit);
         if (appt) {
+          const isAllDay = !!appt.isAllDay || appt.time === 'All Day';
+          if (this.apptFormIsAllDay) this.apptFormIsAllDay.checked = isAllDay;
+          if (this.apptFormCategory) this.apptFormCategory.value = appt.category || 'appointment';
+          if (this.apptFormTimeContainer) this.apptFormTimeContainer.style.display = isAllDay ? 'none' : 'block';
           this.setApptFormTime(appt.time || '09:00 AM');
           if (this.apptFormTitle) this.apptFormTitle.value = appt.text || '';
           if (this.apptFormNotes) this.apptFormNotes.value = appt.note || '';
         }
       }
     } else {
+      if (this.apptFormIsAllDay) this.apptFormIsAllDay.checked = false;
+      if (this.apptFormCategory) this.apptFormCategory.value = 'appointment';
+      if (this.apptFormTimeContainer) this.apptFormTimeContainer.style.display = 'block';
       if (this.apptFormTitle) this.apptFormTitle.value = '';
       if (this.apptFormNotes) this.apptFormNotes.value = '';
       this.setApptFormTime('09:00 AM');
@@ -6250,7 +6503,9 @@ class MichiApp {
   handleApptFormSubmit() {
     const dateStr = this.normalizeDateStr(this.apptFormDate.value || this.selectedApptDate);
     const apptId = this.apptFormId.value;
-    const time = this.apptFormTime.value;
+    const isAllDay = this.apptFormIsAllDay ? this.apptFormIsAllDay.checked : false;
+    const category = this.apptFormCategory ? this.apptFormCategory.value : 'appointment';
+    const time = isAllDay ? 'All Day' : (this.apptFormTime ? this.apptFormTime.value : '09:00 AM');
     const title = this.apptFormTitle.value.trim();
     const note = this.apptFormNotes.value.trim();
 
@@ -6268,6 +6523,8 @@ class MichiApp {
         existing.time = time;
         existing.text = title;
         existing.note = note;
+        existing.isAllDay = isAllDay;
+        existing.category = category;
       }
     } else {
       dayData.appts.push({
@@ -6275,6 +6532,8 @@ class MichiApp {
         time: time,
         text: title,
         note: note,
+        isAllDay: isAllDay,
+        category: category,
         done: false
       });
     }
@@ -6316,6 +6575,15 @@ class MichiApp {
     const isCurrentRealMonth = now.getFullYear() === year && now.getMonth() === month;
     const realTodayDate = now.getDate();
 
+    const subs = this.state.calendarSubscriptions || { national: true, christian: true, jewish: true, islamic: true, personal: true };
+
+    // Update Subscription Checkbox States UI if elements exist
+    if (this.calSubNational) this.calSubNational.checked = subs.national !== false;
+    if (this.calSubChristian) this.calSubChristian.checked = subs.christian !== false;
+    if (this.calSubJewish) this.calSubJewish.checked = subs.jewish !== false;
+    if (this.calSubIslamic) this.calSubIslamic.checked = subs.islamic !== false;
+    if (this.calSubPersonal) this.calSubPersonal.checked = subs.personal !== false;
+
     // Fill leading empty padding cells
     for (let i = 0; i < firstDayIndex; i++) {
       const emptyCell = document.createElement('div');
@@ -6346,17 +6614,60 @@ class MichiApp {
         </div>
       `;
 
-      // Render scheduled appointments for this date
+      // 1. Render Subscribed Built-in Holidays
+      const builtInHolidays = this.getBuiltInHolidays(year, month, day);
+      builtInHolidays.forEach(h => {
+        let isSubscribed = false;
+        if (h.category === 'national_holiday' && subs.national !== false) isSubscribed = true;
+        if (h.category === 'christian_holiday' && subs.christian !== false) isSubscribed = true;
+        if (h.category === 'jewish_holiday' && subs.jewish !== false) isSubscribed = true;
+        if (h.category === 'islamic_holiday' && subs.islamic !== false) isSubscribed = true;
+
+        if (isSubscribed) {
+          const hBadge = document.createElement('div');
+          hBadge.className = 'event-dot holiday-badge';
+          hBadge.style.background = 'var(--accent)';
+          hBadge.style.color = '#ffffff';
+          hBadge.style.fontWeight = '800';
+          hBadge.style.fontSize = '0.72rem';
+          hBadge.style.padding = '2px 6px';
+          hBadge.style.borderRadius = '4px';
+          hBadge.style.marginBottom = '2px';
+          hBadge.style.whiteSpace = 'nowrap';
+          hBadge.style.overflow = 'hidden';
+          hBadge.style.textOverflow = 'ellipsis';
+          hBadge.textContent = h.title;
+          cell.appendChild(hBadge);
+        }
+      });
+
+      // 2. Render Scheduled User Appointments & All-Day Events
       const franklinDay = this.state.franklinData[fullDateStr];
       if (franklinDay && franklinDay.appts && franklinDay.appts.length > 0) {
         franklinDay.appts.forEach(ap => {
+          const isAllDay = !!ap.isAllDay || ap.time === 'All Day';
+          if (isAllDay && ap.category === 'personal' && subs.personal === false) return;
+
           const schedPill = document.createElement('div');
           schedPill.className = 'event-dot';
-          schedPill.style.background = 'var(--bg-main)';
-          schedPill.style.color = 'var(--text-main)';
+          schedPill.style.background = isAllDay ? 'var(--accent)' : 'var(--bg-main)';
+          schedPill.style.color = isAllDay ? '#ffffff' : 'var(--text-main)';
           schedPill.style.border = '1px solid var(--border)';
           schedPill.style.fontWeight = '700';
-          schedPill.textContent = `⏰ ${ap.time} ${ap.text}`;
+          schedPill.style.fontSize = '0.74rem';
+          schedPill.style.padding = '2px 6px';
+          schedPill.style.borderRadius = '4px';
+          schedPill.style.marginBottom = '2px';
+          schedPill.style.whiteSpace = 'nowrap';
+          schedPill.style.overflow = 'hidden';
+          schedPill.style.textOverflow = 'ellipsis';
+
+          if (isAllDay) {
+            schedPill.textContent = ap.text;
+          } else {
+            schedPill.textContent = `${ap.time} ${ap.text}`;
+          }
+
           cell.appendChild(schedPill);
         });
       }
