@@ -734,7 +734,14 @@ body[data-theme="soyokaze"] img.franklin-logo-img {
   opacity: 1 !important;
 }
 
-/* ❄️ Glacier Range & 🌙 Signature Dark (Winter / Sumi / Dark) — Crisp Pure White Date, Headings, Calendars & White Logo */
+/* ❄️ Arctic Chill, Glacier Range & 🌙 Signature Dark (Winter / Sumi / Dark) — Crisp Pure White Date, Headings, Calendars & White Logo */
+[data-theme="arctic"] #franklinDateTitle,
+[data-theme="arctic"] #leftPageNum,
+[data-theme="arctic"] #leftPageDay,
+[data-theme="arctic"] #leftPageMonthYear,
+[data-theme="arctic"] .page-big-date,
+[data-theme="arctic"] .page-day-name,
+[data-theme="arctic"] .right-page-header-title,
 [data-theme="winter"] #franklinDateTitle,
 [data-theme="winter"] #leftPageNum,
 [data-theme="winter"] #leftPageDay,
@@ -763,6 +770,8 @@ body[data-theme="soyokaze"] img.franklin-logo-img {
 [data-theme="sumi"] .page-big-date,
 [data-theme="sumi"] .page-day-name,
 [data-theme="sumi"] .right-page-header-title,
+body[data-theme="arctic"] #franklinDateTitle,
+body[data-theme="arctic"] .right-page-header-title,
 body[data-theme="winter"] #franklinDateTitle,
 body[data-theme="winter"] .right-page-header-title,
 body[data-theme="glacier"] #franklinDateTitle,
@@ -771,6 +780,8 @@ body[data-theme="dark"] #franklinDateTitle,
 body[data-theme="dark"] .right-page-header-title,
 body[data-theme="sumi"] #franklinDateTitle,
 body[data-theme="sumi"] .right-page-header-title,
+#franklinModalOverlay[data-theme="arctic"] #franklinDateTitle,
+#franklinModalOverlay[data-theme="arctic"] .right-page-header-title,
 #franklinModalOverlay[data-theme="winter"] #franklinDateTitle,
 #franklinModalOverlay[data-theme="winter"] .right-page-header-title,
 #franklinModalOverlay[data-theme="glacier"] #franklinDateTitle,
@@ -781,7 +792,9 @@ body[data-theme="sumi"] .right-page-header-title,
   font-weight: 800 !important;
 }
 
-/* Crisp Pure White Logo Filter in Glacier Range & Signature Dark */
+/* Crisp Pure White Logo Filter in Arctic Chill, Glacier Range & Signature Dark */
+[data-theme="arctic"] img.franklin-logo-img,
+[data-theme="arctic"] .binder-page img.franklin-logo-img,
 [data-theme="winter"] img.franklin-logo-img,
 [data-theme="winter"] .binder-page img.franklin-logo-img,
 [data-theme="glacier"] img.franklin-logo-img,
@@ -790,10 +803,12 @@ body[data-theme="sumi"] .right-page-header-title,
 [data-theme="dark"] .binder-page img.franklin-logo-img,
 [data-theme="sumi"] img.franklin-logo-img,
 [data-theme="sumi"] .binder-page img.franklin-logo-img,
+body[data-theme="arctic"] img.franklin-logo-img,
 body[data-theme="winter"] img.franklin-logo-img,
 body[data-theme="glacier"] img.franklin-logo-img,
 body[data-theme="dark"] img.franklin-logo-img,
 body[data-theme="sumi"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="arctic"] img.franklin-logo-img,
 #franklinModalOverlay[data-theme="winter"] img.franklin-logo-img,
 #franklinModalOverlay[data-theme="glacier"] img.franklin-logo-img,
 #franklinModalOverlay[data-theme="dark"] img.franklin-logo-img {
@@ -801,7 +816,8 @@ body[data-theme="sumi"] img.franklin-logo-img,
   opacity: 1 !important;
 }
 
-/* 📅 3 Mini Calendars High Contrast in Glacier Range & Signature Dark */
+/* 📅 3 Mini Calendars High Contrast in Arctic Chill, Glacier Range & Signature Dark */
+[data-theme="arctic"] .page-mini-cal,
 [data-theme="winter"] .page-mini-cal,
 [data-theme="glacier"] .page-mini-cal,
 [data-theme="dark"] .page-mini-cal,
@@ -811,6 +827,8 @@ body[data-theme="sumi"] img.franklin-logo-img,
   border: 1px solid rgba(255, 255, 255, 0.35) !important;
 }
 
+[data-theme="arctic"] .page-mini-cal strong,
+[data-theme="arctic"] .page-mini-cal div,
 [data-theme="winter"] .page-mini-cal strong,
 [data-theme="winter"] .page-mini-cal div,
 [data-theme="glacier"] .page-mini-cal strong,
@@ -822,6 +840,11 @@ body[data-theme="sumi"] img.franklin-logo-img,
   color: #F2F6FB !important;
 }
 
+[data-theme="arctic"] #plannerUserBadge,
+[data-theme="arctic"] #plannerFontSelect,
+[data-theme="arctic"] #btnSaveFranklinPlanner,
+[data-theme="arctic"] #btnCloseFranklinModal,
+[data-theme="arctic"] .btn-page-flip,
 [data-theme="winter"] #plannerUserBadge,
 [data-theme="winter"] #plannerFontSelect,
 [data-theme="winter"] #btnSaveFranklinPlanner,
@@ -846,52 +869,6 @@ body[data-theme="sumi"] img.franklin-logo-img,
   color: #F2F6FB !important;
   border: 1px solid #4D6E91 !important;
   font-weight: 800 !important;
-}
-
-/* 🧊 Arctic Chill — Dark Midnight Blue Date Text, Dark Logo, Dark Mini-Calendars, Light Haze Controls */
-[data-theme="arctic"] #franklinDateTitle,
-[data-theme="arctic"] #leftPageNum,
-[data-theme="arctic"] #leftPageDay,
-[data-theme="arctic"] #leftPageMonthYear,
-[data-theme="arctic"] .page-big-date,
-[data-theme="arctic"] .page-day-name,
-[data-theme="arctic"] .right-page-header-title,
-body[data-theme="arctic"] #franklinDateTitle,
-body[data-theme="arctic"] .right-page-header-title,
-#franklinModalOverlay[data-theme="arctic"] #franklinDateTitle,
-#franklinModalOverlay[data-theme="arctic"] .right-page-header-title {
-  color: #112A46 !important;
-  font-weight: 800 !important;
-}
-
-[data-theme="arctic"] .page-mini-cal {
-  color: #112A46 !important;
-  background-color: #F2F6FB !important;
-  border: 1px solid #4D6E91 !important;
-}
-
-[data-theme="arctic"] .page-mini-cal strong,
-[data-theme="arctic"] .page-mini-cal div {
-  color: #112A46 !important;
-}
-
-[data-theme="arctic"] #plannerUserBadge,
-[data-theme="arctic"] #plannerFontSelect,
-[data-theme="arctic"] #btnSaveFranklinPlanner,
-[data-theme="arctic"] #btnCloseFranklinModal,
-[data-theme="arctic"] .btn-page-flip {
-  background-color: #F2F6FB !important;
-  color: #112A46 !important;
-  border: 1px solid #4D6E91 !important;
-  font-weight: 800 !important;
-}
-
-[data-theme="arctic"] img.franklin-logo-img,
-[data-theme="arctic"] .binder-page img.franklin-logo-img,
-body[data-theme="arctic"] img.franklin-logo-img,
-#franklinModalOverlay[data-theme="arctic"] img.franklin-logo-img {
-  filter: brightness(0) !important;
-  opacity: 1 !important;
 }
 
 /* 🌙 Signature Dark (Sumi / Winter) — Light White Text, Light White Logo, Dark Glass Controls */
