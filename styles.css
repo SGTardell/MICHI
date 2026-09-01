@@ -758,6 +758,22 @@ body[data-theme="arctic"] #leftPageMonthYear,
   font-weight: 800 !important;
 }
 
+/* 🍃 Gentle Breeze (Soyokaze / Default): Logo Filter in Dark Text Color (#616363 / brightness(0.38)) */
+[data-theme="soyokaze"] img.franklin-logo-img,
+[data-theme="soyokaze"] .binder-page img.franklin-logo-img,
+[data-theme="shizuka"] img.franklin-logo-img,
+[data-theme="shizuka"] .binder-page img.franklin-logo-img,
+body[data-theme="soyokaze"] img.franklin-logo-img,
+body[data-theme="shizuka"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="soyokaze"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="shizuka"] img.franklin-logo-img,
+.franklin-logo-img,
+.binder-page img.franklin-logo-img,
+#franklinModalOverlay img.franklin-logo-img {
+  filter: brightness(0.38) !important;
+  opacity: 1 !important;
+}
+
 /* 🧊 Arctic Chill: Logo Filter in Midnight Blue (#112A46) Dark Logo */
 [data-theme="arctic"] img.franklin-logo-img,
 [data-theme="arctic"] .binder-page img.franklin-logo-img,
