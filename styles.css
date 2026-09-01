@@ -535,6 +535,10 @@ header::before {
   filter: brightness(0) invert(0.2) !important;
 }
 
+[data-theme="arctic"] .auth-brand img {
+  filter: brightness(0) invert(1) !important;
+}
+
 /* ❄️ Arctic Chill Navigation Banner & Control Bar Overrides */
 [data-theme="arctic"] .app-nav-tabs,
 [data-theme="arctic"] .nav-tabs,
