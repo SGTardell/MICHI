@@ -833,15 +833,27 @@ body[data-theme="soyokaze"] .binder-page img.franklin-logo-img,
   opacity: 1 !important;
 }
 
-/* 🧊 Arctic Chill: Logo Filter in Midnight Blue (#112A46) Dark Logo */
+/* 🧊 Arctic Chill: Logo Filter in Midnight Blue (#112A46) Dark Logo for General Logos */
 html[data-theme="arctic"] img.franklin-logo-img,
 html[data-theme="arctic"] .franklin-logo-img,
-html[data-theme="arctic"] .binder-page img.franklin-logo-img,
+html[data-theme="arctic"] .binder-page-left img.franklin-logo-img,
 body[data-theme="arctic"] img.franklin-logo-img,
 body[data-theme="arctic"] .franklin-logo-img,
-body[data-theme="arctic"] .binder-page img.franklin-logo-img,
-#franklinModalOverlay[data-theme="arctic"] img.franklin-logo-img {
+body[data-theme="arctic"] .binder-page-left img.franklin-logo-img,
+#franklinModalOverlay[data-theme="arctic"] .binder-page-left img.franklin-logo-img {
   filter: brightness(0) !important;
+  opacity: 1 !important;
+}
+
+/* 🧊 Arctic Chill: Appointment Schedule Banner Logo in Light Scheme Text (#F2F6FB) */
+[data-theme="arctic"] .appt-schedule-logo,
+[data-theme="arctic"] .appt-schedule-banner img,
+[data-theme="arctic"] .binder-page-right img.franklin-logo-img,
+html[data-theme="arctic"] .appt-schedule-logo,
+html[data-theme="arctic"] .binder-page-right img.franklin-logo-img,
+body[data-theme="arctic"] .appt-schedule-logo,
+body[data-theme="arctic"] .binder-page-right img.franklin-logo-img {
+  filter: brightness(0) invert(1) !important;
   opacity: 1 !important;
 }
 
@@ -870,6 +882,17 @@ body[data-theme="dark"] .binder-page img.franklin-logo-img,
 #franklinModalOverlay[data-theme="dark"] img.franklin-logo-img {
   filter: brightness(0) invert(1) !important;
   opacity: 1 !important;
+}
+
+/* Brain Dump Empty State Text Rules */
+.empty-brain-dump-msg {
+  color: var(--text-main) !important;
+}
+
+[data-theme="arctic"] .empty-brain-dump-msg,
+html[data-theme="arctic"] .empty-brain-dump-msg,
+body[data-theme="arctic"] .empty-brain-dump-msg {
+  color: #112A46 !important;
 }
 
 .page-mini-cal {

@@ -3998,7 +3998,7 @@ class MichiApp {
     if (webItems.length === 0) {
       this.ideasGrid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-          <p style="margin-bottom: 1rem; color: var(--text-main) !important; font-weight: 700; font-size: 0.85rem;">No web clips or interest bookmarks found for this category or project.</p>
+          <p class="empty-brain-dump-msg" style="margin-bottom: 1rem; color: var(--text-main) !important; font-weight: 700; font-size: 0.85rem;">No web clips or interest bookmarks found for this category or project.</p>
           <button type="button" onclick="document.getElementById('btnAddWebClip').click()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.6rem 1.4rem; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer;">+ Add Brain Dump / Clip</button>
         </div>
       `;
