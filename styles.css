@@ -758,10 +758,30 @@ body[data-theme="arctic"] #leftPageMonthYear,
   font-weight: 800 !important;
 }
 
+/* 🧊 Arctic Chill, Glacier Range & Signature Dark: Logo Filter in Arctic Haze (#F2F6FB) Pure White */
+[data-theme="arctic"] img.franklin-logo-img,
+[data-theme="arctic"] .binder-page img.franklin-logo-img,
+[data-theme="winter"] img.franklin-logo-img,
+[data-theme="winter"] .binder-page img.franklin-logo-img,
+[data-theme="glacier"] img.franklin-logo-img,
+[data-theme="glacier"] .binder-page img.franklin-logo-img,
+[data-theme="dark"] img.franklin-logo-img,
+[data-theme="dark"] .binder-page img.franklin-logo-img,
+[data-theme="sumi"] img.franklin-logo-img,
+[data-theme="sumi"] .binder-page img.franklin-logo-img,
+body[data-theme="arctic"] img.franklin-logo-img,
+body[data-theme="winter"] img.franklin-logo-img,
+body[data-theme="glacier"] img.franklin-logo-img,
+body[data-theme="dark"] img.franklin-logo-img,
+body[data-theme="sumi"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="arctic"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="winter"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="glacier"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="dark"] img.franklin-logo-img,
 .franklin-logo-img,
 .binder-page img.franklin-logo-img,
 #franklinModalOverlay img.franklin-logo-img {
-  filter: var(--logo-filter) !important;
+  filter: brightness(0) invert(1) !important;
   opacity: 1 !important;
 }
 
