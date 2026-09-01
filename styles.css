@@ -742,6 +742,22 @@ body[data-theme="soyokaze"] .right-page-header-title {
   font-weight: 800 !important;
 }
 
+/* 📝 Daily Tracker Section Title & Subtitle Scheme Binding */
+.daily-tracker-title,
+.binder-modal .daily-tracker-title,
+#franklinModalOverlay .daily-tracker-title {
+  color: var(--text-main) !important;
+  font-weight: 800 !important;
+}
+
+.daily-tracker-subtitle,
+.binder-modal .daily-tracker-subtitle,
+#franklinModalOverlay .daily-tracker-subtitle {
+  color: var(--text-main) !important;
+  font-weight: 700 !important;
+  opacity: 0.9 !important;
+}
+
 /* 🧊 Arctic Chill: Date between Logo & 3 Mini Calendars on Left Page (Dark Text #112A46) */
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
