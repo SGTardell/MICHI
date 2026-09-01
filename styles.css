@@ -902,15 +902,14 @@ span[style*="border-radius: 9999px"],
 #tab-calendar select option,
 #apptModalOverlay select option,
 #newProjectModalOverlay select option {
-  color: #112A46 !important;
-  background-color: #F2F6FB !important;
+  color: var(--text-main) !important;
+  background-color: var(--bg-card) !important;
   font-weight: 800 !important;
 }
 
-/* Start New Project / Plan Modal High Contrast Rules */
-#newProjectForm label,
-[data-theme="arctic"] #newProjectForm label {
-  color: #F2F6FB !important;
+/* Start New Project / Plan Modal Dynamic Theme Rules */
+#newProjectForm label {
+  color: var(--text-main) !important;
   font-weight: 800 !important;
 }
 
@@ -918,27 +917,18 @@ span[style*="border-radius: 9999px"],
 #newProjectSpark,
 #newProjectContactSelect,
 #newProjectManualContact,
-#customProjectTypeInput,
-[data-theme="arctic"] #newProjectTitle,
-[data-theme="arctic"] #newProjectSpark,
-[data-theme="arctic"] #newProjectContactSelect,
-[data-theme="arctic"] #newProjectManualContact,
-[data-theme="arctic"] #customProjectTypeInput {
-  background-color: #F2F6FB !important;
-  color: #112A46 !important;
-  border: 1px solid #4D6E91 !important;
+#customProjectTypeInput {
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border) !important;
   font-weight: 800 !important;
 }
 
 #newProjectTitle::placeholder,
 #newProjectSpark::placeholder,
 #newProjectManualContact::placeholder,
-#customProjectTypeInput::placeholder,
-[data-theme="arctic"] #newProjectTitle::placeholder,
-[data-theme="arctic"] #newProjectSpark::placeholder,
-[data-theme="arctic"] #newProjectManualContact::placeholder,
-[data-theme="arctic"] #customProjectTypeInput::placeholder {
-  color: #34506D !important;
+#customProjectTypeInput::placeholder {
+  color: var(--text-muted) !important;
   opacity: 0.85 !important;
 }
 
