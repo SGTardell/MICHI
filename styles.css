@@ -647,6 +647,7 @@ header::before {
 #tab-calendar textarea,
 #apptTextInput,
 #apptNoteInput,
+/* Schedule Appointment & Daily Planner Form Inputs Dynamic Theme Binding */
 #apptHourSelect,
 #apptMinSelect,
 #apptAmPmSelect,
@@ -659,7 +660,13 @@ header::before {
 #franklinTaskText,
 #franklinPrioSelect,
 #btnAddFranklinTask,
-#franklinDailyTrackerInput,
+#franklinDailyTrackerInput {
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border) !important;
+  font-weight: 800 !important;
+}
+
 [data-theme="arctic"] #tab-calendar input,
 [data-theme="arctic"] #tab-calendar select,
 [data-theme="arctic"] #tab-calendar textarea,
@@ -678,8 +685,8 @@ header::before {
 [data-theme="arctic"] #franklinPrioSelect,
 [data-theme="arctic"] #btnAddFranklinTask,
 [data-theme="arctic"] #franklinDailyTrackerInput {
-  background-color: #F2F6FB !important;
-  color: #112A46 !important;
+  background-color: #34506D !important;
+  color: #F2F6FB !important;
   border: 1px solid #4D6E91 !important;
   font-weight: 800 !important;
 }
@@ -690,7 +697,50 @@ header::before {
 #apptFormHour,
 #apptFormMin,
 #apptFormAmPm,
-#franklinPrioSelect,
+#franklinPrioSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23616363' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 4px center !important;
+  padding-right: 18px !important;
+}
+
+[data-theme="soyokaze"] #apptHourSelect,
+[data-theme="soyokaze"] #apptMinSelect,
+[data-theme="soyokaze"] #apptAmPmSelect,
+[data-theme="soyokaze"] #apptFormHour,
+[data-theme="soyokaze"] #apptFormMin,
+[data-theme="soyokaze"] #apptFormAmPm,
+[data-theme="soyokaze"] #franklinPrioSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23616363' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+[data-theme="winter"] #apptHourSelect,
+[data-theme="winter"] #apptMinSelect,
+[data-theme="winter"] #apptAmPmSelect,
+[data-theme="winter"] #apptFormHour,
+[data-theme="winter"] #apptFormMin,
+[data-theme="winter"] #apptFormAmPm,
+[data-theme="winter"] #franklinPrioSelect,
+[data-theme="dark"] #apptHourSelect,
+[data-theme="dark"] #apptMinSelect,
+[data-theme="dark"] #apptAmPmSelect,
+[data-theme="dark"] #apptFormHour,
+[data-theme="dark"] #apptFormMin,
+[data-theme="dark"] #apptFormAmPm,
+[data-theme="dark"] #franklinPrioSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+[data-theme="glacier"] #apptHourSelect,
+[data-theme="glacier"] #apptMinSelect,
+[data-theme="glacier"] #apptAmPmSelect,
+[data-theme="glacier"] #apptFormHour,
+[data-theme="glacier"] #apptFormMin,
+[data-theme="glacier"] #apptFormAmPm,
+[data-theme="glacier"] #franklinPrioSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E4F4F8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
 [data-theme="arctic"] #apptHourSelect,
 [data-theme="arctic"] #apptMinSelect,
 [data-theme="arctic"] #apptAmPmSelect,
@@ -698,10 +748,7 @@ header::before {
 [data-theme="arctic"] #apptFormMin,
 [data-theme="arctic"] #apptFormAmPm,
 [data-theme="arctic"] #franklinPrioSelect {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23112A46'%3E%3Cpath d='M12 16L6 10H18L12 16Z'/%3E%3C/svg%3E") !important;
-  background-repeat: no-repeat !important;
-  background-position: right 4px center !important;
-  padding-right: 18px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23F2F6FB' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
 }
 
 /* 📅 Daily Planner Date, Time, Logo & Top Bar Controls Theme Rules */
