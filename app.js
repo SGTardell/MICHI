@@ -4926,8 +4926,8 @@ class MichiApp {
         ${this.escapeHtml(item.content)}
       </div>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; font-size: 0.73rem; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
-        <span>📝 ${notesCount} note${notesCount === 1 ? '' : 's'}</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; font-size: 0.73rem; color: var(--text-main); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
+        <span class="board-record-count" style="color: var(--text-main); font-weight: 700;">📝 ${notesCount} note${notesCount === 1 ? '' : 's'}</span>
         <span style="font-weight: 700; color: var(--accent);">Tap to Open 🔍</span>
       </div>
     `;
@@ -5084,8 +5084,8 @@ class MichiApp {
         ${this.escapeHtml(briefDesc)}
       </div>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 0.74rem; color: var(--text-dim);">
-        <span>${allProjItems.length} records</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 0.74rem; color: var(--text-main);">
+        <span class="board-record-count" style="color: var(--text-main); font-weight: 700;">${allProjItems.length} records</span>
         <div style="display: flex; align-items: center; gap: 6px;">
           <button type="button" class="btn-delete-project-action" style="background: rgba(225, 29, 72, 0.25); color: #F2F6FB; border: 1px solid rgba(225, 29, 72, 0.5); font-size: 0.76rem; font-weight: 800; padding: 4px 10px; border-radius: 4px; cursor: pointer;" title="Delete ${isPlan ? 'Plan' : 'Project'}">
             Delete

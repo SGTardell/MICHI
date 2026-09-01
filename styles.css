@@ -618,10 +618,9 @@ header::before {
 [data-theme="arctic"] span[style*="border-radius:12px"],
 [data-theme="arctic"] span[style*="border-radius: 9999px"],
 [data-theme="arctic"] .count-badge,
+[data-theme="arctic"] .board-record-count,
 [data-theme="arctic"] .record-count {
-  background-color: rgba(255, 255, 255, 0.18) !important;
   color: #F2F6FB !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
   font-weight: 800 !important;
 }
 
