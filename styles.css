@@ -1337,11 +1337,16 @@ select {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231A202C' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23616363' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 0.75rem center !important;
   background-size: 1rem !important;
   padding-right: 2.2rem !important;
+}
+
+[data-theme="soyokaze"] select,
+[data-theme="shizuka"] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23616363' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
 }
 
 [data-theme="winter"] select,
@@ -1858,7 +1863,7 @@ select option {
   align-items: center;
 }
 
-/* High-Visibility Custom Select Dropdown & Crisp Light Arrow Styling */
+/* High-Visibility Custom Select Dropdown & Crisp Arrow Styling */
 select, 
 select#webClipCategory, 
 select#editItemCategory,
@@ -1870,11 +1875,12 @@ select#globalProjectFilter,
 select#themeSelector,
 select#brainDumpCatSelect,
 select#brainDumpCatFilterAll,
+select#homeProjectFilterSelect,
 select#apptFormTime {
   color: var(--text-main) !important;
   background-color: var(--bg-card) !important;
   border: 1px solid var(--border) !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F2F6FB' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23616363' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 0.7rem center !important;
   background-size: 1rem !important;
@@ -1882,6 +1888,24 @@ select#apptFormTime {
   appearance: none !important;
   -webkit-appearance: none !important;
   cursor: pointer !important;
+}
+
+/* 🍃 Gentle Breeze (Soyokaze / Shizuka / Default) — Scheme Text Color (#616363) Arrow Caret */
+[data-theme="soyokaze"] select,
+[data-theme="shizuka"] select,
+[data-theme="soyokaze"] select#webClipCategory,
+[data-theme="soyokaze"] select#editItemCategory,
+[data-theme="soyokaze"] select#editItemStage,
+[data-theme="soyokaze"] select#dispatchType,
+[data-theme="soyokaze"] select#dispatchProjectSelect,
+[data-theme="soyokaze"] select#projectLineageSelect,
+[data-theme="soyokaze"] select#globalProjectFilter,
+[data-theme="soyokaze"] select#themeSelector,
+[data-theme="soyokaze"] select#brainDumpCatSelect,
+[data-theme="soyokaze"] select#brainDumpCatFilterAll,
+[data-theme="soyokaze"] select#homeProjectFilterSelect,
+[data-theme="soyokaze"] select#apptFormTime {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23616363' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
 }
 
 [data-theme="winter"] select, 
@@ -1918,8 +1942,8 @@ select#apptFormTime {
 }
 
 select option {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
   padding: 8px !important;
 }
 
