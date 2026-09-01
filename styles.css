@@ -599,6 +599,8 @@ header::before {
   background-repeat: no-repeat !important;
   background-position: right 10px center !important;
   padding-right: 28px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
 }
 
 [data-theme="arctic"] .controls-bar p,
@@ -731,7 +733,7 @@ header::before {
   opacity: 1 !important;
 }
 
-/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Light White Date Text & White Logo */
+/* ❄️ Arctic Chill (Glacier Range) — Dark Midnight Blue Date Text, Dark Logo, Bright Controls */
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
@@ -742,7 +744,30 @@ header::before {
 [data-theme="arctic"] .binder-modal #franklinDateTitle,
 [data-theme="arctic"] .binder-modal #leftPageNum,
 [data-theme="arctic"] .binder-modal #leftPageDay,
-[data-theme="arctic"] .binder-modal #leftPageMonthYear,
+[data-theme="arctic"] .binder-modal #leftPageMonthYear {
+  color: #112A46 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] #plannerUserBadge,
+[data-theme="arctic"] #plannerFontSelect,
+[data-theme="arctic"] #btnSaveFranklinPlanner,
+[data-theme="arctic"] #btnCloseFranklinModal,
+[data-theme="arctic"] .btn-page-flip {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .binder-page img.franklin-logo-img,
+[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="arctic"] img.franklin-logo-img {
+  filter: brightness(0) !important;
+  opacity: 1 !important;
+}
+
+/* 🌙 Signature Dark (Sumi / Winter) — Light White Date Text, Light White Logo, Dark Glass Controls */
 [data-theme="dark"] #franklinDateTitle,
 [data-theme="dark"] #leftPageNum,
 [data-theme="dark"] #leftPageDay,
@@ -765,20 +790,22 @@ header::before {
   font-weight: 800 !important;
 }
 
-[data-theme="arctic"] #plannerUserBadge,
-[data-theme="arctic"] #plannerFontSelect,
-[data-theme="arctic"] #btnSaveFranklinPlanner,
-[data-theme="arctic"] #btnCloseFranklinModal,
-[data-theme="arctic"] .btn-page-flip {
-  background-color: #F2F6FB !important;
-  color: #112A46 !important;
+[data-theme="dark"] #plannerUserBadge,
+[data-theme="dark"] #plannerFontSelect,
+[data-theme="dark"] #btnSaveFranklinPlanner,
+[data-theme="dark"] #btnCloseFranklinModal,
+[data-theme="dark"] .btn-page-flip,
+[data-theme="sumi"] #plannerUserBadge,
+[data-theme="sumi"] #plannerFontSelect,
+[data-theme="sumi"] #btnSaveFranklinPlanner,
+[data-theme="sumi"] #btnCloseFranklinModal,
+[data-theme="sumi"] .btn-page-flip {
+  background-color: #34506D !important;
+  color: #F2F6FB !important;
   border: 1px solid #4D6E91 !important;
   font-weight: 800 !important;
 }
 
-[data-theme="arctic"] .binder-page img.franklin-logo-img,
-[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="arctic"] img.franklin-logo-img,
 [data-theme="dark"] .binder-page img.franklin-logo-img,
 [data-theme="dark"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="dark"] img.franklin-logo-img,
