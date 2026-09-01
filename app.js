@@ -3407,7 +3407,10 @@ class MichiApp {
         apptRow.querySelector('.delete-appt-btn').addEventListener('click', () => {
           this.confirmDialog(`Are you sure you want to delete appointment "${ap.text}"?`, 'Delete Appointment', () => {
             dayData.appts = dayData.appts.filter(x => x.id !== ap.id);
+            this.saveState();
             this.renderFranklinModalContent();
+            this.renderCalendar();
+            this.render();
             this.showToast('Appointment deleted');
           });
         });
