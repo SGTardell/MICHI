@@ -748,18 +748,18 @@ header::before {
   opacity: 1 !important;
 }
 
-/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Crisp Pure White Date, Headings, Calendars & White Logo */
-[data-theme="arctic"] #franklinDateTitle,
-[data-theme="arctic"] #leftPageNum,
-[data-theme="arctic"] #leftPageDay,
-[data-theme="arctic"] #leftPageMonthYear,
-[data-theme="arctic"] .page-big-date,
-[data-theme="arctic"] .page-day-name,
-[data-theme="arctic"] .right-page-header-title,
-[data-theme="arctic"] .binder-modal #franklinDateTitle,
-[data-theme="arctic"] .binder-modal #leftPageNum,
-[data-theme="arctic"] .binder-modal #leftPageDay,
-[data-theme="arctic"] .binder-modal #leftPageMonthYear,
+/* ❄️ Glacier Range & 🌙 Signature Dark (Sumi) — Crisp Pure White Date, Headings, Calendars & White Logo */
+[data-theme="glacier"] #franklinDateTitle,
+[data-theme="glacier"] #leftPageNum,
+[data-theme="glacier"] #leftPageDay,
+[data-theme="glacier"] #leftPageMonthYear,
+[data-theme="glacier"] .page-big-date,
+[data-theme="glacier"] .page-day-name,
+[data-theme="glacier"] .right-page-header-title,
+[data-theme="glacier"] .binder-modal #franklinDateTitle,
+[data-theme="glacier"] .binder-modal #leftPageNum,
+[data-theme="glacier"] .binder-modal #leftPageDay,
+[data-theme="glacier"] .binder-modal #leftPageMonthYear,
 [data-theme="dark"] #franklinDateTitle,
 [data-theme="dark"] #leftPageNum,
 [data-theme="dark"] #leftPageDay,
@@ -783,7 +783,7 @@ header::before {
 }
 
 /* 📅 3 Mini Calendars High Contrast in Glacier Range & Signature Dark */
-[data-theme="arctic"] .page-mini-cal,
+[data-theme="glacier"] .page-mini-cal,
 [data-theme="dark"] .page-mini-cal,
 [data-theme="sumi"] .page-mini-cal {
   color: #F2F6FB !important;
@@ -791,8 +791,8 @@ header::before {
   border: 1px solid rgba(255, 255, 255, 0.35) !important;
 }
 
-[data-theme="arctic"] .page-mini-cal strong,
-[data-theme="arctic"] .page-mini-cal div,
+[data-theme="glacier"] .page-mini-cal strong,
+[data-theme="glacier"] .page-mini-cal div,
 [data-theme="dark"] .page-mini-cal strong,
 [data-theme="dark"] .page-mini-cal div,
 [data-theme="sumi"] .page-mini-cal strong,
@@ -800,11 +800,11 @@ header::before {
   color: #F2F6FB !important;
 }
 
-[data-theme="arctic"] #plannerUserBadge,
-[data-theme="arctic"] #plannerFontSelect,
-[data-theme="arctic"] #btnSaveFranklinPlanner,
-[data-theme="arctic"] #btnCloseFranklinModal,
-[data-theme="arctic"] .btn-page-flip,
+[data-theme="glacier"] #plannerUserBadge,
+[data-theme="glacier"] #plannerFontSelect,
+[data-theme="glacier"] #btnSaveFranklinPlanner,
+[data-theme="glacier"] #btnCloseFranklinModal,
+[data-theme="glacier"] .btn-page-flip,
 [data-theme="dark"] #plannerUserBadge,
 [data-theme="dark"] #plannerFontSelect,
 [data-theme="dark"] #btnSaveFranklinPlanner,
@@ -822,9 +822,9 @@ header::before {
 }
 
 /* Crisp Pure White Logo Filter in Glacier Range & Signature Dark */
-[data-theme="arctic"] .binder-page img.franklin-logo-img,
-[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="arctic"] img.franklin-logo-img,
+[data-theme="glacier"] .binder-page img.franklin-logo-img,
+[data-theme="glacier"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="glacier"] img.franklin-logo-img,
 [data-theme="dark"] .binder-page img.franklin-logo-img,
 [data-theme="dark"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="dark"] img.franklin-logo-img,
@@ -832,6 +832,51 @@ header::before {
 [data-theme="sumi"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="sumi"] img.franklin-logo-img {
   filter: brightness(0) invert(1) !important;
+  opacity: 1 !important;
+}
+
+/* 🧊 Arctic Chill — Dark Midnight Blue Date Text, Dark Logo, Dark Mini-Calendars, Light Haze Controls */
+[data-theme="arctic"] #franklinDateTitle,
+[data-theme="arctic"] #leftPageNum,
+[data-theme="arctic"] #leftPageDay,
+[data-theme="arctic"] #leftPageMonthYear,
+[data-theme="arctic"] .page-big-date,
+[data-theme="arctic"] .page-day-name,
+[data-theme="arctic"] .right-page-header-title,
+[data-theme="arctic"] .binder-modal #franklinDateTitle,
+[data-theme="arctic"] .binder-modal #leftPageNum,
+[data-theme="arctic"] .binder-modal #leftPageDay,
+[data-theme="arctic"] .binder-modal #leftPageMonthYear {
+  color: #112A46 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .page-mini-cal {
+  color: #112A46 !important;
+  background-color: #F2F6FB !important;
+  border: 1px solid #4D6E91 !important;
+}
+
+[data-theme="arctic"] .page-mini-cal strong,
+[data-theme="arctic"] .page-mini-cal div {
+  color: #112A46 !important;
+}
+
+[data-theme="arctic"] #plannerUserBadge,
+[data-theme="arctic"] #plannerFontSelect,
+[data-theme="arctic"] #btnSaveFranklinPlanner,
+[data-theme="arctic"] #btnCloseFranklinModal,
+[data-theme="arctic"] .btn-page-flip {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .binder-page img.franklin-logo-img,
+[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="arctic"] img.franklin-logo-img {
+  filter: brightness(0) !important;
   opacity: 1 !important;
 }
 
