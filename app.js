@@ -3467,7 +3467,16 @@ class MichiApp {
       return true;
     });
 
-    const userAllDayList = (dayData.appts || []).filter(a => (a.isAllDay || a.time === 'All Day'));
+    const userAllDayList = (dayData.appts || []).filter(a => {
+      const isAllDay = (a.isAllDay || a.time === 'All Day');
+      if (!isAllDay) return false;
+      if (a.category === 'national_holiday' && plannerSubs.national === false) return false;
+      if (a.category === 'christian_holiday' && plannerSubs.christian === false) return false;
+      if (a.category === 'jewish_holiday' && plannerSubs.jewish === false) return false;
+      if (a.category === 'islamic_holiday' && plannerSubs.islamic === false) return false;
+      if ((a.category === 'personal' || a.category === 'birthday') && plannerSubs.personal === false) return false;
+      return true;
+    });
     if (activePlannerHolidays.length > 0 || userAllDayList.length > 0) {
       const allDaySection = document.createElement('div');
       allDaySection.style.marginBottom = '12px';
@@ -3476,7 +3485,7 @@ class MichiApp {
       allDaySection.style.border = '1px solid var(--border)';
       allDaySection.style.borderRadius = '6px';
 
-      allDaySection.innerHTML = `<div style="font-size: 0.76rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">📌 All-Day Events & Observances:</div>`;
+      allDaySection.innerHTML = `<div style="font-size: 0.76rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">All-Day Events & Observances:</div>`;
       const badgeWrap = document.createElement('div');
       badgeWrap.style.display = 'flex';
       badgeWrap.style.flexWrap = 'wrap';
@@ -6646,7 +6655,11 @@ class MichiApp {
       if (franklinDay && franklinDay.appts && franklinDay.appts.length > 0) {
         franklinDay.appts.forEach(ap => {
           const isAllDay = !!ap.isAllDay || ap.time === 'All Day';
-          if (isAllDay && ap.category === 'personal' && subs.personal === false) return;
+          if (ap.category === 'national_holiday' && subs.national === false) return;
+          if (ap.category === 'christian_holiday' && subs.christian === false) return;
+          if (ap.category === 'jewish_holiday' && subs.jewish === false) return;
+          if (ap.category === 'islamic_holiday' && subs.islamic === false) return;
+          if ((ap.category === 'personal' || ap.category === 'birthday') && subs.personal === false) return;
 
           const schedPill = document.createElement('div');
           schedPill.className = 'event-dot';
