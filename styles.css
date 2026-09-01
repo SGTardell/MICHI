@@ -742,6 +742,22 @@ body[data-theme="soyokaze"] .right-page-header-title {
   font-weight: 800 !important;
 }
 
+/* 🧊 Arctic Chill: Date between Logo & 3 Mini Calendars on Left Page (Dark Text #112A46) */
+[data-theme="arctic"] #leftPageNum,
+[data-theme="arctic"] #leftPageDay,
+[data-theme="arctic"] #leftPageMonthYear,
+[data-theme="arctic"] .page-big-date,
+[data-theme="arctic"] .page-day-name,
+body[data-theme="arctic"] #leftPageNum,
+body[data-theme="arctic"] #leftPageDay,
+body[data-theme="arctic"] #leftPageMonthYear,
+#franklinModalOverlay[data-theme="arctic"] #leftPageNum,
+#franklinModalOverlay[data-theme="arctic"] #leftPageDay,
+#franklinModalOverlay[data-theme="arctic"] #leftPageMonthYear {
+  color: #112A46 !important;
+  font-weight: 800 !important;
+}
+
 .franklin-logo-img,
 .binder-page img.franklin-logo-img,
 #franklinModalOverlay img.franklin-logo-img {
