@@ -1694,12 +1694,15 @@
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
           <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">1. Desktop Browser (1-Click Bookmarklet)</h4>
           <p style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 10px;">
-            Drag the button below to your Safari or Chrome Bookmarks Bar. While browsing any website, click it to instantly clip the page into MICHI!
+            Drag the button below directly into your Safari or Chrome Bookmarks Bar (or click "Copy Bookmarklet Code" to create a bookmark manually):
           </p>
-          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <a id="btnClipperBookmarklet" href="javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('https://michi-app-five.vercel.app/dashboard.html?url='+u+'&title='+t,'_blank');})();" onclick="event.preventDefault(); if(window.app && window.app.showToast) window.app.showToast('Drag this button to your Bookmarks bar!');" style="background: var(--accent); color: #000; font-weight: 800; font-size: 0.85rem; padding: 8px 16px; border-radius: 6px; text-decoration: none; display: inline-block; cursor: grab;" title="Drag to your Bookmarks Bar">📌 Clip to MICHI</a>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px;">
+            <a id="btnClipperBookmarklet" href="javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('https://michi-app-five.vercel.app/dashboard.html?url='+u+'&title='+t,'_blank');})();" style="background: var(--accent); color: #000; font-weight: 800; font-size: 0.85rem; padding: 8px 16px; border-radius: 6px; text-decoration: none; display: inline-block; cursor: grab;" title="Click & Drag to your Bookmarks Bar">📌 Clip to MICHI</a>
             <button type="button" id="btnCopyBookmarkletCode" onclick="navigator.clipboard.writeText('javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open(\'https://michi-app-five.vercel.app/dashboard.html?url=\'+u+\'&title=\'+t,\'_blank\');})();'); if(window.app && window.app.showToast) window.app.showToast('Copied 1-Click Web Clipper code to clipboard!');" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.8rem; padding: 8px 12px; border-radius: 6px; cursor: pointer;">Copy Bookmarklet Code</button>
           </div>
+          <p style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">
+            💡 <em>How to use:</em> While reading any website (e.g. YouTube, news article, blog), click <strong>"📌 Clip to MICHI"</strong> on your Bookmarks Bar to instantly clip it!
+          </p>
         </div>
 
         <!-- Method 2: iPhone / iPad Share Sheet -->
