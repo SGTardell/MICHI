@@ -712,12 +712,7 @@ header::before {
 #leftPageDay,
 #leftPageMonthYear,
 .page-big-date,
-.page-day-name,
-.right-page-header-title,
-.binder-modal #franklinDateTitle,
-.binder-modal #leftPageNum,
-.binder-modal #leftPageDay,
-.binder-modal #leftPageMonthYear,
+/* 🍃 Gentle Breeze (Soyokaze / Default) — Natural Logo & Dark Slate Date Text */
 [data-theme="soyokaze"] #franklinDateTitle,
 [data-theme="soyokaze"] #leftPageNum,
 [data-theme="soyokaze"] #leftPageDay,
@@ -725,25 +720,16 @@ header::before {
 [data-theme="soyokaze"] .page-big-date,
 [data-theme="soyokaze"] .page-day-name,
 [data-theme="soyokaze"] .right-page-header-title,
-[data-theme="shizuka"] #franklinDateTitle,
-[data-theme="shizuka"] #leftPageNum,
-[data-theme="shizuka"] #leftPageDay,
-[data-theme="shizuka"] #leftPageMonthYear,
-[data-theme="shizuka"] .page-big-date,
-[data-theme="shizuka"] .page-day-name,
-[data-theme="shizuka"] .right-page-header-title {
-  color: var(--text-main) !important;
+body[data-theme="soyokaze"] #franklinDateTitle,
+body[data-theme="soyokaze"] .right-page-header-title {
+  color: #1E293B !important;
   font-weight: 800 !important;
 }
 
-/* 🍃 Gentle Breeze (Soyokaze / Default) — Natural Logo & Dark Slate Date Text */
-.franklin-logo-img,
-.binder-page img.franklin-logo-img,
-#franklinModalOverlay img.franklin-logo-img,
-[data-theme="soyokaze"] .franklin-logo-img,
+[data-theme="soyokaze"] img.franklin-logo-img,
 [data-theme="soyokaze"] .binder-page img.franklin-logo-img,
-[data-theme="shizuka"] .franklin-logo-img,
-[data-theme="shizuka"] .binder-page img.franklin-logo-img {
+#franklinModalOverlay[data-theme="soyokaze"] img.franklin-logo-img,
+body[data-theme="soyokaze"] img.franklin-logo-img {
   filter: none !important;
   opacity: 1 !important;
 }
@@ -756,10 +742,6 @@ header::before {
 [data-theme="glacier"] .page-big-date,
 [data-theme="glacier"] .page-day-name,
 [data-theme="glacier"] .right-page-header-title,
-[data-theme="glacier"] .binder-modal #franklinDateTitle,
-[data-theme="glacier"] .binder-modal #leftPageNum,
-[data-theme="glacier"] .binder-modal #leftPageDay,
-[data-theme="glacier"] .binder-modal #leftPageMonthYear,
 [data-theme="dark"] #franklinDateTitle,
 [data-theme="dark"] #leftPageNum,
 [data-theme="dark"] #leftPageDay,
@@ -767,19 +749,41 @@ header::before {
 [data-theme="dark"] .page-big-date,
 [data-theme="dark"] .page-day-name,
 [data-theme="dark"] .right-page-header-title,
-[data-theme="dark"] .binder-modal #franklinDateTitle,
-[data-theme="dark"] .binder-modal #leftPageNum,
-[data-theme="dark"] .binder-modal #leftPageDay,
-[data-theme="dark"] .binder-modal #leftPageMonthYear,
 [data-theme="sumi"] #franklinDateTitle,
 [data-theme="sumi"] #leftPageNum,
 [data-theme="sumi"] #leftPageDay,
 [data-theme="sumi"] #leftPageMonthYear,
 [data-theme="sumi"] .page-big-date,
 [data-theme="sumi"] .page-day-name,
-[data-theme="sumi"] .right-page-header-title {
+[data-theme="sumi"] .right-page-header-title,
+body[data-theme="glacier"] #franklinDateTitle,
+body[data-theme="glacier"] .right-page-header-title,
+body[data-theme="dark"] #franklinDateTitle,
+body[data-theme="dark"] .right-page-header-title,
+body[data-theme="sumi"] #franklinDateTitle,
+body[data-theme="sumi"] .right-page-header-title,
+#franklinModalOverlay[data-theme="glacier"] #franklinDateTitle,
+#franklinModalOverlay[data-theme="glacier"] .right-page-header-title,
+#franklinModalOverlay[data-theme="dark"] #franklinDateTitle,
+#franklinModalOverlay[data-theme="dark"] .right-page-header-title {
   color: #F2F6FB !important;
   font-weight: 800 !important;
+}
+
+/* Crisp Pure White Logo Filter in Glacier Range & Signature Dark */
+[data-theme="glacier"] img.franklin-logo-img,
+[data-theme="glacier"] .binder-page img.franklin-logo-img,
+[data-theme="dark"] img.franklin-logo-img,
+[data-theme="dark"] .binder-page img.franklin-logo-img,
+[data-theme="sumi"] img.franklin-logo-img,
+[data-theme="sumi"] .binder-page img.franklin-logo-img,
+body[data-theme="glacier"] img.franklin-logo-img,
+body[data-theme="dark"] img.franklin-logo-img,
+body[data-theme="sumi"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="glacier"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="dark"] img.franklin-logo-img {
+  filter: brightness(0) invert(1) !important;
+  opacity: 1 !important;
 }
 
 /* 📅 3 Mini Calendars High Contrast in Glacier Range & Signature Dark */
@@ -821,20 +825,6 @@ header::before {
   font-weight: 800 !important;
 }
 
-/* Crisp Pure White Logo Filter in Glacier Range & Signature Dark */
-[data-theme="glacier"] .binder-page img.franklin-logo-img,
-[data-theme="glacier"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="glacier"] img.franklin-logo-img,
-[data-theme="dark"] .binder-page img.franklin-logo-img,
-[data-theme="dark"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="dark"] img.franklin-logo-img,
-[data-theme="sumi"] .binder-page img.franklin-logo-img,
-[data-theme="sumi"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="sumi"] img.franklin-logo-img {
-  filter: brightness(0) invert(1) !important;
-  opacity: 1 !important;
-}
-
 /* 🧊 Arctic Chill — Dark Midnight Blue Date Text, Dark Logo, Dark Mini-Calendars, Light Haze Controls */
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
@@ -843,10 +833,10 @@ header::before {
 [data-theme="arctic"] .page-big-date,
 [data-theme="arctic"] .page-day-name,
 [data-theme="arctic"] .right-page-header-title,
-[data-theme="arctic"] .binder-modal #franklinDateTitle,
-[data-theme="arctic"] .binder-modal #leftPageNum,
-[data-theme="arctic"] .binder-modal #leftPageDay,
-[data-theme="arctic"] .binder-modal #leftPageMonthYear {
+body[data-theme="arctic"] #franklinDateTitle,
+body[data-theme="arctic"] .right-page-header-title,
+#franklinModalOverlay[data-theme="arctic"] #franklinDateTitle,
+#franklinModalOverlay[data-theme="arctic"] .right-page-header-title {
   color: #112A46 !important;
   font-weight: 800 !important;
 }
@@ -873,9 +863,10 @@ header::before {
   font-weight: 800 !important;
 }
 
+[data-theme="arctic"] img.franklin-logo-img,
 [data-theme="arctic"] .binder-page img.franklin-logo-img,
-[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="arctic"] img.franklin-logo-img {
+body[data-theme="arctic"] img.franklin-logo-img,
+#franklinModalOverlay[data-theme="arctic"] img.franklin-logo-img {
   filter: brightness(0) !important;
   opacity: 1 !important;
 }
