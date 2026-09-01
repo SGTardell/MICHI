@@ -604,11 +604,24 @@ header::before {
 }
 
 [data-theme="arctic"] .controls-bar p,
-[data-theme="arctic"] #tab-all span,
+[data-theme="arctic"] #tab-all div > div > span:first-child,
 [data-theme="arctic"] #tab-ideas p,
 [data-theme="arctic"] #tab-ideas .empty-state,
 [data-theme="arctic"] #tab-ideas div[style*="grid-column: 1/-1"] p {
   color: #112A46 !important;
+  font-weight: 800 !important;
+}
+
+/* Number of Records / Count Badge on Home & Tab Boards in Arctic Chill */
+[data-theme="arctic"] #tab-all span[style*="border-radius"],
+[data-theme="arctic"] span[style*="border-radius: 12px"],
+[data-theme="arctic"] span[style*="border-radius:12px"],
+[data-theme="arctic"] span[style*="border-radius: 9999px"],
+[data-theme="arctic"] .count-badge,
+[data-theme="arctic"] .record-count {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
   font-weight: 800 !important;
 }
 
@@ -724,6 +737,7 @@ header::before {
 }
 
 /* 🍃 Gentle Breeze (Soyokaze / Default) — Dark Slate Date Text & Dark Visible Logo */
+/* 🍃 Gentle Breeze (Soyokaze / Default) — Natural Logo & Dark Slate Date Text */
 .franklin-logo-img,
 .binder-page img.franklin-logo-img,
 #franklinModalOverlay img.franklin-logo-img,
@@ -731,11 +745,11 @@ header::before {
 [data-theme="soyokaze"] .binder-page img.franklin-logo-img,
 [data-theme="shizuka"] .franklin-logo-img,
 [data-theme="shizuka"] .binder-page img.franklin-logo-img {
-  filter: brightness(0.15) !important;
+  filter: none !important;
   opacity: 1 !important;
 }
 
-/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Crisp Pure White Date, Headings, Calendars & Logo */
+/* ❄️ Arctic Chill (Glacier Range) — Dark Midnight Blue Date Text, Dark Logo, Dark Mini-Calendars, Bright Controls */
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
@@ -746,7 +760,41 @@ header::before {
 [data-theme="arctic"] .binder-modal #franklinDateTitle,
 [data-theme="arctic"] .binder-modal #leftPageNum,
 [data-theme="arctic"] .binder-modal #leftPageDay,
-[data-theme="arctic"] .binder-modal #leftPageMonthYear,
+[data-theme="arctic"] .binder-modal #leftPageMonthYear {
+  color: #112A46 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .page-mini-cal {
+  color: #112A46 !important;
+  background-color: #F2F6FB !important;
+  border: 1px solid #4D6E91 !important;
+}
+
+[data-theme="arctic"] .page-mini-cal strong,
+[data-theme="arctic"] .page-mini-cal div {
+  color: #112A46 !important;
+}
+
+[data-theme="arctic"] #plannerUserBadge,
+[data-theme="arctic"] #plannerFontSelect,
+[data-theme="arctic"] #btnSaveFranklinPlanner,
+[data-theme="arctic"] #btnCloseFranklinModal,
+[data-theme="arctic"] .btn-page-flip {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+  border: 1px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .binder-page img.franklin-logo-img,
+[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
+[data-theme="arctic"] img.franklin-logo-img {
+  filter: brightness(0) !important;
+  opacity: 1 !important;
+}
+
+/* 🌙 Signature Dark (Sumi / Winter) — Crisp Pure White Date, Headings, Calendars & White Logo */
 [data-theme="dark"] #franklinDateTitle,
 [data-theme="dark"] #leftPageNum,
 [data-theme="dark"] #leftPageDay,
@@ -765,37 +813,22 @@ header::before {
 [data-theme="sumi"] .page-big-date,
 [data-theme="sumi"] .page-day-name,
 [data-theme="sumi"] .right-page-header-title {
-  color: #FFFFFF !important;
+  color: #F2F6FB !important;
   font-weight: 800 !important;
 }
 
-/* 📅 3 Mini Calendars Contrast in Glacier Range & Signature Dark */
-[data-theme="arctic"] .page-mini-cal,
 [data-theme="dark"] .page-mini-cal,
 [data-theme="sumi"] .page-mini-cal {
-  color: #FFFFFF !important;
+  color: #F2F6FB !important;
   background: rgba(255, 255, 255, 0.12) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
-[data-theme="arctic"] .page-mini-cal strong,
-[data-theme="arctic"] .page-mini-cal div,
 [data-theme="dark"] .page-mini-cal strong,
 [data-theme="dark"] .page-mini-cal div,
 [data-theme="sumi"] .page-mini-cal strong,
 [data-theme="sumi"] .page-mini-cal div {
-  color: #FFFFFF !important;
-}
-
-[data-theme="arctic"] #plannerUserBadge,
-[data-theme="arctic"] #plannerFontSelect,
-[data-theme="arctic"] #btnSaveFranklinPlanner,
-[data-theme="arctic"] #btnCloseFranklinModal,
-[data-theme="arctic"] .btn-page-flip {
-  background-color: #F2F6FB !important;
-  color: #112A46 !important;
-  border: 1px solid #4D6E91 !important;
-  font-weight: 800 !important;
+  color: #F2F6FB !important;
 }
 
 [data-theme="dark"] #plannerUserBadge,
@@ -809,18 +842,11 @@ header::before {
 [data-theme="sumi"] #btnCloseFranklinModal,
 [data-theme="sumi"] .btn-page-flip {
   background-color: #34506D !important;
-  color: #FFFFFF !important;
+  color: #F2F6FB !important;
   border: 1px solid #4D6E91 !important;
   font-weight: 800 !important;
 }
 
-/* Crisp Pure White Logo in Glacier Range & Signature Dark */
-.binder-page img.franklin-logo-img,
-#franklinModalOverlay img.franklin-logo-img,
-.franklin-logo-img,
-[data-theme="arctic"] .binder-page img.franklin-logo-img,
-[data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
-[data-theme="arctic"] img.franklin-logo-img,
 [data-theme="dark"] .binder-page img.franklin-logo-img,
 [data-theme="dark"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="dark"] img.franklin-logo-img,
@@ -828,7 +854,7 @@ header::before {
 [data-theme="sumi"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="sumi"] img.franklin-logo-img {
   filter: brightness(0) invert(1) !important;
-  opacity: 1 !important;
+  opacity: 0.98 !important;
 }
 
 /* 🌙 Signature Dark (Sumi / Winter) — Light White Text, Light White Logo, Dark Glass Controls */
