@@ -723,6 +723,7 @@ header::before {
   font-weight: 800 !important;
 }
 
+/* 🍃 Gentle Breeze (Soyokaze / Default) — Dark Slate Date Text & Dark Visible Logo */
 .franklin-logo-img,
 .binder-page img.franklin-logo-img,
 #franklinModalOverlay img.franklin-logo-img,
@@ -734,7 +735,7 @@ header::before {
   opacity: 1 !important;
 }
 
-/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Light White Date Text & White Logo */
+/* ❄️ Arctic Chill (Glacier Range) & 🌙 Signature Dark (Sumi / Winter) — Crisp Pure White Date, Headings, Calendars & Logo */
 [data-theme="arctic"] #franklinDateTitle,
 [data-theme="arctic"] #leftPageNum,
 [data-theme="arctic"] #leftPageDay,
@@ -764,8 +765,26 @@ header::before {
 [data-theme="sumi"] .page-big-date,
 [data-theme="sumi"] .page-day-name,
 [data-theme="sumi"] .right-page-header-title {
-  color: #F2F6FB !important;
+  color: #FFFFFF !important;
   font-weight: 800 !important;
+}
+
+/* 📅 3 Mini Calendars Contrast in Glacier Range & Signature Dark */
+[data-theme="arctic"] .page-mini-cal,
+[data-theme="dark"] .page-mini-cal,
+[data-theme="sumi"] .page-mini-cal {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme="arctic"] .page-mini-cal strong,
+[data-theme="arctic"] .page-mini-cal div,
+[data-theme="dark"] .page-mini-cal strong,
+[data-theme="dark"] .page-mini-cal div,
+[data-theme="sumi"] .page-mini-cal strong,
+[data-theme="sumi"] .page-mini-cal div {
+  color: #FFFFFF !important;
 }
 
 [data-theme="arctic"] #plannerUserBadge,
@@ -790,12 +809,15 @@ header::before {
 [data-theme="sumi"] #btnCloseFranklinModal,
 [data-theme="sumi"] .btn-page-flip {
   background-color: #34506D !important;
-  color: #F2F6FB !important;
+  color: #FFFFFF !important;
   border: 1px solid #4D6E91 !important;
   font-weight: 800 !important;
 }
 
-/* White Transparent PNG MICHI Logo in Glacier Range & Signature Dark */
+/* Crisp Pure White Logo in Glacier Range & Signature Dark */
+.binder-page img.franklin-logo-img,
+#franklinModalOverlay img.franklin-logo-img,
+.franklin-logo-img,
 [data-theme="arctic"] .binder-page img.franklin-logo-img,
 [data-theme="arctic"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="arctic"] img.franklin-logo-img,
@@ -806,7 +828,7 @@ header::before {
 [data-theme="sumi"] #franklinModalOverlay img.franklin-logo-img,
 [data-theme="sumi"] img.franklin-logo-img {
   filter: brightness(0) invert(1) !important;
-  opacity: 0.98 !important;
+  opacity: 1 !important;
 }
 
 /* 🌙 Signature Dark (Sumi / Winter) — Light White Text, Light White Logo, Dark Glass Controls */
