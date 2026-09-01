@@ -612,14 +612,16 @@ header::before {
   font-weight: 800 !important;
 }
 
-/* Number of Records / Count Badge on Home & Tab Boards in Arctic Chill */
+/* Number of Records / Count Badge & Project/Plan Badges on Home & Tab Boards in Arctic Chill */
 [data-theme="arctic"] #tab-all span[style*="border-radius"],
 [data-theme="arctic"] span[style*="border-radius: 12px"],
 [data-theme="arctic"] span[style*="border-radius:12px"],
 [data-theme="arctic"] span[style*="border-radius: 9999px"],
 [data-theme="arctic"] .count-badge,
 [data-theme="arctic"] .board-record-count,
-[data-theme="arctic"] .record-count {
+[data-theme="arctic"] .record-count,
+[data-theme="arctic"] .project-kind-badge,
+[data-theme="arctic"] .project-board-stage-badge {
   color: #F2F6FB !important;
   font-weight: 800 !important;
 }

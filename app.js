@@ -5066,14 +5066,14 @@ class MichiApp {
     card.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 8px;">
         <div style="display: flex; align-items: center; gap: 6px; overflow: hidden; flex: 1; min-width: 0;">
-          <span style="background: rgba(56, 189, 248, 0.15); color: var(--stage-focus); border: 1px solid rgba(56, 189, 248, 0.35); font-size: 0.68rem; font-weight: 800; padding: 1px 6px; border-radius: 8px; white-space: nowrap;">
+          <span class="project-kind-badge" style="background: rgba(56, 189, 248, 0.25); color: var(--text-main) !important; border: 1px solid rgba(56, 189, 248, 0.5); font-size: 0.68rem; font-weight: 800; padding: 1px 6px; border-radius: 8px; white-space: nowrap;">
             ${kindBadge}
           </span>
           <h4 style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0;">
             ${this.escapeHtml(projectName)}
           </h4>
         </div>
-        <span class="project-board-stage-badge" style="background: #F2F6FB; color: #112A46; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap; border: 1px solid var(--border);">
+        <span class="project-board-stage-badge" style="background: var(--bg-card); color: var(--text-main) !important; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap; border: 1px solid var(--border);">
           ${stageName}
         </span>
       </div>
