@@ -1189,11 +1189,11 @@ class MichiApp {
       const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
 
       this.switchTab('ideas');
-      this.openWebClipModal();
-      
-      if (this.webClipUrl) this.webClipUrl.value = targetUrl;
-      if (this.webClipTitle) this.webClipTitle.value = sharedTitle || 'Shared Web Capture';
-      if (this.webClipContent) this.webClipContent.value = `Shared from iPhone via Share Sheet: ${sharedUrl}`;
+      this.openWebClipModal(null, {
+        url: targetUrl,
+        title: sharedTitle || 'Shared Web Capture',
+        content: `Shared from iPhone via Share Sheet: ${sharedUrl}`
+      });
 
       this.showToast('📲 Received web link from iPhone Share Sheet!');
     }
@@ -1888,13 +1888,13 @@ class MichiApp {
     }
   }
 
-  openWebClipModal(targetProjectName) {
-    this.currentUploadedImageDataUrl = '';
-    if (this.webClipTitle) this.webClipTitle.value = '';
-    if (this.webClipUrl) this.webClipUrl.value = '';
+  openWebClipModal(targetProjectName, initialData = {}) {
+    this.currentUploadedImageDataUrl = initialData.imageUrl || '';
+    if (this.webClipTitle) this.webClipTitle.value = initialData.title || '';
+    if (this.webClipUrl) this.webClipUrl.value = initialData.url || '';
     if (this.customWebCategoryWrapper) this.customWebCategoryWrapper.style.display = 'none';
     if (this.webClipCustomCategory) this.webClipCustomCategory.value = '';
-    if (this.webClipContent) this.webClipContent.value = '';
+    if (this.webClipContent) this.webClipContent.value = initialData.content || '';
 
     // Populate Brain Dump Category Dropdown dynamically
     if (this.webClipCategory) {
@@ -1987,22 +1987,35 @@ class MichiApp {
     if (this.webClipUrl && !this.webClipUrl.dataset.bound) {
       this.webClipUrl.dataset.bound = 'true';
       const handleUrlInput = () => {
-        const val = this.webClipUrl.value.trim();
-        const isImg = /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(val);
-        if (isImg && val) {
+        const val = this.webClipUrl ? this.webClipUrl.value.trim() : '';
+        if (!val) return;
+        const isDirectImg = /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(val);
+        if (isDirectImg) {
           this.currentUploadedImageDataUrl = val;
           if (imgPreviewEl) imgPreviewEl.src = val;
           if (imgPreviewContainer) imgPreviewContainer.style.display = 'block';
-        }
-        if (val && this.webClipTitle && !this.webClipTitle.value.trim()) {
-          try {
-            const domain = new URL(val).hostname.replace('www.', '');
-            this.webClipTitle.value = domain.charAt(0).toUpperCase() + domain.slice(1);
-          } catch(e) {}
+        } else {
+          this.fetchWebMetadata(val).then(meta => {
+            if (meta) {
+              if (meta.title && this.webClipTitle && !this.webClipTitle.value.trim()) {
+                this.webClipTitle.value = meta.title;
+              }
+              if (meta.description && this.webClipContent && !this.webClipContent.value.trim()) {
+                this.webClipContent.value = meta.description;
+              }
+              if (meta.imageUrl && !this.currentUploadedImageDataUrl) {
+                if (imgPreviewEl) imgPreviewEl.src = meta.imageUrl;
+                if (imgPreviewContainer) imgPreviewContainer.style.display = 'block';
+              }
+            }
+          });
         }
       };
       this.webClipUrl.addEventListener('input', handleUrlInput);
       this.webClipUrl.addEventListener('paste', () => setTimeout(handleUrlInput, 50));
+      if (this.webClipUrl.value.trim()) {
+        setTimeout(handleUrlInput, 100);
+      }
     }
 
     // Image File Reader Listener
@@ -2073,13 +2086,105 @@ class MichiApp {
     }
   }
 
+  async fetchWebMetadata(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return null;
+    let cleanUrl = rawUrl.trim();
+    if (!cleanUrl) return null;
+    if (!/^https?:\/\//i.test(cleanUrl)) {
+      cleanUrl = 'https://' + cleanUrl;
+    }
+
+    let domain = '';
+    try {
+      domain = new URL(cleanUrl).hostname.replace('www.', '');
+    } catch (e) {
+      return null;
+    }
+
+    let result = {
+      title: '',
+      description: '',
+      imageUrl: '',
+      faviconUrl: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+      domain: domain,
+      cleanUrl: cleanUrl
+    };
+
+    const isValidImage = (imgUrl) => {
+      if (!imgUrl || typeof imgUrl !== 'string') return false;
+      const lower = imgUrl.toLowerCase();
+      if (lower.includes('photo-1522199755839') || lower.includes('photo-1498050108023') || lower.includes('photo-1486312338219') || lower.includes('photo-1517694712202') || (lower.includes('laptop') && lower.includes('unsplash'))) {
+        return false;
+      }
+      return true;
+    };
+
+    // Tier 1: Microlink API
+    try {
+      const res = await fetch(`https://api.microlink.io?url=${encodeURIComponent(cleanUrl)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.status === 'success' && data.data) {
+          if (data.data.title) result.title = data.data.title;
+          if (data.data.description) result.description = data.data.description;
+          if (data.data.image && isValidImage(data.data.image.url)) {
+            result.imageUrl = data.data.image.url;
+          }
+        }
+      }
+    } catch (e) {}
+
+    // Tier 2: Dub.co Metatags API Fallback
+    if (!result.imageUrl || !result.title) {
+      try {
+        const res = await fetch(`https://api.dub.co/metatags?url=${encodeURIComponent(cleanUrl)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data) {
+            if (!result.title && data.title) result.title = data.title;
+            if (!result.description && data.description) result.description = data.description;
+            if (!result.imageUrl && isValidImage(data.image)) result.imageUrl = data.image;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // Tier 3: Jsonlink API Fallback
+    if (!result.imageUrl) {
+      try {
+        const res = await fetch(`https://jsonlink.io/api?url=${encodeURIComponent(cleanUrl)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data) {
+            if (!result.title && data.title) result.title = data.title;
+            if (!result.description && data.description) result.description = data.description;
+            if (isValidImage(data.images && data.images[0])) result.imageUrl = data.images[0];
+          }
+        }
+      } catch (e) {}
+    }
+
+    // Tier 4: Google High-Res Favicon Fallback if no cover photo found
+    if (!result.imageUrl) {
+      result.imageUrl = result.faviconUrl;
+    }
+
+    return result;
+  }
+
   saveWebClip() {
     const targetTypeSelect = document.getElementById('webClipTargetType');
     const projSelect = document.getElementById('webClipProjectSelect');
     const isProjectTarget = targetTypeSelect && targetTypeSelect.value === 'project';
 
     let title = this.webClipTitle ? this.webClipTitle.value.trim() : '';
-    const url = this.webClipUrl ? this.webClipUrl.value.trim() : '';
+    let rawUrl = this.webClipUrl ? this.webClipUrl.value.trim() : '';
+    
+    let cleanUrl = rawUrl;
+    if (cleanUrl && !/^https?:\/\//i.test(cleanUrl)) {
+      cleanUrl = 'https://' + cleanUrl;
+    }
+
     const imageUrl = this.currentUploadedImageDataUrl || '';
     let category = this.webClipCategory ? this.webClipCategory.value : 'General';
     let content = this.webClipContent ? this.webClipContent.value.trim() : '';
@@ -2116,9 +2221,18 @@ class MichiApp {
     }
 
     if (!title) {
-      if (url) title = url;
-      else if (imageUrl) title = 'Image Upload ' + new Date().toLocaleDateString();
-      else return;
+      if (cleanUrl) {
+        try {
+          const dom = new URL(cleanUrl).hostname.replace('www.', '');
+          title = dom.charAt(0).toUpperCase() + dom.slice(1);
+        } catch(e) {
+          title = cleanUrl;
+        }
+      } else if (imageUrl) {
+        title = 'Image Upload ' + new Date().toLocaleDateString();
+      } else {
+        return;
+      }
     }
 
     const targetProject = isProjectTarget ? (projSelect ? projSelect.value : 'General') : (this.selectedProject !== 'all' ? this.selectedProject : 'General');
@@ -2157,12 +2271,12 @@ class MichiApp {
       project: targetProject,
       title: title,
       content: content,
-      url: url,
+      url: cleanUrl,
       imageUrl: imageUrl,
       category: category,
       assignedTo: assignedName || '',
       tags: [category, isProjectTarget ? 'Project Resource' : 'Brain Dump'],
-      color: isProjectTarget ? '#009967' : '#009967',
+      color: '#009967',
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
     };
 
@@ -2170,42 +2284,24 @@ class MichiApp {
     this.state.items.unshift(newClip);
     this.closeWebClipModal();
     this.saveState();
+    this.render();
 
-    if (url && !imageUrl) {
-      fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.status === 'success' && data.data) {
-            if (data.data.image && data.data.image.url) {
-              const fetchedImg = data.data.image.url;
-              const lower = fetchedImg.toLowerCase();
-              const isGenericLaptopStock = lower.includes('photo-1522199755839') || lower.includes('photo-1498050108023') || lower.includes('photo-1486312338219') || lower.includes('photo-1517694712202') || (lower.includes('laptop') && lower.includes('unsplash'));
-              if (!isGenericLaptopStock) {
-                newClip.imageUrl = fetchedImg;
-              }
-            }
-            if (!newClip.imageUrl) {
-              try {
-                const domain = new URL(url).hostname;
-                newClip.imageUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-              } catch (e) {}
-            }
-            if (data.data.title && (!newClip.title || newClip.title === url)) {
-              newClip.title = data.data.title;
-            }
-            this.saveState();
-            this.render();
+    if (cleanUrl && !imageUrl) {
+      this.fetchWebMetadata(cleanUrl).then(meta => {
+        if (meta) {
+          if (meta.imageUrl) newClip.imageUrl = meta.imageUrl;
+          if (meta.title && (!newClip.title || newClip.title === cleanUrl || newClip.title === rawUrl)) {
+            newClip.title = meta.title;
           }
-        })
-        .catch(e => {
-          try {
-            const domain = new URL(url).hostname;
-            newClip.imageUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-            this.saveState();
-            this.render();
-          } catch (err) {}
-        });
+          if (meta.description && (!newClip.content || newClip.content.length < 5)) {
+            newClip.content = meta.description;
+          }
+          this.saveState();
+          this.render();
+        }
+      });
     }
+
     this.updateCategoryDropdowns();
     
     if (isProjectTarget) {
