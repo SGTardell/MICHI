@@ -604,10 +604,8 @@ header::before {
 }
 
 [data-theme="arctic"] .controls-bar p,
-[data-theme="arctic"] #tab-all div > div > span:first-child,
 [data-theme="arctic"] #tab-ideas p,
-[data-theme="arctic"] #tab-ideas .empty-state,
-[data-theme="arctic"] #tab-ideas div[style*="grid-column: 1/-1"] p {
+[data-theme="arctic"] #tab-ideas .empty-state {
   color: #112A46 !important;
   font-weight: 800 !important;
 }
@@ -619,6 +617,9 @@ header::before {
 [data-theme="arctic"] span[style*="border-radius: 9999px"],
 [data-theme="arctic"] .count-badge,
 [data-theme="arctic"] .board-record-count,
+[data-theme="arctic"] #tab-all .board-record-count,
+[data-theme="arctic"] #tab-all span.board-record-count,
+[data-theme="arctic"] .cards-grid .board-record-count,
 [data-theme="arctic"] .record-count,
 [data-theme="arctic"] .project-kind-badge,
 [data-theme="arctic"] .project-board-stage-badge {
