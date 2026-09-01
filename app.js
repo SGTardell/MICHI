@@ -1235,21 +1235,24 @@ class MichiApp {
 
   checkIncomingShareTarget() {
     const params = new URLSearchParams(window.location.search);
-    const sharedUrl = params.get('url') || params.get('text');
-    const sharedTitle = params.get('title');
+    const sharedUrl = params.get('url') || params.get('text') || params.get('share_url') || params.get('shareUrl') || params.get('link') || params.get('clip');
+    const sharedTitle = params.get('title') || params.get('share_title') || params.get('shareTitle') || params.get('name');
 
     if (sharedUrl) {
       const cleanUrlMatch = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
       const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
 
       this.switchTab('ideas');
-      this.openWebClipModal(null, {
-        url: targetUrl,
-        title: sharedTitle || 'Shared Web Capture',
-        content: `Shared from iPhone via Share Sheet: ${sharedUrl}`
-      });
+      setTimeout(() => {
+        this.openWebClipModal(null, {
+          url: targetUrl,
+          title: sharedTitle || 'Shared Web Capture',
+          content: sharedTitle ? `Web clip: ${sharedTitle}` : `Shared web clip: ${targetUrl}`
+        });
+        this.showToast('📲 Received web clip for Brain Dump!');
+      }, 300);
 
-      this.showToast('📲 Received web link from iPhone Share Sheet!');
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   }
 

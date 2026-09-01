@@ -257,6 +257,9 @@
           <button type="button" id="btnAddWebClip" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px;">
             + Add Brain Dump / Clip
           </button>
+          <button type="button" id="btnWebClipperTools" onclick="var o=document.getElementById('webClipperModalOverlay'); if(o){ o.classList.add('active'); o.style.display='flex'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            🔗 Web Clipper Setup
+          </button>
         </div>
       </div>
 
@@ -1671,6 +1674,47 @@
           <div class="guide-tab-item" data-chapter="5" onclick="if(window.app && window.app.goToTutorialSlide) window.app.goToTutorialSlide(5);" style="writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 3px; font-size: 0.68rem; font-weight: 800; color: var(--text-main); background: var(--bg-card); border: 1px solid var(--border); border-radius: 0 4px 4px 0; cursor: pointer; text-align: center;">05 Sync</div>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Web Clipper Setup & Bookmarklet Modal -->
+  <div class="modal-overlay" id="webClipperModalOverlay" style="background: rgba(0, 0, 0, 0.6) !important; backdrop-filter: blur(4px) !important;">
+    <div class="modal-content" style="max-width: 520px; width: 92%; background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45); position: relative; margin: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);">Web Clipper & Share Tools</h3>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">Clip web pages & articles directly into MICHI Brain Dump</span>
+        </div>
+        <button type="button" onclick="var o=document.getElementById('webClipperModalOverlay'); if(o){ o.classList.remove('active'); o.style.display='none'; }" style="background: transparent; border: none; font-size: 1.4rem; color: var(--text-main); font-weight: 800; cursor: pointer;" title="Close Modal">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+        <!-- Method 1: Desktop 1-Click Bookmarklet -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">1. Desktop Browser (1-Click Bookmarklet)</h4>
+          <p style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 10px;">
+            Drag the button below to your Safari or Chrome Bookmarks Bar. While browsing any website, click it to instantly clip the page into MICHI!
+          </p>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <a id="btnClipperBookmarklet" href="javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('https://michi-app-five.vercel.app/dashboard.html?url='+u+'&title='+t,'_blank');})();" onclick="event.preventDefault(); if(window.app && window.app.showToast) window.app.showToast('Drag this button to your Bookmarks bar!');" style="background: var(--accent); color: #000; font-weight: 800; font-size: 0.85rem; padding: 8px 16px; border-radius: 6px; text-decoration: none; display: inline-block; cursor: grab;" title="Drag to your Bookmarks Bar">📌 Clip to MICHI</a>
+            <button type="button" id="btnCopyBookmarkletCode" onclick="navigator.clipboard.writeText('javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open(\'https://michi-app-five.vercel.app/dashboard.html?url=\'+u+\'&title=\'+t,\'_blank\');})();'); if(window.app && window.app.showToast) window.app.showToast('Copied 1-Click Web Clipper code to clipboard!');" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.8rem; padding: 8px 12px; border-radius: 6px; cursor: pointer;">Copy Bookmarklet Code</button>
+          </div>
+        </div>
+
+        <!-- Method 2: iPhone / iPad Share Sheet -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">2. iPhone & iPad Share Sheet (PWA)</h4>
+          <p style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 8px;">
+            To make <strong>MICHI</strong> appear in your native iPhone Share menu alongside Evernote & Notes:
+          </p>
+          <ol style="font-size: 0.82rem; color: var(--text-main); font-weight: 700; margin-left: 1.2rem; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+            <li>Open <code>https://michi-app-five.vercel.app/dashboard.html</code> in <strong>Safari</strong> on your iPhone.</li>
+            <li>Tap the <strong>Share</strong> icon (square with upward arrow) at the bottom of Safari.</li>
+            <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
+            <li>Done! When sharing web links from Safari or Chrome, tap <strong>Share ➔ MICHI</strong> to clip directly to your Brain Dump!</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
