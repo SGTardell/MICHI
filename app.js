@@ -1231,23 +1231,51 @@ class MichiApp {
     }
   }
 
-  checkIncomingShareTarget() {
+  async checkIncomingShareTarget() {
+    let payload = null;
+
+    // 1. Check for POST Share Target payload cached by sw.js (images, text, hashtags)
+    if ('caches' in window) {
+      try {
+        const cache = await caches.open('michi-shared-clips');
+        const match = await cache.match('/latest-share.json');
+        if (match) {
+          payload = await match.json();
+          await cache.delete('/latest-share.json');
+        }
+      } catch (e) {}
+    }
+
+    // 2. Fallback to GET query parameters
     const params = new URLSearchParams(window.location.search);
     const sharedUrl = params.get('url') || params.get('text') || params.get('share_url') || params.get('shareUrl') || params.get('link') || params.get('clip');
     const sharedTitle = params.get('title') || params.get('share_title') || params.get('shareTitle') || params.get('name');
 
-    if (sharedUrl) {
+    if (!payload && sharedUrl) {
       const cleanUrlMatch = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
       const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
+      payload = {
+        url: targetUrl,
+        title: sharedTitle || 'Shared Web Capture',
+        text: sharedTitle ? `Web clip: ${sharedTitle}` : `Shared web clip: ${targetUrl}`
+      };
+    }
 
+    if (payload) {
       this.switchTab('ideas');
       setTimeout(() => {
-        this.openWebClipModal(null, {
-          url: targetUrl,
-          title: sharedTitle || 'Shared Web Capture',
-          content: sharedTitle ? `Web clip: ${sharedTitle}` : `Shared web clip: ${targetUrl}`
-        });
-        this.showToast('📲 Received web clip for Brain Dump!');
+        const clipData = {
+          url: payload.url || '',
+          title: payload.title || 'Shared Web Capture',
+          content: payload.text || payload.content || '',
+          imageUrl: payload.image || '',
+          tags: payload.tags || []
+        };
+        if (payload.tags && payload.tags.length > 0) {
+          clipData.content = (clipData.content + ' ' + payload.tags.map(t => '#' + t).join(' ')).trim();
+        }
+        this.openWebClipModal(null, clipData);
+        this.showToast('📲 Received clip for Brain Dump!');
       }, 300);
 
       window.history.replaceState({}, document.title, window.location.pathname);
