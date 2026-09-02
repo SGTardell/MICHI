@@ -1703,18 +1703,30 @@
           </p>
         </div>
 
-        <!-- Method 2: iPhone / iPad Share Sheet -->
+        <!-- Method 2: iPhone & iPad Share Options -->
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
-          <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">2. iPhone & iPad Share Sheet (PWA)</h4>
-          <p style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 8px;">
-            To make <strong>MICHI</strong> appear in your native iPhone Share menu alongside Evernote & Notes:
-          </p>
-          <ol style="font-size: 0.82rem; color: var(--text-main); font-weight: 700; margin-left: 1.2rem; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
-            <li>Open <code>https://michi-app-five.vercel.app/dashboard.html</code> in <strong>Safari</strong> on your iPhone.</li>
-            <li>Tap the <strong>Share</strong> icon (square with upward arrow) at the bottom of Safari.</li>
-            <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
-            <li>Done! When sharing web links from Safari or Chrome, tap <strong>Share ➔ MICHI</strong> to clip directly to your Brain Dump!</li>
-          </ol>
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">2. iPhone & iPad Web Clipper Options</h4>
+          
+          <div style="margin-bottom: 12px;">
+            <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 4px;">Option A: iPhone Share Sheet (Home Screen PWA)</strong>
+            <ol style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-left: 1.2rem; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+              <li><strong>Delete</strong> any existing MICHI app icon from your iPhone Home screen.</li>
+              <li>Open <code>https://michi-app-five.vercel.app/dashboard.html</code> in <strong>Safari</strong>.</li>
+              <li>Tap <strong>Share ➔ Add to Home Screen</strong>.</li>
+              <li>Launch MICHI from your Home Screen once. Now open Safari, tap <strong>Share</strong>, and select <strong>MICHI</strong>!</li>
+            </ol>
+          </div>
+
+          <div>
+            <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 4px;">Option B: iPhone Safari Bookmarklet (1-Tap Safari Clip)</strong>
+            <p style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 6px;">
+              Add a 1-tap clipper bookmark to your iPhone Safari Favorites bar:
+            </p>
+            <button type="button" onclick="navigator.clipboard.writeText('javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open(\'https://michi-app-five.vercel.app/dashboard.html?url=\'+u+\'&title=\'+t,\'_blank\');})();'); if(window.app && window.app.showToast) window.app.showToast('Copied Clipper code! Paste as URL in Safari Bookmark.');" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-bottom: 6px;">Copy iOS Clipper Code</button>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">
+              Bookmark any page in Safari ➔ Edit Bookmark ➔ Replace URL with copied code ➔ Name it "Clip to MICHI".
+            </p>
+          </div>
         </div>
       </div>
     </div>
