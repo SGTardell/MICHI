@@ -20,9 +20,7 @@
             }).catch(function() {});
           }
           if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-            navigator.serviceWorker.getRegistrations().then(regs => {
-              regs.forEach(r => r.unregister());
-            }).catch(function() {});
+            navigator.serviceWorker.register('./sw.js').catch(function() {});
           }
         }
       } catch (err) {}

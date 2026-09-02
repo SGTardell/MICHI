@@ -1,10 +1,8 @@
-// Unregister any active Service Worker to eliminate cache reload loops
+// Ensure Service Worker is registered for PWA Share Target on iOS/Android
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  try {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      for (let r of regs) r.unregister();
-    }).catch(() => {});
-  } catch(e) {}
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
 }
 
 /**
