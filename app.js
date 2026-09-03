@@ -1828,6 +1828,9 @@ class MichiApp {
       });
     }
 
+    // Initialize Voice Dictation, Quick Paste Bar, and Smart Clipboard Auto-Detect
+    this.initBrainDumpVoiceAndClipboard();
+
     // Log Issue Modal
     if (this.btnCloseIssueModal) this.btnCloseIssueModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeIssueModal(); });
     if (this.btnCancelIssueModal) this.btnCancelIssueModal.addEventListener('click', (e) => { if (e) { e.stopPropagation(); e.preventDefault(); } this.closeIssueModal(); });
@@ -4039,6 +4042,182 @@ class MichiApp {
     document.execCommand('copy');
     document.body.removeChild(textarea);
     this.showToast(`Copied ${label} to clipboard!`);
+  }
+
+  initBrainDumpVoiceAndClipboard() {
+    const quickPasteInput = document.getElementById('brainDumpQuickPasteInput');
+    const btnQuickSave = document.getElementById('btnBrainDumpQuickSave');
+    const btnVoice = document.getElementById('btnBrainDumpVoice');
+    const voiceStatusText = document.getElementById('voiceStatusText');
+    const btnModalVoice = document.getElementById('btnModalVoiceDictate');
+    const modalVoiceStatusText = document.getElementById('modalVoiceStatusText');
+    const webClipContent = document.getElementById('webClipContent');
+    const clipboardBanner = document.getElementById('clipboardAutoDetectBanner');
+    const detectedUrlText = document.getElementById('clipboardDetectedUrlText');
+    const btnClipDetectedUrl = document.getElementById('btnClipDetectedUrl');
+    const btnDismissBanner = document.getElementById('btnDismissClipboardBanner');
+
+    // Quick Save handler from Inline Paste Bar
+    const handleQuickSave = () => {
+      if (!quickPasteInput) return;
+      const text = quickPasteInput.value.trim();
+      if (!text) {
+        this.showToast('Please type a thought or paste a URL first');
+        return;
+      }
+
+      const isUrl = /^https?:\/\//i.test(text);
+      if (isUrl) {
+        this.openWebClipModal(null, { url: text, title: 'Clipped Link', category: 'General' });
+      } else {
+        const newItem = {
+          id: 'item_' + Date.now(),
+          type: 'ideas',
+          title: text.length > 50 ? text.substring(0, 50) + '...' : text,
+          content: text,
+          category: 'Inbox',
+          createdAt: new Date().toISOString(),
+          tags: ['#braindump']
+        };
+        this.state.items.unshift(newItem);
+        this.saveState();
+        this.render();
+        this.showToast('Saved to Brain Dump!');
+      }
+      quickPasteInput.value = '';
+    };
+
+    if (btnQuickSave) btnQuickSave.addEventListener('click', handleQuickSave);
+    if (quickPasteInput) {
+      quickPasteInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleQuickSave();
+        }
+      });
+    }
+
+    // Voice Dictation Implementation (Speech Recognition)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let activeRecognition = null;
+    let activeInputTarget = null;
+    let activeStatusLabel = null;
+    let activeBtnElement = null;
+
+    const setupVoiceButton = (btnElement, inputTarget, statusLabel) => {
+      if (!btnElement || !inputTarget) return;
+
+      btnElement.addEventListener('click', () => {
+        if (!SpeechRecognition) {
+          this.showToast('Voice dictation is supported in Safari & Chrome!');
+          return;
+        }
+
+        if (activeRecognition) {
+          activeRecognition.stop();
+          activeRecognition = null;
+          if (activeStatusLabel) activeStatusLabel.textContent = 'Dictate';
+          if (activeBtnElement) activeBtnElement.style.background = '';
+          this.showToast('Voice dictation stopped');
+          return;
+        }
+
+        try {
+          const recognition = new SpeechRecognition();
+          recognition.continuous = false;
+          recognition.interimResults = true;
+          recognition.lang = 'en-US';
+
+          activeRecognition = recognition;
+          activeInputTarget = inputTarget;
+          activeStatusLabel = statusLabel;
+          activeBtnElement = btnElement;
+
+          if (statusLabel) statusLabel.textContent = 'Listening...';
+          btnElement.style.background = 'rgba(239, 68, 68, 0.2)';
+
+          this.showToast('🎙️ Listening... Speak your note now');
+
+          recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+              transcript += event.results[i][0].transcript;
+            }
+            const existing = activeInputTarget.value ? activeInputTarget.value + ' ' : '';
+            activeInputTarget.value = existing + transcript;
+          };
+
+          recognition.onerror = (event) => {
+            console.warn('Speech recognition error:', event.error);
+            if (activeStatusLabel) activeStatusLabel.textContent = 'Dictate';
+            if (activeBtnElement) activeBtnElement.style.background = '';
+            activeRecognition = null;
+          };
+
+          recognition.onend = () => {
+            if (activeStatusLabel) activeStatusLabel.textContent = 'Dictate';
+            if (activeBtnElement) activeBtnElement.style.background = '';
+            activeRecognition = null;
+          };
+
+          recognition.start();
+        } catch (err) {
+          console.error('Speech recognition error:', err);
+          if (statusLabel) statusLabel.textContent = 'Dictate';
+          if (btnElement) btnElement.style.background = '';
+          activeRecognition = null;
+        }
+      });
+    };
+
+    setupVoiceButton(btnVoice, quickPasteInput, voiceStatusText);
+    setupVoiceButton(btnModalVoice, webClipContent, modalVoiceStatusText);
+
+    // Smart Clipboard Auto-Detect Handler
+    let lastAutoDetectedUrl = '';
+
+    const checkClipboardForUrl = async () => {
+      if (!clipboardBanner || !detectedUrlText) return;
+      if (!navigator.clipboard || !navigator.clipboard.readText) return;
+
+      try {
+        const text = await navigator.clipboard.readText();
+        const trimmed = text ? text.trim() : '';
+        const isUrl = /^https?:\/\/[^\s]+$/i.test(trimmed);
+
+        if (isUrl && trimmed !== lastAutoDetectedUrl) {
+          detectedUrlText.textContent = trimmed.length > 50 ? trimmed.substring(0, 50) + '...' : trimmed;
+          clipboardBanner.style.display = 'flex';
+          this.detectedClipboardUrl = trimmed;
+        }
+      } catch (err) {
+        // Silent catch if clipboard permission is denied or inactive
+      }
+    };
+
+    if (btnClipDetectedUrl) {
+      btnClipDetectedUrl.addEventListener('click', () => {
+        if (this.detectedClipboardUrl) {
+          lastAutoDetectedUrl = this.detectedClipboardUrl;
+          if (clipboardBanner) clipboardBanner.style.display = 'none';
+          this.openWebClipModal(null, { url: this.detectedClipboardUrl, title: 'Clipped Link' });
+        }
+      });
+    }
+
+    if (btnDismissBanner) {
+      btnDismissBanner.addEventListener('click', () => {
+        if (this.detectedClipboardUrl) lastAutoDetectedUrl = this.detectedClipboardUrl;
+        if (clipboardBanner) clipboardBanner.style.display = 'none';
+      });
+    }
+
+    // Check clipboard when window gains focus or when tab switches to 'ideas'
+    window.addEventListener('focus', () => {
+      if (this.currentTab === 'ideas' || this.currentTab === 'all') {
+        checkClipboardForUrl();
+      }
+    });
   }
 
   showToast(message) {

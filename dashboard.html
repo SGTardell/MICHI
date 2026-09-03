@@ -261,6 +261,32 @@
         </div>
       </div>
 
+      <!-- Smart Clipboard Auto-Detect Floating Banner -->
+      <div id="clipboardAutoDetectBanner" style="display: none; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: var(--radius-md); padding: 10px 16px; margin-bottom: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.1rem;">📌</span>
+          <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-main);">Copied link detected: <code id="clipboardDetectedUrlText" style="color: var(--accent); font-weight: 800; font-size: 0.82rem; word-break: break-all;"></code></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" id="btnClipDetectedUrl" style="background: var(--accent); color: #000; font-weight: 800; padding: 6px 14px; border-radius: var(--radius-sm); border: none; cursor: pointer; font-size: 0.82rem;">Save to Brain Dump</button>
+          <button type="button" id="btnDismissClipboardBanner" style="background: transparent; color: var(--text-muted); border: none; font-size: 1.1rem; cursor: pointer; padding: 2px 6px;">✕</button>
+        </div>
+      </div>
+
+      <!-- Quick Paste & Voice Bar -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; box-shadow: var(--shadow-sm);">
+        <div style="flex: 1; min-width: 260px; display: flex; align-items: center; gap: 8px; background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px;">
+          <span style="font-size: 1rem; color: var(--text-muted);">🔗</span>
+          <input type="text" id="brainDumpQuickPasteInput" placeholder="Paste URL or type a quick thought/idea here..." style="width: 100%; border: none; background: transparent; color: var(--text-main); font-size: 0.9rem; outline: none; font-weight: 600;" />
+        </div>
+        <button type="button" id="btnBrainDumpVoice" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.55rem 1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;" title="Dictate voice note">
+          🎙️ <span id="voiceStatusText">Dictate</span>
+        </button>
+        <button type="button" id="btnBrainDumpQuickSave" style="background: var(--accent); color: #000; font-weight: 800; padding: 0.55rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; border: none; font-size: 0.85rem;">
+          + Save to Brain Dump
+        </button>
+      </div>
+
       <!-- Category Filter Pills & View Mode Switcher -->
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap;">
         <div class="filter-pills" id="webCategoryPills">
@@ -963,7 +989,10 @@
 
         <!-- Notes / Summary -->
         <div>
-          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Notes / Summary (Optional)</label>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Notes / Summary (Optional)</label>
+            <button type="button" id="btnModalVoiceDictate" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;">🎙️ <span id="modalVoiceStatusText">Dictate</span></button>
+          </div>
           <textarea id="webClipContent" rows="2" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); resize: vertical;" placeholder="Key takeaways or description..."></textarea>
         </div>
 
