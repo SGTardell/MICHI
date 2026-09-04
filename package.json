@@ -4,7 +4,7 @@
   "description": "MICHI (道) — For Work and Life Engine & 2-Page Digital Planner",
   "main": "dashboard.html",
   "scripts": {
-    "build": "cp -r app.js dashboard.html styles.css index.html guide.html script.js style.css manifest.json sw.js public/ 2>/dev/null || true",
+    "build": "rm -rf public && mkdir -p public && cp app.js dashboard.html styles.css index.html guide.html script.js style.css manifest.json sw.js public/ && cp -r Images public/ 2>/dev/null || true",
     "cap:sync": "npx cap sync",
     "cap:open:ios": "npx cap open ios",
     "cap:open:android": "npx cap open android"
