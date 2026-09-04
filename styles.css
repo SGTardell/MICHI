@@ -592,7 +592,7 @@ header::before {
 [data-theme="arctic"] #btnClipDetectedUrl,
 [data-theme="arctic"] #btnClipDetectedUrlMobile {
   background-color: #1B3B5A !important;
-  color: #F2F6FB !important; /* Light text color for Arctic Chill theme */
+  color: #F2F6FB !important; /* Light Frost text for Arctic Chill */
   border: 1px solid #4D6E91 !important;
   font-weight: 800 !important;
   box-shadow: 0 4px 12px rgba(27, 59, 90, 0.4) !important;
@@ -602,7 +602,7 @@ header::before {
 [data-theme="arctic"] .btn-save-clip:hover,
 [data-theme="arctic"] #btnClipDetectedUrl:hover,
 [data-theme="arctic"] #btnClipDetectedUrlMobile:hover {
-  background-color: #24496E !important;
+  background-color: #234B73 !important;
   color: #FFFFFF !important;
 }
 
@@ -619,18 +619,22 @@ header::before {
 [data-theme="shizuka"] .btn-save-clip,
 [data-theme="shizuka"] #btnClipDetectedUrl,
 [data-theme="shizuka"] #btnClipDetectedUrlMobile {
-  background-color: #009967 !important; /* Corrected bright non-dark background */
-  color: #FFFFFF !important; /* High-contrast white text */
-  border: 1px solid rgba(0, 153, 103, 0.4) !important;
+  background-color: #616363 !important; /* Gentle Breeze Slate Charcoal */
+  color: #F9FEFF !important; /* Gentle Breeze Off-White text */
+  border: 1px solid #484A4A !important;
   font-weight: 800 !important;
-  box-shadow: 0 4px 12px rgba(0, 153, 103, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(97, 99, 99, 0.25) !important;
 }
 
 [data-theme="soyokaze"] #btnBrainDumpQuickSave:hover,
 [data-theme="soyokaze"] .btn-save-clip:hover,
 [data-theme="soyokaze"] #btnClipDetectedUrl:hover,
-[data-theme="soyokaze"] #btnClipDetectedUrlMobile:hover {
-  background-color: #00B378 !important;
+[data-theme="soyokaze"] #btnClipDetectedUrlMobile:hover,
+[data-theme="shizuka"] #btnBrainDumpQuickSave:hover,
+[data-theme="shizuka"] .btn-save-clip:hover,
+[data-theme="shizuka"] #btnClipDetectedUrl:hover,
+[data-theme="shizuka"] #btnClipDetectedUrlMobile:hover {
+  background-color: #484A4A !important;
   color: #FFFFFF !important;
 }
 
@@ -646,6 +650,14 @@ header::before {
   box-shadow: 0 4px 12px rgba(42, 115, 135, 0.4) !important;
 }
 
+[data-theme="glacier"] #btnBrainDumpQuickSave:hover,
+[data-theme="glacier"] .btn-save-clip:hover,
+[data-theme="glacier"] #btnClipDetectedUrl:hover,
+[data-theme="glacier"] #btnClipDetectedUrlMobile:hover {
+  background-color: #34889E !important;
+  color: #FFFFFF !important;
+}
+
 /* MICHI Signature Dark Theme: +Save to Brain Dump Button */
 [data-theme="winter"] #btnBrainDumpQuickSave,
 [data-theme="winter"] .btn-save-clip,
@@ -656,6 +668,14 @@ header::before {
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   font-weight: 800 !important;
   box-shadow: 0 4px 12px rgba(0, 153, 103, 0.35) !important;
+}
+
+[data-theme="winter"] #btnBrainDumpQuickSave:hover,
+[data-theme="winter"] .btn-save-clip:hover,
+[data-theme="winter"] #btnClipDetectedUrl:hover,
+[data-theme="winter"] #btnClipDetectedUrlMobile:hover {
+  background-color: #00B378 !important;
+  color: #FFFFFF !important;
 }
 
 /* Home & Brain Dump Control Labels, Subtitles & High Contrast Text */
