@@ -138,7 +138,10 @@ const defaultState = {
 
 class MichiApp {
   constructor() {
-    localStorage.setItem('michi_logged_in', 'true');
+    if (localStorage.getItem('michi_logged_in') !== 'true') {
+      window.location.replace('index.html');
+      return;
+    }
 
     this.state = this.loadState();
     this.currentTab = 'all';
@@ -166,9 +169,10 @@ class MichiApp {
 
   signOut() {
     localStorage.removeItem('michi_logged_in');
-    this.showToast('🔒 Signed Out. Returning to Sign In screen...');
+    localStorage.removeItem('michi_logged_in_provider');
+    this.showToast('Signed Out. Returning to Sign In screen...');
     setTimeout(() => {
-      window.location.href = 'index.html';
+      window.location.replace('index.html');
     }, 350);
   }
 
@@ -4257,7 +4261,7 @@ class MichiApp {
       sessionStorage.removeItem('MICHI_EXPLICIT_DESKTOP');
     }
     this.applyViewMode(targetMode);
-    this.showToast(targetMode === 'clipper' ? '📱 Switched to Mobile Web Clipper Mode' : '🖥️ Switched to Full Desktop Workspace');
+    this.showToast(targetMode === 'clipper' ? 'Switched to Mobile Web Clipper Mode' : 'Switched to Full Desktop Workspace');
   }
 
   bindMobileClipperEvents() {
@@ -4387,7 +4391,7 @@ class MichiApp {
     if (!this.state.items) this.state.items = [];
     this.state.items.unshift(newClip);
     this.saveState();
-    this.showToast('⚡ Saved clip to Brain Dump!');
+    this.showToast('Saved clip to Brain Dump!');
 
     if (urlInput) urlInput.value = '';
     if (titleInput) titleInput.value = '';
@@ -4445,7 +4449,7 @@ class MichiApp {
         <div class="clipper-card-item">
           <div class="clipper-item-top">
             <div style="display: flex; align-items: center; gap: 8px;">
-              ${favicon ? `<img src="${favicon}" alt="${domain}" style="width: 18px; height: 18px; border-radius: 4px;" onerror="this.style.display='none';" />` : '📌'}
+              ${favicon ? `<img src="${favicon}" alt="${domain}" style="width: 18px; height: 18px; border-radius: 4px;" onerror="this.style.display='none';" />` : ''}
               <h5 class="clipper-item-title">${this.escapeHtml(item.title || 'Untitled Clip')}</h5>
             </div>
             <span style="font-size: 0.72rem; font-weight: 800; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 2px 8px; border-radius: 12px; white-space: nowrap;">
@@ -4455,9 +4459,9 @@ class MichiApp {
           ${item.content && item.content !== item.title ? `<div class="clipper-item-content">${this.escapeHtml(item.content)}</div>` : ''}
           ${item.url ? `<div style="font-size: 0.76rem; color: var(--accent); font-weight: 700; word-break: break-all; margin-top: 2px;">${this.escapeHtml(item.url)}</div>` : ''}
           <div class="clipper-item-actions">
-            ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="btn-clip-action">↗️ Open Link</a>` : ''}
-            ${item.url ? `<button type="button" class="btn-clip-action" onclick="navigator.clipboard.writeText('${item.url}'); if(window.app && window.app.showToast) window.app.showToast('Copied link to clipboard!');">🔗 Copy Link</button>` : ''}
-            <button type="button" class="btn-clip-action" onclick="if(window.app && window.app.deleteItem) window.app.deleteItem('${item.id}');">🗑️ Delete</button>
+            ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="btn-clip-action">Open Link</a>` : ''}
+            ${item.url ? `<button type="button" class="btn-clip-action" onclick="navigator.clipboard.writeText('${item.url}'); if(window.app && window.app.showToast) window.app.showToast('Copied link to clipboard!');">Copy Link</button>` : ''}
+            <button type="button" class="btn-clip-action" onclick="if(window.app && window.app.deleteItem) window.app.deleteItem('${item.id}');">Delete</button>
           </div>
         </div>
       `;

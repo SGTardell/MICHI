@@ -3314,6 +3314,41 @@ header {
   }
 }
 
+.btn-provider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm, 8px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.google-provider-btn {
+  background: var(--bg-card, #D9DDDE);
+  border: 1px solid var(--border, #B2B7B9);
+  color: var(--text-main, #616363);
+}
+
+.google-provider-btn:hover {
+  background: var(--bg-card-hover, #E4E8E9);
+  transform: translateY(-1px);
+}
+
+.facebook-provider-btn {
+  background: #1877F2;
+  border: 1px solid #1877F2;
+  color: #FFFFFF;
+}
+
+.facebook-provider-btn:hover {
+  background: #166FE5;
+  transform: translateY(-1px);
+}
+
 .btn-logout-link {
   color: var(--text-main) !important;
   background-color: var(--bg-card) !important;
@@ -3375,14 +3410,16 @@ header {
 }
 
 /* 📱 Dedicated Mobile Web Clipper & View Switcher Styles */
+body.mode-clipper header,
 body.mode-clipper .header-row-nav,
 body.mode-clipper .sidebar,
-body.mode-clipper .tab-content {
+body.mode-clipper .tab-content,
+body.mode-clipper .app-layout-wrapper > header {
   display: none !important;
 }
 
 body.mode-clipper .workspace {
-  padding: 0.8rem !important;
+  padding: 0.5rem !important;
   margin: 0 !important;
   max-width: 100% !important;
 }

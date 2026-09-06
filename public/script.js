@@ -147,7 +147,9 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in", "true");
             localStorage.setItem("michi_logged_in_provider", "Account");
             localStorage.setItem("michi_current_user", username);
-            window.location.replace("dashboard.html");
+            
+            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
         });
     }
 
@@ -212,7 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("rememberedUsername", regUsername);
             localStorage.setItem("michi_is_new_tester", "true");
 
-            window.location.replace("dashboard.html");
+            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
         });
     }
 
@@ -248,7 +251,8 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in_provider", "Google");
             localStorage.setItem("michi_current_user", userAccount);
             localStorage.setItem("rememberedUsername", userAccount);
-            window.location.replace("dashboard.html");
+            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
         });
     }
 
@@ -283,7 +287,8 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in_provider", "Facebook");
             localStorage.setItem("michi_current_user", userAccount);
             localStorage.setItem("rememberedUsername", userAccount);
-            window.location.replace("dashboard.html");
+            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
         });
     }
 });
