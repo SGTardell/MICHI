@@ -15,7 +15,7 @@
           window.location.replace('index.html');
           return;
         }
-        const CURRENT_BUILD = 'v213';
+        const CURRENT_BUILD = 'v227';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=226">
+  <link rel="stylesheet" href="styles.css?v=227">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -125,8 +125,6 @@
           <button type="button" id="btnCreateNewProjectHeader" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.4rem 0.95rem; border-radius: 20px; font-size: 0.82rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Create a new project or plan workspace">
             + Project / Plan
           </button>
-
-          <button class="nav-tab" data-tab="calendar" style="font-weight: 800; font-size: 0.88rem;">Calendar & Planner</button>
         </div>
 
         <!-- ⚙️ Settings Nav Button (Far Right of Date/Time Nav Bar) -->
@@ -163,6 +161,10 @@
         <button class="sidebar-nav-item" data-sidebar-tab="planner" title="Authentic 2-Page Digital Binder Planner">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="M17.5 17.5 16 16.25V14"/><circle cx="16" cy="16" r="6"/></svg>
           <span class="nav-label">Daily Planner</span>
+        </button>
+        <button class="sidebar-nav-item" data-sidebar-tab="calendar" title="Calendar View">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="nav-label">Calendar</span>
         </button>
         <button class="sidebar-nav-item" data-sidebar-tab="contacts" title="Contacts & Stakeholders">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
