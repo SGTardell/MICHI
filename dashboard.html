@@ -15,7 +15,7 @@
           window.location.replace('index.html');
           return;
         }
-        const CURRENT_BUILD = 'v229';
+        const CURRENT_BUILD = 'v230';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=229">
+  <link rel="stylesheet" href="styles.css?v=230">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -550,7 +550,7 @@
       </div>
 
       <!-- 4-Stage Connected Pipeline Timeline View -->
-      <div id="projectLineageContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; position: relative;">
+      <div id="projectLineageContainer" style="display: grid; grid-template-columns: repeat(4, minmax(240px, 1fr)); gap: 1rem; position: relative; overflow-x: auto; padding-bottom: 8px;">
         <!-- Dynamically rendered 4 columns (Spark -> Structure -> Focus -> Product) -->
       </div>
     </div>

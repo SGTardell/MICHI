@@ -1569,17 +1569,14 @@ class MichiApp {
         this.selectedProject = chosen;
         this.currentStageFilter = 'all';
 
-        if (chosen === 'all' || chosen === 'projects' || chosen === 'plans') {
-          this.switchTab('all', chosen);
-          if (chosen === 'all') {
-            this.showToast('Showing All Active Projects & Plans');
-          } else if (chosen === 'projects') {
-            this.showToast('Showing Active Work Projects');
-          } else if (chosen === 'plans') {
-            this.showToast('Showing Active Life Plans');
-          }
+        this.switchTab('all', chosen);
+        if (chosen === 'all') {
+          this.showToast('Showing All Active Projects & Plans');
+        } else if (chosen === 'projects') {
+          this.showToast('Showing Active Work Projects');
+        } else if (chosen === 'plans') {
+          this.showToast('Showing Active Life Plans');
         } else {
-          this.switchTab('project-path', chosen);
           this.showToast(`Opened Board: "${chosen}"`);
         }
         this.render();
@@ -1592,17 +1589,14 @@ class MichiApp {
         this.currentStageFilter = 'all';
         this.selectedProject = chosen;
 
-        if (chosen === 'all' || chosen === 'projects' || chosen === 'plans') {
-          this.switchTab('all', chosen);
-          if (chosen === 'all') {
-            this.showToast('Showing All Active Projects & Plans');
-          } else if (chosen === 'projects') {
-            this.showToast('Showing Work Projects Only');
-          } else if (chosen === 'plans') {
-            this.showToast('Showing Life Plans Only');
-          }
+        this.switchTab('all', chosen);
+        if (chosen === 'all') {
+          this.showToast('Showing All Active Projects & Plans');
+        } else if (chosen === 'projects') {
+          this.showToast('Showing Work Projects Only');
+        } else if (chosen === 'plans') {
+          this.showToast('Showing Life Plans Only');
         } else {
-          this.switchTab('project-path', chosen);
           this.showToast(`Opened Workspace Board: "${chosen}"`);
         }
         this.render();
