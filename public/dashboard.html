@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=221">
+  <link rel="stylesheet" href="styles.css?v=223">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -128,19 +128,15 @@
       </div>
     </div>
 
-    <!-- HEADER ROW 2: Primary Horizontal Menu Navigation Bar -->
+    <!-- HEADER ROW 2: Primary Horizontal Controls & Workspace Bar -->
     <div class="header-row-nav" style="padding-left: 0;">
       <nav class="nav-tabs" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap; width: 100%;">
-        <!-- Live Date & Time Widget (Placed directly to the left of the Home button above the sidebar) -->
+        <!-- Live Date & Time Widget -->
         <div id="headerLiveClock" style="display: flex; align-items: center; gap: 8px; background: var(--bg-card); border: 1px solid var(--border); padding: 4px 10px; border-radius: var(--radius-sm); white-space: nowrap; margin-right: 4px;" title="Current Live Date & Time">
           <span id="headerClockDate" style="font-size: 0.78rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.3px;">Wed, Aug 19, 2026</span>
           <span style="color: var(--text-muted); font-size: 0.8rem;">•</span>
           <span id="headerClockTime" style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); font-family: -apple-system, monospace;">3:49 PM</span>
         </div>
-
-        <button class="nav-tab active" data-tab="all" style="font-weight: 800; font-size: 0.88rem;">Home</button>
-        <button class="nav-tab" data-tab="ideas" style="font-weight: 800; font-size: 0.88rem;">Brain Dump</button>
-
 
         <!-- Active Project / Plan Dropdown Selector with Label -->
         <div style="display: flex; align-items: center; gap: 6px;">
@@ -155,8 +151,6 @@
         </button>
 
         <button class="nav-tab" data-tab="calendar" style="font-weight: 800; font-size: 0.88rem;">Calendar & Planner</button>
-        <button class="nav-tab" data-tab="contacts" style="font-weight: 800; font-size: 0.88rem;">Contacts</button>
-        <button class="nav-tab" data-tab="vault" style="font-weight: 800; font-size: 0.88rem;">Vault (Protected)</button>
       </nav>
     </div>
   </header>
