@@ -3349,6 +3349,17 @@ header {
   transform: translateY(-1px);
 }
 
+.apple-provider-btn {
+  background: #000000;
+  border: 1px solid #000000;
+  color: #FFFFFF;
+}
+
+.apple-provider-btn:hover {
+  background: #1C1C1E;
+  transform: translateY(-1px);
+}
+
 .btn-logout-link {
   color: var(--text-main) !important;
   background-color: var(--bg-card) !important;

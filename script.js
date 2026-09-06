@@ -256,6 +256,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const btnAppleAuth = document.getElementById("btnAppleAuth");
+    if (btnAppleAuth) {
+        btnAppleAuth.addEventListener("click", () => {
+            let userAccount = prompt("Apple ID Security Challenge: Enter your Apple ID / Email:", "user@icloud.com");
+            if (!userAccount || !userAccount.trim()) return;
+            userAccount = userAccount.trim();
+
+            const userKey = "michi_user_pass_" + userAccount.toLowerCase();
+            let storedPass = localStorage.getItem(userKey);
+
+            if (!storedPass) {
+                let setPass = prompt("First time Sign In with Apple for '" + userAccount + "'. Set a security password (min 4 chars):");
+                if (setPass && setPass.trim().length >= 4) {
+                    localStorage.setItem(userKey, setPass.trim());
+                    storedPass = setPass.trim();
+                } else {
+                    alert("Security Challenge Failed: A password is required to register this account.");
+                    return;
+                }
+            } else {
+                let passCheck = prompt("Apple ID Verification: Enter password for '" + userAccount + "':");
+                if (!passCheck || passCheck.trim() !== storedPass) {
+                    alert("ACCESS DENIED: Incorrect password for Apple ID '" + userAccount + "'.");
+                    return;
+                }
+            }
+
+            localStorage.setItem("michi_logged_in", "true");
+            localStorage.setItem("michi_logged_in_provider", "Apple");
+            localStorage.setItem("michi_current_user", userAccount);
+            localStorage.setItem("rememberedUsername", userAccount);
+            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+        });
+    }
+
     const btnFacebookAuth = document.getElementById("btnFacebookAuth");
     if (btnFacebookAuth) {
         btnFacebookAuth.addEventListener("click", () => {
