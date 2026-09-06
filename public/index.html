@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" sizes="192x192" href="Images/Michi_Appicon.png">
   <link rel="apple-touch-icon" sizes="512x512" href="Images/Michi_Appicon.png">
   <link rel="icon" type="image/png" href="Images/Michi_Appicon.png">
-  <link rel="stylesheet" href="styles.css?v=219">
+  <link rel="stylesheet" href="styles.css?v=222">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script>
     (function() {
@@ -351,6 +351,139 @@
       color: #F2F6FB !important;
       text-decoration: underline !important;
     }
+
+    /* 🌙 MICHI Signature Dark Theme Overrides for Sign In & Create Account Screen */
+    [data-theme="winter"] body {
+      background: #090d16 !important;
+      color: #f8fafc !important;
+    }
+
+    [data-theme="winter"] .auth-card {
+      background: #1e293b !important;
+      border: 1px solid #334155 !important;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.4) !important;
+      color: #f8fafc !important;
+    }
+
+    [data-theme="winter"] .auth-brand img {
+      filter: brightness(0) invert(1) !important;
+    }
+
+    [data-theme="winter"] .auth-brand h1 {
+      color: #f8fafc !important;
+    }
+
+    [data-theme="winter"] .auth-brand p {
+      color: #94a3b8 !important;
+    }
+
+    [data-theme="winter"] .auth-tabs {
+      background: #0f172a !important;
+      border-color: #334155 !important;
+    }
+
+    [data-theme="winter"] .auth-tab {
+      color: #94a3b8 !important;
+    }
+
+    [data-theme="winter"] .auth-tab.active {
+      background: #1e293b !important;
+      color: #f8fafc !important;
+      font-weight: 800 !important;
+      border-color: #334155 !important;
+    }
+
+    [data-theme="winter"] .form-group label {
+      color: #f8fafc !important;
+      font-weight: 800 !important;
+    }
+
+    [data-theme="winter"] .input-wrapper input,
+    [data-theme="winter"] .input-wrapper input[type="text"],
+    [data-theme="winter"] .input-wrapper input[type="password"] {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border: 1.5px solid #334155 !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="winter"] .input-wrapper input::placeholder {
+      color: #64748b !important;
+      opacity: 0.9 !important;
+    }
+
+    [data-theme="winter"] .toggle-password {
+      color: #94a3b8 !important;
+    }
+
+    [data-theme="winter"] .form-options {
+      color: #f8fafc !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="winter"] .form-options label {
+      color: #f8fafc !important;
+    }
+
+    [data-theme="winter"] #rememberMe {
+      accent-color: #38bdf8 !important;
+    }
+
+    [data-theme="winter"] #linkResetPass {
+      color: #38bdf8 !important;
+    }
+
+    [data-theme="winter"] .btn-submit {
+      background: #38bdf8 !important;
+      color: #0f172a !important;
+      border: 1px solid #38bdf8 !important;
+      font-weight: 800 !important;
+    }
+
+    [data-theme="winter"] .btn-submit:hover {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #0284c7 !important;
+    }
+
+    [data-theme="winter"] .btn-provider {
+      background: #0f172a !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+
+    [data-theme="winter"] .apple-provider-btn {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border-color: #334155 !important;
+    }
+
+    [data-theme="winter"] .form-footer {
+      color: #f8fafc !important;
+    }
+
+    [data-theme="winter"] .form-footer a {
+      color: #38bdf8 !important;
+      text-decoration: underline !important;
+    }
+
+    /* Prevent WebKit/Safari/Chrome autofill from forcing bright white background on inputs */
+    .input-wrapper input:-webkit-autofill,
+    .input-wrapper input:-webkit-autofill:hover, 
+    .input-wrapper input:-webkit-autofill:focus, 
+    .input-wrapper input:-webkit-autofill:active {
+      -webkit-text-fill-color: var(--text-main, #616363) !important;
+      -webkit-box-shadow: 0 0 0px 1000px var(--bg-main, #F9FEFF) inset !important;
+      transition: background-color 5000s ease-in-out 0s !important;
+    }
+
+    [data-theme="winter"] .input-wrapper input:-webkit-autofill,
+    [data-theme="winter"] .input-wrapper input:-webkit-autofill:hover, 
+    [data-theme="winter"] .input-wrapper input:-webkit-autofill:focus, 
+    [data-theme="winter"] .input-wrapper input:-webkit-autofill:active {
+      -webkit-text-fill-color: #f8fafc !important;
+      -webkit-box-shadow: 0 0 0px 1000px #0f172a inset !important;
+    }
   </style>
 </head>
 <body>
@@ -416,7 +549,7 @@
 
       <div class="form-options">
         <label>
-          <input type="checkbox" id="rememberMe" style="accent-color: var(--stage-structure, #009967);" />
+          <input type="checkbox" id="rememberMe" style="accent-color: var(--accent, #38bdf8);" />
           Remember me
         </label>
         <a href="#" id="linkResetPass" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: underline;">Reset Password</a>
