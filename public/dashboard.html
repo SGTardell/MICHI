@@ -15,7 +15,7 @@
           window.location.replace('index.html');
           return;
         }
-        const CURRENT_BUILD = 'v227';
+        const CURRENT_BUILD = 'v228';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=227">
+  <link rel="stylesheet" href="styles.css?v=228">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -120,11 +120,6 @@
             <select id="globalProjectFilter" style="padding: 0.4rem 0.85rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;" title="Select Active Project or Plan Workspace">
             </select>
           </div>
-
-          <!-- + New Plan / Project Button -->
-          <button type="button" id="btnCreateNewProjectHeader" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 0.4rem 0.95rem; border-radius: 20px; font-size: 0.82rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Create a new project or plan workspace">
-            + Project / Plan
-          </button>
         </div>
 
         <!-- ⚙️ Settings Nav Button (Far Right of Date/Time Nav Bar) -->
