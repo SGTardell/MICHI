@@ -688,24 +688,34 @@ header::before {
   color: #FFFFFF !important;
 }
 
-/* MICHI Signature Dark Theme: +Save to Brain Dump Button */
+/* MICHI Signature Dark Theme: +Save to Brain Dump, Dictate & Clipper Buttons */
 [data-theme="winter"] #btnBrainDumpQuickSave,
 [data-theme="winter"] .btn-save-clip,
 [data-theme="winter"] #btnClipDetectedUrl,
-[data-theme="winter"] #btnClipDetectedUrlMobile {
-  background-color: #009967 !important;
-  color: #FFFFFF !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+[data-theme="winter"] #btnClipDetectedUrlMobile,
+[data-theme="winter"] #btnBrainDumpVoice,
+[data-theme="winter"] #btnWebClipperTools,
+[data-theme="winter"] #btnAddWebClip,
+[data-theme="winter"] #btnToggleMobileClipperHeader {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
   font-weight: 800 !important;
-  box-shadow: 0 4px 12px rgba(0, 153, 103, 0.35) !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.4) !important;
 }
 
 [data-theme="winter"] #btnBrainDumpQuickSave:hover,
 [data-theme="winter"] .btn-save-clip:hover,
 [data-theme="winter"] #btnClipDetectedUrl:hover,
-[data-theme="winter"] #btnClipDetectedUrlMobile:hover {
-  background-color: #00B378 !important;
-  color: #FFFFFF !important;
+[data-theme="winter"] #btnClipDetectedUrlMobile:hover,
+[data-theme="winter"] #btnBrainDumpVoice:hover,
+[data-theme="winter"] #btnWebClipperTools:hover,
+[data-theme="winter"] #btnAddWebClip:hover,
+[data-theme="winter"] #btnToggleMobileClipperHeader:hover {
+  background-color: #263449 !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
+  transform: translateY(-1px);
 }
 
 /* Home & Brain Dump Control Labels, Subtitles & High Contrast Text */
