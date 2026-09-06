@@ -1568,17 +1568,21 @@ class MichiApp {
         const chosen = e.target.value;
         this.selectedProject = chosen;
         this.currentStageFilter = 'all';
-        this.render();
 
-        if (chosen === 'all') {
-          this.showToast('Showing All Active Projects & Plans');
-        } else if (chosen === 'projects') {
-          this.showToast('Showing Active Work Projects');
-        } else if (chosen === 'plans') {
-          this.showToast('Showing Active Life Plans');
+        if (chosen === 'all' || chosen === 'projects' || chosen === 'plans') {
+          this.switchTab('all', chosen);
+          if (chosen === 'all') {
+            this.showToast('Showing All Active Projects & Plans');
+          } else if (chosen === 'projects') {
+            this.showToast('Showing Active Work Projects');
+          } else if (chosen === 'plans') {
+            this.showToast('Showing Active Life Plans');
+          }
         } else {
+          this.switchTab('project-path', chosen);
           this.showToast(`Opened Board: "${chosen}"`);
         }
+        this.render();
       });
     }
 
@@ -1587,18 +1591,21 @@ class MichiApp {
         const chosen = e.target.value;
         this.currentStageFilter = 'all';
         this.selectedProject = chosen;
-        this.switchTab('all');
-        this.render();
 
-        if (chosen === 'all') {
-          this.showToast('Showing All Active Projects & Plans');
-        } else if (chosen === 'projects') {
-          this.showToast('Showing Work Projects Only');
-        } else if (chosen === 'plans') {
-          this.showToast('Showing Life Plans Only');
+        if (chosen === 'all' || chosen === 'projects' || chosen === 'plans') {
+          this.switchTab('all', chosen);
+          if (chosen === 'all') {
+            this.showToast('Showing All Active Projects & Plans');
+          } else if (chosen === 'projects') {
+            this.showToast('Showing Work Projects Only');
+          } else if (chosen === 'plans') {
+            this.showToast('Showing Life Plans Only');
+          }
         } else {
+          this.switchTab('project-path', chosen);
           this.showToast(`Opened Workspace Board: "${chosen}"`);
         }
+        this.render();
       });
     }
 
@@ -2409,6 +2416,8 @@ class MichiApp {
 
     if (overrideProject !== undefined) {
       this.selectedProject = overrideProject;
+    } else if (targetTab === 'all') {
+      this.selectedProject = 'all';
     }
 
     if (targetTab === 'vault' && !this.vaultUnlocked) {
@@ -5069,13 +5078,11 @@ class MichiApp {
     };
 
     if (this.globalProjectFilter) {
-      const cur = this.selectedProject || '';
-      let html = '';
-      if (projects.length === 0) {
-        html = `<option value="" disabled selected>-- No Active Projects or Plans --</option>`;
-      } else {
+      const cur = this.selectedProject || 'all';
+      let html = `<option value="all" ${cur === 'all' ? 'selected' : ''}>📁 All Active Projects & Plans</option>`;
+      if (projects.length > 0) {
         projects.forEach(p => {
-          const isSelected = p === cur || (cur === 'all' && p === projects[0]);
+          const isSelected = p === cur;
           html += `<option value="${this.escapeHtml(p)}" ${isSelected ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
         });
       }
