@@ -606,36 +606,60 @@ header::before {
   color: #FFFFFF !important;
 }
 
-/* Gentle Breeze Theme: +Save to Brain Dump Button */
+/* Gentle Breeze Theme: +Save to Brain Dump, Dictate & Clipper Buttons */
 :root #btnBrainDumpQuickSave,
 :root .btn-save-clip,
 :root #btnClipDetectedUrl,
 :root #btnClipDetectedUrlMobile,
+:root #btnBrainDumpVoice,
+:root #btnWebClipperTools,
+:root #btnAddWebClip,
 [data-theme="soyokaze"] #btnBrainDumpQuickSave,
 [data-theme="soyokaze"] .btn-save-clip,
 [data-theme="soyokaze"] #btnClipDetectedUrl,
 [data-theme="soyokaze"] #btnClipDetectedUrlMobile,
+[data-theme="soyokaze"] #btnBrainDumpVoice,
+[data-theme="soyokaze"] #btnWebClipperTools,
+[data-theme="soyokaze"] #btnAddWebClip,
 [data-theme="shizuka"] #btnBrainDumpQuickSave,
 [data-theme="shizuka"] .btn-save-clip,
 [data-theme="shizuka"] #btnClipDetectedUrl,
-[data-theme="shizuka"] #btnClipDetectedUrlMobile {
-  background-color: #616363 !important; /* Gentle Breeze Slate Charcoal */
-  color: #F9FEFF !important; /* Gentle Breeze Off-White text */
-  border: 1px solid #484A4A !important;
+[data-theme="shizuka"] #btnClipDetectedUrlMobile,
+[data-theme="shizuka"] #btnBrainDumpVoice,
+[data-theme="shizuka"] #btnWebClipperTools,
+[data-theme="shizuka"] #btnAddWebClip {
+  background-color: var(--bg-card, #D9DDDE) !important;
+  color: var(--text-main, #616363) !important;
+  border: 1px solid var(--border, #B2B7B9) !important;
   font-weight: 800 !important;
-  box-shadow: 0 4px 12px rgba(97, 99, 99, 0.25) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
 }
 
+:root #btnBrainDumpQuickSave:hover,
+:root .btn-save-clip:hover,
+:root #btnClipDetectedUrl:hover,
+:root #btnClipDetectedUrlMobile:hover,
+:root #btnBrainDumpVoice:hover,
+:root #btnWebClipperTools:hover,
+:root #btnAddWebClip:hover,
 [data-theme="soyokaze"] #btnBrainDumpQuickSave:hover,
 [data-theme="soyokaze"] .btn-save-clip:hover,
 [data-theme="soyokaze"] #btnClipDetectedUrl:hover,
 [data-theme="soyokaze"] #btnClipDetectedUrlMobile:hover,
+[data-theme="soyokaze"] #btnBrainDumpVoice:hover,
+[data-theme="soyokaze"] #btnWebClipperTools:hover,
+[data-theme="soyokaze"] #btnAddWebClip:hover,
 [data-theme="shizuka"] #btnBrainDumpQuickSave:hover,
 [data-theme="shizuka"] .btn-save-clip:hover,
 [data-theme="shizuka"] #btnClipDetectedUrl:hover,
-[data-theme="shizuka"] #btnClipDetectedUrlMobile:hover {
-  background-color: #484A4A !important;
-  color: #FFFFFF !important;
+[data-theme="shizuka"] #btnClipDetectedUrlMobile:hover,
+[data-theme="shizuka"] #btnBrainDumpVoice:hover,
+[data-theme="shizuka"] #btnWebClipperTools:hover,
+[data-theme="shizuka"] #btnAddWebClip:hover {
+  background-color: var(--bg-card-hover, #E4E8E9) !important;
+  color: var(--text-main, #616363) !important;
+  border-color: var(--border, #9EA3A5) !important;
+  transform: translateY(-1px);
 }
 
 /* Glacier Range Theme: +Save to Brain Dump Button */

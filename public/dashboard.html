@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=215">
+  <link rel="stylesheet" href="styles.css?v=219">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -370,10 +370,11 @@
         <div style="flex: 1; min-width: 260px; display: flex; align-items: center; gap: 8px; background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px;">
           <input type="text" id="brainDumpQuickPasteInput" placeholder="Paste URL or type a quick thought/idea here..." style="width: 100%; border: none; background: transparent; color: var(--text-main); font-size: 0.9rem; outline: none; font-weight: 600;" />
         </div>
-        <button type="button" id="btnBrainDumpVoice" style="font-weight: 700; padding: 0.55rem 1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;" title="Dictate voice note">
+        <button type="button" id="btnBrainDumpVoice" class="btn-voice-dictate" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 700; padding: 0.55rem 1rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;" title="Dictate voice note">
+          <i class="ri-mic-line"></i>
           <span id="voiceStatusText">Dictate</span>
         </button>
-        <button type="button" id="btnBrainDumpQuickSave" style="font-weight: 800; padding: 0.55rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; border: none; font-size: 0.85rem;">
+        <button type="button" id="btnBrainDumpQuickSave" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 0.55rem 1.2rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
           + Save to Brain Dump
         </button>
       </div>
