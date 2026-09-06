@@ -614,6 +614,7 @@ header::before {
 :root #btnBrainDumpVoice,
 :root #btnWebClipperTools,
 :root #btnAddWebClip,
+:root #btnToggleMobileClipperHeader,
 [data-theme="soyokaze"] #btnBrainDumpQuickSave,
 [data-theme="soyokaze"] .btn-save-clip,
 [data-theme="soyokaze"] #btnClipDetectedUrl,
@@ -621,13 +622,15 @@ header::before {
 [data-theme="soyokaze"] #btnBrainDumpVoice,
 [data-theme="soyokaze"] #btnWebClipperTools,
 [data-theme="soyokaze"] #btnAddWebClip,
+[data-theme="soyokaze"] #btnToggleMobileClipperHeader,
 [data-theme="shizuka"] #btnBrainDumpQuickSave,
 [data-theme="shizuka"] .btn-save-clip,
 [data-theme="shizuka"] #btnClipDetectedUrl,
 [data-theme="shizuka"] #btnClipDetectedUrlMobile,
 [data-theme="shizuka"] #btnBrainDumpVoice,
 [data-theme="shizuka"] #btnWebClipperTools,
-[data-theme="shizuka"] #btnAddWebClip {
+[data-theme="shizuka"] #btnAddWebClip,
+[data-theme="shizuka"] #btnToggleMobileClipperHeader {
   background-color: var(--bg-card, #D9DDDE) !important;
   color: var(--text-main, #616363) !important;
   border: 1px solid var(--border, #B2B7B9) !important;
@@ -642,6 +645,7 @@ header::before {
 :root #btnBrainDumpVoice:hover,
 :root #btnWebClipperTools:hover,
 :root #btnAddWebClip:hover,
+:root #btnToggleMobileClipperHeader:hover,
 [data-theme="soyokaze"] #btnBrainDumpQuickSave:hover,
 [data-theme="soyokaze"] .btn-save-clip:hover,
 [data-theme="soyokaze"] #btnClipDetectedUrl:hover,
@@ -649,13 +653,15 @@ header::before {
 [data-theme="soyokaze"] #btnBrainDumpVoice:hover,
 [data-theme="soyokaze"] #btnWebClipperTools:hover,
 [data-theme="soyokaze"] #btnAddWebClip:hover,
+[data-theme="soyokaze"] #btnToggleMobileClipperHeader:hover,
 [data-theme="shizuka"] #btnBrainDumpQuickSave:hover,
 [data-theme="shizuka"] .btn-save-clip:hover,
 [data-theme="shizuka"] #btnClipDetectedUrl:hover,
 [data-theme="shizuka"] #btnClipDetectedUrlMobile:hover,
 [data-theme="shizuka"] #btnBrainDumpVoice:hover,
 [data-theme="shizuka"] #btnWebClipperTools:hover,
-[data-theme="shizuka"] #btnAddWebClip:hover {
+[data-theme="shizuka"] #btnAddWebClip:hover,
+[data-theme="shizuka"] #btnToggleMobileClipperHeader:hover {
   background-color: var(--bg-card-hover, #E4E8E9) !important;
   color: var(--text-main, #616363) !important;
   border-color: var(--border, #9EA3A5) !important;
