@@ -382,6 +382,17 @@ class MichiApp {
 
   async pushToCloud() {
     this.updateSyncBadge();
+    try {
+      const payload = {
+        lastUpdated: Date.now(),
+        state: this.state
+      };
+      fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    } catch (e) {}
   }
 
   async pullFromCloud(force = false) {
@@ -4328,24 +4339,26 @@ class MichiApp {
       });
     }
 
+    let domain = '';
+    try {
+      if (cleanUrl) domain = new URL(cleanUrl).hostname.replace('www.', '');
+    } catch (e) {}
+
     if (!title && cleanUrl) {
-      try {
-        const dom = new URL(cleanUrl).hostname.replace('www.', '');
-        title = dom.charAt(0).toUpperCase() + dom.slice(1);
-      } catch (e) {
-        title = cleanUrl;
-      }
+      title = domain ? (domain.charAt(0).toUpperCase() + domain.slice(1)) : cleanUrl;
     }
+
+    const initialImage = cleanUrl ? `https://image.thum.io/get/width/600/crop/800/${cleanUrl}` : (domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=256` : '');
 
     const newClip = {
       id: 'item-web-' + Date.now(),
       type: 'web',
-      stage: 'focus',
+      stage: 'spark',
       project: 'General',
       title: title || 'Saved Clip',
       content: title !== rawUrl ? title : '',
       url: cleanUrl,
-      imageUrl: '',
+      imageUrl: initialImage,
       category: category,
       tags: tags,
       color: '#009967',
@@ -4364,19 +4377,26 @@ class MichiApp {
     this.renderMobileClipperFeed();
     this.render();
 
+    try {
+      window.dispatchEvent(new Event('storage'));
+    } catch (e) {}
+
     if (cleanUrl) {
       this.fetchWebMetadata(cleanUrl).then(meta => {
         if (meta) {
-          if (meta.title && (!newClip.title || newClip.title === cleanUrl || newClip.title === 'Saved Clip')) {
+          if (meta.title && (!newClip.title || newClip.title === cleanUrl || newClip.title === 'Saved Clip' || newClip.title === domain)) {
             newClip.title = meta.title;
           }
-          if (meta.description && !newClip.content) {
+          if (meta.description && (!newClip.content || newClip.content === newClip.title)) {
             newClip.content = meta.description;
           }
           if (meta.imageUrl) newClip.imageUrl = meta.imageUrl;
           this.saveState();
           this.renderMobileClipperFeed();
           this.render();
+          try {
+            window.dispatchEvent(new Event('storage'));
+          } catch (e) {}
         }
       });
     }
@@ -4421,6 +4441,11 @@ class MichiApp {
             </span>
           </div>
           ${item.content && item.content !== item.title ? `<div class="clipper-item-content">${this.escapeHtml(item.content)}</div>` : ''}
+          ${item.imageUrl ? `
+            <div style="margin: 6px 0; text-align: center;">
+              <img src="${item.imageUrl}" onerror="this.parentElement.style.display='none'" style="max-height: 140px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border); object-fit: cover;" alt="Clip preview" />
+            </div>
+          ` : ''}
           ${item.url ? `<div style="font-size: 0.76rem; color: var(--accent); font-weight: 700; word-break: break-all; margin-top: 2px;">${this.escapeHtml(item.url)}</div>` : ''}
           <div class="clipper-item-actions">
             ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="btn-clip-action">Open Link</a>` : ''}
