@@ -378,33 +378,149 @@ class MichiApp {
 
   initCloudSync() {
     this.updateSyncBadge();
+    this.pullFromCloud(true);
+
+    if (!this.cloudSyncInterval) {
+      this.cloudSyncInterval = setInterval(() => {
+        this.pullFromCloud();
+      }, 6000);
+    }
+
+    if (!this.cloudSyncListenersBound) {
+      this.cloudSyncListenersBound = true;
+      window.addEventListener('focus', () => this.pullFromCloud(true));
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          this.pullFromCloud(true);
+        }
+      });
+      window.addEventListener('storage', () => {
+        this.render();
+        if (this.viewMode === 'clipper') {
+          this.renderMobileClipperFeed();
+        }
+      });
+    }
+
+    try {
+      if (window.EventSource && !this.eventSourceStream) {
+        const es = new EventSource('https://ntfy.sh/michi_app_sync_channel_2026/sse');
+        es.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data && data.message) {
+              const msg = typeof data.message === 'string' ? JSON.parse(data.message) : data.message;
+              if (msg && msg.action === 'MICHI_CLIP_SYNC' && msg.clip) {
+                this.mergeSingleClip(msg.clip);
+              } else if (msg && (msg.latestClip || msg.state)) {
+                this.pullFromCloud(true);
+              }
+            }
+          } catch (e) {}
+        };
+        this.eventSourceStream = es;
+      }
+    } catch (e) {}
   }
 
-  async pushToCloud() {
+  mergeSingleClip(clip) {
+    if (!clip || !clip.id) return false;
+    if (!this.state.items || !Array.isArray(this.state.items)) {
+      this.state.items = [];
+    }
+    const exists = this.state.items.some(i => i.id === clip.id);
+    if (!exists) {
+      this.state.items.unshift(clip);
+      
+      const cat = clip.category || clip.project;
+      if (cat && cat.trim()) {
+        if (!this.state.customProjects) this.state.customProjects = [];
+        const cleanCat = cat.trim();
+        if (!this.state.customProjects.map(p => (p || '').toLowerCase().trim()).includes(cleanCat.toLowerCase())) {
+          this.state.customProjects.push(cleanCat);
+        }
+      }
+      
+      this.state.lastUpdated = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      this.populateProjectDropdowns();
+      this.render();
+      if (this.viewMode === 'clipper') {
+        this.renderMobileClipperFeed();
+      }
+      this.updateSyncBadge();
+      if (this.showToast) {
+        this.showToast(`📲 Synced clip: ${clip.title || clip.category || 'New Item'}`);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  async pushToCloud(singleClip = null) {
     this.updateSyncBadge();
     try {
-      const payload = {
-        lastUpdated: Date.now(),
-        state: this.state
-      };
-      fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).catch(() => {});
+      if (singleClip && singleClip.id) {
+        const clipPayload = {
+          action: 'MICHI_CLIP_SYNC',
+          clip: singleClip,
+          lastUpdated: Date.now()
+        };
+        fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(clipPayload)
+        }).catch(() => {});
+      } else {
+        const latestItem = (this.state.items && this.state.items.length > 0) ? this.state.items[0] : null;
+        const payload = {
+          action: 'MICHI_STATE_SYNC',
+          lastUpdated: Date.now(),
+          latestClip: latestItem,
+          itemCount: (this.state.items || []).length
+        };
+        fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      }
     } catch (e) {}
   }
 
   async pullFromCloud(force = false) {
-    this.updateSyncBadge();
-  }
-
-  async pullFromCloud(force = false) {
     try {
-      let remoteData = null;
       const cb = 't=' + Date.now();
 
-      // 1. Primary check: Vercel Cloud Sync API (supports 10MB payloads & full persistence)
+      // 1. Primary check: ntfy.sh real-time channel
+      try {
+        const resp = await fetch(`https://ntfy.sh/michi_app_sync_channel_2026/json?poll=1&since=all&${cb}`);
+        if (resp.ok) {
+          const text = await resp.text();
+          const lines = text.trim().split('\n');
+          for (let i = lines.length - 1; i >= 0; i--) {
+            if (!lines[i].trim()) continue;
+            try {
+              const parsedLine = JSON.parse(lines[i]);
+              let payload = null;
+              if (parsedLine.event === 'message' && parsedLine.message) {
+                payload = typeof parsedLine.message === 'string' ? JSON.parse(parsedLine.message) : parsedLine.message;
+              }
+              if (payload) {
+                if (payload.action === 'MICHI_CLIP_SYNC' && payload.clip) {
+                  this.mergeSingleClip(payload.clip);
+                } else if (payload.latestClip) {
+                  this.mergeSingleClip(payload.latestClip);
+                } else if (payload.state && payload.state.items) {
+                  (payload.state.items || []).forEach(item => this.mergeSingleClip(item));
+                }
+              }
+            } catch (e) {}
+          }
+        }
+      } catch (e) {}
+
+      // 2. Secondary check: Vercel Cloud Sync API
       const syncEndpoints = [
         `https://public-five-red.vercel.app/api/sync?${cb}`,
         `/api/sync?${cb}`
@@ -416,117 +532,14 @@ class MichiApp {
           if (resp.ok) {
             const result = await resp.json();
             const dataCandidate = (result && result.data && result.data.state) ? result.data : (result && result.state ? result : null);
-            if (dataCandidate && dataCandidate.state) {
-              remoteData = dataCandidate;
-              break;
+            if (dataCandidate && dataCandidate.state && dataCandidate.state.items) {
+              (dataCandidate.state.items || []).forEach(item => this.mergeSingleClip(item));
             }
           }
         } catch (e) {}
       }
 
-      // 2. Fallback check: Real-time ntfy channel
-      if (!remoteData || !remoteData.state) {
-        try {
-          const resp = await fetch(`https://ntfy.sh/michi_app_sync_channel_2026/json?poll=1&since=all&${cb}`);
-          if (resp.ok) {
-            const text = await resp.text();
-            const lines = text.trim().split('\n');
-            for (let i = lines.length - 1; i >= 0; i--) {
-              try {
-                const parsedLine = JSON.parse(lines[i]);
-                if (parsedLine.event === 'attachment' && parsedLine.attachment && parsedLine.attachment.url) {
-                  const attResp = await fetch(parsedLine.attachment.url);
-                  if (attResp.ok) {
-                    const payload = await attResp.json();
-                    if (payload && payload.state) {
-                      remoteData = payload;
-                      break;
-                    }
-                  }
-                } else if (parsedLine.event === 'message' && parsedLine.message) {
-                  const payload = typeof parsedLine.message === 'string' ? JSON.parse(parsedLine.message) : parsedLine.message;
-                  if (payload && payload.state) {
-                    remoteData = payload;
-                    break;
-                  }
-                }
-              } catch (e) {}
-            }
-          }
-        } catch (e) {}
-      }
-
-      if (!remoteData || !remoteData.state) return;
-
-      const remoteUpdated = remoteData.lastUpdated || 0;
-      const localUpdated = this.state.lastUpdated || 0;
-
-      const remoteProjects = remoteData.state.customProjects || [];
-      const remoteItems = remoteData.state.items || [];
-
-      // MERGE remote custom projects into local state if not present
-      if (!this.state.customProjects || !Array.isArray(this.state.customProjects)) {
-        this.state.customProjects = [];
-      }
-      let mergedProjects = false;
-      remoteProjects.forEach(p => {
-        if (p && p.trim() && !this.state.customProjects.map(x => x.toLowerCase().trim()).includes(p.toLowerCase().trim())) {
-          this.state.customProjects.push(p.trim());
-          mergedProjects = true;
-        }
-      });
-
-      // MERGE remote items into local state if missing
-      if (!this.state.items || !Array.isArray(this.state.items)) {
-        this.state.items = [];
-      }
-      const localItemIds = new Set(this.state.items.map(i => i.id));
-      let mergedItems = false;
-      remoteItems.forEach(item => {
-        if (item && item.id && !localItemIds.has(item.id)) {
-          this.state.items.unshift(item);
-          mergedItems = true;
-        }
-      });
-
-      // MERGE projectKinds map (Project vs Plan selections)
-      if (remoteData.state.projectKinds) {
-        if (!this.state.projectKinds) this.state.projectKinds = {};
-        Object.assign(this.state.projectKinds, remoteData.state.projectKinds);
-      }
-
-      if (force || this.isFirstCloudCheck || remoteUpdated > localUpdated || mergedProjects || mergedItems) {
-        this.isFirstCloudCheck = false;
-        if (remoteUpdated >= localUpdated) {
-          this.state = remoteData.state;
-        } else {
-          // If local state is newer, merge remote customProjects & items cleanly
-          const remoteSet = new Set((remoteData.state.customProjects || []).map(p => p.trim().toLowerCase()));
-          (this.state.customProjects || []).forEach(p => {
-            if (p && p.trim() && !remoteSet.has(p.trim().toLowerCase())) {
-              remoteData.state.customProjects = remoteData.state.customProjects || [];
-              remoteData.state.customProjects.push(p.trim());
-            }
-          });
-          this.state.customProjects = remoteData.state.customProjects;
-        }
-
-        // Clean out deleted projects so user deletions are strictly honored
-        const deletedSet = new Set((this.state.deletedProjects || []).map(p => (p || '').trim().toLowerCase()));
-        if (deletedSet.size > 0) {
-          this.state.customProjects = (this.state.customProjects || []).filter(p => !deletedSet.has((p || '').trim().toLowerCase()));
-          this.state.items = (this.state.items || []).filter(i => !deletedSet.has((i.project || '').trim().toLowerCase()));
-        }
-
-        this.state.lastUpdated = Math.max(remoteUpdated, localUpdated, Date.now());
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
-        this.populateProjectDropdowns();
-        this.render();
-        this.updateSyncBadge();
-      } else {
-        this.isFirstCloudCheck = false;
-        this.updateSyncBadge();
-      }
+      this.updateSyncBadge();
     } catch (err) {
       console.warn('Background cloud pull skipped:', err);
     }
@@ -548,10 +561,10 @@ class MichiApp {
     }
   }
 
-  saveState() {
+  saveState(singleClip = null) {
     this.state.lastUpdated = Date.now();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
-    this.pushToCloud();
+    this.pushToCloud(singleClip);
     this.render();
   }
 
@@ -4354,7 +4367,7 @@ class MichiApp {
       id: 'item-web-' + Date.now(),
       type: 'web',
       stage: 'spark',
-      project: 'General',
+      project: category || 'General',
       title: title || 'Saved Clip',
       content: title !== rawUrl ? title : '',
       url: cleanUrl,
@@ -4367,8 +4380,17 @@ class MichiApp {
 
     if (!this.state.items) this.state.items = [];
     this.state.items.unshift(newClip);
-    this.saveState();
-    this.showToast('Saved clip to Brain Dump!');
+
+    if (category && category.trim()) {
+      if (!this.state.customProjects) this.state.customProjects = [];
+      const cleanCat = category.trim();
+      if (!this.state.customProjects.map(p => (p || '').toLowerCase().trim()).includes(cleanCat.toLowerCase())) {
+        this.state.customProjects.push(cleanCat);
+      }
+    }
+
+    this.saveState(newClip);
+    this.showToast(`Saved clip to ${category}!`);
 
     if (urlInput) urlInput.value = '';
     if (titleInput) titleInput.value = '';
@@ -4391,7 +4413,7 @@ class MichiApp {
             newClip.content = meta.description;
           }
           if (meta.imageUrl) newClip.imageUrl = meta.imageUrl;
-          this.saveState();
+          this.saveState(newClip);
           this.renderMobileClipperFeed();
           this.render();
           try {
@@ -4446,7 +4468,7 @@ class MichiApp {
               <img src="${item.imageUrl}" onerror="this.parentElement.style.display='none'" style="max-height: 140px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border); object-fit: cover;" alt="Clip preview" />
             </div>
           ` : ''}
-          ${item.url ? `<div style="font-size: 0.76rem; color: var(--accent); font-weight: 700; word-break: break-all; margin-top: 2px;">${this.escapeHtml(item.url)}</div>` : ''}
+          ${item.url ? `<div style="font-size: 0.76rem; color: var(--accent); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; margin-top: 2px;" title="${this.escapeHtml(item.url)}">🔗 ${this.escapeHtml(this.formatDisplayUrl(item.url, 50))}</div>` : ''}
           <div class="clipper-item-actions">
             ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="btn-clip-action">Open Link</a>` : ''}
             ${item.url ? `<button type="button" class="btn-clip-action" onclick="navigator.clipboard.writeText('${item.url}'); if(window.app && window.app.showToast) window.app.showToast('Copied link to clipboard!');">Copy Link</button>` : ''}
@@ -4898,8 +4920,8 @@ class MichiApp {
             </div>
           ` : ''}
           ${item.url ? `
-            <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; margin-top: 6px; color: var(--text-main); text-decoration: underline; font-size: 0.82rem; word-break: break-all;">
-              ${this.escapeHtml(item.url)}
+            <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; margin-top: 6px; color: var(--text-main); font-size: 0.82rem; text-decoration: underline; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;" title="${this.escapeHtml(item.url)}">
+              <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;">🔗 ${this.escapeHtml(this.formatDisplayUrl(item.url, 55))}</span>
             </a>
           ` : ''}
           
@@ -5595,8 +5617,8 @@ class MichiApp {
           </div>
         ` : ''}
       ${item.url ? `
-        <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="color: var(--text-main);">
-          ${this.escapeHtml(item.url)}
+        <a href="${item.url}" target="_blank" rel="noopener" class="web-clip-preview" style="color: var(--text-main); font-size: 0.82rem; text-decoration: underline; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; display: block;" title="${this.escapeHtml(item.url)}">
+          🔗 ${this.escapeHtml(this.formatDisplayUrl(item.url, 55))}
         </a>
       ` : ''}
       
@@ -7734,6 +7756,16 @@ class MichiApp {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
+
+  formatDisplayUrl(url, maxLen = 45) {
+    if (!url) return '';
+    let display = url.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+    if (display.endsWith('/')) display = display.slice(0, -1);
+    if (display.length > maxLen) {
+      return display.substring(0, maxLen - 3) + '...';
+    }
+    return display;
   }
 }
 
