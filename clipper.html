@@ -178,15 +178,15 @@
             <li>Tap <strong>+</strong> -> Name it <strong>"Clip to MICHI"</strong>.</li>
             <li>Enable <strong>"Show in Share Sheet"</strong> in shortcut settings.</li>
             <li>Add action: <strong>Open URL</strong> -> Set URL to:<br>
-              <code style="background: #000; color: #00FFCC; padding: 4px 6px; border-radius: 4px; font-size: 0.74rem; word-break: break-all; display: inline-block; margin-top: 4px;">
-                https://michi-app-five.vercel.app/clipper.html?url=ShortcutInput
+              <code id="clipperShortcutUrlCode" style="background: #000; color: #00FFCC; padding: 4px 6px; border-radius: 4px; font-size: 0.74rem; word-break: break-all; display: inline-block; margin-top: 4px;">
+                https://michi-plum.vercel.app/clipper.html?url=ShortcutInput
               </code>
             </li>
           </ol>
           <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted); font-style: italic;">Tapping Share in Safari will now show <strong>"Clip to MICHI"</strong> directly in your Share Sheet!</p>
         </div>
 
-        <!-- Option 2: Add to Home Screen -->
+        <!-- Option 2: Add to Mobile Home Screen -->
         <div style="background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px;">
           <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 800; color: var(--accent);">Option 2: Add to Mobile Home Screen</h4>
           <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
@@ -200,8 +200,8 @@
           <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
             Bookmark any web page in Safari as <strong>"⚡ Clip to MICHI"</strong> and replace its address with this 1-click javascript snippet:
           </p>
-          <code style="display: block; background: #000; color: #00FFCC; padding: 8px 10px; border-radius: 4px; font-size: 0.76rem; word-break: break-all;">
-            javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('https://michi-app-five.vercel.app/clipper.html?url='+u+'&title='+t,'_blank');})();
+          <code id="clipperBookmarkletCode" style="display: block; background: #000; color: #00FFCC; padding: 8px 10px; border-radius: 4px; font-size: 0.76rem; word-break: break-all;">
+            javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('https://michi-plum.vercel.app/clipper.html?url='+u+'&title='+t,'_blank');})();
           </code>
         </div>
       </div>

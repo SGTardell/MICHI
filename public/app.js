@@ -4375,6 +4375,29 @@ class MichiApp {
         window.history.replaceState({}, document.title, window.location.pathname);
       } catch (e) {}
     }
+    this.updateDynamicClipperUrls();
+  }
+
+  updateDynamicClipperUrls() {
+    try {
+      const origin = window.location.origin;
+      const shortcutCode = document.getElementById('clipperShortcutUrlCode');
+      if (shortcutCode) {
+        shortcutCode.textContent = `${origin}/clipper.html?url=ShortcutInput`;
+      }
+      const bookmarkletCode = document.getElementById('clipperBookmarkletCode');
+      if (bookmarkletCode) {
+        bookmarkletCode.textContent = `javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('${origin}/clipper.html?url='+u+'&title='+t,'_blank');})();`;
+      }
+      const dashShortcutCode = document.getElementById('dashClipperShortcutCode');
+      if (dashShortcutCode) {
+        dashShortcutCode.textContent = `${origin}/clipper.html?url=Shortcut Input`;
+      }
+      const dashBookmarkletLink = document.getElementById('btnClipperBookmarklet');
+      if (dashBookmarkletLink) {
+        dashBookmarkletLink.href = `javascript:(function(){var u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);window.open('${origin}/clipper.html?url='+u+'&title='+t,'_blank');})();`;
+      }
+    } catch (e) {}
   }
 
   saveMobileClip() {
