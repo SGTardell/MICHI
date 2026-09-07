@@ -353,7 +353,7 @@ header::before {
 }
 
 .logo-title {
-  font-size: 1.45rem;
+  font-size: 1.74rem;
   font-weight: 800;
   letter-spacing: 1.5px;
   margin-right: -1.5px;
@@ -362,9 +362,9 @@ header::before {
 }
 
 .dashboard-logo-left {
-  height: 42px;
-  max-height: 42px;
-  max-width: 160px;
+  height: 50px;
+  max-height: 50px;
+  max-width: 192px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
@@ -377,7 +377,7 @@ header::before {
 }
 
 .logo-subtitle {
-  font-size: 0.56rem;
+  font-size: 0.67rem;
   font-weight: 600;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -1982,15 +1982,15 @@ header {
   }
 
   .logo-title {
-    font-size: 1.2rem;
+    font-size: 1.44rem;
   }
 
   .logo-subtitle {
-    font-size: 0.5rem;
+    font-size: 0.6rem;
   }
 
   .dashboard-logo-left {
-    height: 34px;
+    height: 41px;
   }
 
   nav.nav-tabs {
