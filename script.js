@@ -55,10 +55,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const userKey = "michi_user_pass_" + username.toLowerCase();
-            const storedPass = localStorage.getItem(userKey);
+            let storedPass = localStorage.getItem(userKey);
 
             if (!storedPass) {
-                alert("Security Error: Account '" + username + "' does not exist. Please click 'Create Account' to sign up.");
+                const newPass = prompt("Account setup for '" + username + "'. Set password (minimum 4 characters):");
+                if (newPass && newPass.trim().length >= 4) {
+                    localStorage.setItem(userKey, newPass.trim());
+                    alert("Password set successfully. You can now sign in.");
+                }
                 return;
             }
 
@@ -118,17 +122,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const userKey = "michi_user_pass_" + username.toLowerCase();
-            const storedPass = localStorage.getItem(userKey);
+            let storedPass = localStorage.getItem(userKey);
 
-            // 🛑 STRICT CHECK 1: Account must exist
+            // Auto-initialize account credentials on new devices (e.g., mobile phones) if not set yet
             if (!storedPass) {
-                alert("ACCESS DENIED: Account '" + username + "' does not exist.\n\nIf you are new, please click 'Create Account' to register.");
-                if (loginPasswordInput) loginPasswordInput.value = "";
-                return;
-            }
-
-            // 🛑 STRICT CHECK 2: Password must match stored password
-            if (storedPass !== password) {
+                localStorage.setItem(userKey, password);
+                storedPass = password;
+            } else if (storedPass !== password) {
                 alert("ACCESS DENIED: Incorrect password for account '" + username + "'. Please try again.");
                 if (loginPasswordInput) {
                     loginPasswordInput.value = "";
