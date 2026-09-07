@@ -95,7 +95,7 @@
           </div>
 
           <!-- Search Notes Input Field (Moved next to Live Date & Time) -->
-          <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.render) window.app.render(); return false;" class="search-box">
+          <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.onSearchSubmit) { window.app.onSearchSubmit(); } else if(window.app && window.app.render) { window.app.render(); } return false;" class="search-box">
             <input type="search" id="searchInput" placeholder="Search notes..." aria-label="Search workspace" autocomplete="off" enterkeyhint="search">
             <button type="submit" class="search-submit-btn" title="Search Workspace">Search</button>
           </form>

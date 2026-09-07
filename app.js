@@ -1652,6 +1652,11 @@ class MichiApp {
         this.searchQuery = e.target.value.toLowerCase().trim();
         this.render();
       });
+      this.searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          this.clearSearch();
+        }
+      });
     }
     if (this.vaultSearchInput) {
       this.vaultSearchInput.addEventListener('input', (e) => {
@@ -4548,12 +4553,59 @@ class MichiApp {
     }
   }
 
+  getSearchQuery() {
+    if (this.searchQuery !== undefined && this.searchQuery !== null && this.searchQuery !== '') {
+      return this.searchQuery.toLowerCase().trim();
+    }
+    if (this.searchInput) {
+      return (this.searchInput.value || '').toLowerCase().trim();
+    }
+    return '';
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    if (this.searchInput) {
+      this.searchInput.value = '';
+    }
+    this.render();
+  }
+
+  onSearchSubmit() {
+    const q = this.getSearchQuery();
+    this.searchQuery = q;
+    this.render();
+  }
+
   getFilteredItems() {
-    return this.state.items.filter(item => {
-      const matchesSearch = !this.searchQuery || 
-        (item.title && item.title.toLowerCase().includes(this.searchQuery)) ||
-        (item.content && item.content.toLowerCase().includes(this.searchQuery)) ||
-        (item.tags && item.tags.some(t => t.toLowerCase().includes(this.searchQuery)));
+    const q = this.getSearchQuery();
+
+    return (this.state.items || []).filter(item => {
+      let matchesSearch = true;
+      if (q) {
+        const matchesTitle = item.title && item.title.toLowerCase().includes(q);
+        const matchesContent = item.content && item.content.toLowerCase().includes(q);
+        const matchesDescription = item.description && item.description.toLowerCase().includes(q);
+        const matchesCategory = item.category && item.category.toLowerCase().includes(q);
+        const matchesProject = item.project && item.project.toLowerCase().includes(q);
+        const matchesUrl = item.url && item.url.toLowerCase().includes(q);
+        const matchesTags = item.tags && Array.isArray(item.tags) && item.tags.some(t => typeof t === 'string' && t.toLowerCase().includes(q));
+
+        const matchesNotes = item.notes && Array.isArray(item.notes) && item.notes.some(n => {
+          if (typeof n === 'string') return n.toLowerCase().includes(q);
+          if (n && typeof n.text === 'string') return n.text.toLowerCase().includes(q);
+          return false;
+        });
+
+        const matchesSubtasks = item.subtasks && Array.isArray(item.subtasks) && item.subtasks.some(s => {
+          if (typeof s === 'string') return s.toLowerCase().includes(q);
+          if (s && typeof s.text === 'string') return s.text.toLowerCase().includes(q);
+          if (s && typeof s.title === 'string') return s.title.toLowerCase().includes(q);
+          return false;
+        });
+
+        matchesSearch = Boolean(matchesTitle || matchesContent || matchesDescription || matchesCategory || matchesProject || matchesUrl || matchesTags || matchesNotes || matchesSubtasks);
+      }
 
       let matchesFilter = true;
       if (this.currentFilter !== 'all') {
@@ -4698,6 +4750,21 @@ class MichiApp {
     }
 
     let webItems = (this.state.items || []).filter(i => (i.type === 'web' || i.type === 'resource' || i.type === 'idea' || (i.url && i.type !== 'card' && i.type !== 'project' && i.type !== 'plan')));
+
+    const q = this.getSearchQuery();
+    if (q) {
+      webItems = webItems.filter(i => {
+        const titleMatch = i.title && i.title.toLowerCase().includes(q);
+        const contentMatch = i.content && i.content.toLowerCase().includes(q);
+        const descMatch = i.description && i.description.toLowerCase().includes(q);
+        const urlMatch = i.url && i.url.toLowerCase().includes(q);
+        const catMatch = (i.category || i.webCategory || '').toLowerCase().includes(q);
+        const projMatch = (i.project || '').toLowerCase().includes(q);
+        const tagsMatch = i.tags && Array.isArray(i.tags) && i.tags.some(t => typeof t === 'string' && t.toLowerCase().includes(q));
+        const notesMatch = i.notes && Array.isArray(i.notes) && i.notes.some(n => (typeof n === 'string' ? n : (n && n.text) || '').toLowerCase().includes(q));
+        return Boolean(titleMatch || contentMatch || descMatch || urlMatch || catMatch || projMatch || tagsMatch || notesMatch);
+      });
+    }
 
     if (this.currentWebCat === 'inbox') {
       webItems = webItems.filter(i => {
@@ -6449,6 +6516,54 @@ class MichiApp {
     this.cardsGrid.innerHTML = '';
 
     const gridItems = (items || []).filter(i => i.type !== 'vault');
+    const q = this.getSearchQuery();
+
+    // IF ACTIVE SEARCH QUERY IS PRESENT: Render matching search items directly!
+    if (q) {
+      const section = document.createElement('div');
+      section.style.width = '100%';
+
+      const header = document.createElement('div');
+      header.style.display = 'flex';
+      header.style.alignItems = 'center';
+      header.style.justifyContent = 'space-between';
+      header.style.marginBottom = '1rem';
+      header.style.paddingBottom = '0.4rem';
+      header.style.borderBottom = `1px solid var(--border)`;
+
+      header.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Search Results for "${q}"</span>
+          <span style="background: var(--bg-card); color: var(--text-main); font-size: 0.82rem; font-weight: 800; padding: 2px 10px; border-radius: 12px; border: 1px solid var(--border);">${gridItems.length}</span>
+        </div>
+        <button type="button" onclick="if(window.app && window.app.clearSearch) window.app.clearSearch()" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 14px; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">Clear Search ✕</button>
+      `;
+      section.appendChild(header);
+
+      if (gridItems.length === 0) {
+        const emptyMsg = document.createElement('div');
+        emptyMsg.style.textAlign = 'center';
+        emptyMsg.style.padding = '3rem';
+        emptyMsg.style.color = 'var(--text-muted)';
+        emptyMsg.innerHTML = `<p style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">No matching notes, cards, or tasks found for "${q}".</p><p style="font-size: 0.8rem; margin-top: 6px;">Try searching for a different keyword or click "Clear Search".</p>`;
+        section.appendChild(emptyMsg);
+      } else {
+        const grid = document.createElement('div');
+        grid.style.display = 'grid';
+        grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+        grid.style.gap = '1.25rem';
+        grid.style.width = '100%';
+
+        gridItems.forEach(item => {
+          const card = this.createCardElement(item);
+          grid.appendChild(card);
+        });
+        section.appendChild(grid);
+      }
+
+      this.cardsGrid.appendChild(section);
+      return;
+    }
 
     // IF SPECIFIC NAMED PROJECT IS OPENED: Render the Workspace Board View!
     if (this.selectedProject !== 'all' && this.selectedProject !== 'projects' && this.selectedProject !== 'plans') {
@@ -6553,7 +6668,20 @@ class MichiApp {
   renderTasks() {
     if (!this.taskListTodo) return;
 
-    const tasks = this.state.items.filter(i => i.type === 'task');
+    const q = this.getSearchQuery();
+    let tasks = this.state.items.filter(i => i.type === 'task');
+
+    if (q) {
+      tasks = tasks.filter(t => {
+        const titleMatch = t.title && t.title.toLowerCase().includes(q);
+        const contentMatch = t.content && t.content.toLowerCase().includes(q);
+        const projMatch = (t.project || t.category || '').toLowerCase().includes(q);
+        const tagsMatch = t.tags && Array.isArray(t.tags) && t.tags.some(tag => typeof tag === 'string' && tag.toLowerCase().includes(q));
+        const notesMatch = t.notes && Array.isArray(t.notes) && t.notes.some(n => (typeof n === 'string' ? n : (n && n.text) || '').toLowerCase().includes(q));
+        const subtaskMatch = t.subtasks && Array.isArray(t.subtasks) && t.subtasks.some(s => (typeof s === 'string' ? s : (s && (s.text || s.title)) || '').toLowerCase().includes(q));
+        return Boolean(titleMatch || contentMatch || projMatch || tagsMatch || notesMatch || subtaskMatch);
+      });
+    }
 
     const todo = tasks.filter(t => t.status === 'todo');
     const inProgress = tasks.filter(t => t.status === 'in-progress');
@@ -6663,12 +6791,13 @@ class MichiApp {
       vaultItems = vaultItems.filter(i => (i.category || 'General').toLowerCase() === this.currentVaultCat.toLowerCase());
     }
 
-    if (this.vaultSearchQuery) {
+    const query = this.vaultSearchQuery || this.getSearchQuery();
+    if (query) {
       vaultItems = vaultItems.filter(i => 
-        i.title.toLowerCase().includes(this.vaultSearchQuery) ||
-        (i.username && i.username.toLowerCase().includes(this.vaultSearchQuery)) ||
-        (i.secret && i.secret.toLowerCase().includes(this.vaultSearchQuery)) ||
-        (i.category && i.category.toLowerCase().includes(this.vaultSearchQuery))
+        (i.title && i.title.toLowerCase().includes(query)) ||
+        (i.username && i.username.toLowerCase().includes(query)) ||
+        (i.secret && i.secret.toLowerCase().includes(query)) ||
+        (i.category && i.category.toLowerCase().includes(query))
       );
     }
 
@@ -7211,7 +7340,9 @@ class MichiApp {
     this.contactsGrid.innerHTML = '';
 
     if (!this.state.contacts) this.state.contacts = [];
-    const query = this.contactsSearchInput ? this.contactsSearchInput.value.toLowerCase().trim() : '';
+    const localQuery = this.contactsSearchInput ? this.contactsSearchInput.value.toLowerCase().trim() : '';
+    const globalQuery = this.getSearchQuery();
+    const query = localQuery || globalQuery;
 
     const filtered = this.state.contacts.filter(c => {
       if (!query) return true;
