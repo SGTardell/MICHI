@@ -4317,6 +4317,14 @@ class MichiApp {
       });
     }
 
+    const btnClear = document.getElementById('btnClearClipperFeed');
+    if (btnClear && !btnClear.dataset.bound) {
+      btnClear.dataset.bound = 'true';
+      btnClear.addEventListener('click', () => {
+        this.clearMobileClipperFeed();
+      });
+    }
+
     this.renderMobileClipperCategoryPills();
     this.initMobileClipperVoice();
   }
@@ -4428,17 +4436,33 @@ class MichiApp {
     const container = document.getElementById('clipperRecentFeed');
     if (!container) return;
 
+    this.renderMobileClipperCategoryPills();
+
+    const activeCatFilter = (this.mobileFeedCategoryFilter || 'all').toLowerCase();
+
     const items = (this.state.items || []).filter(i => {
       if (i.type !== 'web' && !i.url && (!i.tags || !i.tags.includes('Brain Dump'))) return false;
+
+      // Filter by category pill if active
+      if (activeCatFilter !== 'all') {
+        const itemCat = (i.category || i.project || i.webCategory || (i.tags && i.tags[0]) || 'General').toLowerCase();
+        if (itemCat !== activeCatFilter) return false;
+      }
+
       if (!filterQuery) return true;
       const q = filterQuery.toLowerCase();
-      return (i.title || '').toLowerCase().includes(q) || (i.content || '').toLowerCase().includes(q) || (i.url || '').toLowerCase().includes(q) || (i.category || '').toLowerCase().includes(q);
-    }).slice(0, 20);
+      return (i.title || '').toLowerCase().includes(q) ||
+             (i.content || '').toLowerCase().includes(q) ||
+             (i.url || '').toLowerCase().includes(q) ||
+             (i.category || '').toLowerCase().includes(q) ||
+             (i.project || '').toLowerCase().includes(q);
+    }).slice(0, 25);
 
     if (items.length === 0) {
+      const catLabel = activeCatFilter === 'all' ? '' : ` in "${this.mobileFeedCategoryFilter}"`;
       container.innerHTML = `
         <div style="text-align: center; padding: 1.5rem 1rem; color: var(--text-muted); font-size: 0.88rem; font-weight: 700;">
-          No saved clips found yet. Paste a URL or dictate a note above to add your first clip!
+          No saved clips found${catLabel}. Paste a URL or dictate a note above to add your first clip!
         </div>
       `;
       return;
@@ -4450,19 +4474,21 @@ class MichiApp {
         try { domain = new URL(item.url).hostname.replace('www.', ''); } catch (e) {}
       }
       const favicon = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : '';
+      const catName = item.category || item.project || item.webCategory || 'General';
+      const displayContent = (item.content && item.content !== item.title) ? item.content : (item.url ? `Saved web link from ${domain || item.url}` : '');
 
       return `
         <div class="clipper-card-item">
           <div class="clipper-item-top">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              ${favicon ? `<img src="${favicon}" alt="${domain}" style="width: 18px; height: 18px; border-radius: 4px;" onerror="this.style.display='none';" />` : ''}
-              <h5 class="clipper-item-title">${this.escapeHtml(item.title || 'Untitled Clip')}</h5>
+            <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;">
+              ${favicon ? `<img src="${favicon}" alt="${domain}" style="width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0;" onerror="this.style.display='none';" />` : ''}
+              <h5 class="clipper-item-title" style="margin: 0; font-size: 0.95rem; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${this.escapeHtml(item.title || 'Untitled Clip')}</h5>
             </div>
-            <span style="font-size: 0.72rem; font-weight: 800; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 2px 8px; border-radius: 12px; white-space: nowrap;">
-              ${this.escapeHtml(item.category || 'General')}
+            <span class="clipper-cat-badge" style="font-size: 0.74rem; font-weight: 800; background: var(--bg-card); color: var(--accent); border: 1.5px solid var(--accent); padding: 2px 9px; border-radius: 12px; white-space: nowrap; flex-shrink: 0;">
+              ${this.escapeHtml(catName)}
             </span>
           </div>
-          ${item.content && item.content !== item.title ? `<div class="clipper-item-content">${this.escapeHtml(item.content)}</div>` : ''}
+          ${displayContent ? `<div class="clipper-item-content" style="font-size: 0.85rem; color: var(--text-main); margin: 6px 0; line-height: 1.4;">${this.escapeHtml(displayContent)}</div>` : ''}
           ${item.imageUrl ? `
             <div style="margin: 6px 0; text-align: center;">
               <img src="${item.imageUrl}" onerror="this.parentElement.style.display='none'" style="max-height: 140px; max-width: 100%; border-radius: 6px; border: 1px solid var(--border); object-fit: cover;" alt="Clip preview" />
@@ -4477,6 +4503,31 @@ class MichiApp {
         </div>
       `;
     }).join('');
+  }
+
+  clearMobileClipperFeed() {
+    const activeFilter = this.mobileFeedCategoryFilter || 'all';
+    const filterDesc = activeFilter === 'all' ? 'all recently saved clips' : `all clips in "${activeFilter}"`;
+
+    if (!confirm(`Are you sure you want to clear ${filterDesc}?`)) {
+      return;
+    }
+
+    if (!this.state.items) return;
+
+    if (activeFilter === 'all') {
+      this.state.items = this.state.items.filter(i => i.type !== 'web' && (!i.tags || !i.tags.includes('Brain Dump')));
+    } else {
+      this.state.items = this.state.items.filter(i => {
+        const cat = (i.category || i.project || i.webCategory || (i.tags && i.tags[0]) || 'General').toLowerCase();
+        return cat !== activeFilter.toLowerCase();
+      });
+    }
+
+    this.saveState();
+    this.renderMobileClipperFeed();
+    this.render();
+    this.showToast('Cleared clips!');
   }
 
   initMobileClipperVoice() {
@@ -4739,12 +4790,12 @@ class MichiApp {
 
   renderMobileClipperCategoryPills() {
     const pillsRow = document.getElementById('clipperCategoryPills');
-    if (!pillsRow) return;
+    const feedPillsRow = document.getElementById('clipperFeedCategoryPills');
 
     const categorySet = new Set(['General', 'Tech', 'Work', 'Personal', 'Travel', 'Health', 'Finance', 'Design']);
     
     (this.state.items || []).forEach(i => {
-      const cat = i.category || i.webCategory || (i.tags && i.tags[0]);
+      const cat = i.category || i.project || i.webCategory || (i.tags && i.tags[0]);
       if (cat && cat.trim() && cat.toLowerCase() !== 'inbox' && cat.toLowerCase() !== 'all') {
         categorySet.add(cat.trim());
       }
@@ -4756,22 +4807,49 @@ class MichiApp {
       });
     }
 
-    const currentActivePill = pillsRow.querySelector('.clipper-cat-pill.active');
-    const selectedCat = currentActivePill ? currentActivePill.dataset.cat : 'General';
+    // 1. Quick Clip Form Category Pills
+    if (pillsRow) {
+      const currentActivePill = pillsRow.querySelector('.clipper-cat-pill.active');
+      const selectedCat = currentActivePill ? currentActivePill.dataset.cat : 'General';
 
-    pillsRow.innerHTML = '';
-    categorySet.forEach(cat => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = `clipper-cat-pill ${selectedCat.toLowerCase() === cat.toLowerCase() ? 'active' : ''}`;
-      btn.dataset.cat = cat;
-      btn.textContent = cat;
-      btn.addEventListener('click', () => {
-        pillsRow.querySelectorAll('.clipper-cat-pill').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
+      pillsRow.innerHTML = '';
+      categorySet.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `clipper-cat-pill ${selectedCat.toLowerCase() === cat.toLowerCase() ? 'active' : ''}`;
+        btn.dataset.cat = cat;
+        btn.textContent = cat;
+        btn.addEventListener('click', () => {
+          pillsRow.querySelectorAll('.clipper-cat-pill').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+        });
+        pillsRow.appendChild(btn);
       });
-      pillsRow.appendChild(btn);
-    });
+    }
+
+    // 2. Feed Filter Category Pills (All + Categories)
+    if (feedPillsRow) {
+      const activeFeedCat = (this.mobileFeedCategoryFilter || 'all').toLowerCase();
+      feedPillsRow.innerHTML = '';
+
+      const feedCats = ['All', ...Array.from(categorySet)];
+      feedCats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `clipper-cat-pill ${activeFeedCat === cat.toLowerCase() ? 'active' : ''}`;
+        btn.style.fontSize = '0.76rem';
+        btn.style.padding = '3px 10px';
+        btn.dataset.cat = cat;
+        btn.textContent = cat;
+        btn.addEventListener('click', () => {
+          feedPillsRow.querySelectorAll('.clipper-cat-pill').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+          this.mobileFeedCategoryFilter = cat.toLowerCase() === 'all' ? 'all' : cat;
+          this.renderMobileClipperFeed();
+        });
+        feedPillsRow.appendChild(btn);
+      });
+    }
   }
 
   updateViewModeButtons() {

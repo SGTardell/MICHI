@@ -122,9 +122,19 @@
 
       <!-- Recent Saved Clips Feed -->
       <div class="clipper-recent-section">
-        <div class="recent-header">
-          <h4>Recently Saved Clips</h4>
-          <input type="text" id="clipperSearchInput" placeholder="Search clips..." class="clipper-search" />
+        <div class="recent-header" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <h4 style="margin: 0;">Recently Saved Clips</h4>
+            <button type="button" id="btnClearClipperFeed" class="btn-clip-action" style="background: rgba(255, 77, 77, 0.12); color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.3); font-weight: 800; padding: 3px 10px; border-radius: 6px; font-size: 0.76rem; cursor: pointer;" title="Clear recently saved clips">
+              🗑️ Clear
+            </button>
+          </div>
+          <input type="text" id="clipperSearchInput" placeholder="Search clips..." class="clipper-search" style="max-width: 160px;" />
+        </div>
+
+        <!-- Feed Category Filter Pills -->
+        <div id="clipperFeedCategoryPills" class="category-pills-row" style="margin: 10px 0 12px 0; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px;">
+          <!-- Rendered dynamically -->
         </div>
 
         <div id="clipperRecentFeed" class="clipper-feed">
