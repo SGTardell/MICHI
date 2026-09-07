@@ -15,7 +15,7 @@
           window.location.replace('index.html');
           return;
         }
-        const CURRENT_BUILD = 'v230';
+        const CURRENT_BUILD = 'v231';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=230">
+  <link rel="stylesheet" href="styles.css?v=231">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -112,13 +112,6 @@
             <span id="headerClockDate" style="font-size: 0.78rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.3px;">Wed, Aug 19, 2026</span>
             <span style="color: var(--text-muted); font-size: 0.8rem;">•</span>
             <span id="headerClockTime" style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); font-family: -apple-system, monospace;">3:49 PM</span>
-          </div>
-
-          <!-- Active Project / Plan Dropdown Selector with Label -->
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); white-space: nowrap;">Project / Plan:</span>
-            <select id="globalProjectFilter" style="padding: 0.4rem 0.85rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap;" title="Select Active Project or Plan Workspace">
-            </select>
           </div>
         </div>
 

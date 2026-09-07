@@ -324,7 +324,8 @@ class MichiApp {
         const staleSet = new Set(staleProjects.map(p => p.toLowerCase().trim()));
         this.state.customProjects = (this.state.customProjects || []).filter(p => !staleSet.has((p || '').toLowerCase().trim()));
         this.selectedProject = 'all';
-        if (this.globalProjectFilter) this.globalProjectFilter.value = 'all';
+        const homeSel = document.getElementById('homeProjectFilterSelect');
+        if (homeSel) homeSel.value = 'all';
 
         this.saveState();
         this.renderProjectDropdowns();
@@ -1550,7 +1551,6 @@ class MichiApp {
     // Project Selectors
     this.projectLineageSelect = document.getElementById('projectLineageSelect');
     this.dispatchProjectSelect = document.getElementById('dispatchProjectSelect');
-    this.globalProjectFilter = document.getElementById('globalProjectFilter');
 
     if (this.projectLineageSelect) {
       this.projectLineageSelect.addEventListener('change', (e) => {
@@ -1583,25 +1583,6 @@ class MichiApp {
       });
     }
 
-    if (this.globalProjectFilter) {
-      this.globalProjectFilter.addEventListener('change', (e) => {
-        const chosen = e.target.value;
-        this.currentStageFilter = 'all';
-        this.selectedProject = chosen;
-
-        this.switchTab('all', chosen);
-        if (chosen === 'all') {
-          this.showToast('Showing All Active Projects & Plans');
-        } else if (chosen === 'projects') {
-          this.showToast('Showing Work Projects Only');
-        } else if (chosen === 'plans') {
-          this.showToast('Showing Life Plans Only');
-        } else {
-          this.showToast(`Opened Workspace Board: "${chosen}"`);
-        }
-        this.render();
-      });
-    }
 
     // Add Flexible Appointment Button Event
     if (this.btnAddAppt) {
@@ -2440,8 +2421,9 @@ class MichiApp {
     
     this.currentTab = targetTab;
     this.currentStageFilter = 'all'; // Clear stage filter when switching tabs so pristine tab view is shown!
-    if (this.globalProjectFilter) {
-      this.globalProjectFilter.value = this.selectedProject || 'all';
+    const homeSel = document.getElementById('homeProjectFilterSelect');
+    if (homeSel) {
+      homeSel.value = this.selectedProject || 'all';
     }
     this.currentFilter = targetTab === 'ideas' ? 'ideas' : (targetTab === 'tasks' ? 'task' : (targetTab === 'vault' ? 'vault' : 'all'));
     
@@ -5071,26 +5053,35 @@ class MichiApp {
       });
     };
 
-    if (this.globalProjectFilter) {
-      const cur = this.selectedProject || 'all';
-      let html = `<option value="all" ${cur === 'all' ? 'selected' : ''}>📁 All Active Projects & Plans</option>`;
-      if (projects.length > 0) {
-        projects.forEach(p => {
-          const isSelected = p === cur;
-          html += `<option value="${this.escapeHtml(p)}" ${isSelected ? 'selected' : ''}>${this.escapeHtml(p)}</option>`;
-        });
-      }
-      this.globalProjectFilter.innerHTML = html;
-    }
-
     const homeSelect = document.getElementById('homeProjectFilterSelect');
     if (homeSelect) {
       const cur = this.selectedProject || 'all';
-      homeSelect.innerHTML = `
-        <option value="all" ${cur === 'all' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">All Active Projects & Plans</option>
-        <option value="projects" ${cur === 'projects' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">Active Projects</option>
-        <option value="plans" ${cur === 'plans' ? 'selected' : ''} style="background: var(--bg-card); color: var(--text-main);">Active Plans</option>
+      const workProjects = projects.filter(p => ((this.state.projectKinds && this.state.projectKinds[p]) || 'project') !== 'plan');
+      const lifePlans = projects.filter(p => (this.state.projectKinds && this.state.projectKinds[p]) === 'plan');
+
+      let html = `
+        <option value="all" ${cur === 'all' ? 'selected' : ''}>📁 All Active Projects & Plans</option>
+        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>📂 Active Projects Only</option>
+        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>📋 Active Plans Only</option>
       `;
+
+      if (workProjects.length > 0) {
+        html += `<optgroup label="📂 WORK PROJECTS">`;
+        workProjects.forEach(p => {
+          html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>&nbsp;&nbsp;• ${this.escapeHtml(p)}</option>`;
+        });
+        html += `</optgroup>`;
+      }
+
+      if (lifePlans.length > 0) {
+        html += `<optgroup label="📋 LIFE PLANS">`;
+        lifePlans.forEach(p => {
+          html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>&nbsp;&nbsp;• ${this.escapeHtml(p)}</option>`;
+        });
+        html += `</optgroup>`;
+      }
+
+      homeSelect.innerHTML = html;
     }
 
     updateSelect(this.projectLineageSelect, 'All Projects/Plans Overview', true);
@@ -5732,7 +5723,8 @@ class MichiApp {
         }
 
         this.selectedProject = 'all';
-        if (this.globalProjectFilter) this.globalProjectFilter.value = 'all';
+        const homeSel = document.getElementById('homeProjectFilterSelect');
+        if (homeSel) homeSel.value = 'all';
         if (this.projectLineageSelect) this.projectLineageSelect.value = 'all';
 
         this.saveState();
@@ -5838,7 +5830,8 @@ class MichiApp {
     const openProj = (e) => {
       if (e) e.stopPropagation();
       this.selectedProject = projectName;
-      if (this.globalProjectFilter) this.globalProjectFilter.value = projectName;
+      const homeSel = document.getElementById('homeProjectFilterSelect');
+      if (homeSel) homeSel.value = projectName;
       this.render();
       this.showToast(`Opened ${projectName} ${isPlan ? 'Plan' : 'Project'}`);
     };
@@ -5922,7 +5915,8 @@ class MichiApp {
 
     banner.querySelector('.btn-clear-proj-filter').addEventListener('click', () => {
       this.selectedProject = 'all';
-      if (this.globalProjectFilter) this.globalProjectFilter.value = 'all';
+      const homeSel = document.getElementById('homeProjectFilterSelect');
+      if (homeSel) homeSel.value = 'all';
       this.render();
     });
 
@@ -6544,7 +6538,8 @@ class MichiApp {
 
   clearProjectFilter() {
     this.selectedProject = 'all';
-    if (this.globalProjectFilter) this.globalProjectFilter.value = 'all';
+    const homeSel = document.getElementById('homeProjectFilterSelect');
+    if (homeSel) homeSel.value = 'all';
     this.render();
   }
 
