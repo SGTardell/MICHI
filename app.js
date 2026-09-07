@@ -353,23 +353,33 @@ class MichiApp {
     deletedSet.add('personal');
     deletedSet.add('spatial canvas architecture');
 
+    const categorySuppression = new Set(['general', 'travel', 'tech', 'work', 'personal', 'health', 'finance', 'design', 'inbox', 'brain dump', 'unfiled']);
+
     // Auto-clean customProjects
-    this.state.customProjects = this.state.customProjects.filter(p => p && p.trim() && !deletedSet.has(p.trim().toLowerCase()));
+    this.state.customProjects = (this.state.customProjects || []).filter(p => {
+      if (!p || !p.trim()) return false;
+      const lower = p.trim().toLowerCase();
+      if (deletedSet.has(lower) || categorySuppression.has(lower)) return false;
+      return true;
+    });
 
     const projects = new Set();
 
     // Include custom projects (excluding blacklisted/deleted ones)
     this.state.customProjects.forEach(p => {
-      if (p && p.trim() && !deletedSet.has(p.trim().toLowerCase())) {
+      if (p && p.trim() && !deletedSet.has(p.trim().toLowerCase()) && !categorySuppression.has(p.trim().toLowerCase())) {
         projects.add(p.trim());
       }
     });
 
-    // Also include project names from active items (excluding deleted ones)
+    // Also include project names from items explicitly launched into a project (excluding raw clips and categories)
     (this.state.items || []).forEach(i => {
-      if (i.project && i.project.trim() && !deletedSet.has(i.project.trim().toLowerCase())) {
-        const trimmed = i.project.trim();
-        projects.add(trimmed);
+      if (i.project && i.project.trim() && !deletedSet.has(i.project.trim().toLowerCase()) && !categorySuppression.has(i.project.trim().toLowerCase())) {
+        const isRawClip = (i.type === 'web' || i.isBrainDumpRaw || (i.tags && i.tags.includes('Brain Dump'))) && 
+                          !i.isLaunched && !i.isProject && !i.isPlan && (i.stage || 'spark') === 'spark';
+        if (!isRawClip) {
+          projects.add(i.project.trim());
+        }
       }
     });
 
@@ -434,10 +444,10 @@ class MichiApp {
       
       const cat = clip.category || clip.project;
       if (cat && cat.trim()) {
-        if (!this.state.customProjects) this.state.customProjects = [];
+        if (!this.state.customWebCategories) this.state.customWebCategories = ['Tech', 'Sports', 'Fashion', 'Design', 'Finance'];
         const cleanCat = cat.trim();
-        if (!this.state.customProjects.map(p => (p || '').toLowerCase().trim()).includes(cleanCat.toLowerCase())) {
-          this.state.customProjects.push(cleanCat);
+        if (!this.state.customWebCategories.map(c => (c || '').toLowerCase().trim()).includes(cleanCat.toLowerCase())) {
+          this.state.customWebCategories.push(cleanCat);
         }
       }
       
@@ -4446,7 +4456,8 @@ class MichiApp {
       id: 'item-web-' + Date.now(),
       type: 'web',
       stage: 'spark',
-      project: category || 'General',
+      project: '',
+      isBrainDumpRaw: true,
       title: title || 'Saved Clip',
       content: title !== rawUrl ? title : '',
       url: cleanUrl,
@@ -4461,10 +4472,10 @@ class MichiApp {
     this.state.items.unshift(newClip);
 
     if (category && category.trim()) {
-      if (!this.state.customProjects) this.state.customProjects = [];
+      if (!this.state.customWebCategories) this.state.customWebCategories = ['Tech', 'Sports', 'Fashion', 'Design', 'Finance'];
       const cleanCat = category.trim();
-      if (!this.state.customProjects.map(p => (p || '').toLowerCase().trim()).includes(cleanCat.toLowerCase())) {
-        this.state.customProjects.push(cleanCat);
+      if (!this.state.customWebCategories.map(c => (c || '').toLowerCase().trim()).includes(cleanCat.toLowerCase())) {
+        this.state.customWebCategories.push(cleanCat);
       }
     }
 
@@ -4724,6 +4735,13 @@ class MichiApp {
     const q = this.getSearchQuery();
 
     return (this.state.items || []).filter(item => {
+      // Exclude raw un-launched web clips from Home Screen (tab-all) Projects & Plans view
+      const isRawClip = (item.type === 'web' || item.isBrainDumpRaw || (item.tags && item.tags.includes('Brain Dump'))) && 
+                        !item.isLaunched && !item.isProject && !item.isPlan && (item.stage || 'spark') === 'spark';
+
+      if ((this.currentTab === 'all' || !this.currentTab) && !q && isRawClip) {
+        return false;
+      }
       let matchesSearch = true;
       if (q) {
         const matchesTitle = item.title && item.title.toLowerCase().includes(q);
