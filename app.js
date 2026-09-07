@@ -3891,8 +3891,10 @@ class MichiApp {
           <ul style="padding-left: 1.1rem; line-height: 1.6; font-size: 0.84rem;">
             <li><strong>Theme Selector:</strong> Switch between:
               <ul style="margin-top: 3px; padding-left: 1rem; font-size: 0.8rem;">
-                <li><strong>🍃 そよ風 Soyokaze (Gentle Breeze):</strong> Crisp light mode with silver-gray card spreads & teal accents.</li>
-                <li><strong>冬 Fuyu (MICHI Signature Dark):</strong> Deep midnight dark mode with dark navy card spreads & cyan glow accents.</li>
+                <li><strong>🍃 Gentle Breeze</strong></li>
+                <li><strong>冬 MICHI Signature Dark</strong></li>
+                <li><strong>❄️ Glacier Range</strong></li>
+                <li><strong>🧊 Arctic Chill</strong></li>
               </ul>
             </li>
             <li><strong>📁 All Projects Filter:</strong> Filter your entire dashboard to focus strictly on 1 active project container.</li>
