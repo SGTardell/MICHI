@@ -5066,7 +5066,7 @@ class MichiApp {
       `;
 
       if (workProjects.length > 0) {
-        html += `<optgroup label="📂 WORK PROJECTS">`;
+        html += `<optgroup label="📂 Active Projects">`;
         workProjects.forEach(p => {
           html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>&nbsp;&nbsp;• ${this.escapeHtml(p)}</option>`;
         });
@@ -5074,7 +5074,7 @@ class MichiApp {
       }
 
       if (lifePlans.length > 0) {
-        html += `<optgroup label="📋 LIFE PLANS">`;
+        html += `<optgroup label="📋 Active Plans">`;
         lifePlans.forEach(p => {
           html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>&nbsp;&nbsp;• ${this.escapeHtml(p)}</option>`;
         });

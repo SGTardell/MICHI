@@ -15,7 +15,7 @@
           window.location.replace('index.html');
           return;
         }
-        const CURRENT_BUILD = 'v231';
+        const CURRENT_BUILD = 'v232';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=231">
+  <link rel="stylesheet" href="styles.css?v=232">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -273,7 +273,7 @@
     <div class="tab-content active" id="tab-all">
       <div class="controls-bar" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <label style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">Workspace Focus:</label>
+          <label style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">Projects & Plans:</label>
           <select id="homeProjectFilterSelect" style="padding: 0.55rem 1rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 800; cursor: pointer;" title="Select Projects or Plans Board View">
             <option value="all">All Active Projects & Plans</option>
             <option value="projects">Active Projects</option>
