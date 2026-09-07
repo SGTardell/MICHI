@@ -71,8 +71,8 @@ self.addEventListener('fetch', (event) => {
           })
         );
 
-        // Redirect user to dashboard with query parameters
-        const redirectUrl = new URL('/dashboard.html', event.request.url);
+        // Redirect user to Web Clipper with query parameters
+        const redirectUrl = new URL('/clipper.html', event.request.url);
         redirectUrl.searchParams.set('shared', '1');
         if (finalUrl) redirectUrl.searchParams.set('url', finalUrl);
         if (title) redirectUrl.searchParams.set('title', title.substring(0, 120));
@@ -80,7 +80,7 @@ self.addEventListener('fetch', (event) => {
         return Response.redirect(redirectUrl.href, 303);
       } catch (err) {
         console.error('Share Target POST Error:', err);
-        return Response.redirect('/dashboard.html?shared=1', 303);
+        return Response.redirect('/clipper.html?shared=1', 303);
       }
     })());
     return;

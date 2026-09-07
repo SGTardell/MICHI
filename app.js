@@ -4327,6 +4327,54 @@ class MichiApp {
 
     this.renderMobileClipperCategoryPills();
     this.initMobileClipperVoice();
+    this.checkIncomingShareParams();
+  }
+
+  shareClipperScreen() {
+    const shareUrl = window.location.origin + '/clipper.html';
+    const shareData = {
+      title: 'MICHI Web Clipper & Quick Capture',
+      text: 'Save articles, web links, dictations, and notes into your MICHI Brain Dump.',
+      url: shareUrl
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {});
+    } else {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          this.showToast('Copied Web Clipper URL to clipboard!');
+        }).catch(() => {
+          this.showToast('Web Clipper URL: ' + shareUrl);
+        });
+      } else {
+        this.showToast('Web Clipper URL: ' + shareUrl);
+      }
+    }
+  }
+
+  checkIncomingShareParams() {
+    const params = new URLSearchParams(window.location.search);
+    const sharedUrl = params.get('url') || params.get('text') || params.get('share_url') || params.get('shareUrl') || params.get('link') || params.get('clip');
+    const sharedTitle = params.get('title') || params.get('share_title') || params.get('shareTitle') || params.get('name');
+
+    const urlInput = document.getElementById('mobileClipUrl');
+    const titleInput = document.getElementById('mobileClipTitle');
+
+    if (sharedUrl && urlInput) {
+      const cleanUrlMatch = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
+      const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
+      urlInput.value = targetUrl;
+
+      if (sharedTitle && titleInput && !titleInput.value) {
+        titleInput.value = sharedTitle;
+      }
+
+      this.showToast('📋 Link populated from Share Sheet!');
+      try {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } catch (e) {}
+    }
   }
 
   saveMobileClip() {
