@@ -5061,8 +5061,6 @@ class MichiApp {
 
       let html = `
         <option value="all" ${cur === 'all' ? 'selected' : ''}>📁 All Active Projects & Plans</option>
-        <option value="projects" ${cur === 'projects' ? 'selected' : ''}>📂 Active Projects Only</option>
-        <option value="plans" ${cur === 'plans' ? 'selected' : ''}>📋 Active Plans Only</option>
       `;
 
       if (workProjects.length > 0) {

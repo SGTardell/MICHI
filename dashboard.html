@@ -15,7 +15,7 @@
           window.location.replace('index.html');
           return;
         }
-        const CURRENT_BUILD = 'v232';
+        const CURRENT_BUILD = 'v233';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=232">
+  <link rel="stylesheet" href="styles.css?v=233">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -276,8 +276,6 @@
           <label style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">Projects & Plans:</label>
           <select id="homeProjectFilterSelect" style="padding: 0.55rem 1rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 800; cursor: pointer;" title="Select Projects or Plans Board View">
             <option value="all">All Active Projects & Plans</option>
-            <option value="projects">Active Projects</option>
-            <option value="plans">Active Plans</option>
           </select>
           <button type="button" id="btnStartNewProjectHome" onclick="if(window.app && window.app.openNewProjectModal) window.app.openNewProjectModal()" style="background: var(--stage-product); color: #FFF; border: none; font-weight: 800; padding: 0.55rem 1.1rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
             + Start New Project / Plan
