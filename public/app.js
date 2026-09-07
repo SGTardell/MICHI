@@ -4266,18 +4266,6 @@ class MichiApp {
       });
     }
 
-    const pillsRow = document.getElementById('clipperCategoryPills');
-    if (pillsRow && !pillsRow.dataset.bound) {
-      pillsRow.dataset.bound = 'true';
-      pillsRow.addEventListener('click', (e) => {
-        const btn = e.target.closest('.clipper-cat-pill');
-        if (btn) {
-          pillsRow.querySelectorAll('.clipper-cat-pill').forEach(p => p.classList.remove('active'));
-          btn.classList.add('active');
-        }
-      });
-    }
-
     const btnPaste = document.getElementById('btnPasteClipUrl');
     const urlInput = document.getElementById('mobileClipUrl');
     if (btnPaste && urlInput && !btnPaste.dataset.bound) {
@@ -4305,23 +4293,7 @@ class MichiApp {
       });
     }
 
-    const themeSelect = document.getElementById('clipperThemeSelect');
-    if (themeSelect) {
-      const currentTheme = localStorage.getItem('MICHI_COLOR_THEME') || 'soyokaze';
-      themeSelect.value = currentTheme;
-      if (!themeSelect.dataset.bound) {
-        themeSelect.dataset.bound = 'true';
-        themeSelect.addEventListener('change', (e) => {
-          if (window.app && window.app.switchColorTheme) {
-            window.app.switchColorTheme(e.target.value);
-          } else {
-            document.documentElement.setAttribute('data-theme', e.target.value);
-            localStorage.setItem('MICHI_COLOR_THEME', e.target.value);
-          }
-        });
-      }
-    }
-
+    this.renderMobileClipperCategoryPills();
     this.initMobileClipperVoice();
   }
 
@@ -4715,6 +4687,44 @@ class MichiApp {
     });
 
     this.webCategoryPillsContainer.appendChild(addCatBtn);
+    this.renderMobileClipperCategoryPills();
+  }
+
+  renderMobileClipperCategoryPills() {
+    const pillsRow = document.getElementById('clipperCategoryPills');
+    if (!pillsRow) return;
+
+    const categorySet = new Set(['General', 'Tech', 'Work', 'Personal', 'Travel', 'Health', 'Finance', 'Design']);
+    
+    (this.state.items || []).forEach(i => {
+      const cat = i.category || i.webCategory || (i.tags && i.tags[0]);
+      if (cat && cat.trim() && cat.toLowerCase() !== 'inbox' && cat.toLowerCase() !== 'all') {
+        categorySet.add(cat.trim());
+      }
+    });
+
+    if (this.state.customWebCategories) {
+      this.state.customWebCategories.forEach(c => {
+        if (c && c.trim()) categorySet.add(c.trim());
+      });
+    }
+
+    const currentActivePill = pillsRow.querySelector('.clipper-cat-pill.active');
+    const selectedCat = currentActivePill ? currentActivePill.dataset.cat : 'General';
+
+    pillsRow.innerHTML = '';
+    categorySet.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `clipper-cat-pill ${selectedCat.toLowerCase() === cat.toLowerCase() ? 'active' : ''}`;
+      btn.dataset.cat = cat;
+      btn.textContent = cat;
+      btn.addEventListener('click', () => {
+        pillsRow.querySelectorAll('.clipper-cat-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+      });
+      pillsRow.appendChild(btn);
+    });
   }
 
   updateViewModeButtons() {
@@ -5380,6 +5390,7 @@ class MichiApp {
     this.renderSidebarStats();
     this.renderProjectLineage();
     this.renderContacts();
+    this.renderMobileClipperCategoryPills();
     if (this.renderMobileClipperFeed && this.viewMode === 'clipper') {
       this.renderMobileClipperFeed();
     }

@@ -23,9 +23,7 @@
         window.location.replace('index.html');
         return;
       }
-      let savedTheme = localStorage.getItem('MICHI_COLOR_THEME') || 'soyokaze';
-      if (savedTheme === 'tokyo') savedTheme = 'winter';
-      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.setAttribute('data-theme', 'soyokaze');
       sessionStorage.removeItem('MICHI_EXPLICIT_DESKTOP');
       localStorage.setItem('MICHI_VIEW_MODE', 'clipper');
     })();
@@ -57,15 +55,6 @@
             <span class="clipper-title">MICHI</span>
             <span class="clipper-subtitle">For Life and Work</span>
           </div>
-        </div>
-        <div class="clipper-header-actions">
-          <!-- Theme Dropdown Switcher -->
-          <select id="clipperThemeSelect" class="clipper-theme-select" title="Change Theme">
-            <option value="soyokaze">Gentle Breeze</option>
-            <option value="winter">MICHI Signature Dark</option>
-            <option value="glacier">Glacier Range</option>
-            <option value="arctic">Arctic Chill</option>
-          </select>
         </div>
       </div>
 
@@ -112,12 +101,11 @@
           <div class="clipper-input-group">
             <label>Category</label>
             <div class="category-pills-row" id="clipperCategoryPills">
-              <button type="button" class="clipper-cat-pill active" data-cat="General">Link</button>
+              <button type="button" class="clipper-cat-pill active" data-cat="General">General</button>
               <button type="button" class="clipper-cat-pill" data-cat="Tech">Tech</button>
               <button type="button" class="clipper-cat-pill" data-cat="Work">Work</button>
               <button type="button" class="clipper-cat-pill" data-cat="Personal">Personal</button>
               <button type="button" class="clipper-cat-pill" data-cat="Travel">Travel</button>
-              <button type="button" class="clipper-cat-pill" data-cat="Health">Health</button>
             </div>
           </div>
 
