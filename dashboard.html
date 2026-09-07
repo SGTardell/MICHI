@@ -15,7 +15,7 @@
           window.location.replace('index.html');
           return;
         }
-        const CURRENT_BUILD = 'v233';
+        const CURRENT_BUILD = 'v234';
         const lastBuild = localStorage.getItem('MICHI_BUILD_VER');
         if (lastBuild !== CURRENT_BUILD) {
           localStorage.setItem('MICHI_BUILD_VER', CURRENT_BUILD);
@@ -58,14 +58,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=233">
+  <link rel="stylesheet" href="styles.css?v=234">
 </head>
 <body>
   <div class="app-layout-wrapper">
   <!-- Header & Navigation -->
   <header style="display: flex; flex-direction: column; gap: 0.7rem; padding-bottom: 0.65rem;">
     <!-- HEADER ROW 1: Logo & Top Utility Controls -->
-    <div class="header-container" style="display: flex; align-items: center; justify-content: flex-start; gap: 1rem; width: 100%;">
+    <div class="header-container" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
       <div style="display: flex; align-items: center; gap: 16px;">
         <!-- MICHI Brand Logo Group (Far Left) -->
         <div class="logo-group" onclick="if(window.app && window.app.switchTab) window.app.switchTab('all');" style="cursor: pointer; display: flex; align-items: center; gap: 10px;" title="Return to Home Overview">
@@ -80,26 +80,13 @@
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap; overflow-x: auto;">
-        <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.render) window.app.render(); return false;" class="search-box">
-          <input type="search" id="searchInput" placeholder="Search notes..." aria-label="Search workspace" autocomplete="off" enterkeyhint="search">
-          <button type="submit" class="search-submit-btn" title="Search Workspace">Search</button>
-        </form>
-
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap;">
         <!-- Web Clipper View Toggle Button -->
         <button type="button" id="btnToggleMobileClipperHeader" onclick="if(window.app && window.app.toggleViewMode) window.app.toggleViewMode('clipper');" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Switch to Mobile Web Clipper Mode">
           Web Clipper
         </button>
 
-        <button type="button" id="btnRefreshApp" onclick="if(window.app && window.app.refreshApp) { window.app.refreshApp(); } else { window.location.reload(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Refresh MICHI App & Sync Latest Data">
-          Refresh
-        </button>
-
         <input type="file" id="importFileInput" accept=".json" style="display: none;" />
-
-        <a href="index.html" class="btn-logout-link" style="color: var(--text-main); background: var(--bg-card); text-decoration: none; display: flex; align-items: center; gap: 4px; border: 1px solid var(--border); padding: 5px 10px; border-radius: var(--radius-sm); white-space: nowrap; font-size: 0.8rem; font-weight: 700;" onclick="if(window.app && window.app.signOut) { window.app.signOut(); } else { localStorage.removeItem('michi_logged_in'); }">
-          Log Out
-        </a>
       </div>
     </div>
 
@@ -113,12 +100,31 @@
             <span style="color: var(--text-muted); font-size: 0.8rem;">•</span>
             <span id="headerClockTime" style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); font-family: -apple-system, monospace;">3:49 PM</span>
           </div>
+
+          <!-- Search Notes Input Field (Moved next to Live Date & Time) -->
+          <form role="search" action="javascript:void(0);" onsubmit="if(window.app && window.app.render) window.app.render(); return false;" class="search-box">
+            <input type="search" id="searchInput" placeholder="Search notes..." aria-label="Search workspace" autocomplete="off" enterkeyhint="search">
+            <button type="submit" class="search-submit-btn" title="Search Workspace">Search</button>
+          </form>
         </div>
 
-        <!-- ⚙️ Settings Nav Button (Far Right of Date/Time Nav Bar) -->
-        <button type="button" id="btnOpenSettingsHeader" onclick="var o=document.getElementById('settingsModalOverlay'); if(o){ o.classList.add('active'); o.style.display='flex'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; margin-left: auto;" title="Open MICHI Settings & Preferences (Color Schemes, Backup, Restore, Guide)">
-          ⚙️ Settings
-        </button>
+        <!-- Right Side Nav Controls: Refresh -> Settings -> Log Out -->
+        <div style="display: flex; align-items: center; gap: 8px; margin-left: auto;">
+          <!-- Refresh Button -->
+          <button type="button" id="btnRefreshApp" onclick="if(window.app && window.app.refreshApp) { window.app.refreshApp(); } else { window.location.reload(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Refresh MICHI App & Sync Latest Data">
+            Refresh
+          </button>
+
+          <!-- ⚙️ Settings Nav Button -->
+          <button type="button" id="btnOpenSettingsHeader" onclick="var o=document.getElementById('settingsModalOverlay'); if(o){ o.classList.add('active'); o.style.display='flex'; }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Open MICHI Settings & Preferences (Color Schemes, Backup, Restore, Guide)">
+            ⚙️ Settings
+          </button>
+
+          <!-- Log Out Button -->
+          <a href="index.html" class="btn-logout-link" style="color: var(--text-main); background: var(--bg-card); text-decoration: none; display: flex; align-items: center; gap: 4px; border: 1px solid var(--border); padding: 5px 10px; border-radius: var(--radius-sm); white-space: nowrap; font-size: 0.8rem; font-weight: 700;" onclick="if(window.app && window.app.signOut) { window.app.signOut(); } else { localStorage.removeItem('michi_logged_in'); }">
+            Log Out
+          </a>
+        </div>
       </nav>
     </div>
   </header>
