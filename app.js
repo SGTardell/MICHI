@@ -478,7 +478,11 @@ class MichiApp {
         };
         fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-Cache': 'yes',
+            'Cache': 'yes'
+          },
           body: JSON.stringify(clipPayload)
         }).catch(() => {});
       } else {
@@ -491,7 +495,11 @@ class MichiApp {
         };
         fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-Cache': 'yes',
+            'Cache': 'yes'
+          },
           body: JSON.stringify(payload)
         }).catch(() => {});
       }
@@ -502,9 +510,9 @@ class MichiApp {
     try {
       const cb = 't=' + Date.now();
 
-      // 1. Primary check: ntfy.sh real-time channel
+      // 1. Primary check: ntfy.sh real-time channel with 12h retention cache
       try {
-        const resp = await fetch(`https://ntfy.sh/michi_app_sync_channel_2026/json?poll=1&since=all&${cb}`);
+        const resp = await fetch(`https://ntfy.sh/michi_app_sync_channel_2026/json?poll=1&since=12h&${cb}`);
         if (resp.ok) {
           const text = await resp.text();
           const lines = text.trim().split('\n');
@@ -1286,39 +1294,18 @@ class MichiApp {
       } catch (e) {}
     }
 
-    // 2. Fallback to GET query parameters
-    const params = new URLSearchParams(window.location.search);
-    const sharedUrl = params.get('url') || params.get('text') || params.get('share_url') || params.get('shareUrl') || params.get('link') || params.get('clip');
-    const sharedTitle = params.get('title') || params.get('share_title') || params.get('shareTitle') || params.get('name');
-
-    if (!payload && sharedUrl) {
+    if (payload && payload.url) {
+      this.autoSaveIncomingClip(payload.url, payload.title || payload.text);
+      try {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } catch (e) {}
+    } else if (sharedUrl) {
       const cleanUrlMatch = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
       const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
-      payload = {
-        url: targetUrl,
-        title: sharedTitle || 'Shared Web Capture',
-        text: sharedTitle ? `Web clip: ${sharedTitle}` : `Shared web clip: ${targetUrl}`
-      };
-    }
-
-    if (payload) {
-      this.switchTab('ideas');
-      setTimeout(() => {
-        const clipData = {
-          url: payload.url || '',
-          title: payload.title || 'Shared Web Capture',
-          content: payload.text || payload.content || '',
-          imageUrl: payload.image || '',
-          tags: payload.tags || []
-        };
-        if (payload.tags && payload.tags.length > 0) {
-          clipData.content = (clipData.content + ' ' + payload.tags.map(t => '#' + t).join(' ')).trim();
-        }
-        this.openWebClipModal(null, clipData);
-        this.showToast('📲 Received clip for Brain Dump!');
-      }, 300);
-
-      window.history.replaceState({}, document.title, window.location.pathname);
+      this.autoSaveIncomingClip(targetUrl, sharedTitle);
+      try {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } catch (e) {}
     }
   }
 
@@ -4371,21 +4358,96 @@ class MichiApp {
     const urlInput = document.getElementById('mobileClipUrl');
     const titleInput = document.getElementById('mobileClipTitle');
 
-    if (sharedUrl && urlInput) {
+    if (sharedUrl) {
       const cleanUrlMatch = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
       const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
-      urlInput.value = targetUrl;
+      if (urlInput) urlInput.value = targetUrl;
 
       if (sharedTitle && titleInput && !titleInput.value) {
         titleInput.value = sharedTitle;
       }
 
-      this.showToast('📋 Link populated from Share Sheet!');
+      // Auto save incoming shared link from iPhone
+      this.autoSaveIncomingClip(targetUrl, sharedTitle);
+
       try {
         window.history.replaceState({}, document.title, window.location.pathname);
       } catch (e) {}
     }
     this.updateDynamicClipperUrls();
+  }
+
+  autoSaveIncomingClip(cleanUrl, rawTitle = '') {
+    if (!cleanUrl) return;
+
+    let targetUrl = cleanUrl.trim();
+    if (targetUrl && !/^https?:\/\//i.test(targetUrl)) {
+      targetUrl = 'https://' + targetUrl;
+    }
+
+    // Prevent duplicate saves within 60s
+    const recentDuplicate = (this.state.items || []).find(i => 
+      i.url === targetUrl && (Date.now() - (parseInt((i.id || '').replace('item-web-', '')) || 0)) < 60000
+    );
+    if (recentDuplicate) return;
+
+    let domain = '';
+    try {
+      if (targetUrl) domain = new URL(targetUrl).hostname.replace('www.', '');
+    } catch (e) {}
+
+    let title = rawTitle ? rawTitle.trim() : '';
+    if (!title && targetUrl) {
+      title = domain ? (domain.charAt(0).toUpperCase() + domain.slice(1)) : targetUrl;
+    }
+
+    const initialImage = targetUrl ? `https://image.thum.io/get/width/600/crop/800/${targetUrl}` : (domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=256` : '');
+
+    const newClip = {
+      id: 'item-web-' + Date.now(),
+      type: 'web',
+      stage: 'spark',
+      project: '',
+      isBrainDumpRaw: true,
+      title: title || 'Saved Clip',
+      content: title !== targetUrl ? title : '',
+      url: targetUrl,
+      imageUrl: initialImage,
+      category: 'General',
+      tags: ['General', 'Brain Dump'],
+      color: '#009967',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+    };
+
+    if (!this.state.items) this.state.items = [];
+    this.state.items.unshift(newClip);
+
+    this.saveState(newClip);
+    this.showToast('⚡ Auto-saved clip to Brain Dump & synced!');
+
+    if (this.viewMode === 'clipper') {
+      this.renderMobileClipperFeed();
+    }
+    this.render();
+
+    if (targetUrl) {
+      this.fetchWebMetadata(targetUrl).then(meta => {
+        if (meta) {
+          if (meta.title && (!newClip.title || newClip.title === targetUrl || newClip.title === 'Saved Clip' || newClip.title === domain)) {
+            newClip.title = meta.title;
+          }
+          if (meta.description && (!newClip.content || newClip.content === newClip.title)) {
+            newClip.content = meta.description;
+          }
+          if (meta.imageUrl) newClip.imageUrl = meta.imageUrl;
+          this.saveState(newClip);
+          if (this.viewMode === 'clipper') {
+            this.renderMobileClipperFeed();
+          }
+          this.render();
+        }
+      });
+    }
   }
 
   updateDynamicClipperUrls() {
