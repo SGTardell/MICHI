@@ -398,10 +398,14 @@ class MichiApp {
 
     if (!this.cloudSyncListenersBound) {
       this.cloudSyncListenersBound = true;
-      window.addEventListener('focus', () => this.pullFromCloud(true));
+      window.addEventListener('focus', () => {
+        this.pullFromCloud(true);
+        if (this.viewMode === 'clipper') this.initClipboardAutoDetect();
+      });
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
           this.pullFromCloud(true);
+          if (this.viewMode === 'clipper') this.initClipboardAutoDetect();
         }
       });
       window.addEventListener('storage', () => {
@@ -470,37 +474,40 @@ class MichiApp {
   async pushToCloud(singleClip = null) {
     this.updateSyncBadge();
     try {
-      if (singleClip && singleClip.id) {
-        const clipPayload = {
-          action: 'MICHI_CLIP_SYNC',
-          clip: singleClip,
-          lastUpdated: Date.now()
-        };
-        fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
+      const payload = singleClip && singleClip.id ? {
+        action: 'MICHI_CLIP_SYNC',
+        clip: singleClip,
+        lastUpdated: Date.now()
+      } : {
+        action: 'MICHI_STATE_SYNC',
+        lastUpdated: Date.now(),
+        latestClip: (this.state.items && this.state.items.length > 0) ? this.state.items[0] : null,
+        itemCount: (this.state.items || []).length
+      };
+
+      const payloadStr = JSON.stringify(payload);
+
+      // 1. Post to ntfy.sh channel with 12h cache retention
+      fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Cache': 'yes',
+          'Cache': 'yes'
+        },
+        body: payloadStr
+      }).catch(() => {});
+
+      // 2. Post to Vercel Serverless Sync API endpoints
+      const postEndpoints = [
+        'https://michi-plum.vercel.app/api/sync',
+        '/api/sync'
+      ];
+      for (const ep of postEndpoints) {
+        fetch(ep, {
           method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'X-Cache': 'yes',
-            'Cache': 'yes'
-          },
-          body: JSON.stringify(clipPayload)
-        }).catch(() => {});
-      } else {
-        const latestItem = (this.state.items && this.state.items.length > 0) ? this.state.items[0] : null;
-        const payload = {
-          action: 'MICHI_STATE_SYNC',
-          lastUpdated: Date.now(),
-          latestClip: latestItem,
-          itemCount: (this.state.items || []).length
-        };
-        fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'X-Cache': 'yes',
-            'Cache': 'yes'
-          },
-          body: JSON.stringify(payload)
+          headers: { 'Content-Type': 'application/json' },
+          body: payloadStr
         }).catch(() => {});
       }
     } catch (e) {}
@@ -540,7 +547,7 @@ class MichiApp {
 
       // 2. Secondary check: Vercel Cloud Sync API
       const syncEndpoints = [
-        `https://public-five-red.vercel.app/api/sync?${cb}`,
+        `https://michi-plum.vercel.app/api/sync?${cb}`,
         `/api/sync?${cb}`
       ];
 
@@ -549,9 +556,17 @@ class MichiApp {
           const resp = await fetch(endpoint);
           if (resp.ok) {
             const result = await resp.json();
-            const dataCandidate = (result && result.data && result.data.state) ? result.data : (result && result.state ? result : null);
-            if (dataCandidate && dataCandidate.state && dataCandidate.state.items) {
-              (dataCandidate.state.items || []).forEach(item => this.mergeSingleClip(item));
+            if (result && result.data) {
+              const d = result.data;
+              if (d.clip) {
+                this.mergeSingleClip(d.clip);
+              } else if (d.latestClip) {
+                this.mergeSingleClip(d.latestClip);
+              } else if (d.state && d.state.items) {
+                (d.state.items || []).forEach(item => this.mergeSingleClip(item));
+              }
+            } else if (result && result.clip) {
+              this.mergeSingleClip(result.clip);
             }
           }
         } catch (e) {}
@@ -1299,13 +1314,18 @@ class MichiApp {
       try {
         window.history.replaceState({}, document.title, window.location.pathname);
       } catch (e) {}
-    } else if (sharedUrl) {
-      const cleanUrlMatch = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
-      const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
-      this.autoSaveIncomingClip(targetUrl, sharedTitle);
-      try {
-        window.history.replaceState({}, document.title, window.location.pathname);
-      } catch (e) {}
+    } else {
+      const params = new URLSearchParams(window.location.search);
+      const sharedUrl = params.get('url') || params.get('text') || params.get('share_url') || params.get('shareUrl') || params.get('link') || params.get('clip');
+      const sharedTitle = params.get('title') || params.get('share_title') || params.get('shareTitle') || params.get('name');
+      if (sharedUrl) {
+        const cleanUrlMatch = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
+        const targetUrl = cleanUrlMatch ? cleanUrlMatch[0] : sharedUrl;
+        this.autoSaveIncomingClip(targetUrl, sharedTitle);
+        try {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {}
+      }
     }
   }
 
@@ -4325,6 +4345,49 @@ class MichiApp {
     this.renderMobileClipperCategoryPills();
     this.initMobileClipperVoice();
     this.checkIncomingShareParams();
+    this.initClipboardAutoDetect();
+  }
+
+  async initClipboardAutoDetect() {
+    const banner = document.getElementById('clipperClipboardBanner');
+    const urlText = document.getElementById('clipperBannerUrlText');
+    const btnClip = document.getElementById('btnClipDetectedUrlMobile');
+
+    if (!banner || !urlText) return;
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text && typeof text === 'string') {
+          const match = text.trim().match(/(https?:\/\/[^\s]+)/i);
+          if (match && match[0]) {
+            const detectedUrl = match[0];
+            const alreadyClipped = (this.state.items || []).some(i => 
+              i.url === detectedUrl && (Date.now() - (parseInt((i.id || '').replace('item-web-', '')) || 0)) < 60000
+            );
+            if (!alreadyClipped) {
+              this.lastDetectedClipboardUrl = detectedUrl;
+              urlText.textContent = this.formatDisplayUrl(detectedUrl, 45);
+              banner.style.display = 'flex';
+
+              if (btnClip && !btnClip.dataset.bound) {
+                btnClip.dataset.bound = 'true';
+                btnClip.addEventListener('click', () => {
+                  const target = this.lastDetectedClipboardUrl;
+                  if (target) {
+                    banner.style.display = 'none';
+                    this.autoSaveIncomingClip(target);
+                  }
+                });
+              }
+              return;
+            }
+          }
+        }
+      }
+    } catch (e) {}
+
+    banner.style.display = 'none';
   }
 
   shareClipperScreen() {
