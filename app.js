@@ -617,6 +617,7 @@ class MichiApp {
     this.appSidebar = document.getElementById('appSidebar');
     this.btnToggleSidebar = document.getElementById('btnToggleSidebar');
     this.sidebarNavItems = document.querySelectorAll('.sidebar-nav-item');
+    this.sidebarStatItems = document.getElementById('sidebarStatItems');
     // Home Screen Daily Reminder
     this.homeDailyReminderInput = document.getElementById('homeDailyReminderInput');
     this.reminderLastSaved = document.getElementById('reminderLastSaved');
