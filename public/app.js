@@ -5739,37 +5739,41 @@ class MichiApp {
   renderSidebarStats() {
     if (!this.sidebarStatItems) return;
     
-    const items = this.state.items;
-    const totalCount = items.length;
-    const sparks = items.filter(i => (i.stage || 'spark') === 'spark').length;
-    const structure = items.filter(i => i.stage === 'structure').length;
-    const focus = items.filter(i => i.stage === 'focus').length;
-    const product = items.filter(i => i.stage === 'product').length;
+    const items = this.state.items || [];
+    const activeProjectsList = this.getWorkspaceProjects();
 
-    const tasks = items.filter(i => i.type === 'task');
-    const completedTasks = tasks.filter(t => t.status === 'done').length;
-    const percent = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0;
+    let planCount = 0;
+    let projectCount = 0;
+
+    if (activeProjectsList && activeProjectsList.length > 0) {
+      activeProjectsList.forEach(pName => {
+        const pLower = (pName || '').trim().toLowerCase();
+        const matchingItems = items.filter(i => 
+          (i.project || i.title || '').trim().toLowerCase() === pLower
+        );
+        const isPlan = matchingItems.some(i => i.isPlan === true || i.category === 'Plan' || i.type === 'plan' || i.boardType === 'plan');
+        if (isPlan) {
+          planCount++;
+        } else {
+          projectCount++;
+        }
+      });
+    } else {
+      const plans = items.filter(i => (i.isPlan === true || i.category === 'Plan' || i.type === 'plan') && (i.isLaunched || i.project));
+      const projects = items.filter(i => !i.isPlan && i.category !== 'Plan' && i.type !== 'plan' && (i.isLaunched || i.isProject || i.project));
+      planCount = new Set(plans.map(i => i.project || i.title)).size;
+      projectCount = new Set(projects.map(i => i.project || i.title)).size;
+    }
 
     this.sidebarStatItems.innerHTML = `
-      <div style="font-size: 0.72rem; color: var(--text-dim); display: flex; flex-direction: column; gap: 4px; text-align: left;">
-        <div style="display: flex; justify-content: space-between; font-weight: 700; color: var(--text-main);">
-          <span>Creation Path</span>
-          <span>${totalCount} Items</span>
+      <div style="font-size: 0.76rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; padding: 4px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--text-main);">
+          <span>Total Projects</span>
+          <span style="color: var(--accent); font-size: 0.88rem; font-weight: 800;">${projectCount}</span>
         </div>
-        <div style="display: flex; gap: 4px; margin-top: 4px; font-size: 0.68rem; justify-content: space-between;">
-          <span style="color: var(--stage-spark); display: flex; align-items: center; gap: 3px;" title="1. Spark (Overview)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-spark); display: inline-block;"></span> ${sparks}</span>
-          <span style="color: var(--stage-structure); display: flex; align-items: center; gap: 3px;" title="2. Structure (Notes)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-structure); display: inline-block;"></span> ${structure}</span>
-          <span style="color: var(--stage-focus); display: flex; align-items: center; gap: 3px;" title="3. Focus (Tasks)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-focus); display: inline-block;"></span> ${focus}</span>
-          <span style="color: var(--stage-product); display: flex; align-items: center; gap: 3px;" title="4. Product (Vault)"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--stage-product); display: inline-block;"></span> ${product}</span>
-        </div>
-        <div style="margin-top: 6px;">
-          <div style="display: flex; justify-content: space-between; font-size: 0.68rem; margin-bottom: 2px;">
-            <span>Task Completion</span>
-            <span style="color: var(--stage-focus); font-weight: 700;">${percent}%</span>
-          </div>
-          <div style="height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;">
-            <div style="height: 100%; width: ${percent}%; background: var(--stage-focus); transition: width 0.3s ease;"></div>
-          </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--text-main);">
+          <span>Total Plans</span>
+          <span style="color: var(--stage-focus); font-size: 0.88rem; font-weight: 800;">${planCount}</span>
         </div>
       </div>
     `;
