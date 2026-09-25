@@ -5765,6 +5765,10 @@ class MichiApp {
       projectCount = new Set(projects.map(i => i.project || i.title)).size;
     }
 
+    const brainDumpCount = items.filter(i => 
+      (i.type === 'web' || i.type === 'resource' || i.type === 'idea' || i.isBrainDumpRaw || (i.tags && i.tags.includes('Brain Dump')) || (i.url && !i.isProject && !i.isPlan))
+    ).length;
+
     this.sidebarStatItems.innerHTML = `
       <div style="font-size: 0.76rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; padding: 4px 0;">
         <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--text-main);">
@@ -5774,6 +5778,10 @@ class MichiApp {
         <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--text-main);">
           <span>Total Plans</span>
           <span style="color: var(--stage-focus); font-size: 0.88rem; font-weight: 800;">${planCount}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--text-main);">
+          <span>Total Brain Dumps</span>
+          <span style="color: var(--stage-spark); font-size: 0.88rem; font-weight: 800;">${brainDumpCount}</span>
         </div>
       </div>
     `;
