@@ -56,9 +56,14 @@
             <span class="clipper-subtitle">For Life and Work</span>
           </div>
         </div>
-        <button type="button" id="btnShareClipperScreen" onclick="if(window.app && window.app.shareClipperScreen) window.app.shareClipperScreen();" class="btn-clip-action" style="background: var(--accent); color: #000; font-weight: 800; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: var(--shadow-sm);" title="Share Web Clipper Screen">
-          <span>📲 Share Screen</span>
-        </button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" id="btnShareClipperScreen" onclick="if(window.app && window.app.shareClipperScreen) window.app.shareClipperScreen();" class="btn-clip-action" style="background: var(--accent); color: #000; font-weight: 800; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: var(--shadow-sm);" title="Share Web Clipper Screen">
+            <span>📲 Share Screen</span>
+          </button>
+          <button type="button" id="btnClipperSignOut" onclick="if(window.app && window.app.signOut) { window.app.signOut(); } else { localStorage.removeItem('michi_logged_in'); window.location.replace('index.html?logout=1'); }" class="btn-clip-action" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); font-weight: 800; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; display: flex; align-items: center; gap: 4px; cursor: pointer;" title="Sign Out of MICHI">
+            <span>🚪 Sign Out</span>
+          </button>
+        </div>
       </div>
 
       <!-- Smart Clipboard URL Auto-Detect Banner Container -->

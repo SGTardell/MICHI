@@ -172,7 +172,7 @@ class MichiApp {
     localStorage.removeItem('michi_logged_in_provider');
     this.showToast('Signed Out. Returning to Sign In screen...');
     setTimeout(() => {
-      window.location.replace('index.html');
+      window.location.replace('index.html?logout=1');
     }, 350);
   }
 
@@ -6179,7 +6179,7 @@ class MichiApp {
     card.style.minHeight = 'auto';
     card.style.height = 'auto';
 
-    // Calculate current progress stage for this project
+    // Calculate current progress stage & execution progress for this project
     const allProjItems = (this.state.items || []).filter(i => (i.project || 'General') === projectName);
     
     // Determine overall project progress (highest stage reached or spark default)
@@ -6194,10 +6194,27 @@ class MichiApp {
       }
     });
 
-    const stageNames = { spark: 'Development', structure: 'Development', focus: 'Development', product: 'Completed' };
-    const stageColors = { spark: 'var(--stage-focus)', structure: 'var(--stage-focus)', focus: 'var(--stage-focus)', product: '#ffffff' };
-    const stageName = stageNames[currentStage] || 'Development';
-    const stageColor = stageColors[currentStage] || 'var(--stage-focus)';
+    const projTasks = allProjItems.filter(i => i.type === 'task');
+    const doneTasksCount = projTasks.filter(t => t.status === 'done').length;
+    const pendingTasksCount = projTasks.length - doneTasksCount;
+    const taskCompletionPercent = projTasks.length > 0 ? Math.round((doneTasksCount / projTasks.length) * 100) : (maxRank === 4 ? 100 : 0);
+
+    let statusText = '🟢 On Track';
+    let statusBg = 'rgba(16, 185, 129, 0.15)';
+    let statusColor = '#10b981';
+    let statusBorder = 'rgba(16, 185, 129, 0.3)';
+
+    if (maxRank === 4 || (projTasks.length > 0 && doneTasksCount === projTasks.length)) {
+      statusText = '✅ Completed';
+      statusBg = 'rgba(56, 189, 248, 0.15)';
+      statusColor = '#38bdf8';
+      statusBorder = 'rgba(56, 189, 248, 0.3)';
+    } else if (pendingTasksCount > 0 && doneTasksCount === 0) {
+      statusText = '🔵 In Progress';
+      statusBg = 'rgba(56, 189, 248, 0.15)';
+      statusColor = '#38bdf8';
+      statusBorder = 'rgba(56, 189, 248, 0.3)';
+    }
 
     // Find primary project item (parent card)
     let primaryItem = allProjItems.find(i => i.type !== 'issue' && i.type !== 'web' && i.type !== 'resource' && i.type !== 'task' && i.content && i.content.trim() && !i.content.includes('Password entry'));
@@ -6233,15 +6250,30 @@ class MichiApp {
             ${this.escapeHtml(projectName)}
           </h4>
         </div>
-        <span class="project-board-stage-badge" style="background: var(--bg-card); color: var(--text-main) !important; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap; border: 1px solid var(--border);">
-          ${stageName}
+        <span class="project-board-stage-badge" style="background: ${statusBg}; color: ${statusColor} !important; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; white-space: nowrap; border: 1px solid ${statusBorder};">
+          ${statusText}
         </span>
       </div>
 
       ${leadContact ? `<div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">Lead: <span style="color: var(--text-main); font-weight: 700;">${this.escapeHtml(leadContact)}</span></div>` : ''}
 
-      <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 6px 0; word-break: break-word;">
+      <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 4px 0; word-break: break-word;">
         ${this.escapeHtml(briefDesc)}
+      </div>
+
+      <!-- Execution Progress Bar -->
+      <div style="margin: 8px 0 6px 0; padding: 6px 8px; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; margin-bottom: 4px; font-weight: 800;">
+          <span style="color: var(--text-muted);">Execution Progress</span>
+          <span style="color: ${statusColor};">${taskCompletionPercent}% Complete</span>
+        </div>
+        <div style="height: 6px; background: var(--bg-main); border-radius: 3px; overflow: hidden; border: 1px solid var(--border);">
+          <div style="height: 100%; width: ${taskCompletionPercent}%; background: ${statusColor}; transition: width 0.3s ease;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.70rem; color: var(--text-muted); margin-top: 4px; font-weight: 700;">
+          <span>✅ ${doneTasksCount} Done</span>
+          <span>⏳ ${pendingTasksCount} Yet To Be Done</span>
+        </div>
       </div>
 
       <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 0.74rem; color: var(--text-main);">
@@ -6302,40 +6334,66 @@ class MichiApp {
     const kindBadgeColor = 'var(--stage-focus)';
     const kindBadgeBorder = 'rgba(56, 189, 248, 0.35)';
 
-    // 1. Plan / Project Title Header Banner
+    const projTasks = projItems.filter(i => i.type === 'task');
+    const doneTasksCount = projTasks.filter(t => t.status === 'done').length;
+    const pendingTasksCount = projTasks.length - doneTasksCount;
+    const taskPercent = projTasks.length > 0 ? Math.round((doneTasksCount / projTasks.length) * 100) : 0;
+
+    let statusText = '🟢 On Track';
+    let statusColor = '#10b981';
+    if (projTasks.length > 0 && doneTasksCount === projTasks.length) {
+      statusText = '✅ Completed';
+      statusColor = '#38bdf8';
+    } else if (pendingTasksCount > 0 && doneTasksCount === 0) {
+      statusText = '🔵 In Progress';
+      statusColor = '#38bdf8';
+    }
+
+    // 1. Plan / Project Execution Dashboard Banner
     const banner = document.createElement('div');
     banner.style.background = 'var(--bg-card)';
     banner.style.border = '1px solid var(--border)';
     banner.style.borderRadius = 'var(--radius-md)';
-    banner.style.padding = '1rem 1.4rem';
+    banner.style.padding = '1.2rem 1.4rem';
     banner.style.marginBottom = '1.4rem';
     banner.style.display = 'flex';
-    banner.style.alignItems = 'center';
-    banner.style.justifyContent = 'space-between';
+    banner.style.flexDirection = 'column';
     banner.style.gap = '1rem';
-    banner.style.flexWrap = 'wrap';
 
     banner.innerHTML = `
-      <div>
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-          <span style="background: ${kindBadgeBg}; color: ${kindBadgeColor}; border: 1px solid ${kindBadgeBorder}; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px;">
-            ${kindBadge}
-          </span>
-          <span style="font-size: 0.8rem; color: var(--text-muted);">
-            Workspace Pipeline — ${projItems.length} Total ${projItems.length === 1 ? 'Item' : 'Items'}
-          </span>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <span style="background: ${kindBadgeBg}; color: ${kindBadgeColor}; border: 1px solid ${kindBadgeBorder}; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px;">
+              ${kindBadge}
+            </span>
+            <span style="font-size: 0.8rem; font-weight: 700; color: ${statusColor};">
+              ${statusText} • ${projItems.length} Total Records
+            </span>
+          </div>
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0;">
+            ${kindLabel}: ${this.escapeHtml(projectName)}
+          </h2>
         </div>
-        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0;">
-          ${kindLabel}: ${this.escapeHtml(projectName)}
-        </h2>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="btn-delete-current-proj" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
+            Delete ${kindLabel}
+          </button>
+          <button type="button" class="btn-clear-proj-filter" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
+            Back to All Projects & Plans
+          </button>
+        </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <button type="button" class="btn-delete-current-proj" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
-          Delete ${kindLabel}
-        </button>
-        <button type="button" class="btn-clear-proj-filter" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
-          Back to All Projects & Plans
-        </button>
+
+      <!-- Execution Progress Metrics Bar -->
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px 14px; border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; font-weight: 800;">
+          <span style="color: var(--text-main);">Execution & Progress Dashboard</span>
+          <span style="color: ${statusColor};">${taskPercent}% Complete (${doneTasksCount} Completed / ${pendingTasksCount} Pending)</span>
+        </div>
+        <div style="height: 8px; background: var(--bg-main); border-radius: 4px; overflow: hidden; border: 1px solid var(--border);">
+          <div style="height: 100%; width: ${taskPercent}%; background: ${statusColor}; transition: width 0.3s ease;"></div>
+        </div>
       </div>
     `;
 
@@ -6352,7 +6410,7 @@ class MichiApp {
 
     this.cardsGrid.appendChild(banner);
 
-    // 2. Main Workspace 2-Column Grid Layout
+    // 2. Main Workspace 2-Column Grid Layout: "Yet To Be Done" vs "What Has Been Done"
     const workspaceGrid = document.createElement('div');
     workspaceGrid.style.display = 'grid';
     workspaceGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(340px, 1fr))';
@@ -6360,14 +6418,14 @@ class MichiApp {
     workspaceGrid.style.width = '100%';
     workspaceGrid.style.alignItems = 'start';
 
-    // LEFT COLUMN: Development (top) + Resources/Tools (below)
+    // LEFT COLUMN: Yet To Be Done (Pending Tasks & Action Items) + Resources
     const leftColumn = document.createElement('div');
     leftColumn.style.display = 'flex';
     leftColumn.style.flexDirection = 'column';
     leftColumn.style.gap = '1.4rem';
     leftColumn.style.width = '100%';
 
-    // Development Section
+    // Yet To Be Done Section
     const devSection = document.createElement('div');
     devSection.style.background = 'var(--bg-card)';
     devSection.style.border = '1px solid var(--border)';
@@ -6381,7 +6439,7 @@ class MichiApp {
     this.renderDevelopmentBoardSection(devSection, devItems, projectName);
     leftColumn.appendChild(devSection);
 
-    // Resources/Tools Section (Stacked BELOW Development in Left Column)
+    // Resources/Tools Section
     const resourceItems = projItems.filter(i => i.stage !== 'product' && (i.type === 'resource' || i.type === 'web' || i.stage === 'structure'));
     const resourcesSection = document.createElement('div');
     resourcesSection.style.background = 'var(--bg-card)';
@@ -6403,10 +6461,10 @@ class MichiApp {
 
     resHeader.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Resources/Tools</span>
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">📎 Reference Clips & Attached Notes</span>
       </div>
       <button class="btn-add-res-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
-        + Add Resource/Tool
+        + Attach Clip / Note
       </button>
     `;
 
@@ -6424,8 +6482,8 @@ class MichiApp {
 
     if (resourceItems.length === 0) {
       resList.innerHTML = `
-        <div style="font-size: 0.82rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 2rem 0; background: rgba(255,255,255,0.01); border: 1px dashed var(--border); border-radius: var(--radius-sm);">
-          No resources or tools added yet. Click "+ Add Resource/Tool" to attach web clips or documentation.
+        <div style="font-size: 0.82rem; color: var(--text-dim); font-style: italic; text-align: center; padding: 1.5rem 0; background: rgba(255,255,255,0.01); border: 1px dashed var(--border); border-radius: var(--radius-sm);">
+          No attached resources. Click "+ Attach Clip / Note" to add web links or documentation.
         </div>
       `;
     } else {
@@ -6438,7 +6496,7 @@ class MichiApp {
     leftColumn.appendChild(resourcesSection);
     workspaceGrid.appendChild(leftColumn);
 
-    // RIGHT COLUMN: Completed (top) + Notes (below!)
+    // RIGHT COLUMN: What Has Been Done (Accomplished & Delivered)
     const rightColumn = document.createElement('div');
     rightColumn.style.display = 'flex';
     rightColumn.style.flexDirection = 'column';
@@ -6467,10 +6525,10 @@ class MichiApp {
 
     compHeader.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Completed</span>
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">✅ What Has Been Done (Completed)</span>
       </div>
       <button class="btn-add-comp-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
-        + Add Completed Item
+        + Add Completed Milestone
       </button>
     `;
 

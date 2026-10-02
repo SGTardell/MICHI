@@ -9,11 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginUsernameInput = document.getElementById("loginUsername");
     const loginPasswordInput = document.getElementById("loginPassword");
 
-    // Clear any active session when returning to login page
-    localStorage.removeItem("michi_logged_in");
-    localStorage.removeItem("michi_logged_in_provider");
+    const params = new URLSearchParams(window.location.search);
+    const isLogout = params.get("logout") === "1";
 
-    // Load saved username ONLY if "Remember Me" was previously enabled (never auto-fill password for security)
+    if (isLogout) {
+        localStorage.removeItem("michi_logged_in");
+        localStorage.removeItem("michi_logged_in_provider");
+        try { window.history.replaceState({}, document.title, window.location.pathname); } catch(e) {}
+    } else {
+        const alreadyLoggedIn = localStorage.getItem("michi_logged_in") === "true";
+        if (alreadyLoggedIn) {
+            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+            return;
+        }
+    }
+
+    // Load saved username ONLY if "Remember Me" was previously enabled
     const savedUsername = localStorage.getItem("rememberedUsername");
     if (savedUsername && loginUsernameInput) {
         loginUsernameInput.value = savedUsername;
@@ -42,14 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (linkToRegister) linkToRegister.addEventListener("click", (e) => { e.preventDefault(); showTab("register"); });
     if (linkToLogin) linkToLogin.addEventListener("click", (e) => { e.preventDefault(); showTab("login"); });
 
-    // Password Reset - Requires security challenge verification
+    // Password Reset
     const linkResetPass = document.getElementById("linkResetPass");
     if (linkResetPass) {
         linkResetPass.addEventListener("click", (e) => {
             e.preventDefault();
             const username = loginUsernameInput ? loginUsernameInput.value.trim() : "";
             if (!username) {
-                alert("Security Error: Please enter your Username / Email first.");
+                alert("Please enter your Username / Email first.");
                 if (loginUsernameInput) loginUsernameInput.focus();
                 return;
             }
@@ -66,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            const securityVerification = prompt("SECURITY CHALLENGE: To reset password for '" + username + "', enter your current password or Master Security PIN:");
+            const securityVerification = prompt("Enter your current password or Master Security PIN (1234):");
             if (securityVerification && (securityVerification.trim() === storedPass || securityVerification.trim() === "1234" || securityVerification.trim() === "0000")) {
                 const newPass = prompt("Enter new password for '" + username + "' (minimum 4 characters):");
                 if (newPass && newPass.trim().length >= 4) {
@@ -76,11 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         loginPasswordInput.value = "";
                         loginPasswordInput.focus();
                     }
-                } else {
-                    alert("Password reset cancelled or password too short (minimum 4 characters).");
                 }
             } else {
-                alert("Security Verification Failed: Incorrect security challenge credentials. Access denied.");
+                alert("Incorrect password or security PIN.");
             }
         });
     }
@@ -101,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Handle Login Form Submission (STRICT SECURITY CHALLENGE)
+    // Handle Login Form Submission
     if (loginForm) {
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -110,13 +120,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = rawPass ? rawPass.trim() : "";
             
             if (!username) {
-                alert("Security Error: Username or Email is required.");
+                alert("Username or Email is required.");
                 if (loginUsernameInput) loginUsernameInput.focus();
                 return;
             }
 
             if (!password) {
-                alert("Security Error: Password is required.");
+                alert("Password is required.");
                 if (loginPasswordInput) loginPasswordInput.focus();
                 return;
             }
@@ -124,12 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const userKey = "michi_user_pass_" + username.toLowerCase();
             let storedPass = localStorage.getItem(userKey);
 
-            // Auto-initialize account credentials on new devices (e.g., mobile phones) if not set yet
             if (!storedPass) {
                 localStorage.setItem(userKey, password);
                 storedPass = password;
             } else if (storedPass !== password) {
-                alert("ACCESS DENIED: Incorrect password for account '" + username + "'. Please try again.");
+                alert("Incorrect password for account '" + username + "'. Please try again.");
                 if (loginPasswordInput) {
                     loginPasswordInput.value = "";
                     loginPasswordInput.focus();
@@ -137,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // ✅ SUCCESSFUL AUTHENTICATION
+            // SUCCESSFUL AUTHENTICATION
             if (rememberMeCheckbox && rememberMeCheckbox.checked) {
                 localStorage.setItem("rememberedUsername", username);
             } else {
@@ -153,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Handle Create Account Form Submission (EXPLICIT REGISTRATION & PASSWORD SETUP)
+    // Handle Create Account Form Submission
     if (registerForm) {
         registerForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -166,25 +175,25 @@ document.addEventListener("DOMContentLoaded", () => {
             const regConfirmPassword = regConfirmPasswordInput ? regConfirmPasswordInput.value : "";
 
             if (!regUsername) {
-                alert("Security Requirement: Full Name or Username is required.");
+                alert("Full Name or Username is required.");
                 if (regUsernameInput) regUsernameInput.focus();
                 return;
             }
 
             if (!regPassword) {
-                alert("Security Requirement: Password is required.");
+                alert("Password is required.");
                 if (regPasswordInput) regPasswordInput.focus();
                 return;
             }
 
             if (regPassword.length < 4) {
-                alert("Security Requirement: Password must be at least 4 characters long.");
+                alert("Password must be at least 4 characters long.");
                 if (regPasswordInput) regPasswordInput.focus();
                 return;
             }
 
             if (regPassword !== regConfirmPassword) {
-                alert("Security Error: Passwords do not match. Please re-enter.");
+                alert("Passwords do not match. Please re-enter.");
                 if (regConfirmPasswordInput) {
                     regConfirmPasswordInput.value = "";
                     regConfirmPasswordInput.focus();
@@ -195,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const userKey = "michi_user_pass_" + regUsername.toLowerCase();
             const existingAccount = localStorage.getItem(userKey);
             if (existingAccount) {
-                alert("Account Error: An account for '" + regUsername + "' already exists. Please Sign In with your password.");
+                alert("An account for '" + regUsername + "' already exists. Please Sign In with your password.");
                 showTab("login");
                 if (loginUsernameInput) {
                     loginUsernameInput.value = regUsername;
@@ -212,41 +221,17 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in_provider", "Account");
             localStorage.setItem("michi_current_user", regUsername);
             localStorage.setItem("rememberedUsername", regUsername);
-            localStorage.setItem("michi_is_new_tester", "true");
 
             const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
         });
     }
 
-    // Provider Authentication Handlers (Google & Facebook with Security Challenge)
+    // Social Provider Authentication Handlers (iOS PWA Safe 1-Click Auth)
     const btnGoogleAuth = document.getElementById("btnGoogleAuth");
     if (btnGoogleAuth) {
         btnGoogleAuth.addEventListener("click", () => {
-            let userAccount = prompt("Google Auth Security Challenge: Enter your Google Email:", "user@gmail.com");
-            if (!userAccount || !userAccount.trim()) return;
-            userAccount = userAccount.trim();
-
-            const userKey = "michi_user_pass_" + userAccount.toLowerCase();
-            let storedPass = localStorage.getItem(userKey);
-
-            if (!storedPass) {
-                let setPass = prompt("First time Google Sign In for '" + userAccount + "'. Set a security password (min 4 chars):");
-                if (setPass && setPass.trim().length >= 4) {
-                    localStorage.setItem(userKey, setPass.trim());
-                    storedPass = setPass.trim();
-                } else {
-                    alert("Security Challenge Failed: A password is required to register this account.");
-                    return;
-                }
-            } else {
-                let passCheck = prompt("Google Auth Verification: Enter password for '" + userAccount + "':");
-                if (!passCheck || passCheck.trim() !== storedPass) {
-                    alert("ACCESS DENIED: Incorrect password for Google Account '" + userAccount + "'.");
-                    return;
-                }
-            }
-
+            const userAccount = (loginUsernameInput && loginUsernameInput.value.trim()) ? loginUsernameInput.value.trim() : "Google User";
             localStorage.setItem("michi_logged_in", "true");
             localStorage.setItem("michi_logged_in_provider", "Google");
             localStorage.setItem("michi_current_user", userAccount);
@@ -259,30 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAppleAuth = document.getElementById("btnAppleAuth");
     if (btnAppleAuth) {
         btnAppleAuth.addEventListener("click", () => {
-            let userAccount = prompt("Apple ID Security Challenge: Enter your Apple ID / Email:", "user@icloud.com");
-            if (!userAccount || !userAccount.trim()) return;
-            userAccount = userAccount.trim();
-
-            const userKey = "michi_user_pass_" + userAccount.toLowerCase();
-            let storedPass = localStorage.getItem(userKey);
-
-            if (!storedPass) {
-                let setPass = prompt("First time Sign In with Apple for '" + userAccount + "'. Set a security password (min 4 chars):");
-                if (setPass && setPass.trim().length >= 4) {
-                    localStorage.setItem(userKey, setPass.trim());
-                    storedPass = setPass.trim();
-                } else {
-                    alert("Security Challenge Failed: A password is required to register this account.");
-                    return;
-                }
-            } else {
-                let passCheck = prompt("Apple ID Verification: Enter password for '" + userAccount + "':");
-                if (!passCheck || passCheck.trim() !== storedPass) {
-                    alert("ACCESS DENIED: Incorrect password for Apple ID '" + userAccount + "'.");
-                    return;
-                }
-            }
-
+            const userAccount = (loginUsernameInput && loginUsernameInput.value.trim()) ? loginUsernameInput.value.trim() : "Apple User";
             localStorage.setItem("michi_logged_in", "true");
             localStorage.setItem("michi_logged_in_provider", "Apple");
             localStorage.setItem("michi_current_user", userAccount);
@@ -295,30 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnFacebookAuth = document.getElementById("btnFacebookAuth");
     if (btnFacebookAuth) {
         btnFacebookAuth.addEventListener("click", () => {
-            let userAccount = prompt("Facebook Auth Security Challenge: Enter your Facebook Email or Name:", "user@facebook.com");
-            if (!userAccount || !userAccount.trim()) return;
-            userAccount = userAccount.trim();
-
-            const userKey = "michi_user_pass_" + userAccount.toLowerCase();
-            let storedPass = localStorage.getItem(userKey);
-
-            if (!storedPass) {
-                let setPass = prompt("First time Facebook Sign In for '" + userAccount + "'. Set a security password (min 4 chars):");
-                if (setPass && setPass.trim().length >= 4) {
-                    localStorage.setItem(userKey, setPass.trim());
-                    storedPass = setPass.trim();
-                } else {
-                    alert("Security Challenge Failed: A password is required to register this account.");
-                    return;
-                }
-            } else {
-                let passCheck = prompt("Facebook Auth Verification: Enter password for '" + userAccount + "':");
-                if (!passCheck || passCheck.trim() !== storedPass) {
-                    alert("ACCESS DENIED: Incorrect password for Facebook Account '" + userAccount + "'.");
-                    return;
-                }
-            }
-
+            const userAccount = (loginUsernameInput && loginUsernameInput.value.trim()) ? loginUsernameInput.value.trim() : "Facebook User";
             localStorage.setItem("michi_logged_in", "true");
             localStorage.setItem("michi_logged_in_provider", "Facebook");
             localStorage.setItem("michi_current_user", userAccount);
