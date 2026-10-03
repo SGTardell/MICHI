@@ -246,6 +246,14 @@ class MichiApp {
           return !legacyDemoNames.has(pLower);
         });
 
+        if (!parsed.deletedItemIds || !Array.isArray(parsed.deletedItemIds)) {
+          parsed.deletedItemIds = [];
+        }
+        const deletedItemIdsSet = new Set(parsed.deletedItemIds);
+
+        // Filter out items whose ID was deleted
+        parsed.items = parsed.items.filter(item => item && item.id && !deletedItemIdsSet.has(item.id));
+
         if (!parsed.deletedProjects || !Array.isArray(parsed.deletedProjects)) {
           parsed.deletedProjects = [];
         }
@@ -267,10 +275,10 @@ class MichiApp {
         parsed.projectKinds['MICHI'] = 'project';
         parsed.projectKinds['Par Pilot'] = 'project';
 
-        // Restore owner's default cards if missing and not deleted by user
+        // Restore owner's default cards ONLY if not deleted by user (both project and item ID)
         defaultState.items.forEach(defItem => {
           const defProjLower = (defItem.project || '').toLowerCase().trim();
-          if (!deletedLower.includes(defProjLower) && !parsed.items.some(i => i.id === defItem.id)) {
+          if (!deletedLower.includes(defProjLower) && !deletedItemIdsSet.has(defItem.id) && !parsed.items.some(i => i.id === defItem.id)) {
             parsed.items.push(defItem);
           }
         });
@@ -4367,13 +4375,12 @@ class MichiApp {
   }
 
   initResponsiveViewMode() {
-    const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const explicitDesktop = sessionStorage.getItem('MICHI_EXPLICIT_DESKTOP') === 'true';
-    if (isMobile && !explicitDesktop) {
-      this.viewMode = 'clipper';
+    const savedViewMode = localStorage.getItem('MICHI_VIEW_MODE');
+    if (savedViewMode) {
+      this.viewMode = savedViewMode;
     } else {
-      const savedViewMode = localStorage.getItem('MICHI_VIEW_MODE');
-      this.viewMode = savedViewMode || (isMobile ? 'clipper' : 'desktop');
+      const isSmallPhone = window.innerWidth < 768 && !/iPad/i.test(navigator.userAgent);
+      this.viewMode = isSmallPhone ? 'clipper' : 'desktop';
     }
     this.applyViewMode(this.viewMode);
     this.bindMobileClipperEvents();
@@ -4396,13 +4403,8 @@ class MichiApp {
 
   toggleViewMode(forcedMode) {
     const targetMode = forcedMode || (this.viewMode === 'clipper' ? 'desktop' : 'clipper');
-    if (targetMode === 'desktop') {
-      sessionStorage.setItem('MICHI_EXPLICIT_DESKTOP', 'true');
-    } else {
-      sessionStorage.removeItem('MICHI_EXPLICIT_DESKTOP');
-    }
     this.applyViewMode(targetMode);
-    this.showToast(targetMode === 'clipper' ? 'Switched to Mobile Web Clipper Mode' : 'Switched to Full Desktop Workspace');
+    this.showToast(targetMode === 'clipper' ? 'Switched to Mobile Web Clipper Mode' : 'Switched to Full Workspace');
   }
 
   bindMobileClipperEvents() {
@@ -4920,6 +4922,12 @@ class MichiApp {
 
     this.confirmDialog(`Are you sure you want to delete "${itemTitle}"?`, 'Delete Record', () => {
       this.state.items = this.state.items.filter(i => i.id !== id);
+      if (!this.state.deletedItemIds || !Array.isArray(this.state.deletedItemIds)) {
+        this.state.deletedItemIds = [];
+      }
+      if (!this.state.deletedItemIds.includes(id)) {
+        this.state.deletedItemIds.push(id);
+      }
       this.saveState();
       this.render();
       this.showToast('Item deleted');

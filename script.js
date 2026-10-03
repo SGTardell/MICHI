@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alertEl.textContent = msg;
             alertEl.className = "auth-alert " + type;
             alertEl.style.display = "flex";
-            try { alertEl.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch(e) {}
+            try { alertEl.scrollIntoView({ behavior: "auto", block: "nearest" }); } catch(e) {}
         } else {
             alert(msg);
         }
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     showAuthAlert("Password updated successfully. Please sign in with your new password.", "success");
                     if (loginPasswordInput) {
                         loginPasswordInput.value = "";
-                        loginPasswordInput.focus();
+                        setTimeout(() => { try { loginPasswordInput.focus(); } catch(err) {} }, 100);
                     }
                 }
             } else {
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 showAuthAlert("Incorrect password for account '" + username + "'. Please try again.");
                 if (loginPasswordInput) {
                     loginPasswordInput.value = "";
-                    loginPasswordInput.focus();
+                    setTimeout(() => { try { loginPasswordInput.focus(); } catch(err) {} }, 100);
                 }
                 return;
             }
@@ -232,8 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_current_user", regUsername);
             localStorage.setItem("rememberedUsername", regUsername);
 
-            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+            window.location.replace("dashboard.html");
         });
     }
 
@@ -246,8 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in_provider", "Google");
             localStorage.setItem("michi_current_user", userAccount);
             localStorage.setItem("rememberedUsername", userAccount);
-            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+            window.location.replace("dashboard.html");
         });
     }
 
@@ -259,8 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in_provider", "Apple");
             localStorage.setItem("michi_current_user", userAccount);
             localStorage.setItem("rememberedUsername", userAccount);
-            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+            window.location.replace("dashboard.html");
         });
     }
 
@@ -272,8 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in_provider", "Facebook");
             localStorage.setItem("michi_current_user", userAccount);
             localStorage.setItem("rememberedUsername", userAccount);
-            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+            window.location.replace("dashboard.html");
         });
     }
 });
