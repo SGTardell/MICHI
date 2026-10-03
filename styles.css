@@ -1701,10 +1701,24 @@ select {
 #webClipTargetType option,
 #webClipCategory option,
 #webClipProjectSelect option,
-.task-prio-dropdown option,
-.appt-time-dropdown option,
 select option {
   background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+[data-theme="arctic"] select option {
+  background-color: #1B3B5A !important;
+  color: #F2F6FB !important;
+}
+
+[data-theme="winter"] select option,
+[data-theme="dark"] select option {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="soyokaze"] select option {
+  background-color: #D9DDDE !important;
   color: #616363 !important;
 }
 
@@ -3065,15 +3079,19 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   IPAD & TABLET (641px to 1024px)
+   IPAD & TABLET (768px to 1024px)
    -------------------------------------------------------------------------- */
-@media (min-width: 641px) and (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .header-container {
     gap: 1rem;
   }
 
   .sidebar {
-    width: 64px; /* Icon-only view on iPad for maximum workspace */
+    width: 64px !important; /* Docked icon-only view on iPad for maximum workspace */
+    position: relative !important;
+    transform: none !important;
+    display: flex !important;
+    z-index: 90 !important;
   }
 
   .sidebar .sidebar-brand-text,
@@ -3116,9 +3134,13 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   IPHONE & MOBILE (max-width: 1024px)
+   IPHONE & MOBILE (max-width: 767px)
    -------------------------------------------------------------------------- */
-@media (max-width: 1024px) {
+@media (max-width: 767px) {
+  .btn-mobile-nav {
+    display: inline-flex !important;
+  }
+
   header {
     padding: 0.65rem 0.85rem;
     padding-top: max(0.65rem, env(safe-area-inset-top));

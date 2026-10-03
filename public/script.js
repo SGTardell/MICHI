@@ -15,12 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function showAuthAlert(msg, type = "error") {
         const alertEl = document.getElementById("authAlert");
         if (alertEl) {
-            alertEl.textContent = msg;
+            alertEl.innerHTML = msg;
             alertEl.className = "auth-alert " + type;
             alertEl.style.display = "flex";
-            try { alertEl.scrollIntoView({ behavior: "auto", block: "nearest" }); } catch(e) {}
         } else {
-            alert(msg);
+            alert(typeof msg === 'string' ? msg.replace(/<[^>]*>?/gm, '') : msg);
         }
     }
 
@@ -100,15 +99,57 @@ document.addEventListener("DOMContentLoaded", () => {
     if (linkToRegister) linkToRegister.addEventListener("click", (e) => { e.preventDefault(); showTab("register"); });
     if (linkToLogin) linkToLogin.addEventListener("click", (e) => { e.preventDefault(); showTab("login"); });
 
-    // Password Reset
+    // Non-blocking Password Reset Modal (100% Safari & Touch device compatible)
+    const resetModal = document.getElementById("resetPasswordModal");
+    const resetTargetUsername = document.getElementById("resetTargetUsername");
+    const resetPinInput = document.getElementById("resetPinInput");
+    const resetNewPassInput = document.getElementById("resetNewPassInput");
+    const btnCancelResetModal = document.getElementById("btnCancelResetModal");
+    const resetPassForm = document.getElementById("resetPassForm");
     const linkResetPass = document.getElementById("linkResetPass");
+
+    function openResetPasswordModal(prefillUser = "") {
+        const username = prefillUser || (loginUsernameInput ? loginUsernameInput.value.trim() : "") || "MICHI User";
+        if (resetTargetUsername) resetTargetUsername.textContent = username;
+        if (resetPinInput) resetPinInput.value = "";
+        if (resetNewPassInput) resetNewPassInput.value = "";
+        if (resetModal) {
+            resetModal.style.display = "flex";
+        }
+    }
+
+    function closeResetPasswordModal() {
+        if (resetModal) {
+            resetModal.style.display = "none";
+        }
+    }
+
+    if (btnCancelResetModal) {
+        btnCancelResetModal.addEventListener("click", closeResetPasswordModal);
+    }
+
     if (linkResetPass) {
         linkResetPass.addEventListener("click", (e) => {
             e.preventDefault();
             const username = loginUsernameInput ? loginUsernameInput.value.trim() : "";
             if (!username) {
                 showAuthAlert("Please enter your Username / Email first.");
-                if (loginUsernameInput) loginUsernameInput.focus();
+                return;
+            }
+            openResetPasswordModal(username);
+        });
+    }
+
+    if (resetPassForm) {
+        resetPassForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const username = (loginUsernameInput ? loginUsernameInput.value.trim() : "") || (resetTargetUsername ? resetTargetUsername.textContent.trim() : "");
+            const pin = resetPinInput ? resetPinInput.value.trim() : "";
+            const newPass = resetNewPassInput ? resetNewPassInput.value.trim() : "";
+
+            if (!username) {
+                alert("Please enter username on the login screen.");
+                closeResetPasswordModal();
                 return;
             }
 
@@ -116,28 +157,19 @@ document.addEventListener("DOMContentLoaded", () => {
             let storedPass = null;
             try { storedPass = localStorage.getItem(userKey); } catch(err) {}
 
-            if (!storedPass) {
-                const newPass = prompt("Account setup for '" + username + "'. Set password (minimum 4 characters):");
-                if (newPass && newPass.trim().length >= 4) {
-                    try { localStorage.setItem(userKey, newPass.trim()); } catch(err) {}
-                    showAuthAlert("Password set successfully. You can now sign in.", "success");
+            // Verify Master PIN 1234 or 0000, or matching current storedPass
+            if (pin === "1234" || pin === "0000" || (storedPass && pin === storedPass)) {
+                if (!newPass || newPass.length < 4) {
+                    alert("New password must be at least 4 characters.");
+                    return;
                 }
-                return;
-            }
-
-            const securityVerification = prompt("Enter your current password or Master Security PIN (1234):");
-            if (securityVerification && (securityVerification.trim() === storedPass || securityVerification.trim() === "1234" || securityVerification.trim() === "0000")) {
-                const newPass = prompt("Enter new password for '" + username + "' (minimum 4 characters):");
-                if (newPass && newPass.trim().length >= 4) {
-                    try { localStorage.setItem(userKey, newPass.trim()); } catch(err) {}
-                    showAuthAlert("Password updated successfully. Please sign in with your new password.", "success");
-                    if (loginPasswordInput) {
-                        loginPasswordInput.value = "";
-                        setTimeout(() => { try { loginPasswordInput.focus(); } catch(err) {} }, 100);
-                    }
-                }
+                try { localStorage.setItem(userKey, newPass); } catch(err) {}
+                closeResetPasswordModal();
+                showAuthAlert("Password successfully updated. Signing in...", "success");
+                setLoginSession(username, "Account");
+                navigateToDashboard();
             } else {
-                showAuthAlert("Incorrect password or security PIN.");
+                alert("Incorrect Master Security PIN. Enter 1234 to reset your password.");
             }
         });
     }
@@ -168,13 +200,11 @@ document.addEventListener("DOMContentLoaded", () => {
             
             if (!username) {
                 showAuthAlert("Username or Email is required.");
-                if (loginUsernameInput) loginUsernameInput.focus();
                 return;
             }
 
             if (!password) {
                 showAuthAlert("Password is required.");
-                if (loginPasswordInput) loginPasswordInput.focus();
                 return;
             }
 
@@ -182,16 +212,25 @@ document.addEventListener("DOMContentLoaded", () => {
             let storedPass = null;
             try { storedPass = localStorage.getItem(userKey); } catch(err) {}
 
-            if (!storedPass) {
-                try { localStorage.setItem(userKey, password); } catch(err) {}
-                storedPass = password;
-            } else if (storedPass !== password) {
-                showAuthAlert("Incorrect password for account '" + username + "'. Please try again.");
-                if (loginPasswordInput) {
-                    loginPasswordInput.value = "";
-                    setTimeout(() => { try { loginPasswordInput.focus(); } catch(err) {} }, 100);
+            const isMasterPin = (password === "1234" || password === "0000");
+
+            if (storedPass && storedPass !== password && !isMasterPin) {
+                showAuthAlert("Incorrect password for account '" + username + "'. You can enter Master PIN (1234) or <a href='#' id='linkOpenResetFromAlert' style='color:inherit; text-decoration:underline; font-weight:800; margin-left:4px;'>Reset Password</a>");
+                const alertResetLink = document.getElementById("linkOpenResetFromAlert");
+                if (alertResetLink) {
+                    alertResetLink.addEventListener("click", (evt) => {
+                        evt.preventDefault();
+                        openResetPasswordModal(username);
+                    });
                 }
                 return;
+            }
+
+            // If user logged in using Master PIN or if first login, save password
+            if (isMasterPin && storedPass !== password) {
+                try { localStorage.setItem(userKey, password); } catch(err) {}
+            } else if (!storedPass) {
+                try { localStorage.setItem(userKey, password); } catch(err) {}
             }
 
             // SUCCESSFUL AUTHENTICATION

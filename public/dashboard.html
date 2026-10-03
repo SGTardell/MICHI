@@ -58,7 +58,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MICHI">
-  <link rel="stylesheet" href="styles.css?v=237">
+  <link rel="stylesheet" href="styles.css?v=240">
 </head>
 <body>
   <div class="app-layout-wrapper">
@@ -66,7 +66,10 @@
   <header style="display: flex; flex-direction: column; gap: 0.7rem; padding-bottom: 0.65rem;">
     <!-- HEADER ROW 1: Logo & Top Utility Controls -->
     <div class="header-container" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
-      <div style="display: flex; align-items: center; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <!-- Mobile Navigation Menu Toggle Button (shown on screens <= 767px) -->
+        <button type="button" class="btn-mobile-nav" id="btnMobileMenuToggle" onclick="var s=document.getElementById('appSidebar'); if(s) s.classList.toggle('mobile-open');" style="display: none; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 5px 9px; font-size: 1.1rem; cursor: pointer; align-items: center; justify-content: center; line-height: 1;" title="Toggle Navigation Menu">☰</button>
+
         <!-- MICHI Brand Logo Group (Far Left) -->
         <div class="logo-group" onclick="if(window.app && window.app.switchTab) window.app.switchTab('all');" style="cursor: pointer; display: flex; align-items: center; gap: 10px;" title="Return to Home Overview">
           <img src="Images/Your Way WH Logo.png" onerror="this.src='Images/Your Way WH Transparent.png'" alt="Your Way Logo" class="dashboard-logo-left" />
@@ -101,11 +104,16 @@
           </form>
         </div>
 
-        <!-- Right Side Nav Controls: Refresh -> Settings -> Log Out -->
+        <!-- Right Side Nav Controls: Refresh -> Web Clipper -> Settings -> Log Out -->
         <div style="display: flex; align-items: center; gap: 8px; margin-left: auto;">
           <!-- Refresh Button -->
           <button type="button" id="btnRefreshApp" onclick="if(window.app && window.app.refreshApp) { window.app.refreshApp(); } else { window.location.reload(); }" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Refresh MICHI App & Sync Latest Data">
             Refresh
+          </button>
+
+          <!-- Web Clipper Mode Toggle -->
+          <button type="button" id="btnToggleClipperView" onclick="if(window.app && window.app.toggleViewMode) window.app.toggleViewMode('clipper');" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-weight: 800; padding: 5px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Switch to Quick Web Clipper & Dictate View">
+            Web Clipper
           </button>
 
           <!-- ⚙️ Settings Nav Button -->
@@ -196,6 +204,9 @@
             <span class="clipper-subtitle">For Life and Work</span>
           </div>
         </div>
+        <button type="button" class="btn-switch-workspace" onclick="if(window.app && window.app.toggleViewMode) window.app.toggleViewMode('desktop');" style="background: var(--bg-card); color: var(--text-main); border: 1.5px solid var(--border); font-weight: 800; padding: 6px 14px; border-radius: var(--radius-sm); font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;" title="Switch to Full Workspace (Brain Dump, Planner, etc.)">
+          Workspace (Brain Dump) ➔
+        </button>
       </div>
 
       <!-- Hero Clipper Card -->
@@ -1894,7 +1905,7 @@
   <!-- Notification Toast -->
   <div class="toast" id="toast">Copied to clipboard!</div>
 
-  <script src="app.js?v=212"></script>
+  <script src="app.js?v=240"></script>
   <script>
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
       window.addEventListener('load', () => {

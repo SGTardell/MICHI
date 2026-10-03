@@ -1,11 +1,17 @@
-const CACHE_NAME = 'michi-pwa-v5';
+const CACHE_NAME = 'michi-pwa-v6';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
-  e.waitUntil(self.clients.claim());
+  e.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.filter((k) => k !== CACHE_NAME && k !== 'michi-shared-clips').map((k) => caches.delete(k))
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
 self.addEventListener('fetch', (event) => {

@@ -285,14 +285,6 @@ class MichiApp {
         parsed.projectKinds['MICHI'] = 'project';
         parsed.projectKinds['Par Pilot'] = 'project';
 
-        // Restore owner's default cards ONLY if not deleted by user (both project and item ID)
-        defaultState.items.forEach(defItem => {
-          const defProjLower = (defItem.project || '').toLowerCase().trim();
-          if (!deletedLower.includes(defProjLower) && !deletedItemIdsSet.has(defItem.id) && !parsed.items.some(i => i.id === defItem.id)) {
-            parsed.items.push(defItem);
-          }
-        });
-
         // Strip generic laptop stock photos and clean legacy tags ('#LifePlan' -> 'Plan', '#Work' -> 'Project', 'Password')
         parsed.items.forEach(item => {
           if (item.type !== 'vault' && Array.isArray(item.tags)) {
@@ -442,7 +434,9 @@ class MichiApp {
             const data = JSON.parse(event.data);
             if (data && data.message) {
               const msg = typeof data.message === 'string' ? JSON.parse(data.message) : data.message;
-              if (msg && msg.action === 'MICHI_CLIP_SYNC' && msg.clip) {
+              if (msg && msg.action === 'MICHI_ITEM_DELETE' && msg.deletedId) {
+                this.applyItemDeleteFromCloud(msg.deletedId);
+              } else if (msg && msg.action === 'MICHI_CLIP_SYNC' && msg.clip) {
                 this.mergeSingleClip(msg.clip);
               } else if (msg && (msg.latestClip || msg.state)) {
                 this.pullFromCloud(true);
@@ -455,8 +449,53 @@ class MichiApp {
     } catch (e) {}
   }
 
+  applyItemDeleteFromCloud(id) {
+    if (!id) return;
+    if (!this.state.deletedItemIds || !Array.isArray(this.state.deletedItemIds)) {
+      this.state.deletedItemIds = [];
+    }
+    if (!this.state.deletedItemIds.includes(id)) {
+      this.state.deletedItemIds.push(id);
+    }
+    const hadItem = (this.state.items || []).some(i => i.id === id);
+    if (hadItem) {
+      this.state.items = this.state.items.filter(i => i.id !== id);
+      this.saveState();
+      this.render();
+      if (this.viewMode === 'clipper') {
+        this.renderMobileClipperFeed();
+      }
+    }
+  }
+
+  pushDeleteToCloud(id) {
+    if (!id) return;
+    try {
+      const payload = {
+        action: 'MICHI_ITEM_DELETE',
+        deletedId: id,
+        lastUpdated: Date.now()
+      };
+      const payloadStr = JSON.stringify(payload);
+      fetch('https://ntfy.sh/michi_app_sync_channel_2026', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Cache': 'yes', 'Cache': 'yes' },
+        body: payloadStr
+      }).catch(() => {});
+      fetch('https://michi-plum.vercel.app/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payloadStr
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
   mergeSingleClip(clip) {
     if (!clip || !clip.id) return false;
+    // Strictly prevent resurrecting cards deleted by the user
+    if (this.state.deletedItemIds && Array.isArray(this.state.deletedItemIds) && this.state.deletedItemIds.includes(clip.id)) {
+      return false;
+    }
     if (!this.state.items || !Array.isArray(this.state.items)) {
       this.state.items = [];
     }
@@ -550,7 +589,9 @@ class MichiApp {
                 payload = typeof parsedLine.message === 'string' ? JSON.parse(parsedLine.message) : parsedLine.message;
               }
               if (payload) {
-                if (payload.action === 'MICHI_CLIP_SYNC' && payload.clip) {
+                if (payload.action === 'MICHI_ITEM_DELETE' && payload.deletedId) {
+                  this.applyItemDeleteFromCloud(payload.deletedId);
+                } else if (payload.action === 'MICHI_CLIP_SYNC' && payload.clip) {
                   this.mergeSingleClip(payload.clip);
                 } else if (payload.latestClip) {
                   this.mergeSingleClip(payload.latestClip);
@@ -576,7 +617,9 @@ class MichiApp {
             const result = await resp.json();
             if (result && result.data) {
               const d = result.data;
-              if (d.clip) {
+              if (d.action === 'MICHI_ITEM_DELETE' && d.deletedId) {
+                this.applyItemDeleteFromCloud(d.deletedId);
+              } else if (d.clip) {
                 this.mergeSingleClip(d.clip);
               } else if (d.latestClip) {
                 this.mergeSingleClip(d.latestClip);
@@ -1448,6 +1491,10 @@ class MichiApp {
     // Sidebar Navigation Click Listeners
     this.sidebarNavItems.forEach(item => {
       item.addEventListener('click', () => {
+        if (this.appSidebar) {
+          this.appSidebar.classList.remove('mobile-open');
+        }
+
         const targetTab = item.dataset.sidebarTab;
         const targetStage = item.dataset.sidebarStage;
 
@@ -4385,11 +4432,16 @@ class MichiApp {
   }
 
   initResponsiveViewMode() {
+    const isIPad = /iPad/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const savedViewMode = localStorage.getItem('MICHI_VIEW_MODE');
-    if (savedViewMode) {
+    if (isIPad) {
+      // iPad screen is a full tablet display and should always open the complete workspace (Home/Brain Dump/Planner)
+      this.viewMode = 'desktop';
+      localStorage.setItem('MICHI_VIEW_MODE', 'desktop');
+    } else if (savedViewMode) {
       this.viewMode = savedViewMode;
     } else {
-      const isSmallPhone = window.innerWidth < 768 && !/iPad/i.test(navigator.userAgent);
+      const isSmallPhone = window.innerWidth < 768;
       this.viewMode = isSmallPhone ? 'clipper' : 'desktop';
     }
     this.applyViewMode(this.viewMode);
@@ -4939,6 +4991,7 @@ class MichiApp {
         this.state.deletedItemIds.push(id);
       }
       this.saveState();
+      this.pushDeleteToCloud(id);
       this.render();
       this.showToast('Item deleted');
     });
