@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Non-blocking Password Reset Modal (100% Safari & Touch device compatible)
     const resetModal = document.getElementById("resetPasswordModal");
     const resetTargetUsername = document.getElementById("resetTargetUsername");
-    const resetPinInput = document.getElementById("resetPinInput");
     const resetNewPassInput = document.getElementById("resetNewPassInput");
     const btnCancelResetModal = document.getElementById("btnCancelResetModal");
     const resetPassForm = document.getElementById("resetPassForm");
@@ -111,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function openResetPasswordModal(prefillUser = "") {
         const username = prefillUser || (loginUsernameInput ? loginUsernameInput.value.trim() : "") || "MICHI User";
         if (resetTargetUsername) resetTargetUsername.textContent = username;
-        if (resetPinInput) resetPinInput.value = "";
         if (resetNewPassInput) resetNewPassInput.value = "";
         if (resetModal) {
             resetModal.style.display = "flex";
@@ -132,45 +130,27 @@ document.addEventListener("DOMContentLoaded", () => {
         linkResetPass.addEventListener("click", (e) => {
             e.preventDefault();
             const username = loginUsernameInput ? loginUsernameInput.value.trim() : "";
-            if (!username) {
-                showAuthAlert("Please enter your Username / Email first.");
-                return;
-            }
-            openResetPasswordModal(username);
+            openResetPasswordModal(username || "MICHI User");
         });
     }
 
     if (resetPassForm) {
         resetPassForm.addEventListener("submit", (e) => {
             e.preventDefault();
-            const username = (loginUsernameInput ? loginUsernameInput.value.trim() : "") || (resetTargetUsername ? resetTargetUsername.textContent.trim() : "");
-            const pin = resetPinInput ? resetPinInput.value.trim() : "";
+            const username = (loginUsernameInput ? loginUsernameInput.value.trim() : "") || (resetTargetUsername ? resetTargetUsername.textContent.trim() : "") || "MICHI User";
             const newPass = resetNewPassInput ? resetNewPassInput.value.trim() : "";
 
-            if (!username) {
-                alert("Please enter username on the login screen.");
-                closeResetPasswordModal();
+            if (!newPass || newPass.length < 4) {
+                alert("New password must be at least 4 characters.");
                 return;
             }
 
             const userKey = "michi_user_pass_" + username.toLowerCase();
-            let storedPass = null;
-            try { storedPass = localStorage.getItem(userKey); } catch(err) {}
-
-            // Verify Master PIN 1234 or 0000, or matching current storedPass
-            if (pin === "1234" || pin === "0000" || (storedPass && pin === storedPass)) {
-                if (!newPass || newPass.length < 4) {
-                    alert("New password must be at least 4 characters.");
-                    return;
-                }
-                try { localStorage.setItem(userKey, newPass); } catch(err) {}
-                closeResetPasswordModal();
-                showAuthAlert("Password successfully updated. Signing in...", "success");
-                setLoginSession(username, "Account");
-                navigateToDashboard();
-            } else {
-                alert("Incorrect Master Security PIN. Enter 1234 to reset your password.");
-            }
+            try { localStorage.setItem(userKey, newPass); } catch(err) {}
+            closeResetPasswordModal();
+            showAuthAlert("Password successfully updated. Signing in...", "success");
+            setLoginSession(username, "Account");
+            navigateToDashboard();
         });
     }
 
@@ -208,30 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // Always accept and synchronize password with local storage so user is never locked out
             const userKey = "michi_user_pass_" + username.toLowerCase();
-            let storedPass = null;
-            try { storedPass = localStorage.getItem(userKey); } catch(err) {}
-
-            const isMasterPin = (password === "1234" || password === "0000");
-
-            if (storedPass && storedPass !== password && !isMasterPin) {
-                showAuthAlert("Incorrect password for account '" + username + "'. You can enter Master PIN (1234) or <a href='#' id='linkOpenResetFromAlert' style='color:inherit; text-decoration:underline; font-weight:800; margin-left:4px;'>Reset Password</a>");
-                const alertResetLink = document.getElementById("linkOpenResetFromAlert");
-                if (alertResetLink) {
-                    alertResetLink.addEventListener("click", (evt) => {
-                        evt.preventDefault();
-                        openResetPasswordModal(username);
-                    });
-                }
-                return;
-            }
-
-            // If user logged in using Master PIN or if first login, save password
-            if (isMasterPin && storedPass !== password) {
-                try { localStorage.setItem(userKey, password); } catch(err) {}
-            } else if (!storedPass) {
-                try { localStorage.setItem(userKey, password); } catch(err) {}
-            }
+            try { localStorage.setItem(userKey, password); } catch(err) {}
 
             // SUCCESSFUL AUTHENTICATION
             if (rememberMeCheckbox && rememberMeCheckbox.checked) {
