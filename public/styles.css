@@ -636,6 +636,39 @@ header::before {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+/* ❄️ Arctic Chill Theme: Light Container Sub-Card Text & Label High-Contrast Rules */
+[data-theme="arctic"] .modal-content div[style*="background: var(--bg-main)"],
+[data-theme="arctic"] .modal-content div[style*="background:var(--bg-main)"],
+[data-theme="arctic"] #settingsModalOverlay div[style*="background: var(--bg-main)"],
+[data-theme="arctic"] #settingsModalOverlay div[style*="background:var(--bg-main)"] {
+  background-color: #F2F6FB !important;
+  color: #1B3B5A !important;
+  border-color: #4D6E91 !important;
+}
+
+[data-theme="arctic"] .modal-content div[style*="background: var(--bg-main)"] label,
+[data-theme="arctic"] .modal-content div[style*="background:var(--bg-main)"] label,
+[data-theme="arctic"] #settingsModalOverlay label {
+  color: #1B3B5A !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="arctic"] .modal-content div[style*="background: var(--bg-main)"] p,
+[data-theme="arctic"] .modal-content div[style*="background:var(--bg-main)"] p,
+[data-theme="arctic"] #settingsModalOverlay p {
+  color: #34506D !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+[data-theme="arctic"] #themeSelector {
+  background-color: #F2F6FB !important;
+  color: #1B3B5A !important;
+  -webkit-text-fill-color: #1B3B5A !important;
+  border: 1.5px solid #4D6E91 !important;
+  font-weight: 800 !important;
+}
+
 /* Arctic Chill Theme: +Save to Brain Dump Button */
 [data-theme="arctic"] #btnBrainDumpQuickSave,
 [data-theme="arctic"] .btn-save-clip,
