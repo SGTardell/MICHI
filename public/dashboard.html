@@ -876,8 +876,16 @@
         </div>
 
         <div>
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Tags (Comma-separated)</label>
-          <input type="text" id="editItemTags" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Ideas, Priority, Web" />
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Tags & Categories</label>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <select id="editItemTagSelect" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 700;">
+              <!-- Populated via app.js -->
+            </select>
+            <div id="customTagWrapper" style="display: none;">
+              <input type="text" id="editItemCustomTag" style="width: 100%; padding: 0.55rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--stage-structure); border-radius: var(--radius-sm);" placeholder="Type new tag / category name..." />
+            </div>
+            <input type="text" id="editItemTags" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm);" placeholder="Ideas, Priority, Web (comma-separated)..." />
+          </div>
         </div>
 
         <!-- Assigned Contact Selection in Edit Modal -->

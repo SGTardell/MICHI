@@ -1048,6 +1048,9 @@ class MichiApp {
     this.editItemSecret = document.getElementById('editItemSecret');
     this.btnGeneratePassword = document.getElementById('btnGeneratePassword');
     this.editItemTags = document.getElementById('editItemTags');
+    this.editItemTagSelect = document.getElementById('editItemTagSelect');
+    this.customTagWrapper = document.getElementById('customTagWrapper');
+    this.editItemCustomTag = document.getElementById('editItemCustomTag');
     this.editVaultGroup = document.getElementById('editVaultGroup');
     this.editItemContactSelect = document.getElementById('editItemContactSelect');
     this.customEditItemContactWrapper = document.getElementById('customEditItemContactWrapper');
@@ -1859,6 +1862,28 @@ class MichiApp {
       this.editItemForm.addEventListener('submit', (e) => {
         e.preventDefault();
         this.saveEditItem();
+      });
+    }
+
+    if (this.editItemTagSelect) {
+      this.editItemTagSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val === '__NEW__') {
+          if (this.customTagWrapper) this.customTagWrapper.style.display = 'block';
+          if (this.editItemCustomTag) this.editItemCustomTag.focus();
+        } else if (val) {
+          if (this.customTagWrapper) this.customTagWrapper.style.display = 'none';
+          const existing = this.editItemTags ? this.editItemTags.value.trim() : '';
+          if (existing) {
+            const tagsArr = existing.split(',').map(t => t.trim());
+            if (!tagsArr.includes(val)) {
+              tagsArr.push(val);
+              this.editItemTags.value = tagsArr.join(', ');
+            }
+          } else if (this.editItemTags) {
+            this.editItemTags.value = val;
+          }
+        }
       });
     }
 
@@ -2844,6 +2869,37 @@ class MichiApp {
     this.editItemCategory.appendChild(newOpt);
   }
 
+  updateTagDropdownOptions() {
+    if (!this.editItemTagSelect) return;
+    const tagSet = new Set(['Ideas', 'Development', 'Priority', 'Web', 'Vault', 'Reference', 'Brain Dump', 'Personal']);
+    if (this.state && this.state.items) {
+      this.state.items.forEach(i => {
+        if (Array.isArray(i.tags)) {
+          i.tags.forEach(t => { if (t && t.trim()) tagSet.add(t.trim()); });
+        }
+        if (i.category && i.category.trim()) tagSet.add(i.category.trim());
+      });
+    }
+
+    this.editItemTagSelect.innerHTML = '';
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = '🏷️ Select Tag or Category from list...';
+    this.editItemTagSelect.appendChild(defaultOpt);
+
+    tagSet.forEach(tag => {
+      const opt = document.createElement('option');
+      opt.value = tag;
+      opt.textContent = `🏷️ ${tag}`;
+      this.editItemTagSelect.appendChild(opt);
+    });
+
+    const newOpt = document.createElement('option');
+    newOpt.value = '__NEW__';
+    newOpt.textContent = '➕ Create New Tag / Category...';
+    this.editItemTagSelect.appendChild(newOpt);
+  }
+
   openAddPasswordModal() {
     if (!this.vaultUnlocked) {
       this.openVaultLockModal();
@@ -3025,6 +3081,10 @@ class MichiApp {
     if (!item) return;
 
     this.updateCategoryDropdownOptions();
+    this.updateTagDropdownOptions();
+    if (this.customTagWrapper) this.customTagWrapper.style.display = 'none';
+    if (this.editItemCustomTag) this.editItemCustomTag.value = '';
+    if (this.editItemTagSelect) this.editItemTagSelect.value = '';
 
     this.editItemId.value = item.id;
     this.editItemTitle.value = item.title || '';
@@ -3210,7 +3270,22 @@ class MichiApp {
     item.category = selectedCat;
     item.webCategory = selectedCat;
 
-    const tagsRaw = this.editItemTags.value.trim();
+    let tagsRaw = this.editItemTags ? this.editItemTags.value.trim() : '';
+    if (this.editItemTagSelect && this.editItemTagSelect.value === '__NEW__' && this.editItemCustomTag) {
+      const customTagVal = this.editItemCustomTag.value.trim();
+      if (customTagVal) {
+        if (tagsRaw) {
+          const tagsArr = tagsRaw.split(',').map(t => t.trim());
+          if (!tagsArr.includes(customTagVal)) {
+            tagsArr.push(customTagVal);
+            tagsRaw = tagsArr.join(', ');
+          }
+        } else {
+          tagsRaw = customTagVal;
+        }
+      }
+    }
+
     item.tags = tagsRaw 
       ? tagsRaw.split(',').map(t => t.trim()).filter(t => t && t.toLowerCase() !== 'password') 
       : [selectedCat, 'Brain Dump'];
