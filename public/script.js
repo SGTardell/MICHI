@@ -12,6 +12,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const isLogout = params.get("logout") === "1";
 
+    function showAuthAlert(msg, type = "error") {
+        const alertEl = document.getElementById("authAlert");
+        if (alertEl) {
+            alertEl.textContent = msg;
+            alertEl.className = "auth-alert " + type;
+            alertEl.style.display = "flex";
+            try { alertEl.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch(e) {}
+        } else {
+            alert(msg);
+        }
+    }
+
     if (isLogout) {
         localStorage.removeItem("michi_logged_in");
         localStorage.removeItem("michi_logged_in_provider");
@@ -19,8 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         const alreadyLoggedIn = localStorage.getItem("michi_logged_in") === "true";
         if (alreadyLoggedIn) {
-            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+            window.location.replace("dashboard.html");
             return;
         }
     }
@@ -61,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const username = loginUsernameInput ? loginUsernameInput.value.trim() : "";
             if (!username) {
-                alert("Please enter your Username / Email first.");
+                showAuthAlert("Please enter your Username / Email first.");
                 if (loginUsernameInput) loginUsernameInput.focus();
                 return;
             }
@@ -73,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newPass = prompt("Account setup for '" + username + "'. Set password (minimum 4 characters):");
                 if (newPass && newPass.trim().length >= 4) {
                     localStorage.setItem(userKey, newPass.trim());
-                    alert("Password set successfully. You can now sign in.");
+                    showAuthAlert("Password set successfully. You can now sign in.", "success");
                 }
                 return;
             }
@@ -83,14 +94,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newPass = prompt("Enter new password for '" + username + "' (minimum 4 characters):");
                 if (newPass && newPass.trim().length >= 4) {
                     localStorage.setItem(userKey, newPass.trim());
-                    alert("Password updated successfully. Please sign in with your new password.");
+                    showAuthAlert("Password updated successfully. Please sign in with your new password.", "success");
                     if (loginPasswordInput) {
                         loginPasswordInput.value = "";
                         loginPasswordInput.focus();
                     }
                 }
             } else {
-                alert("Incorrect password or security PIN.");
+                showAuthAlert("Incorrect password or security PIN.");
             }
         });
     }
@@ -120,13 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = rawPass ? rawPass.trim() : "";
             
             if (!username) {
-                alert("Username or Email is required.");
+                showAuthAlert("Username or Email is required.");
                 if (loginUsernameInput) loginUsernameInput.focus();
                 return;
             }
 
             if (!password) {
-                alert("Password is required.");
+                showAuthAlert("Password is required.");
                 if (loginPasswordInput) loginPasswordInput.focus();
                 return;
             }
@@ -138,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem(userKey, password);
                 storedPass = password;
             } else if (storedPass !== password) {
-                alert("Incorrect password for account '" + username + "'. Please try again.");
+                showAuthAlert("Incorrect password for account '" + username + "'. Please try again.");
                 if (loginPasswordInput) {
                     loginPasswordInput.value = "";
                     loginPasswordInput.focus();
@@ -157,8 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("michi_logged_in_provider", "Account");
             localStorage.setItem("michi_current_user", username);
             
-            const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            window.location.replace(isMobile ? "clipper.html" : "dashboard.html");
+            window.location.replace("dashboard.html");
         });
     }
 
