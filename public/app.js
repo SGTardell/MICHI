@@ -2871,32 +2871,64 @@ class MichiApp {
 
   updateTagDropdownOptions() {
     if (!this.editItemTagSelect) return;
-    const tagSet = new Set(['Ideas', 'Development', 'Priority', 'Web', 'Vault', 'Reference', 'Brain Dump', 'Personal']);
-    if (this.state && this.state.items) {
-      this.state.items.forEach(i => {
-        if (Array.isArray(i.tags)) {
-          i.tags.forEach(t => { if (t && t.trim()) tagSet.add(t.trim()); });
+    
+    // Core Topic Categories matching Brain Dump & Life Engine options
+    const topicCategories = new Set([
+      'Tech', 
+      'Travel', 
+      'Health', 
+      'Work', 
+      'Finance', 
+      'Personal', 
+      'Ideas', 
+      'Reference', 
+      'Inbox (Unfiled)'
+    ]);
+
+    // Build set of Project names to explicitly exclude projects from Categories
+    const projectNames = new Set();
+    if (this.state && Array.isArray(this.state.projects)) {
+      this.state.projects.forEach(p => {
+        if (p && p.name) projectNames.add(p.name.trim().toLowerCase());
+        if (p && p.id) projectNames.add(p.id.trim().toLowerCase());
+      });
+    }
+
+    // Add custom web categories if created by user
+    if (this.state && Array.isArray(this.state.customWebCategories)) {
+      this.state.customWebCategories.forEach(c => {
+        if (c && c.trim() && !projectNames.has(c.trim().toLowerCase())) {
+          topicCategories.add(c.trim());
         }
-        if (i.category && i.category.trim()) tagSet.add(i.category.trim());
+      });
+    }
+
+    // Add valid categories from non-project items
+    if (this.state && Array.isArray(this.state.items)) {
+      this.state.items.forEach(i => {
+        const cat = i.webCategory || i.category;
+        if (cat && cat.trim() && !projectNames.has(cat.trim().toLowerCase()) && cat.toLowerCase() !== 'all' && cat.toLowerCase() !== 'uncategorized') {
+          topicCategories.add(cat.trim());
+        }
       });
     }
 
     this.editItemTagSelect.innerHTML = '';
     const defaultOpt = document.createElement('option');
     defaultOpt.value = '';
-    defaultOpt.textContent = '🏷️ Select Tag or Category from list...';
+    defaultOpt.textContent = '📁 Select Topic Category...';
     this.editItemTagSelect.appendChild(defaultOpt);
 
-    tagSet.forEach(tag => {
+    topicCategories.forEach(cat => {
       const opt = document.createElement('option');
-      opt.value = tag;
-      opt.textContent = `🏷️ ${tag}`;
+      opt.value = cat;
+      opt.textContent = `📁 ${cat}`;
       this.editItemTagSelect.appendChild(opt);
     });
 
     const newOpt = document.createElement('option');
     newOpt.value = '__NEW__';
-    newOpt.textContent = '➕ Create New Tag / Category...';
+    newOpt.textContent = '➕ Create New Category...';
     this.editItemTagSelect.appendChild(newOpt);
   }
 
