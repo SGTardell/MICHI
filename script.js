@@ -24,20 +24,55 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function setLoginSession(username, provider) {
+        const prov = provider || "Account";
+        const user = username || "MICHI User";
+        try { localStorage.setItem("michi_logged_in", "true"); } catch(e) {}
+        try { localStorage.setItem("michi_logged_in_provider", prov); } catch(e) {}
+        try { localStorage.setItem("michi_current_user", user); } catch(e) {}
+        try { sessionStorage.setItem("michi_logged_in", "true"); } catch(e) {}
+        try { sessionStorage.setItem("michi_logged_in_provider", prov); } catch(e) {}
+        try { sessionStorage.setItem("michi_current_user", user); } catch(e) {}
+        try {
+            document.cookie = "michi_logged_in=true; path=/; max-age=31536000; SameSite=Lax";
+            document.cookie = "michi_current_user=" + encodeURIComponent(user) + "; path=/; max-age=31536000; SameSite=Lax";
+        } catch(e) {}
+    }
+
+    function checkIsLoggedIn() {
+        try { if (localStorage.getItem("michi_logged_in") === "true") return true; } catch(e) {}
+        try { if (sessionStorage.getItem("michi_logged_in") === "true") return true; } catch(e) {}
+        try { if (document.cookie.includes("michi_logged_in=true")) return true; } catch(e) {}
+        return false;
+    }
+
+    function clearLoginSession() {
+        try { localStorage.removeItem("michi_logged_in"); } catch(e) {}
+        try { localStorage.removeItem("michi_logged_in_provider"); } catch(e) {}
+        try { sessionStorage.removeItem("michi_logged_in"); } catch(e) {}
+        try { sessionStorage.removeItem("michi_logged_in_provider"); } catch(e) {}
+        try { document.cookie = "michi_logged_in=; path=/; max-age=0;"; } catch(e) {}
+    }
+
+    function navigateToDashboard() {
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 80);
+    }
+
     if (isLogout) {
-        localStorage.removeItem("michi_logged_in");
-        localStorage.removeItem("michi_logged_in_provider");
+        clearLoginSession();
         try { window.history.replaceState({}, document.title, window.location.pathname); } catch(e) {}
     } else {
-        const alreadyLoggedIn = localStorage.getItem("michi_logged_in") === "true";
-        if (alreadyLoggedIn) {
+        if (checkIsLoggedIn()) {
             window.location.replace("dashboard.html");
             return;
         }
     }
 
     // Load saved username ONLY if "Remember Me" was previously enabled
-    const savedUsername = localStorage.getItem("rememberedUsername");
+    let savedUsername = "";
+    try { savedUsername = localStorage.getItem("rememberedUsername") || ""; } catch(e) {}
     if (savedUsername && loginUsernameInput) {
         loginUsernameInput.value = savedUsername;
         if (rememberMeCheckbox) {
@@ -78,12 +113,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const userKey = "michi_user_pass_" + username.toLowerCase();
-            let storedPass = localStorage.getItem(userKey);
+            let storedPass = null;
+            try { storedPass = localStorage.getItem(userKey); } catch(err) {}
 
             if (!storedPass) {
                 const newPass = prompt("Account setup for '" + username + "'. Set password (minimum 4 characters):");
                 if (newPass && newPass.trim().length >= 4) {
-                    localStorage.setItem(userKey, newPass.trim());
+                    try { localStorage.setItem(userKey, newPass.trim()); } catch(err) {}
                     showAuthAlert("Password set successfully. You can now sign in.", "success");
                 }
                 return;
@@ -93,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (securityVerification && (securityVerification.trim() === storedPass || securityVerification.trim() === "1234" || securityVerification.trim() === "0000")) {
                 const newPass = prompt("Enter new password for '" + username + "' (minimum 4 characters):");
                 if (newPass && newPass.trim().length >= 4) {
-                    localStorage.setItem(userKey, newPass.trim());
+                    try { localStorage.setItem(userKey, newPass.trim()); } catch(err) {}
                     showAuthAlert("Password updated successfully. Please sign in with your new password.", "success");
                     if (loginPasswordInput) {
                         loginPasswordInput.value = "";
@@ -143,10 +179,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const userKey = "michi_user_pass_" + username.toLowerCase();
-            let storedPass = localStorage.getItem(userKey);
+            let storedPass = null;
+            try { storedPass = localStorage.getItem(userKey); } catch(err) {}
 
             if (!storedPass) {
-                localStorage.setItem(userKey, password);
+                try { localStorage.setItem(userKey, password); } catch(err) {}
                 storedPass = password;
             } else if (storedPass !== password) {
                 showAuthAlert("Incorrect password for account '" + username + "'. Please try again.");
@@ -159,16 +196,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // SUCCESSFUL AUTHENTICATION
             if (rememberMeCheckbox && rememberMeCheckbox.checked) {
-                localStorage.setItem("rememberedUsername", username);
+                try { localStorage.setItem("rememberedUsername", username); } catch(err) {}
             } else {
-                localStorage.removeItem("rememberedUsername");
+                try { localStorage.removeItem("rememberedUsername"); } catch(err) {}
             }
 
-            localStorage.setItem("michi_logged_in", "true");
-            localStorage.setItem("michi_logged_in_provider", "Account");
-            localStorage.setItem("michi_current_user", username);
-            
-            window.location.replace("dashboard.html");
+            setLoginSession(username, "Account");
+            navigateToDashboard();
         });
     }
 
@@ -212,7 +246,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const userKey = "michi_user_pass_" + regUsername.toLowerCase();
-            const existingAccount = localStorage.getItem(userKey);
+            let existingAccount = null;
+            try { existingAccount = localStorage.getItem(userKey); } catch(err) {}
+
             if (existingAccount) {
                 alert("An account for '" + regUsername + "' already exists. Please Sign In with your password.");
                 showTab("login");
@@ -226,50 +262,44 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // Save new account credentials securely
-            localStorage.setItem(userKey, regPassword);
-            localStorage.setItem("michi_logged_in", "true");
-            localStorage.setItem("michi_logged_in_provider", "Account");
-            localStorage.setItem("michi_current_user", regUsername);
-            localStorage.setItem("rememberedUsername", regUsername);
+            try {
+                localStorage.setItem(userKey, regPassword);
+                localStorage.setItem("rememberedUsername", regUsername);
+            } catch(err) {}
 
-            window.location.replace("dashboard.html");
+            setLoginSession(regUsername, "Account");
+            navigateToDashboard();
         });
     }
 
     // Social Provider Authentication Handlers (iOS PWA Safe 1-Click Auth)
     const btnGoogleAuth = document.getElementById("btnGoogleAuth");
     if (btnGoogleAuth) {
-        btnGoogleAuth.addEventListener("click", () => {
+        btnGoogleAuth.addEventListener("click", (e) => {
+            if (e) e.preventDefault();
             const userAccount = (loginUsernameInput && loginUsernameInput.value.trim()) ? loginUsernameInput.value.trim() : "Google User";
-            localStorage.setItem("michi_logged_in", "true");
-            localStorage.setItem("michi_logged_in_provider", "Google");
-            localStorage.setItem("michi_current_user", userAccount);
-            localStorage.setItem("rememberedUsername", userAccount);
-            window.location.replace("dashboard.html");
+            setLoginSession(userAccount, "Google");
+            navigateToDashboard();
         });
     }
 
     const btnAppleAuth = document.getElementById("btnAppleAuth");
     if (btnAppleAuth) {
-        btnAppleAuth.addEventListener("click", () => {
+        btnAppleAuth.addEventListener("click", (e) => {
+            if (e) e.preventDefault();
             const userAccount = (loginUsernameInput && loginUsernameInput.value.trim()) ? loginUsernameInput.value.trim() : "Apple User";
-            localStorage.setItem("michi_logged_in", "true");
-            localStorage.setItem("michi_logged_in_provider", "Apple");
-            localStorage.setItem("michi_current_user", userAccount);
-            localStorage.setItem("rememberedUsername", userAccount);
-            window.location.replace("dashboard.html");
+            setLoginSession(userAccount, "Apple");
+            navigateToDashboard();
         });
     }
 
     const btnFacebookAuth = document.getElementById("btnFacebookAuth");
     if (btnFacebookAuth) {
-        btnFacebookAuth.addEventListener("click", () => {
+        btnFacebookAuth.addEventListener("click", (e) => {
+            if (e) e.preventDefault();
             const userAccount = (loginUsernameInput && loginUsernameInput.value.trim()) ? loginUsernameInput.value.trim() : "Facebook User";
-            localStorage.setItem("michi_logged_in", "true");
-            localStorage.setItem("michi_logged_in_provider", "Facebook");
-            localStorage.setItem("michi_current_user", userAccount);
-            localStorage.setItem("rememberedUsername", userAccount);
-            window.location.replace("dashboard.html");
+            setLoginSession(userAccount, "Facebook");
+            navigateToDashboard();
         });
     }
 });

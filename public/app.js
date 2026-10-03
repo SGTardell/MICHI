@@ -137,8 +137,15 @@ const defaultState = {
 };
 
 class MichiApp {
+  checkIsLoggedIn() {
+    try { if (localStorage.getItem('michi_logged_in') === 'true') return true; } catch(e) {}
+    try { if (sessionStorage.getItem('michi_logged_in') === 'true') return true; } catch(e) {}
+    try { if (document.cookie.includes('michi_logged_in=true')) return true; } catch(e) {}
+    return false;
+  }
+
   constructor() {
-    if (localStorage.getItem('michi_logged_in') !== 'true') {
+    if (!this.checkIsLoggedIn()) {
       window.location.replace('index.html');
       return;
     }
@@ -168,8 +175,11 @@ class MichiApp {
   }
 
   signOut() {
-    localStorage.removeItem('michi_logged_in');
-    localStorage.removeItem('michi_logged_in_provider');
+    try { localStorage.removeItem('michi_logged_in'); } catch(e) {}
+    try { localStorage.removeItem('michi_logged_in_provider'); } catch(e) {}
+    try { sessionStorage.removeItem('michi_logged_in'); } catch(e) {}
+    try { sessionStorage.removeItem('michi_logged_in_provider'); } catch(e) {}
+    try { document.cookie = 'michi_logged_in=; path=/; max-age=0;'; } catch(e) {}
     this.showToast('Signed Out. Returning to Sign In screen...');
     setTimeout(() => {
       window.location.replace('index.html?logout=1');
