@@ -586,6 +586,56 @@ header::before {
   font-weight: 800 !important;
 }
 
+/* ❄️ Arctic Chill Theme: Universal Form Inputs, Textareas, Selects & Modals Contrast Fix */
+[data-theme="arctic"] input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+[data-theme="arctic"] textarea,
+[data-theme="arctic"] select,
+[data-theme="arctic"] .modal-content input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+[data-theme="arctic"] .modal-content textarea,
+[data-theme="arctic"] .modal-content select,
+[data-theme="arctic"] .binder-modal input,
+[data-theme="arctic"] .binder-modal textarea,
+[data-theme="arctic"] .binder-modal select,
+[data-theme="arctic"] #editModalOverlay input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+[data-theme="arctic"] #editModalOverlay textarea,
+[data-theme="arctic"] #editModalOverlay select,
+[data-theme="arctic"] #franklinModalOverlay input,
+[data-theme="arctic"] #franklinModalOverlay textarea,
+[data-theme="arctic"] #franklinModalOverlay select {
+  background-color: #F2F6FB !important;
+  background: #F2F6FB !important;
+  color: #112A46 !important;
+  -webkit-text-fill-color: #112A46 !important;
+  caret-color: #112A46 !important;
+  border: 1.5px solid #4D6E91 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="arctic"] input::placeholder,
+[data-theme="arctic"] textarea::placeholder {
+  color: #4D6E91 !important;
+  -webkit-text-fill-color: #4D6E91 !important;
+  opacity: 1 !important;
+}
+
+[data-theme="arctic"] select option {
+  background-color: #F2F6FB !important;
+  color: #112A46 !important;
+}
+
+[data-theme="arctic"] input:-webkit-autofill,
+[data-theme="arctic"] input:-webkit-autofill:hover,
+[data-theme="arctic"] input:-webkit-autofill:focus,
+[data-theme="arctic"] input:-webkit-autofill:active,
+[data-theme="arctic"] textarea:-webkit-autofill,
+[data-theme="arctic"] textarea:-webkit-autofill:hover,
+[data-theme="arctic"] textarea:-webkit-autofill:focus,
+[data-theme="arctic"] textarea:-webkit-autofill:active {
+  -webkit-text-fill-color: #112A46 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #F2F6FB inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Arctic Chill Theme: +Save to Brain Dump Button */
 [data-theme="arctic"] #btnBrainDumpQuickSave,
 [data-theme="arctic"] .btn-save-clip,
