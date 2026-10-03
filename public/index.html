@@ -328,20 +328,32 @@
       font-weight: 800 !important;
     }
 
-    [data-theme="arctic"] .input-wrapper input {
-      background: #F2F6FB !important;
-      color: #112A46 !important;
+    [data-theme="arctic"] .input-wrapper input,
+    [data-theme="arctic"] .input-wrapper input[type="text"],
+    [data-theme="arctic"] .input-wrapper input[type="password"],
+    [data-theme="arctic"] .input-wrapper input[type="email"] {
+      background-color: #0d1f33 !important;
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
       border: 1.5px solid #4D6E91 !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="arctic"] .input-wrapper input[type="password"] {
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
       font-weight: 800 !important;
+      letter-spacing: 0.08em;
     }
 
     [data-theme="arctic"] .input-wrapper input::placeholder {
-      color: #4D6E91 !important;
-      opacity: 0.9 !important;
+      color: #94a3b8 !important;
+      -webkit-text-fill-color: #94a3b8 !important;
+      opacity: 1 !important;
     }
 
     [data-theme="arctic"] .toggle-password {
-      color: #112A46 !important;
+      color: #94a3b8 !important;
     }
 
     [data-theme="arctic"] .form-options {
@@ -351,6 +363,18 @@
 
     [data-theme="arctic"] .form-options label {
       color: #F2F6FB !important;
+    }
+
+    [data-theme="arctic"] #rememberMe {
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      min-height: 18px !important;
+      appearance: checkbox !important;
+      -webkit-appearance: checkbox !important;
+      accent-color: #38bdf8 !important;
+      cursor: pointer;
+      margin: 0;
     }
 
     [data-theme="arctic"] #linkResetPass {
