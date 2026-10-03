@@ -2916,19 +2916,19 @@ class MichiApp {
     this.editItemTagSelect.innerHTML = '';
     const defaultOpt = document.createElement('option');
     defaultOpt.value = '';
-    defaultOpt.textContent = '📁 Select Topic Category...';
+    defaultOpt.textContent = 'Select Topic Category...';
     this.editItemTagSelect.appendChild(defaultOpt);
 
     topicCategories.forEach(cat => {
       const opt = document.createElement('option');
       opt.value = cat;
-      opt.textContent = `📁 ${cat}`;
+      opt.textContent = cat;
       this.editItemTagSelect.appendChild(opt);
     });
 
     const newOpt = document.createElement('option');
     newOpt.value = '__NEW__';
-    newOpt.textContent = '➕ Create New Category...';
+    newOpt.textContent = 'Create New Category...';
     this.editItemTagSelect.appendChild(newOpt);
   }
 
@@ -5586,11 +5586,11 @@ class MichiApp {
       const lifePlans = projects.filter(p => (this.state.projectKinds && this.state.projectKinds[p]) === 'plan');
 
       let html = `
-        <option value="all" ${cur === 'all' ? 'selected' : ''}>📁 All Active Projects & Plans</option>
+        <option value="all" ${cur === 'all' ? 'selected' : ''}>All Active Projects & Plans</option>
       `;
 
       if (workProjects.length > 0) {
-        html += `<optgroup label="📂 Active Projects">`;
+        html += `<optgroup label="Active Projects">`;
         workProjects.forEach(p => {
           html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>&nbsp;&nbsp;• ${this.escapeHtml(p)}</option>`;
         });
@@ -5598,7 +5598,7 @@ class MichiApp {
       }
 
       if (lifePlans.length > 0) {
-        html += `<optgroup label="📋 Active Plans">`;
+        html += `<optgroup label="Active Plans">`;
         lifePlans.forEach(p => {
           html += `<option value="${this.escapeHtml(p)}" ${cur === p ? 'selected' : ''}>&nbsp;&nbsp;• ${this.escapeHtml(p)}</option>`;
         });
@@ -6306,18 +6306,18 @@ class MichiApp {
     const pendingTasksCount = projTasks.length - doneTasksCount;
     const taskCompletionPercent = projTasks.length > 0 ? Math.round((doneTasksCount / projTasks.length) * 100) : (maxRank === 4 ? 100 : 0);
 
-    let statusText = '🟢 On Track';
+    let statusText = 'On Track';
     let statusBg = 'rgba(16, 185, 129, 0.15)';
     let statusColor = '#10b981';
     let statusBorder = 'rgba(16, 185, 129, 0.3)';
 
     if (maxRank === 4 || (projTasks.length > 0 && doneTasksCount === projTasks.length)) {
-      statusText = '✅ Completed';
+      statusText = 'Completed';
       statusBg = 'rgba(56, 189, 248, 0.15)';
       statusColor = '#38bdf8';
       statusBorder = 'rgba(56, 189, 248, 0.3)';
     } else if (pendingTasksCount > 0 && doneTasksCount === 0) {
-      statusText = '🔵 In Progress';
+      statusText = 'In Progress';
       statusBg = 'rgba(56, 189, 248, 0.15)';
       statusColor = '#38bdf8';
       statusBorder = 'rgba(56, 189, 248, 0.3)';
@@ -6378,8 +6378,8 @@ class MichiApp {
           <div style="height: 100%; width: ${taskCompletionPercent}%; background: ${statusColor}; transition: width 0.3s ease;"></div>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.70rem; color: var(--text-muted); margin-top: 4px; font-weight: 700;">
-          <span>✅ ${doneTasksCount} Done</span>
-          <span>⏳ ${pendingTasksCount} Yet To Be Done</span>
+          <span>${doneTasksCount} Done</span>
+          <span>${pendingTasksCount} Yet To Be Done</span>
         </div>
       </div>
 
@@ -6446,13 +6446,13 @@ class MichiApp {
     const pendingTasksCount = projTasks.length - doneTasksCount;
     const taskPercent = projTasks.length > 0 ? Math.round((doneTasksCount / projTasks.length) * 100) : 0;
 
-    let statusText = '🟢 On Track';
+    let statusText = 'On Track';
     let statusColor = '#10b981';
     if (projTasks.length > 0 && doneTasksCount === projTasks.length) {
-      statusText = '✅ Completed';
+      statusText = 'Completed';
       statusColor = '#38bdf8';
     } else if (pendingTasksCount > 0 && doneTasksCount === 0) {
-      statusText = '🔵 In Progress';
+      statusText = 'In Progress';
       statusColor = '#38bdf8';
     }
 
@@ -6568,7 +6568,7 @@ class MichiApp {
 
     resHeader.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">📎 Reference Clips & Attached Notes</span>
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">Reference Clips & Attached Notes</span>
       </div>
       <button class="btn-add-res-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
         + Attach Clip / Note
@@ -6632,7 +6632,7 @@ class MichiApp {
 
     compHeader.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">✅ What Has Been Done (Completed)</span>
+        <span style="font-weight: 800; font-size: 1.05rem; color: var(--text-main);">What Has Been Done (Completed)</span>
       </div>
       <button class="btn-add-comp-item" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 4px; cursor: pointer;">
         + Add Completed Milestone
