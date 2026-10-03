@@ -3440,6 +3440,13 @@ class MichiApp {
   }
 
   openFranklinModal(dateStr) {
+    const isIPad = /iPad/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isIPhone = /iPhone|iPod/i.test(navigator.userAgent) || (window.innerWidth < 768 && !isIPad);
+    if (isIPhone) {
+      if (this.showToast) this.showToast('Daily Planner 2-page spread is formatted for iPad & Desktop.');
+      return;
+    }
+
     this.closeTutorialModal();
     this.selectedFranklinDate = dateStr || '2026-08-08';
     
@@ -4433,16 +4440,16 @@ class MichiApp {
 
   initResponsiveViewMode() {
     const isIPad = /iPad/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const savedViewMode = localStorage.getItem('MICHI_VIEW_MODE');
-    if (isIPad) {
-      // iPad screen is a full tablet display and should always open the complete workspace (Home/Brain Dump/Planner)
+    const isIPhone = /iPhone|iPod/i.test(navigator.userAgent) || (window.innerWidth < 768 && !isIPad);
+
+    if (isIPhone) {
+      // iPhone view is strictly dedicated to Brain Dump web scraping and ideas
+      this.viewMode = 'clipper';
+      localStorage.setItem('MICHI_VIEW_MODE', 'clipper');
+    } else {
+      // iPad & Desktop have full workspace (2-page Daily Planner binder spread, etc.)
       this.viewMode = 'desktop';
       localStorage.setItem('MICHI_VIEW_MODE', 'desktop');
-    } else if (savedViewMode) {
-      this.viewMode = savedViewMode;
-    } else {
-      const isSmallPhone = window.innerWidth < 768;
-      this.viewMode = isSmallPhone ? 'clipper' : 'desktop';
     }
     this.applyViewMode(this.viewMode);
     this.bindMobileClipperEvents();
@@ -4820,7 +4827,8 @@ class MichiApp {
     const activeCatFilter = (this.mobileFeedCategoryFilter || 'all').toLowerCase();
 
     const items = (this.state.items || []).filter(i => {
-      if (i.type !== 'web' && !i.url && (!i.tags || !i.tags.includes('Brain Dump'))) return false;
+      // In mobile Brain Dump feed, display all brain dump ideas, web clips, and cards (exclude vault)
+      if (i.type === 'vault') return false;
 
       // Filter by category pill if active
       if (activeCatFilter !== 'all') {
@@ -4835,13 +4843,13 @@ class MichiApp {
              (i.url || '').toLowerCase().includes(q) ||
              (i.category || '').toLowerCase().includes(q) ||
              (i.project || '').toLowerCase().includes(q);
-    }).slice(0, 25);
+    }).slice(0, 30);
 
     if (items.length === 0) {
       const catLabel = activeCatFilter === 'all' ? '' : ` in "${this.mobileFeedCategoryFilter}"`;
       container.innerHTML = `
         <div style="text-align: center; padding: 1.5rem 1rem; color: var(--text-muted); font-size: 0.88rem; font-weight: 700;">
-          No saved clips found${catLabel}. Paste a URL or dictate a note above to add your first clip!
+          No Brain Dump ideas or clips found${catLabel}. Save a link, idea, or dictated note above!
         </div>
       `;
       return;
