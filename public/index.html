@@ -332,28 +332,40 @@
     [data-theme="arctic"] .input-wrapper input[type="text"],
     [data-theme="arctic"] .input-wrapper input[type="password"],
     [data-theme="arctic"] .input-wrapper input[type="email"] {
-      background-color: #0d1f33 !important;
-      color: #ffffff !important;
-      -webkit-text-fill-color: #ffffff !important;
+      background-color: #F2F6FB !important;
+      background: #F2F6FB !important;
+      color: #112A46 !important;
+      -webkit-text-fill-color: #112A46 !important;
+      caret-color: #112A46 !important;
       border: 1.5px solid #4D6E91 !important;
       font-weight: 700 !important;
     }
 
     [data-theme="arctic"] .input-wrapper input[type="password"] {
-      color: #ffffff !important;
-      -webkit-text-fill-color: #ffffff !important;
+      color: #112A46 !important;
+      -webkit-text-fill-color: #112A46 !important;
+      caret-color: #112A46 !important;
       font-weight: 800 !important;
       letter-spacing: 0.08em;
     }
 
+    [data-theme="arctic"] .input-wrapper input:-webkit-autofill,
+    [data-theme="arctic"] .input-wrapper input:-webkit-autofill:hover,
+    [data-theme="arctic"] .input-wrapper input:-webkit-autofill:focus,
+    [data-theme="arctic"] .input-wrapper input:-webkit-autofill:active {
+      -webkit-text-fill-color: #112A46 !important;
+      -webkit-box-shadow: 0 0 0px 1000px #F2F6FB inset !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
     [data-theme="arctic"] .input-wrapper input::placeholder {
-      color: #94a3b8 !important;
-      -webkit-text-fill-color: #94a3b8 !important;
+      color: #4D6E91 !important;
+      -webkit-text-fill-color: #4D6E91 !important;
       opacity: 1 !important;
     }
 
     [data-theme="arctic"] .toggle-password {
-      color: #94a3b8 !important;
+      color: #112A46 !important;
     }
 
     [data-theme="arctic"] .form-options {
