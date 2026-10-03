@@ -604,9 +604,9 @@ header::before {
 [data-theme="arctic"] #franklinModalOverlay select {
   background-color: #F2F6FB !important;
   background: #F2F6FB !important;
-  color: #112A46 !important;
-  -webkit-text-fill-color: #112A46 !important;
-  caret-color: #112A46 !important;
+  color: #34506D !important;
+  -webkit-text-fill-color: #34506D !important;
+  caret-color: #34506D !important;
   border: 1.5px solid #4D6E91 !important;
   font-weight: 700 !important;
 }
@@ -620,7 +620,7 @@ header::before {
 
 [data-theme="arctic"] select option {
   background-color: #F2F6FB !important;
-  color: #112A46 !important;
+  color: #34506D !important;
 }
 
 [data-theme="arctic"] input:-webkit-autofill,
@@ -631,7 +631,7 @@ header::before {
 [data-theme="arctic"] textarea:-webkit-autofill:hover,
 [data-theme="arctic"] textarea:-webkit-autofill:focus,
 [data-theme="arctic"] textarea:-webkit-autofill:active {
-  -webkit-text-fill-color: #112A46 !important;
+  -webkit-text-fill-color: #34506D !important;
   -webkit-box-shadow: 0 0 0px 1000px #F2F6FB inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
@@ -2226,7 +2226,7 @@ select#apptFormTime {
 [data-theme="arctic"] select#brainDumpCatFilterAll,
 [data-theme="arctic"] select#homeProjectFilterSelect,
 [data-theme="arctic"] select#apptFormTime {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23112A46' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2334506D' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 0.8rem center !important;
   background-size: 1rem !important;
