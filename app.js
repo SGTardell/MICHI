@@ -224,6 +224,8 @@ class MichiApp {
           soyokaze: 'Gentle Breeze',
           glacier: 'Glacier Range',
           arctic: 'Arctic Chill',
+          charcoal: 'Charcoal Slate',
+          silver: 'Silver Mist',
           summer: 'Lonely Beach'
         };
         this.showToast(`Switched to ${names[selected] || selected}`);

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'michi-pwa-v7';
+const CACHE_NAME = 'michi-pwa-v8';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
